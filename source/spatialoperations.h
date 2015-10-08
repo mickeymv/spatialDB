@@ -1,3 +1,6 @@
+#ifndef _spatialoperations_h
+#define _spatialoperations_h
+
 class Point2D {};
 class Line2D {};
 class Region2D {};
@@ -13,3 +16,4 @@ class Region2D {};
 		 Region2D getSpatialUnion(Region2D region1, Region2D region2);
 		 Region2D getSpatialDifference(Region2D region1, Region2D region2);
 
+#endif
