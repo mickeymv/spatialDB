@@ -1,4 +1,6 @@
 #include "spatialoperations.h"  
+#include <iostream>
+
 
 int main()
 	{  
@@ -11,6 +13,7 @@ int main()
 	line = getSpatialUnion(line, line);
 	region = getSpatialDifference(region, region);
 
+	printf("\nSuccessfully run!\n");
 
 	return 0;
 	}

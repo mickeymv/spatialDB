@@ -1,0 +1,3 @@
+spatialOperationsProgram: MainClass.o spatialoperations.o
+	g++ -o $@ $^ 
+

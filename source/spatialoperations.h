@@ -3,32 +3,13 @@ class Line2D {};
 class Region2D {};
 
 
-		 Point2D getSpatialIntersection(Point2D, Point2D);
-		 Point2D getSpatialUnion(Point2D, Point2D);
-		 Point2D getSpatialDifference(Point2D, Point2D);
-		 Line2D getSpatialIntersection(Line2D, Line2D);
-		 Line2D getSpatialUnion(Line2D, Line2D);
-		 Line2D getSpatialDifference(Line2D, Line2D);
-		 Region2D getSpatialIntersection(Region2D, Region2D);	
-		 Region2D getSpatialUnion(Region2D, Region2D);
-		 Region2D getSpatialDifference(Region2D, Region2D);
+		 Point2D getSpatialIntersection(Point2D point1, Point2D point2);
+		 Point2D getSpatialUnion(Point2D point1, Point2D point2);
+		 Point2D getSpatialDifference(Point2D point1, Point2D point2);
+		 Line2D getSpatialIntersection(Line2D line1, Line2D line2);
+		 Line2D getSpatialUnion(Line2D line1, Line2D line2);
+		 Line2D getSpatialDifference(Line2D line1, Line2D line2);
+		 Region2D getSpatialIntersection(Region2D region1, Region2D region2);	
+		 Region2D getSpatialUnion(Region2D region1, Region2D region2);
+		 Region2D getSpatialDifference(Region2D region1, Region2D region2);
 
-	
-	
-	/*
-	
-	class SpatialOperations
-	{
-	public:
-		static Point2D getSpatialIntersection(Point2D, Point2D);
-		static Point2D getSpatialUnion(Point2D, Point2D);
-		static Point2D getSpatialDifference(Point2D, Point2D);
-		static Line2D getSpatialIntersection(Line2D, Line2D);
-		static Line2D getSpatialUnion(Line2D, Line2D);
-		static Line2D getSpatialDifference(Line2D, Line2D);
-		static Region2D getSpatialIntersection(Region2D, Region2D);	
-		static Region2D getSpatialUnion(Region2D, Region2D);
-		static Region2D getSpatialDifference(Region2D, Region2D);
-	};
-	
-	*/
