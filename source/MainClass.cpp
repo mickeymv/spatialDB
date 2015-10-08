@@ -1,4 +1,5 @@
 #include "spatialoperations.h"  
+#include <stdio.h>
 #include <iostream>
 
 
