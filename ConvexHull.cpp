@@ -1,4 +1,5 @@
 #include "ConvexHull.h"
+#include "Dummy.h"
 
 using namespace std;
 
