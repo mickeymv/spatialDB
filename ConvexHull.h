@@ -4,11 +4,12 @@
 /* provides static class ConvexHull with overloaded methods compute convex hull */
 
 class ConvexHull {
-	public static Region2D computeConvexHull(Point2D complex_point){}
+	public:
+	static Region2D computeConvexHull(Point2D complex_point){}
 
-	public static Region2D computeConvexHull(Region2D region){}
+	static Region2D computeConvexHull(Region2D region){}
 
-	public static Region2D computeConvexHull(Line2D complex_line){}
+	static Region2D computeConvexHull(Line2D complex_line){}
 };
  
 #endif
