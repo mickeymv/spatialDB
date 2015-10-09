@@ -1,7 +1,7 @@
 #pragma once
 
 #include "BigRational.h"
-#include "Seg2D.h"
+//#include "Seg2D.h"
 #include <iostream>
 
 class Seg2D;

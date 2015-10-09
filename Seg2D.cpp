@@ -1,31 +1,16 @@
 #include "Seg2D.h"
 
 
-HalfSegment::HalfSegment()
-{
-	dominatingPoint = &PoiR2D(0.0, 0.0);
-}
-
-HalfSegment::HalfSegment(PoiR2D dominatingPoint, bool direction)
-{
-	this->dominatingPoint = &dominatingPoint;
-	this->direction = direction;
-}
-
-HalfSegment::~HalfSegment()
-{
-}
-
 Seg2D::Seg2D()
 {
-	this->p1 = &PoiR2D(0, 0);
-	this->p2 = &PoiR2D(1, 1);
+	this->p1 = PoiR2D(0, 0);
+	this->p2 = PoiR2D(1, 1);
 }
 
 Seg2D::Seg2D(PoiR2D p1, PoiR2D p2)
 {
-	this->p1 = &p1;
-	this->p2 = &p2;
+	this->p1 = p1;
+	this->p2 = p2;
 	if (p1 > p2)
 	{
 		this->LeftHalfSegment = HalfSegment(p1, false);
