@@ -1,5 +1,8 @@
-#include "Group3SpatialOperations.h" 
+#include "SpatialOperations.h" 
 #include <stdio.h>
+#include "Point2D.h"
+#include "Line2D.h"
+#include "Region2D.h"
 
 int main()
 { 
@@ -8,9 +11,9 @@ int main()
   Line2D line;
   Region2D region;
 
-  point = getSpatialIntersection(point, point);
-  line = getSpatialUnion(line, line);
-  region = getSpatialDifference(region, region);
+  point = intersection(point, point);
+  line = spatialUnion(line, line);
+  region = difference(region, region);
 
   printf("\nSuccessfully ran Group 3's Spatial Operations Program!\n\n");
 

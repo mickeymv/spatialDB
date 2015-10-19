@@ -1,10 +1,10 @@
-all: MainClass.o Group3SpatialOperations.o;
-	g++ MainClass.o Group3SpatialOperations.o -o Group3SpatialOperationsProgram;
-MainClass.o: MainClass.cpp Group3SpatialOperations.h;
+all: MainClass.o SpatialOperations.o;
+	g++ MainClass.o SpatialOperations.o -o SpatialOperationsProgram;
+MainClass.o: MainClass.cpp SpatialOperations.h;
 	g++ -c MainClass.cpp;
-Group3SpatialOperations.o: Group3SpatialOperations.cpp Group3SpatialOperations.h;
-	g++ -c Group3SpatialOperations.cpp;
+SpatialOperations.o: SpatialOperations.cpp SpatialOperations.h;
+	g++ -c SpatialOperations.cpp;
 clean:
 	rm -rf *.o
-	rm Group3SpatialOperationsProgram;
+	rm SpatialOperationsProgram;
 
