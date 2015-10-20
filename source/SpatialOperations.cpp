@@ -3,63 +3,63 @@
 #include "Line2D.h"
 #include "Region2D.h"
 
-Point2D intersection(Point2D point1, Point2D point2) 
+Point2D spatialIntersection(const Point2D& pointLhs, const Point2D& pointRhs) 
 {
   Point2D point;
   //implementation
   return point;
 }
  
-Point2D spatialUnion(Point2D point1, Point2D point2) 
+Point2D spatialUnion(const Point2D& pointLhs, const Point2D& pointRhs) 
 {
   Point2D point;
   //implementation
   return point;
 }
 
-Point2D difference(Point2D point1, Point2D point2) 
+Point2D spatialDifference(const Point2D& pointLhs, const Point2D& pointRhs) 
 {
   Point2D point;
   //implementation
   return point;
 }
  
-Line2D intersection(Line2D line1, Line2D line2) 
+Line2D spatialIntersection(const Line2D& lineLhs, const Line2D& lineRhs) 
 {
   Line2D line;
   //implementation
   return line;
 }
 
-Line2D spatialUnion(Line2D line1, Line2D line2) 
+Line2D spatialUnion(const Line2D& lineLhs, const Line2D& lineRhs) 
 {
  Line2D line;
  //implementation
  return line;
 }
 
-Line2D difference(Line2D line1, Line2D line2) 
+Line2D spatialDifference(const Line2D& lineLhs, const Line2D& lineRhs) 
 {
  Line2D line;
  //implementation
  return line;
 }
  
-Region2D intersection(Region2D region1, Region2D region2) 
+Region2D spatialIntersection(const Region2D& regionLhs, const Region2D& regionRhs) 
 {
   Region2D region;
   //implementation
   return region;
 }
 
-Region2D spatialUnion(Region2D region1, Region2D region2) 
+Region2D spatialUnion(const Region2D& regionLhs, const Region2D& regionRhs) 
 {
   Region2D region;
   //implementation
   return region;
 }
  
-Region2D difference(Region2D region1, Region2D region2) 
+Region2D spatialDifference(const Region2D& regionLhs, const Region2D& regionRhs) 
 {
   Region2D region;
   //implementation

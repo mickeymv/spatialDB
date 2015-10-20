@@ -1,7 +1,7 @@
-all: MainClass.o SpatialOperations.o;
-	g++ MainClass.o SpatialOperations.o -o SpatialOperationsProgram;
-MainClass.o: MainClass.cpp SpatialOperations.h;
-	g++ -c MainClass.cpp;
+all: SpatialOperationsMainClass.o SpatialOperations.o;
+	g++ SpatialOperationsMainClass.o SpatialOperations.o -o SpatialOperationsProgram;
+SpatialOperationsMainClass.o: SpatialOperationsMainClass.cpp SpatialOperations.h;
+	g++ -c SpatialOperationsMainClass.cpp;
 SpatialOperations.o: SpatialOperations.cpp SpatialOperations.h;
 	g++ -c SpatialOperations.cpp;
 clean:

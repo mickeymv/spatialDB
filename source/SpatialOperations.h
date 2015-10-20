@@ -1,17 +1,18 @@
-#include "Point2D.h"
-#include "Line2D.h"
-#include "Region2D.h"
 #ifndef _SpatialOperations_h
 #define _SpatialOperations_h
 
-Point2D intersection(Point2D point1, Point2D point2);
-Point2D spatialUnion(Point2D point1, Point2D point2);
-Point2D difference(Point2D point1, Point2D point2);
-Line2D intersection(Line2D line1, Line2D line2);
-Line2D spatialUnion(Line2D line1, Line2D line2);
-Line2D difference(Line2D line1, Line2D line2);
-Region2D intersection(Region2D region1, Region2D region2); 
-Region2D spatialUnion(Region2D region1, Region2D region2);
-Region2D difference(Region2D region1, Region2D region2);
+#include "Point2D.h"
+#include "Line2D.h"
+#include "Region2D.h"
+
+Point2D spatialIntersection(const Point2D& pointLhs, const Point2D& pointRhs);
+Point2D spatialUnion(const Point2D& pointLhs, const Point2D& pointRhs);
+Point2D spatialDifference(const Point2D& pointLhs, const Point2D& pointRhs);
+Line2D spatialIntersection(const Line2D& lineLhs, const Line2D& lineRhs);
+Line2D spatialUnion(const Line2D& lineLhs, const Line2D& lineRhs);
+Line2D spatialDifference(const Line2D& lineLhs, const Line2D& lineRhs);
+Region2D spatialIntersection(const Region2D& regionLhs, const Region2D& regionRhs); 
+Region2D spatialUnion(const Region2D& regionLhs, const Region2D& regionRhs);
+Region2D spatialDifference(const Region2D& regionLhs, const Region2D& regionRhs);
 
 #endif

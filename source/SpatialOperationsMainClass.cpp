@@ -11,9 +11,9 @@ int main()
   Line2D line;
   Region2D region;
 
-  point = intersection(point, point);
+  point = spatialIntersection(point, point);
   line = spatialUnion(line, line);
-  region = difference(region, region);
+  region = spatialDifference(region, region);
 
   printf("\nSuccessfully ran Group 3's Spatial Operations Program!\n\n");
 
