@@ -1,5 +1,6 @@
 #include "ConvexHull.h"
-#include "Dummy.h"
+
+#include "Temporary.h"	//MUST BE REMOVED FOR FINAL INTEGRATION: holds temporary implementations for Point2D and Region2D
 
 using namespace std;
 
