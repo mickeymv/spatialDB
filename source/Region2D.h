@@ -1,8 +1,6 @@
 /*
  * Region2D.h
- *
- *  Created on: Oct 8, 2015
- *      Author: user
+ * Dummy source file for Region2D header. To be done by Group2.
  */
 
 #ifndef REGION2D_H_

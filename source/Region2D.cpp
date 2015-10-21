@@ -1,11 +1,8 @@
 /*
  * Region2D.cpp
- *
- *  Created on: Oct 8, 2015
- *      Author: user
+ * Dummy source file for Region2D implementation. To be done by Group2.
  */
 
 #include "Region2D.h"
 
 
-//dummy

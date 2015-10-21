@@ -1,8 +1,6 @@
 /*
  * Point2D.h
- *
- *  Created on: Oct 8, 2015
- *      Author: user
+ * Dummy source file for Point2D header. To be done by Group2.
  */
 
 #ifndef POINT2D_H_

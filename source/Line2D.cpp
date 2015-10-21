@@ -1,10 +1,7 @@
 /*
  * Line2D.cpp
- *
- *  Created on: Oct 8, 2015
- *      Author: user
+ * Dummy source file for Line2D implementation. To be done by Group2.
  */
 
 #include "Line2D.h"
 
-//dummy

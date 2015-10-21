@@ -1,10 +1,7 @@
 /*
  * Point2D.cpp
- *
- *  Created on: Oct 8, 2015
- *      Author: user
+ * Dummy source file for Point2D implementation. To be done by Group2.
  */
 
 #include "Point2D.h"
 
-//dummy
