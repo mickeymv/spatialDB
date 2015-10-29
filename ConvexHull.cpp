@@ -1,10 +1,11 @@
 #include "ConvexHull.h"
-
-#include "Temporary.h"	//MUST BE REMOVED FOR FINAL INTEGRATION: holds temporary implementations for Point2D and Region2D
+#include "Point2D.h"
+#include "Region2D.h"
+#include "vector"
 
 using namespace std;
 
-Region2D ConvexHull::computeJarvis(Point2D complex_point)
+Region2D ConvexHull::computeJarvis(const vector<Poi2D> &unordered_points)
 {
 	Region2D convexHull;
 
@@ -13,7 +14,7 @@ Region2D ConvexHull::computeJarvis(Point2D complex_point)
 	return convexHull;
 }
 
-Region2D ConvexHull::computeGraham(Point2D complex_point)
+Region2D ConvexHull::computeGraham(const vector<Poi2D> &unordered_points)
 {
 	Region2D convexHull;
 
@@ -22,7 +23,7 @@ Region2D ConvexHull::computeGraham(Point2D complex_point)
 	return convexHull;
 }
 
-Region2D ConvexHull::computeQuick(Point2D complex_point)
+Region2D ConvexHull::computeQuick(const vector<Poi2D> &unordered_points)
 {
 	Region2D convexHull;
 
@@ -31,7 +32,7 @@ Region2D ConvexHull::computeQuick(Point2D complex_point)
 	return convexHull;
 }
 
-Region2D ConvexHull::computeDivideConquer(Point2D complex_point)
+Region2D ConvexHull::computeDivideConquer(const vector<Poi2D> &unordered_points)
 {
 	Region2D convexHull;
 
@@ -40,7 +41,7 @@ Region2D ConvexHull::computeDivideConquer(Point2D complex_point)
 	return convexHull;
 }
 
-Region2D ConvexHull::computeNewAlgo(Point2D complex_point)
+Region2D ConvexHull::computeNewAlgo(const vector<Poi2D> &unordered_points)
 {
 	Region2D convexHull;
 
@@ -48,3 +49,7 @@ Region2D ConvexHull::computeNewAlgo(Point2D complex_point)
 
 	return convexHull;
 }
+
+//to be implemented later:
+
+//Region 2D ConvexHull::computeHull(const Point2D &complex_point){}
