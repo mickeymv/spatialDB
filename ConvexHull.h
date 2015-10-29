@@ -21,6 +21,11 @@ class ConvexHull {
 		static Region2D computeDivideConquer(vector<Poi2D> unordered_points);
 
 		static Region2D computeNewAlgo(vector<Poi2D> unordered_points);
+
+		//to be implemented later:
+		//Region 2D computeHull(const Point2D &complex_point);
 };
+
+
 
 #endif
