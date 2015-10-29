@@ -1,13 +1,13 @@
 /******************************************************************************
 * File: SpatialOperations.cpp
 *******************************************************************************
-* Purpose: Interface to the geometric set operations union, intersection, and
+* Purpose: Interface to the Spatial operations union, intersection, and
 *   difference between two complex objects of the spatial data types Point2D,
 *   Line2D, or Region2D
-* Description: Any of the geometric set operations takes two objects of the
-*   same spatial data type as operands, computes their geometric union,
-*   geometric intersection, or geometric difference, and returns an object of
-*   the same spatial data type as a result. This means that the geometric set
+* Description: Any of the Spatial operations takes two objects of the
+*   same spatial data type as operands, computes their Spatial union,
+*   Spatial intersection, or Spatial difference, and returns an object of
+*   the same spatial data type as a result. This means that the Spatial
 *   operations satisfy closure properties.
 *
 * Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
@@ -20,11 +20,11 @@
 #include "SpatialOperations.h"
 
 /******************************************************************************
-* Geometric set operations union, intersection, and difference applied to two
-* Point2D objects and yielding a Point2D object
+* Spatial operations union, intersection, and difference applied to two
+* Point2D objects and yielding a Point2D object.
 *******************************************************************************
 * The spatial intersection operation returns those single points in a Point2D
-* object that both argument Point2D objects have in common. 
+* object that belong to both argument Point2D objects. 
 * The spatial union operation merges two Point2D objects into a single Point2D 
 * object. Duplicate single points are eliminated. 
 * The spatial difference operation subtracts any single point of the second 
@@ -56,11 +56,11 @@ Point2D spatialDifference(const Point2D& pointLhs, const Point2D& pointRhs)
 }
 
 /******************************************************************************
-* Geometric set operations union, intersection, and difference applied to two
+* Spatial operations union, intersection, and difference applied to two
 * Line2D objects and yielding a Line2D object
 *******************************************************************************
 * The spatial intersection operation returns those lines in a Line2D object 
-* that both argument Line2D objects have in common. 
+* that belong to both argument Line2D objects. 
 * The spatial union operation merges two Line2D objects into a single Line2D 
 * object which contains all lines from either of the argument Line2D objects. 
 * The spatial difference operation subtracts any single line of the second 
@@ -91,11 +91,11 @@ Line2D spatialDifference(const Line2D& lineLhs, const Line2D& lineRhs)
 }
 
 /******************************************************************************
-* Geometric set operations union, intersection, and difference applied to two
+* Spatial operations union, intersection, and difference applied to two
 * Region2D objects and yielding a Region2D object
 *******************************************************************************
 * The spatial intersection operation returns those regions in a Region2D object 
-* that both argument Region2D objects have in common. 
+* that belong to both argument Region2D objects. 
 * The spatial union operation merges two Region2D objects into a single 
 * Region2D object which contains all regions from either of the argument
 * Region2D objects. 
