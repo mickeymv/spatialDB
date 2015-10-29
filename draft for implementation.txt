@@ -1,0 +1,42 @@
+-> parallel object traversal paradigm:-> we  need points inside point object to be sorted  in x axis.
+
+it’s already sorted. //Confirm with group 2.
+
+
+selectFirst(o1,o2,object,status)
+object: none, first, second, both
+status: endOfNone, endOfFirst, endOfSecond, endOfBoth
+selectNext(o1,o2,object,status)
+checkIntersection(o1,o2)
+check if the least x coordinate of 2nd object is less than greatest coordinate of first object or vice versa.
+
+//This is a specific implementation for Point2D intersection/union which could be generalized to handle all spatial contexts.
+
+
+Point2D spatialIntersection(Point2D pointLhs, Point2D pointRhs) 
+{
+Point2D intersectionPoint;
+
+ if (checkIntersection(o1,o2)){
+ do 
+	{
+		selectFirst(o1,o2,object,status);
+		if (object==first || object==second || object== both)
+		{
+			if (object==first || object==second || object== both)
+				{
+					Point2D.addPoint(unionpoint, o1.current);
+				}
+			if (object== both )
+				{
+					Point2D.addPoint(intersectionpoint, o1.current);
+				}
+			selectNext(o1,o2,object,status);
+		}
+	 }	while(object!= none && status!=endOfBoth)
+
+}
+return intersectionpoint;
+
+}
+
