@@ -30,29 +30,33 @@
 * Point2D objects and yielding a Point2D object
 *******************************************************************************
 * The spatial intersection operation returns those single points in a Point2D
-* object that both argument Point2D objects have in common. 
-* The spatial union operation merges two Point2D objects into a single Point2D 
-* object. Duplicate single points are eliminated. 
-* The spatial difference operation subtracts any single point of the second 
-* argument Point2D object from the first argument Point2D object.
+* object that both argument Point2D objects have in common.
+*
+* The spatial intersection operation returns a Point2D object that is the
+* topological intersection (AND operation) of two Point2D objects. 
+* The spatial union operation returns a Point2D object that is the topological
+* union (OR operation) of two Point2D objects.
+* The spatial Difference operation returns a Point2D object that is the
+* topological difference (MINUS operation) of two Point2D objects.
 *
 * Parameters : const Point2D& lhs and const Point2D& rhs
 * Returns    : Point2D 
 ******************************************************************************/
-Point2D spatialIntersection (const Point2D& lhs, const Point2D& rhs);
-Point2D spatialUnion (const Point2D& lhs, const Point2D& rhs);
-Point2D spatialDifference (const Point2D& lhs, const Point2D& rhs);
+Point2D spatialIntersection (const Point2D& pointLhs, const Point2D& pointRhs);
+Point2D spatialUnion (const Point2D& pointLhs, const Point2D& pointRhs);
+Point2D spatialDifference (const Point2D& pointLhs, const Point2D& pointRhs);
 
 /******************************************************************************
 * Geometric set operations union, intersection, and difference applied to two
 * Line2D objects and yielding a Line2D object
 *******************************************************************************
-* The spatial intersection operation returns those lines in a Line2D object 
-* that both argument Line2D objects have in common. 
-* The spatial union operation merges two Line2D objects into a single Line2D 
-* object which contains all lines from either of the argument Line2D objects. 
-* The spatial difference operation subtracts any single line of the second 
-* argument Line2D object from the first argument Line2D object.
+*
+* The spatial intersection operation returns a Line2D object that is the
+* topological intersection (AND operation) of two Line2D objects. 
+* The spatial union operation returns a Line2D object that is the topological
+* union (OR operation) of two Line2D objects.
+* The spatial Difference operation returns a Line2D object that is the
+* topological difference (MINUS operation) of two Line2D objects.
 *
 * Parameters : const Line2D& lineLhs and const Line2D& lineRhs
 * Returns    : Line2D
@@ -65,13 +69,13 @@ Line2D spatialDifference (const Line2D& lineLhs, const Line2D& lineRhs);
 * Geometric set operations union, intersection, and difference applied to two
 * Region2D objects and yielding a Region2D object
 *******************************************************************************
-* The spatial intersection operation returns those regions in a Region2D object 
-* that both argument Region2D objects have in common. 
-* The spatial union operation merges two Region2D objects into a single 
-* Region2D object which contains all regions from either of the argument
-* Region2D objects. 
-* The spatial difference operation subtracts region of the second argument
-* Region2D object from the first argument Region2D object.
+*
+* The spatial intersection operation returns a Region2D object that is the
+* topological intersection (AND operation) of two Region2D objects. 
+* The spatial union operation returns a Region2D object that is the topological
+* union (OR operation) of two Region2D objects.
+* The spatial Difference operation returns a Region2D object that is the
+* topological difference (MINUS operation) of two Region2D objects.
 *
 * Parameters : const Region2D& regionLhs and const Region2D& regionRhs
 * Returns    : Region2D
