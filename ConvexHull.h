@@ -4,7 +4,8 @@
 #include "ConvexHull.h"
 #include "Point2D.h"
 #include "Region2D.h"
-#include "vector"
+
+#include <vector>
 
 /* provides static class ConvexHull with overloaded methods compute convex hull */
 

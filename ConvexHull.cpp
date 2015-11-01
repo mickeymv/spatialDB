@@ -1,7 +1,8 @@
 #include "ConvexHull.h"
 #include "Point2D.h"
 #include "Region2D.h"
-#include "vector"
+
+#include <vector>
 
 using namespace std;
 
@@ -52,4 +53,4 @@ Region2D computeNewAlgo(const vector<Poi2D> &unordered_points)
 
 //to be implemented later:
 
-//Region 2D ConvexHull::computeHull(const Point2D &complex_point){}
+//Region 2D computeHull(const Point2D &complex_point){}
