@@ -11,15 +11,15 @@
 
 
 
-Region2D computeJarvis(const vector<Poi2D> &unordered_points);
+Region2D computeJarvis(const vector<Poi2D> &point_list);
 
-Region2D computeGraham(const vector<Poi2D> &unordered_points);
+Region2D computeGraham(const vector<Poi2D> &point_list);
 
-Region2D computeQuick(const vector<Poi2D> &unordered_points);
+Region2D computeQuick(const vector<Poi2D> &point_list);
 
-Region2D computeDivideConquer(const vector<Poi2D> &unordered_points);
+Region2D computeDivideConquer(const vector<Poi2D> &point_list);
 
-Region2D computeNewAlgo(const vector<Poi2D> &unordered_points);
+Region2D computeNewAlgo(const vector<Poi2D> &point_list);
 
 //to be implemented later:
 //Region 2D computeHull(const Point2D &complex_point);

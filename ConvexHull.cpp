@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Region2D computeJarvis(const vector<Poi2D> &unordered_points)
+Region2D computeJarvis(const vector<Poi2D> &point_list)
 {
 	Region2D convexHull;
 
@@ -15,7 +15,7 @@ Region2D computeJarvis(const vector<Poi2D> &unordered_points)
 	return convexHull;
 }
 
-Region2D computeGraham(const vector<Poi2D> &unordered_points)
+Region2D computeGraham(const vector<Poi2D> &point_list)
 {
 	Region2D convexHull;
 
@@ -24,7 +24,7 @@ Region2D computeGraham(const vector<Poi2D> &unordered_points)
 	return convexHull;
 }
 
-Region2D computeQuick(const vector<Poi2D> &unordered_points)
+Region2D computeQuick(const vector<Poi2D> &point_list)
 {
 	Region2D convexHull;
 
@@ -33,7 +33,7 @@ Region2D computeQuick(const vector<Poi2D> &unordered_points)
 	return convexHull;
 }
 
-Region2D computeDivideConquer(const vector<Poi2D> &unordered_points)
+Region2D computeDivideConquer(const vector<Poi2D> &point_list)
 {
 	Region2D convexHull;
 
@@ -42,7 +42,7 @@ Region2D computeDivideConquer(const vector<Poi2D> &unordered_points)
 	return convexHull;
 }
 
-Region2D computeNewAlgo(const vector<Poi2D> &unordered_points)
+Region2D computeNewAlgo(const vector<Poi2D> &point_list)
 {
 	Region2D convexHull;
 
