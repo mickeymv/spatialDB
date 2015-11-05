@@ -30,6 +30,10 @@ ParallelObjectTraversal::ParallelObjectTraversal(Object2D &F, Object2D &G) {
     }
     // *** end test temp
 
+
+    // 11/04/2015 DT
+    // *** checking the type of object F and G and create a new instance for the respective POT type combination accordingly
+    // note that for the symmetrical object combination, only one instance is created, but the passing of the object is swapped accordingly
     if (F.isPoint2D()) {
         if (G.isPoint2D()) {
             pp = new POT_Point2DPoint2D(F, G);

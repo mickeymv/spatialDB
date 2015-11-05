@@ -2,6 +2,8 @@
 // Created by Djundi on 11/3/15.
 //
 
+// This is a test class object, to be deleted later.
+
 #ifndef SPATIAL_PREDICATES_TEST2D_H
 #define SPATIAL_PREDICATES_TEST2D_H
 

@@ -6,7 +6,7 @@
 #define SPATIAL_PREDICATES_PLANESWEEP_H
 
 
-#include "Point2D.h"
+#include "Topic2/Implementation/Point2D.h"
 #include "Line2D.h"
 #include "Region2D.h"
 
