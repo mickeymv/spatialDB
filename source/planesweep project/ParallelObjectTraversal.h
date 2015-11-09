@@ -29,13 +29,15 @@ public:
 
     virtual ~ParallelObjectTraversal();
     
-    //the following four methods need to access the private members of this class, 
+    //the following five methods need to access the private members of this class, 
     //so they're declared as friends
-    friend PlaneSweep::select_first();
-    friend PlaneSweep::select_next();
+    friend void PlaneSweep::select_first();
+    friend void PlaneSweep::select_next();
     
-    friend PlaneSweep::getObject();
-    friend PlaneSweep::getStatus();
+    friend object PlaneSweep::getObject();
+    friend status PlaneSweep::getStatus();
+    
+    friend Object2D PlaneSweep::getEvent();
 
 
     // get vector array vF

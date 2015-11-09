@@ -39,6 +39,12 @@ public:
     //Return the values of the object or status variables from the ParallelObjectTraversal Class
     object getObject();
     status getStatus();
+    
+    //Returns the value of the current "event" on the "sweep line status" datastructure
+    Object2D getEvent() {
+    	//Return either a poi2D or a seg2D depending on the object combination and the 
+    	// sweep line status instance.
+    }
 
     // get vector array vF
     const bool *getVF();
