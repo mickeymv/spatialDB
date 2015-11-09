@@ -27,3 +27,14 @@ const bool *PlaneSweep::getVG() {
 const size_t PlaneSweep::getVFGSize() {
     return pot->getVFGSize();
 }
+
+ParallelObjectTraversal::object PlaneSweep::getObject() {
+  // temporary, to be replaced
+    return pot.object;
+
+};
+ParallelObjectTraversal::status PlaneSweep::getStatus()
+{
+  // temporary, to be replaced
+    return pot.status;
+};

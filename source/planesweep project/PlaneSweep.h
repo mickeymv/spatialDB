@@ -28,6 +28,18 @@ public:
         return pot;
     }
 
+	//Should increment the object pointers within either/both of the two objects.
+    void select_first() { 
+    //needs implementation based on object types
+    };
+    void select_next() { 
+    //needs implementation based on object types
+    };
+    
+    //Return the values of the object or status variables from the ParallelObjectTraversal Class
+    object getObject();
+    status getStatus();
+
     // get vector array vF
     const bool *getVF();
 
@@ -36,6 +48,8 @@ public:
 
     // returns the size of vector F (or vector G, they both have the same size)
     const size_t getVFGSize();
+    
+    
 
 private:
     // only one instance of ParallelObjectTraversal exist!

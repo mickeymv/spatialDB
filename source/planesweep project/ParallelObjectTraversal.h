@@ -12,7 +12,6 @@
 #include "Region2D.h"
 
 #include "Object2D.h"
-#include "IPOT.h"
 
 #include "POT_Point2DPoint2D.h"
 #include "POT_Point2DLine2D.h"
@@ -29,6 +28,14 @@ public:
     ParallelObjectTraversal(Object2D &, Object2D &);
 
     virtual ~ParallelObjectTraversal();
+    
+    //the following four methods need to access the private members of this class, 
+    //so they're declared as friends
+    friend PlaneSweep::select_first();
+    friend PlaneSweep::select_next();
+    
+    friend PlaneSweep::getObject();
+    friend PlaneSweep::getStatus();
 
 
     // get vector array vF
@@ -69,6 +76,14 @@ private:
     bool *vF;
     bool *vG;
     size_t sizeofvFG = 0;
+    
+    typedef enum  {
+        none, first, second, both
+    } object;
+
+    typedef enum  {
+        end_of_none, end_of_first, end_of_second, end_of_both
+    } status;
 
 };
 
