@@ -13,9 +13,6 @@
 #include "Region2D.h"
 
 
-// *** begin test temp
-#include "Test2D.h"
-// *** end test temp
 
 // 11/03/2015 DT
 // since we do not have any base (super) class for the spatial objects, we use this template
@@ -81,13 +78,6 @@ public:
         if (pt) t = *pt;
         return bool(pt);
     }
-
-
-    // *** begin test temp
-    bool isTest2D() {
-        return typeID == typeid(Test2D).hash_code() ? true : false;
-    };
-    // *** end test temp
 
     bool isPoint2D() {
         return typeID == typeid(Point2D).hash_code() ? true : false;

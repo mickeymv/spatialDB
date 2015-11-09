@@ -20,12 +20,22 @@ class PlaneSweep {
 
 public:
     PlaneSweep(Object2D, Object2D);
-    virtual ~PlaneSweep() { }
+
+    virtual ~PlaneSweep();
 
 
     ParallelObjectTraversal *getPot() const {
         return pot;
     }
+
+    // get vector array vF
+    const bool *getVF();
+
+    // get vector array vG
+    const bool *getVG();
+
+    // returns the size of vector F (or vector G, they both have the same size)
+    const size_t getVFGSize();
 
 private:
     // only one instance of ParallelObjectTraversal exist!
