@@ -41,7 +41,7 @@ public:
     };
 
     // get vector array vF
-    bool *getVF();
+    virtual bool *getVF();
 
     // get vector array vG
     virtual bool *getVG();

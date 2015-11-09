@@ -11,7 +11,7 @@ POT_Point2DPoint2D::POT_Point2DPoint2D(Object2D &F, Object2D &G) : IPOT() {
     G.set(objG);
 
     // initialize vF and vG with false
-    for (int i = 0; i <= getVFGSize(); i++) {
+    for (int i = 0; i < getVFGSize(); i++) {
         vF[i] = false;
         vG[i] = false;
     }
