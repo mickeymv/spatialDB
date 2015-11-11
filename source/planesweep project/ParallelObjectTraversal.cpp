@@ -84,19 +84,23 @@ ParallelObjectTraversal::~ParallelObjectTraversal() {
      status getStatus(){
      	return status;
      }
-     
+    
+      
     void selectNext() {
 
-      if (object == both) {
+      // increments the iterators for objects F and G
+      // depending on the value of 'object' variable
+       
+      if (object == BOTH) {
        	objF.ObjIterator++;
        	objG.ObjIterator++;
-      } else if (object == first) {
+      } else if (object == FIRST) {
       	objF.ObjIterator++;
-      } else if (object == second) {
+      } else if (object == SECOND) {
       	objG.ObjIterator++;
-      } else if (object == none) {
-      //Because if both objects elements are over, don't update object and status variables
-      //or object pointers.
+      } else if (object == NONE) {
+      // Because if both objects elements are over, don't update object and 
+      // status variables or object pointers.
       	return;
       }
       
@@ -104,31 +108,31 @@ ParallelObjectTraversal::~ParallelObjectTraversal() {
     if (objF.objIterator == objF.cend()) {
         if (objG.objIterator == objG.cend())
         {
-            status = end_of_both;
+            status = END_OF_BOTH;
         }
         else {
-         status = end_of_first;
+         status = END_OF_FIRST;
          }
     } else if (objG.objIterator == objG.cend()) {
-            status = end_of_second;
+            status = END_OF_SECOND;
     } else 
      {
-     	status = end_of_none;
+     	status = END_OF_NONE;
      }
   
     
         if (objF.objIterator.getCurrent() == objF.ctail() && objG.objIterator.getCurrent() == objG.ctail())
     	{
-    		object = none;	
+    		object = NONE;	
     	} else if (objF.objIterator.getCurrent() == objG.objIterator.getCurrent())
     	{
-        	object = both;
+        	object = BOTH;
         } else if (objF.objIterator.getCurrent() < objG.objIterator.getCurrent()) 
         {
-        	object = first;
+        	object = FIRST;
         } else if (objF.objIterator.getCurrent() > objG.objIterator.getCurrent())
     	{
-    		object = second;	
+    		object = SECOND;	
     	}
    
 
