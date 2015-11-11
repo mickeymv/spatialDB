@@ -16,6 +16,9 @@ using namespace std;
 
 ParallelObjectTraversal::ParallelObjectTraversal(Object2D &F, Object2D &G) {
 
+	//Call the selectFirst function to initialize the object and status variables.
+	selectFirst();
+
     // 11/04/2015 DT
     // note that for the symmetrical object combination, only one instance is created, but the passing of the object is swapped accordingly
     if (F.isPoint2D()) {
@@ -73,6 +76,18 @@ ParallelObjectTraversal::~ParallelObjectTraversal() {
 
 }
 
+
+     object getObject() {
+     
+     }
+     
+     status getStatus(){
+     
+     }
+     
+    void selectNext() {
+      
+      }
 
 const bool *ParallelObjectTraversal::getVF() {
     return vF;

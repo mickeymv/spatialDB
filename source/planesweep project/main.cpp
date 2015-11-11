@@ -15,14 +15,14 @@ int main(int argc, char *argv[]) {
 
     Point2D F;
     Point2D G;
-    PlaneSweep ps(F, G);
+    PlaneSweep ps(F, G); //selectFirst() is Called only once to initialize the plane sweep variables object 
+	// and status within the constructor.
 
 	/** Give an example below of how we can use the PlaneSweep and ParallelObjectTraversal
 	*	object and methods to implement Spatial Operations or Topological Predicates.	
 	*/
 
-	ps.selectFirst(); //Called only once to initialize the plane sweep variables object 
-	// and status.
+	
 	
 	while (ps.getObject != none) {
 	 	//do some work related to spatial/topological operations

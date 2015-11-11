@@ -31,13 +31,19 @@ const size_t PlaneSweep::getVFGSize() {
     return pot->getVFGSize();
 }
 
-ParallelObjectTraversal::object PlaneSweep::getObject() {
+void selectNext() { 
+    //needs implementation based on object types
+    return getPOT().selectNext();
+    };
+
+object getObject() {
   // temporary, to be replaced
-    return pot.object;
+    return getPot().getObject();
 
 };
-ParallelObjectTraversal::status PlaneSweep::getStatus()
+
+status getStatus()
 {
   // temporary, to be replaced
-    return pot.status;
+    return getPot().getStatus();
 };

@@ -27,18 +27,12 @@ class ParallelObjectTraversal {
 public:
     ParallelObjectTraversal(Object2D &, Object2D &);
 
-    virtual ~ParallelObjectTraversal();
-    
-    //the following five methods need to access the private members of this class, 
-    //so they're declared as friends
-    friend void PlaneSweep::select_first();
-    friend void PlaneSweep::select_next();
-    
-    friend object PlaneSweep::getObject();
-    friend status PlaneSweep::getStatus();
-    
-    friend Object2D PlaneSweep::getEvent();
+    virtual ~ParallelObjectTraversal();    
 
+     void selectNext();
+    
+     object getObject();
+     status getStatus();
 
     // get vector array vF
     const bool *getVF();
@@ -66,6 +60,9 @@ public:
 
 
 private:
+	//SelectFirst should be called in the POT constructor.
+     void selectFirst();
+
     // spatial object combination objects
     POT_Point2DPoint2D *pp = nullptr;
     POT_Point2DLine2D *pl = nullptr;

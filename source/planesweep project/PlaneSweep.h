@@ -28,13 +28,7 @@ public:
         return pot;
     }
 
-	//Should increment the object pointers within either/both of the two objects.
-    void select_first() { 
-    //needs implementation based on object types
-    };
-    void select_next() { 
-    //needs implementation based on object types
-    };
+    void selectNext();
     
     //Return the values of the object or status variables from the ParallelObjectTraversal Class
     object getObject();
