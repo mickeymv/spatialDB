@@ -78,15 +78,61 @@ ParallelObjectTraversal::~ParallelObjectTraversal() {
 
 
      object getObject() {
-     
+     	return object;
      }
      
      status getStatus(){
-     
+     	return status;
      }
      
     void selectNext() {
+
+      if (object == both) {
+       	objF.ObjIterator++;
+       	objG.ObjIterator++;
+      } else if (object == first) {
+      	objF.ObjIterator++;
+      } else if (object == second) {
+      	objG.ObjIterator++;
+      } else if (object == none) {
+      //Because if both objects elements are over, don't update object and status variables
+      //or object pointers.
+      	return;
+      }
       
+      
+    if (objF.objIterator == objF.cend()) {
+        if (objG.objIterator == objG.cend())
+        {
+            status = end_of_both;
+        }
+        else {
+         status = end_of_first;
+         }
+    } else if (objG.objIterator == objG.cend()) {
+            status = end_of_second;
+    } else 
+     {
+     	status = end_of_none;
+     }
+  
+    
+        if (objF.objIterator.getCurrent() == objF.ctail() && objG.objIterator.getCurrent() == objG.ctail())
+    	{
+    		object = none;	
+    	} else if (objF.objIterator.getCurrent() == objG.objIterator.getCurrent())
+    	{
+        	object = both;
+        } else if (objF.objIterator.getCurrent() < objG.objIterator.getCurrent()) 
+        {
+        	object = first;
+        } else if (objF.objIterator.getCurrent() > objG.objIterator.getCurrent())
+    	{
+    		object = second;	
+    	}
+   
+
+    
       }
 
 const bool *ParallelObjectTraversal::getVF() {
