@@ -1,39 +1,85 @@
 #include "Number.h"
+#include "BigRational.h"
 
-struct PrivateRec
+struct Number::PrivateRec
 {
-	float value;
+	BigRational value;
+	//float value;
 };
 Number::Number()
 {
 	p = new PrivateRec;
-	p->value = 0;
+	p->value = BigRational("0", "1");
 }
+
 Number::Number(std::string value)
 {
-	float val = std::stof(value);
+	int count = 0;
+	std::string num = "", den = "";
+	for (int i = 0; i < value.length(); i++)
+	{
+		if (value.at(i) == '.')
+		{
+			count++;
+			if (count>1)
+			{
+				std::cout << "wrong input";
+				return;
+			}
+			den = "1";
+		}
+		else
+		{
+			num += value.at(i);
+			if (count == 1)
+			{
+				den += "0";
+			}
+		}
+	}
+	this->p = new PrivateRec;
+	this->p->value = BigRational(num, den);
+	/*float val = std::stof(value);
 	p = new PrivateRec;
-	p->value = val;
+	p->value = val;*/
+
 }
+
 Number::Number(const Number& obj)
 {
-
+	this->p = new PrivateRec;
+	this->p->value = obj.p->value;
 }
-Number::Number(const Number&& obj)
+
+Number::Number(Number&& obj)
 {
-
+	this->p = new PrivateRec;
+	this->p->value = obj.p->value;
+	obj.p->value = BigRational("0", "1");
 }
+
 Number Number::operator=(const Number& obj)
 {
-	this->p->value = obj.p->value;
+	if (this != &obj)
+	{
+		this->p->value = obj.p->value;
+	}
 	return *this;
 }
-Number Number::operator=(const Number&& obj)
+
+Number Number::operator=(Number&& obj)
 {
-	return Number("3.14");
+	if (this != &obj)
+	{
+		this->p->value = obj.p->value;
+		obj.p->value = BigRational("0", "1");
+	}
+	return *this;
 }
+
 Number::~Number()
 {
+	delete p;
 }
 
 /*MATHEMATICAL OPERATIONS*/
