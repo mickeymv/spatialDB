@@ -85,6 +85,46 @@ ParallelObjectTraversal::~ParallelObjectTraversal() {
      	return status;
      }
     
+void selectFirst() 
+{
+	if (!(objFIterator.isEmpty())
+    {
+		objFIterator = objF.cbegin();
+	}
+	if (!(objGIterator.isEmpty())
+    {
+			objGIterator = objG.cbegin();
+	}
+	
+	if (objFIterator.isEmpty() && objGIterator.isEmpty()) 
+	{
+	    object = NONE;
+		status = END_OF_BOTH;
+	} 
+	else 
+	{
+		if (objGIterator.isEmpty())
+			object = FIRST;
+		else if (objFIterator.isEmpty())
+			object = SECOND;
+		else
+			object = BOTH;
+
+		if(objFIterator.getCurrent() == objFIterator.cend() 
+     		&& objGIterator.getCurrent() == objGIterator.cend())
+		    status = END_OF_BOTH;
+	    else if(objFIterator.getCurrent() == objFIterator.cend())
+		    status = END_OF_FIRST;
+	    else if (objGIterator.getCurrent() == objGIterator.cend())
+            status = END_OF_SECOND;            
+	    else
+		    status = END_OF_NONE;
+    }
+	
+    
+}
+    
+    
       
     void selectNext() {
 
