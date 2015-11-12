@@ -16,42 +16,65 @@ using namespace std;
 
 ParallelObjectTraversal::ParallelObjectTraversal(Object2D &F, Object2D &G) {
 
-	//Call the selectFirst function to initialize the object and status variables.
-	selectFirst();
-
     // 11/04/2015 DT
     // note that for the symmetrical object combination, only one instance is created, but the passing of the object is swapped accordingly
     if (F.isPoint2D()) {
+            objF = Point2D(F);
+            objFIterator = ConstPoiIterator(F);
         if (G.isPoint2D()) {
             ExplorePoint2DPoint2D(F, G);
 
+            objG = Point2D(G);
+            objGIterator = ConstPoiIterator(G);
+            
         } else if (G.isLine2D()) {
             ExplorePoint2DLine2D(F, G);
 
+            objG = Line2D(G);
+            objGIterator = ConstLineIterator(G);
+            
         } else if (G.isRegion2D()) {
             ExplorePoint2DRegion2D(F, G);
-        }
+			objG = Region2D(G);
+            objGIterator = ConstRegionIterator(G); 
+                   }
     } else
     if (F.isLine2D()) {
+    		objF = Line2D(F);
+            objFIterator = ConstLineIterator(F);
+            
         if (G.isPoint2D()) {
             // swap parameters because it is symmetrical
             ExplorePoint2DLine2D(G, F);
 
+            objG = Point2D(G);
+            objGIterator = ConstPoiIterator(G);
+            
         } else if (G.isLine2D()) {
             ExploreLine2DLine2D(F, G);
+            objG = Line2D(G);
+            objGIterator = ConstLine2DIterator(G);
 
         } else if (G.isRegion2D()) {
             ExploreLine2DRegion2D(F, G);
-        }
+			objG = Region2D(G);
+            objGIterator = ConstRegionIterator(G);          }
     } else
     if (F.isRegion2D()) {
+    	objF = Region2D(F);
+        objFIterator = ConstRegionIterator(F);
+            
         if (G.isPoint2D()) {
             // swap parameters because it is symmetrical
             ExplorePoint2DRegion2D(G, F);
+            objG = Point2D(G);
+            objGIterator = ConstPoiIterator(G);
 
         } else if (G.isLine2D()) {
             // swap parameters because it is symmetrical
             ExploreLine2DRegion2D(G, F);
+            objG = Line2D(G);
+            objGIterator = ConstLine2DIterator(G);
 
         } else if (G.isRegion2D()) {
 
@@ -59,10 +82,15 @@ ParallelObjectTraversal::ParallelObjectTraversal(Object2D &F, Object2D &G) {
             vF = rr->getVF();
             vG = rr->getVG();
             sizeofvFG = rr->getVFGSize();
+			objG = Region2D(G);
+            objGIterator = ConstRegionIterator(G);
 
         }
     }
 
+
+	//Call the selectFirst function to initialize the object and status variables.
+	selectFirst();
 
 }
 
@@ -87,35 +115,35 @@ ParallelObjectTraversal::~ParallelObjectTraversal() {
     
 void selectFirst() 
 {
-	if (!(objFIterator.isEmpty())
+	if (!(objFIterator->isEmpty())
     {
-		objFIterator = objF.cbegin();
+		objFIterator = objF->cbegin();
 	}
-	if (!(objGIterator.isEmpty())
+	if (!(objGIterator->isEmpty())
     {
-			objGIterator = objG.cbegin();
+			objGIterator = objG->cbegin();
 	}
 	
-	if (objFIterator.isEmpty() && objGIterator.isEmpty()) 
+	if (objFIterator->isEmpty() && objGIterator->isEmpty()) 
 	{
 	    object = NONE;
 		status = END_OF_BOTH;
 	} 
 	else 
 	{
-		if (objGIterator.isEmpty())
+		if (objGIterator->isEmpty())
 			object = FIRST;
-		else if (objFIterator.isEmpty())
+		else if (objFIterator->isEmpty())
 			object = SECOND;
 		else
 			object = BOTH;
 
-		if(objFIterator.getCurrent() == objFIterator.cend() 
-     		&& objGIterator.getCurrent() == objGIterator.cend())
+		if(objFIterator->getCurrent() == objFIterator->cend() 
+     		&& objGIterator->getCurrent() == objGIterator->cend())
 		    status = END_OF_BOTH;
-	    else if(objFIterator.getCurrent() == objFIterator.cend())
+	    else if(objFIterator->getCurrent() == objFIterator->cend())
 		    status = END_OF_FIRST;
-	    else if (objGIterator.getCurrent() == objGIterator.cend())
+	    else if (objGIterator->getCurrent() == objGIterator->cend())
             status = END_OF_SECOND;            
 	    else
 		    status = END_OF_NONE;
@@ -132,12 +160,12 @@ void selectFirst()
       // depending on the value of 'object' variable
        
       if (object == BOTH) {
-       	objF.ObjIterator++;
-       	objG.ObjIterator++;
+       	objF->ObjIterator++;
+       	objG->ObjIterator++;
       } else if (object == FIRST) {
-      	objF.ObjIterator++;
+      	objF->ObjIterator++;
       } else if (object == SECOND) {
-      	objG.ObjIterator++;
+      	objG->ObjIterator++;
       } else if (object == NONE) {
       // Because if both objects elements are over, don't update object and 
       // status variables or object pointers.
@@ -145,15 +173,15 @@ void selectFirst()
       }
       
       
-    if (objF.objIterator == objF.cend()) {
-        if (objG.objIterator == objG.cend())
+    if (objFIterator->getCurrent() == objF.cend()) {
+        if (objGIterator->getCurrent() == objG.cend())
         {
             status = END_OF_BOTH;
         }
         else {
          status = END_OF_FIRST;
          }
-    } else if (objG.objIterator == objG.cend()) {
+    } else if (objGIterator->getCurrent() == objG.cend()) {
             status = END_OF_SECOND;
     } else 
      {

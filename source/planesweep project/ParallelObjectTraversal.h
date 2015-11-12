@@ -83,6 +83,9 @@ private:
     typedef enum  {
         end_of_none, end_of_first, end_of_second, end_of_both
     } status;
+    
+    Object2D *objF, *objG
+    ObjectIterator *objFIterator, *objGIterator;
 
 };
 
