@@ -160,12 +160,12 @@ void selectFirst()
       // depending on the value of 'object' variable
        
       if (object == BOTH) {
-       	objF->ObjIterator++;
-       	objG->ObjIterator++;
+       	objFIterator++;
+       	objGIterator++;
       } else if (object == FIRST) {
-      	objF->ObjIterator++;
+      	objFIterator++;
       } else if (object == SECOND) {
-      	objG->ObjIterator++;
+      	objGIterator++;
       } else if (object == NONE) {
       // Because if both objects elements are over, don't update object and 
       // status variables or object pointers.
@@ -173,15 +173,15 @@ void selectFirst()
       }
       
       
-    if (objFIterator->getCurrent() == objF.cend()) {
-        if (objGIterator->getCurrent() == objG.cend())
+    if (objFIterator->getCurrent() == objF->cend()) {
+        if (objGIterator->getCurrent() == objG->cend())
         {
             status = END_OF_BOTH;
         }
         else {
          status = END_OF_FIRST;
          }
-    } else if (objGIterator->getCurrent() == objG.cend()) {
+    } else if (objGIterator->getCurrent() == objG->cend()) {
             status = END_OF_SECOND;
     } else 
      {
@@ -189,16 +189,16 @@ void selectFirst()
      }
   
     
-        if (objF.objIterator.getCurrent() == objF.ctail() && objG.objIterator.getCurrent() == objG.ctail())
+        if (objFIterator->.getCurrent() == objF->ctail() && objGIterator->getCurrent() == objG->ctail())
     	{
     		object = NONE;	
-    	} else if (objF.objIterator.getCurrent() == objG.objIterator.getCurrent())
+    	} else if (objFIterator->getCurrent() == objGIterator->getCurrent())
     	{
         	object = BOTH;
-        } else if (objF.objIterator.getCurrent() < objG.objIterator.getCurrent()) 
+        } else if (objFIterator->getCurrent() < objGIterator->getCurrent()) 
         {
         	object = FIRST;
-        } else if (objF.objIterator.getCurrent() > objG.objIterator.getCurrent())
+        } else if (objFIterator->getCurrent() > objGIterator->getCurrent())
     	{
     		object = SECOND;	
     	}
