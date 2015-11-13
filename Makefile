@@ -1,2 +1,2 @@
 all:
-	g++ Number.cpp RobustGeometricPrimitives2D.cpp Source.cpp -o output -std=c++11
+	g++ Number.cpp BigRational.cpp BigInteger.cpp RobustGeometricPrimitives2D.cpp Source.cpp -o output -std=c++11

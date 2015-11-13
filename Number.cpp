@@ -15,7 +15,7 @@ Number::Number()
 Number::Number(std::string value)
 {
 	int count = 0;
-	std::string num = "", den = "";
+	std::string num = "", den = "1";
 	for (int i = 0; i < value.length(); i++)
 	{
 		if (value.at(i) == '.')
@@ -26,7 +26,7 @@ Number::Number(std::string value)
 				std::cout << "wrong input";
 				return;
 			}
-			den = "1";
+			//den = "1";
 		}
 		else
 		{
