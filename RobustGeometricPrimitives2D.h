@@ -188,21 +188,21 @@ private:
 *Relationships between point and segment
 */
 
-bool PointLiesOnSegment(const Poi2D& poi, const Seg2D& seg);
+bool PointLiesOnSegment(Poi2D& poi, Seg2D& seg);
 bool PointLiesAboveSegment(Poi2D& poi, Seg2D& seg);
-bool PointLiesBelowSegment(const Poi2D& poi, const Seg2D& seg);
-bool PointLiesAboveOrOnSegment(const Poi2D& poi, const Seg2D& seg);
-bool PointLiesBelowOrOnSegment(const Poi2D& poi, const Seg2D& seg);
-bool PointLiesOnLeftEndPointOfSegment(const Poi2D& poi, const Seg2D& seg);
-bool PointLiesOnRightEndPointOfSegment(const Poi2D& poi, const Seg2D& seg);
-bool PointLiesLeftOFSegmentAndIsCollinear(const Poi2D& poi, const Seg2D& seg);
-bool PointLiesRightOfSegmentAndIsCollinear(const Poi2D& poi, const Seg2D& seg);
+bool PointLiesBelowSegment(Poi2D& poi, Seg2D& seg);
+bool PointLiesAboveOrOnSegment(Poi2D& poi,Seg2D& seg);
+bool PointLiesBelowOrOnSegment(Poi2D& poi, Seg2D& seg);
+bool PointLiesOnLeftEndPointOfSegment(Poi2D& poi, Seg2D& seg);
+bool PointLiesOnRightEndPointOfSegment(Poi2D& poi,Seg2D& seg);
+bool PointIsCollinearToSegment(Poi2D& poi, Seg2D& seg);
+bool PointLiesLeftOFSegmentAndIsCollinear(Poi2D& poi, Seg2D& seg);
+bool PointLiesRightOfSegmentAndIsCollinear(Poi2D& poi, Seg2D& seg);
 
 /*
 *Relationships between Segments
 */
-bool SegmentIsLesserThanSegment(Seg2D& seg, Seg2D& seg1);
-bool SegmentLiesOn(const Seg2D& seg, const Seg2D& seg1);
+bool SegmentLiesOnSegment(Seg2D& seg, Seg2D& seg1);
 bool SegmentLiesAboveSegment(const Seg2D& seg, const Seg2D& seg1);
 bool SegmentLiesBelowSegment(const Seg2D& seg, const Seg2D& seg1);
 bool SegmentLiesLeftOFSegment(const Seg2D& seg, const Seg2D& seg1);
@@ -215,14 +215,14 @@ bool SegmentIsCollinearAndMeetsRightEndpoint(Seg2D& seg,Seg2D& seg1);
 bool SegmentIsCollinearAndCrossesLeftEndpoint(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsCollinearAndCrossesRightEndpoint(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsCollinearAndMeetsBothEndpoint(Seg2D& seg, Seg2D& seg1);
-bool SegmentIsParallel(const Seg2D& seg, const Seg2D& seg1);
-bool SegmentIsParallelAndAbove(const Seg2D& seg, const Seg2D& seg1);
-bool SegmentIsParallelAndBelow(const Seg2D& seg, const Seg2D& seg1);
-bool SegmentIsParallelAndLiesLeft(const Seg2D& seg, const Seg2D& seg1);
-bool SegmentIsParallelAndLiesRight(const Seg2D& seg, const Seg2D& seg1);
+bool SegmentIsParallel(Seg2D& seg, Seg2D& seg1);
+bool SegmentIsParallelAndAbove(Seg2D& seg, Seg2D& seg1);
+bool SegmentIsParallelAndBelow(Seg2D& seg, Seg2D& seg1);
+bool SegmentIsParallelAndLiesLeft(Seg2D& seg, Seg2D& seg1);
+bool SegmentIsParallelAndLiesRight(Seg2D& seg, Seg2D& seg1);
 bool Intersects(const Seg2D& seg, const Seg2D& seg1);
 Poi2D IntersectionPoint(const Seg2D& seg, const Seg2D& seg1);
-bool Meet(const Seg2D& seg, const Seg2D& seg1);
+bool Meet(Seg2D& seg, Seg2D& seg1);
 Poi2D MeetingPoint(const Seg2D& seg, const Seg2D& seg1);
 bool Touch(const Seg2D& seg, const Seg2D& seg1);
 Poi2D TouchingPoint(const Seg2D& seg, const Seg2D& seg1);
@@ -245,6 +245,7 @@ Rect2D computeRect2D(const Seg2D& seg);
 Rect2D computeRect2D(const SimplePolygon2D& simplepolygon);
 //Returns whether Rect2D computation is possible
 bool isRect2DPossible();
+bool SegmentIsLesserThanSegment(Seg2D& seg1, Seg2D& seg2);
 #endif
 
 
