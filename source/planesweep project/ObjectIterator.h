@@ -9,6 +9,8 @@
 * It's upto the derived classes; Poi, Line and RegionIterators to have definitions for
 * the methods in this class.
 */
+#include "Topic2/Implementation/Point2D.h"
+#include "Topic2/Implementation/Line2D.h"
 
 class ObjectIterator {
 
@@ -26,17 +28,17 @@ public:
 
     // Comparison operators that compares a constant poi iterator position
     // with another const poi iterator position "rhs"
-    virtual bool operator==(const ConstPoiIterator &rhs) const = 0;
-
-    virtual bool operator!=(const ConstPoiIterator &rhs) const = 0;
-
-    virtual bool operator<(const ConstPoiIterator &rhs) const = 0;
-
-    virtual bool operator<=(const ConstPoiIterator &rhs) const = 0;
-
-    virtual bool operator>(const ConstPoiIterator &rhs) const = 0;
-
-    virtual bool operator>=(const ConstPoiIterator &rhs) const = 0;
+//    virtual bool operator==(const ConstPoiIterator &rhs) const = 0;
+//
+//    virtual bool operator!=(const ConstPoiIterator &rhs) const = 0;
+//
+//    virtual bool operator<(const ConstPoiIterator &rhs) const = 0;
+//
+//    virtual bool operator<=(const ConstPoiIterator &rhs) const = 0;
+//
+//    virtual bool operator>(const ConstPoiIterator &rhs) const = 0;
+//
+//    virtual bool operator>=(const ConstPoiIterator &rhs) const = 0;
 
 };
 

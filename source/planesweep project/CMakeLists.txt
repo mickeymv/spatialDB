@@ -24,7 +24,7 @@ set(SOURCE_FILES
     Obj2D.h
     Object2D.cpp
     Object2D.h
-    ObjectIterator.h
+        ObjectIterator.h
     ParallelObjectTraversal.cpp
     ParallelObjectTraversal.h
     PlaneSweep.cpp

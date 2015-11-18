@@ -19,52 +19,71 @@ ParallelObjectTraversal::ParallelObjectTraversal(Object2D &F, Object2D &G) {
     // 11/04/2015 DT
     // note that for the symmetrical object combination, only one instance is created, but the passing of the object is swapped accordingly
     if (F.isPoint2D()) {
-        objF=Point2D(F);
-        objFIterator = ConstPoiIterator(F);
+        //objF=Point2D(F);
+        objF->operator=(F);
+        //objFIterator = Point2D::ConstPoiIterator(F);
+
         if (G.isPoint2D()) {
-            objG=Point2D(G);
-            objGIterator = ConstPoiIterator(G);
+            //objG=Point2D(G);
+            objG->operator=(G);
+            //objGIterator = Point2D::ConstPoiIterator(G);
+
 
         } else if (G.isLine2D()) {
-            objG = Line2D(G);
-            objGIterator = ConstLineIterator(G);
+            //objG = Line2D(G);
+            objG->operator=(G);
+            //objGIterator = Line2D::ConstSegIterator(G);
 
         } else if (G.isRegion2D()) {
-            objG = Region2D(G);
-            objGIterator = ConstRegionIterator(G);
+            //objG = Region2D(G);
+            objG->operator=(G);
+            //objGIterator = Region2D::ConstRegionIterator(G);
+
         }
     } else
     if (F.isLine2D()) {
-        objF = Line2D(F);
-        objFIterator = ConstLineIterator(F);
+        //objF = Line2D(F);
+        objF->operator=(F);
+        //objFIterator = Line2D::ConstSegIterator(F);
 
         if (G.isPoint2D()) {
-            objG = Point2D(G);
-            objGIterator = ConstPoiIterator(G);
+            //objG = Point2D(G);
+            objG->operator=(G);
+            //objGIterator = Point2D::ConstPoiIterator(G);
 
         } else if (G.isLine2D()) {
-            objG = Line2D(G);
-            objGIterator = ConstLine2DIterator(G);
+            //objG = Line2D(G);
+            objG->operator=(G);
+            //objGIterator = Line2D::ConstSegIterator(G);
+
 
         } else if (G.isRegion2D()) {
-            objG = Region2D(G);
-            objGIterator = ConstRegionIterator(G);          }
+            //objG = Region2D(G);
+            objG->operator=(G);
+            //objGIterator = Region2D::ConstRegionIterator(G);
+        }
     } else
     if (F.isRegion2D()) {
-        objF = Region2D(F);
-        objFIterator = ConstRegionIterator(F);
+        //objF = Region2D(F);
+        objF->operator=(F);
+        //objFIterator = Region2D::ConstRegionIterator(F);
+
 
         if (G.isPoint2D()) {
-            objG = Point2D(G);
-            objGIterator = ConstPoiIterator(G);
+            //objG = Point2D(G);
+            objG->operator=(G);
+            //objGIterator = Point2D::ConstPoiIterator(G);
 
         } else if (G.isLine2D()) {
-            objG = Line2D(G);
-            objGIterator = ConstLine2DIterator(G);
+            //objG = Line2D(G);
+            objG->operator=(G);
+            //objGIterator = Line2D::ConstSegIterator(G);
+
 
         } else if (G.isRegion2D()) {
-            objG = Region2D(G);
-            objGIterator = ConstRegionIterator(G);
+            //objG = Region2D(G);
+            objG->operator=(G);
+            //objGIterator = Region2D::ConstRegionIterator(G);
 
         }
     }
@@ -169,13 +188,13 @@ void ParallelObjectTraversal::selectNext() {
     }
 }
 
-ObjectIterator* ParallelObjectTraversal::getObjIterator(Object2D object2D)
+ObjectIterator * ParallelObjectTraversal::getObjIterator(Object2D object2D)
 {
-    if(object2D==objF)
+    if(object2D.operator==(*objF))
     {
         return objFIterator;
     }
-    else if(object2D==objG)
+    else if(object2D.operator==(*objG))
     {
         return objGIterator;
     }

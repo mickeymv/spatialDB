@@ -27,7 +27,7 @@ public:
     object getObject();
     status getStatus();
 
-    ObjectIterator* getObjIterator(Object2D);
+    ObjectIterator * getObjIterator(Object2D);
 
     typedef enum  {
         none, first, second, both
@@ -40,7 +40,7 @@ public:
 private:
     //SelectFirst should be called in the POT constructor.
     void selectFirst();
-    ParallelObjectTraversal pot;
+    ParallelObjectTraversal* pot;
     object object_value;
     status status_value;
     Object2D *objF, *objG;

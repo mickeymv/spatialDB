@@ -38,7 +38,7 @@ Obj2D PlaneSweep::getEvent(Object2D obj)
 {
     //Return either a poi2D or a seg2D depending on the object combination and the
     // sweep line status instance.
-    ObjectIterator* pos = getPot()->getObjIterator(obj);
+    ObjectIterator * pos = getPot()->getObjIterator(obj);
     return *(pos);
 }
 

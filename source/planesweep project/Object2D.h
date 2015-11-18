@@ -11,7 +11,7 @@
 #include "Topic2/Implementation/Point2D.h"
 #include "Topic2/Implementation/Line2D.h"
 #include "Region2D.h"
-
+#include "ObjectIterator.h"
 
 
 // 11/03/2015 DT
@@ -24,6 +24,7 @@ class Object2D {
     class wrp;
 
     size_t typeID; // this holds the actual typeID of the instance
+
 
     class base {
     public:
@@ -59,7 +60,20 @@ public:
 
     Object2D(Object2D &&) = default;
 
-    Object2D &operator=(Object2D &&) = default;
+    Object2D& operator=(Object2D &&) = default;
+
+    Object2D& operator=(Point2D &&)= default;
+    Object2D& operator=(Line2D &&)= default;
+    Object2D& operator=(Region2D &&)= default;
+
+    bool operator==(Object2D &operand)
+    {
+        if(&this==operand)
+        {
+            return true;
+        }
+        return false;
+    }
 
 
     template<class T>
@@ -78,6 +92,7 @@ public:
         if (pt) t = *pt;
         return bool(pt);
     }
+
 
     bool isPoint2D() {
         return typeID == typeid(Point2D).hash_code() ? true : false;
