@@ -8,7 +8,7 @@ using namespace std;
 
 int main() {
 
-    Point2D a,b;
-    Point2DPoint2D p(a,b);
+    //Point2D a,b;
+    //Point2DPoint2D p(a,b);
 
 }
