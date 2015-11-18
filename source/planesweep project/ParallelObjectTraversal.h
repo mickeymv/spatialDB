@@ -29,10 +29,6 @@ public:
 
     ObjectIterator* getObjIterator(Object2D);
 
-private:
-    //SelectFirst should be called in the POT constructor.
-    void selectFirst();
-    ParallelObjectTraversal pot;
     typedef enum  {
         none, first, second, both
     } object;
@@ -41,6 +37,10 @@ private:
         end_of_none, end_of_first, end_of_second, end_of_both
     } status;
 
+private:
+    //SelectFirst should be called in the POT constructor.
+    void selectFirst();
+    ParallelObjectTraversal pot;
     object object_value;
     status status_value;
     Object2D *objF, *objG;

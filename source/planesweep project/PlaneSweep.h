@@ -37,8 +37,8 @@ public:
     void select_next();
     
     //Return the values of the object or status variables from the ParallelObjectTraversal Class
-    object getObject();
-    status getStatus();
+    ParallelObjectTraversal::object getObject();
+    ParallelObjectTraversal::status getStatus();
     
     //Returns the value of the current "event" on the "sweep line status" datastructure
     //Object2D getEvent();

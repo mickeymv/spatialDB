@@ -19,19 +19,19 @@ PlaneSweep::~PlaneSweep() {
 
 void PlaneSweep::select_next() {
     //needs implementation based on object types
-    return getPot().selectNext();
+    return getPot()->selectNext();
 }
 
-object  PlaneSweep::getObject() {
+ParallelObjectTraversal::object  PlaneSweep::getObject() {
     // temporary, to be replaced
-    return getPot().getObject();
+    return getPot()->getObject();
 
 }
 
-status  PlaneSweep::getStatus()
+ParallelObjectTraversal::status  PlaneSweep::getStatus()
 {
     // temporary, to be replaced
-    return getPot().getStatus();
+    return getPot()->getStatus();
 }
 
 Obj2D PlaneSweep::getEvent(Object2D obj)
