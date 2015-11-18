@@ -41,6 +41,8 @@ private:
         end_of_none, end_of_first, end_of_second, end_of_both
     } status;
 
+    object object_value;
+    status status_value;
     Object2D *objF, *objG;
     ObjectIterator *objFIterator, *objGIterator;
 

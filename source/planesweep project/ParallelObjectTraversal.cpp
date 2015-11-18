@@ -19,10 +19,10 @@ ParallelObjectTraversal::ParallelObjectTraversal(Object2D &F, Object2D &G) {
     // 11/04/2015 DT
     // note that for the symmetrical object combination, only one instance is created, but the passing of the object is swapped accordingly
     if (F.isPoint2D()) {
-        objF = Point2D(F);
+        objF=Point2D(F);
         objFIterator = ConstPoiIterator(F);
         if (G.isPoint2D()) {
-            objG = Point2D(G);
+            objG=Point2D(G);
             objGIterator = ConstPoiIterator(G);
 
         } else if (G.isLine2D()) {
@@ -77,11 +77,11 @@ ParallelObjectTraversal::~ParallelObjectTraversal() {
 }
 
 object ParallelObjectTraversal::getObject() {
-    return object;
+    return object_value;
 }
 
 status ParallelObjectTraversal::getStatus() {
-    return status;
+    return status_value;
 }
 
 void ParallelObjectTraversal::selectFirst() {
@@ -96,27 +96,27 @@ void ParallelObjectTraversal::selectFirst() {
 
     if (objFIterator->isEmpty() && objGIterator->isEmpty())
     {
-        object = NONE;
-        status = END_OF_BOTH;
+        object_value = none;
+        status_value = end_of_both;
     }
     else
     {
         if (objGIterator->isEmpty())
-            object = FIRST;
+            object_value = first;
         else if (objFIterator->isEmpty())
-            object = SECOND;
+            object_value = second;
         else
-            object = BOTH;
+            object_value = both;
 
         if(objFIterator->getCurrent() == objFIterator->cend()
            && objGIterator->getCurrent() == objGIterator->cend())
-            status = END_OF_BOTH;
+            status_value = end_of_both;
         else if(objFIterator->getCurrent() == objFIterator->cend())
-            status = END_OF_FIRST;
+            status_value = end_of_first;
         else if (objGIterator->getCurrent() == objGIterator->cend())
-            status = END_OF_SECOND;
+            status_value = end_of_second;
         else
-            status = END_OF_NONE;
+            status_value = end_of_none;
     }
 }
 
@@ -124,14 +124,14 @@ void ParallelObjectTraversal::selectNext() {
     // increments the iterators for objects F and G
     // depending on the value of 'object' variable
 
-    if (object == BOTH) {
+    if (object_value == both) {
         objFIterator++;
         objGIterator++;
-    } else if (object == FIRST) {
+    } else if (object_value == first) {
         objFIterator++;
-    } else if (object == SECOND) {
+    } else if (object_value == second) {
         objGIterator++;
-    } else if (object == NONE) {
+    } else if (object_value == none) {
         // Because if both objects elements are over, don't update object and
         // status variables or object pointers.
         return;
@@ -141,31 +141,31 @@ void ParallelObjectTraversal::selectNext() {
     if (objFIterator->getCurrent() == objF->cend()) {
         if (objGIterator->getCurrent() == objG->cend())
         {
-            status = END_OF_BOTH;
+            status_value = end_of_both;
         }
         else {
-            status = END_OF_FIRST;
+            status_value = end_of_first;
         }
     } else if (objGIterator->getCurrent() == objG->cend()) {
-        status = END_OF_SECOND;
+        status_value = end_of_second;
     } else
     {
-        status = END_OF_NONE;
+        status_value = end_of_none;
     }
 
 
     if (objFIterator->.getCurrent() == objF->ctail() && objGIterator->getCurrent() == objG->ctail())
     {
-        object = NONE;
+        object_value = none;
     } else if (objFIterator->getCurrent() == objGIterator->getCurrent())
     {
-        object = BOTH;
+        object_value = both;
     } else if (objFIterator->getCurrent() < objGIterator->getCurrent())
     {
-        object = FIRST;
+        object_value = first;
     } else if (objFIterator->getCurrent() > objGIterator->getCurrent())
     {
-        object = SECOND;
+        object_value = second;
     }
 }
 
