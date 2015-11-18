@@ -75,10 +75,7 @@ Attribute PlaneSweep::get_attr(Seg2D& seg2D)
 //    {
 //
 //
-
-
-
-// /    }
+//     }
     }
 }
 
