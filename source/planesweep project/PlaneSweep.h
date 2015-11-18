@@ -9,6 +9,7 @@
 #include "Topic2/Implementation/Point2D.h"
 #include "Topic2/Implementation/Line2D.h"
 #include "Topic2/Implementation/RobustGeometricPrimitives2D.h"
+#include "Topic2/Implementation/Number.h"
 #include "Region2D.h"
 
 #include "Object2D.h"
@@ -53,7 +54,7 @@ public:
 private:
     // only one instance of ParallelObjectTraversal exist!
     ParallelObjectTraversal * pot;
-    AVL<Poi2D.y,Seg2D&> sweepline;
+    AVL<Number,Seg2D&> *sweepline;
 
 };
 
