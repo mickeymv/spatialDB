@@ -6,6 +6,7 @@
 
 
 #include "PlaneSweep.h"
+#include "ObjectIterator.h"
 
 PlaneSweep::PlaneSweep(Object2D objF, Object2D objG) {
    pot = new ParallelObjectTraversal(objF, objG);
@@ -16,34 +17,71 @@ PlaneSweep::~PlaneSweep() {
     delete pot;
 }
 
-
-const bool *PlaneSweep::getVF() {
-    return pot->getVF();
-}
-
-// get vector array vG
-const bool *PlaneSweep::getVG() {
-    return pot->getVG();
-}
-
-// returns the size of vector F (or vector G, they both have the same size)
-const size_t PlaneSweep::getVFGSize() {
-    return pot->getVFGSize();
-}
-
-void selectNext() { 
+void PlaneSweep::select_next() {
     //needs implementation based on object types
-    return getPOT().selectNext();
-    };
+    return getPot().selectNext();
+}
 
-object getObject() {
-  // temporary, to be replaced
+object  PlaneSweep::getObject() {
+    // temporary, to be replaced
     return getPot().getObject();
 
-};
+}
 
-status getStatus()
+status  PlaneSweep::getStatus()
 {
-  // temporary, to be replaced
+    // temporary, to be replaced
     return getPot().getStatus();
-};
+}
+
+Obj2D PlaneSweep::getEvent(Object2D obj)
+{
+    //Return either a poi2D or a seg2D depending on the object combination and the
+    // sweep line status instance.
+    ObjectIterator* pos = getPot()->getObjIterator(obj);
+    return *(pos);
+}
+
+void PlaneSweep::new_sweep()
+{
+    sweepline = new AVL<Poi2D.y,Seg2D&>();
+    return;
+}
+
+// Are the following correct??
+
+void PlaneSweep::add_left(Seg2D& seg2D)
+{
+    sweepline.Insert(seg2D.p1.y,seg2D);
+}
+
+void PlaneSweep::del_right(Seg2D& seg2D)
+{
+    //sweepline->deleteKey(Seg2D.p2.y,Seg2D);
+    sweepline.Remove(seg2D.p1.y);
+}
+
+Attribute PlaneSweep::get_attr(Seg2D& seg2D)
+{
+    Attribute attribute;
+    if(sweepline.Find(seg2D.p1.y,seg2D)) {
+        // Give attribute depending on type
+        // Check if group 2 can give it
+//    if(seg2D.attribute.isBool())
+//    {
+//
+//    }
+//    else if(seg2D.attribute.isSegClass())
+//    {
+//
+//    }
+    }
+    return attribute;
+}
+
+void PlaneSweep::set_attr(Seg2D & seg2D, Attribute attribute)
+{
+    if(sweepline.Find(seg2D.p1.y,seg2D)) {
+        // seg2D.attribute=attribute;
+    }
+}

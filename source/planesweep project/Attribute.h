@@ -1,24 +1,18 @@
 //
-// Created by Djundi on 11/3/15.
+// Created by Natasha on 11/17/2015.
 //
 
-#ifndef PLANESWEEP_PROJECT_OBJECT2D_H
-#define PLANESWEEP_PROJECT_OBJECT2D_H
+#ifndef PLANESWEEP_PROJECT_ATTRIBUTE_H
+#define PLANESWEEP_PROJECT_ATTRIBUTE_H
 
 #include <memory>
 #include <typeinfo>
 
-#include "Topic2/Implementation/Point2D.h"
-#include "Topic2/Implementation/Line2D.h"
-#include "Region2D.h"
+#include "Topic2/Implementation/RobustGeometricPrimitives2D.h"
 
 
 
-// 11/03/2015 DT
-// since we do not have any base (super) class for the spatial objects, we use this template
-// class Object2D is the base template class for the F and G objects
-
-class Object2D {
+class Attribute {
 // *** begin template declaration ***
     template<class T>
     class wrp;
@@ -48,22 +42,22 @@ class Object2D {
     std::unique_ptr<base> pb;
 
 public:
-    Object2D() { };
-    virtual ~Object2D() { };
+    Attribute() { };
+    virtual ~Attribute() { };
 
     template<class T>
-    Object2D &operator=(const T &t) {
+    Attribute &operator=(const T &t) {
         pb = std::unique_ptr<base>(new wrp<T>(t));
         return *this;
     }
 
-    Object2D(Object2D &&) = default;
+    Attribute(Attribute &&) = default;
 
-    Object2D &operator=(Object2D &&) = default;
+    Attribute &operator=(Attribute &&) = default;
 
 
     template<class T>
-    Object2D(const T &t) : pb(new wrp<T>(t)) {
+    Attribute(const T &t) : pb(new wrp<T>(t)) {
         typeID = typeid(t).hash_code();
     }
 
@@ -79,19 +73,14 @@ public:
         return bool(pt);
     }
 
-    bool isPoint2D() {
-        return typeID == typeid(Point2D).hash_code() ? true : false;
+    bool isBool() {
+        return typeID == typeid(bool).hash_code() ? true : false;
     };
 
-    bool isLine2D() {
-        return typeID == typeid(Line2D).hash_code() ? true : false;
-    };
-
-    bool isRegion2D() {
-        return typeID == typeid(Region2D).hash_code() ? true : false;
-    };
+//    bool isSegClass() {
+//        return typeID == typeid(SegClass).hash_code() ? true : false;
+//    };
 
 };
 
-
-#endif //PLANESWEEP_PROJECT_OBJECT2D_H
+#endif //PLANESWEEP_PROJECT_ATTRIBUTE_H

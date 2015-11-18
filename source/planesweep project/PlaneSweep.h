@@ -2,17 +2,20 @@
 // Created by Djundi on 11/3/15.
 //
 
-#ifndef SPATIAL_PREDICATES_PLANESWEEP_H
-#define SPATIAL_PREDICATES_PLANESWEEP_H
+#ifndef PLANESWEEP_PROJECT_PLANESWEEP_H
+#define PLANESWEEP_PROJECT_PLANESWEEP_H
 
 
 #include "Topic2/Implementation/Point2D.h"
-#include "Line2D.h"
+#include "Topic2/Implementation/Line2D.h"
+#include "Topic2/Implementation/RobustGeometricPrimitives2D.h"
 #include "Region2D.h"
 
 #include "Object2D.h"
 #include "ParallelObjectTraversal.h"
-
+#include "Obj2D.h"
+#include "AVL.h"
+#include "Attribute.h"
 
 
 class PlaneSweep {
@@ -21,41 +24,38 @@ class PlaneSweep {
 public:
     PlaneSweep(Object2D, Object2D);
 
-    virtual ~PlaneSweep();
+    ~PlaneSweep();
 
 
     ParallelObjectTraversal *getPot() const {
         return pot;
     }
 
-    void selectNext();
+	//Should increment the object pointers within either/both of the two objects.
+    void select_first();
+    void select_next();
     
     //Return the values of the object or status variables from the ParallelObjectTraversal Class
     object getObject();
     status getStatus();
     
     //Returns the value of the current "event" on the "sweep line status" datastructure
-    Object2D getEvent() {
-    	//Return either a poi2D or a seg2D depending on the object combination and the 
-    	// sweep line status instance.
-    }
+    //Object2D getEvent();
+    Obj2D getEvent(Object2D);
 
-    // get vector array vF
-    const bool *getVF();
-
-    // get vector array vG
-    const bool *getVG();
-
-    // returns the size of vector F (or vector G, they both have the same size)
-    const size_t getVFGSize();
-    
-    
+    //Returns a new sweep line as an AVL Tree
+    void new_sweep();
+    void add_left(Seg2D&);
+    void del_right(Seg2D&);
+    Attribute get_attr(Seg2D&);
+    void set_attr(Seg2D&,Attribute);
 
 private:
     // only one instance of ParallelObjectTraversal exist!
     ParallelObjectTraversal * pot;
+    AVL<Poi2D.y,Seg2D&> sweepline;
 
 };
 
 
-#endif //SPATIAL_PREDICATES_PLANESWEEP_H
+#endif //PLANESWEEP_PROJECT_PLANESWEEP_H
