@@ -1,5 +1,5 @@
 //
-// Created by Natasha on 11/15/2015.
+// Created by Mickey on 11/12/2015.
 //
 
 #ifndef PLANESWEEP_PROJECT_OBJECTITERATOR_H
@@ -28,17 +28,17 @@ public:
 
     // Comparison operators that compares a constant poi iterator position
     // with another const poi iterator position "rhs"
-//    virtual bool operator==(const ConstPoiIterator &rhs) const = 0;
-//
-//    virtual bool operator!=(const ConstPoiIterator &rhs) const = 0;
-//
-//    virtual bool operator<(const ConstPoiIterator &rhs) const = 0;
-//
-//    virtual bool operator<=(const ConstPoiIterator &rhs) const = 0;
-//
-//    virtual bool operator>(const ConstPoiIterator &rhs) const = 0;
-//
-//    virtual bool operator>=(const ConstPoiIterator &rhs) const = 0;
+    virtual bool operator==(const ObjectIterator &rhs) const = 0;
+
+    virtual bool operator!=(const ObjectIterator &rhs) const = 0;
+
+    virtual bool operator<(const ObjectIterator &rhs) const = 0;
+
+    virtual bool operator<=(const ObjectIterator &rhs) const = 0;
+
+    virtual bool operator>(const ObjectIterator &rhs) const = 0;
+
+    virtual bool operator>=(const ObjectIterator &rhs) const = 0;
 
 };
 
