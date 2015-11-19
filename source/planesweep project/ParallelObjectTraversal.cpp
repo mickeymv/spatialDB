@@ -88,6 +88,10 @@ ParallelObjectTraversal::ParallelObjectTraversal(Object2D &F, Object2D &G) {
         }
     }
 
+    /* Call the selectFirst function to set the
+    *  object and status variables. This should not be called anywhere else.
+     */
+     selectFirst();
 
 }
 
