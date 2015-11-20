@@ -9,7 +9,7 @@
 using namespace std;
 
 
-
+//generates data in perfect circle
 void generateInCircle(int number, double radius){
 	poi2D point;
 	ofstream myfile;
@@ -24,6 +24,7 @@ void generateInCircle(int number, double radius){
 	myfile.close();
 }
 
+//generates data where points are all close to the shapes border
 void generateCloseToCricle(int number, double radius){
 	poi2D point;
 	ofstream myfile;
@@ -40,6 +41,7 @@ void generateCloseToCricle(int number, double radius){
 	myfile.close();
 }
 
+//generates random set of data in a square
 void generateRandom(int number, double max){
 	poi2D point;
 	ofstream myfile;
@@ -47,13 +49,14 @@ void generateRandom(int number, double max){
 	for(int i = 0; i < number; i++){
 		point.x = ((double)rand() / RAND_MAX)*max;
 		point.y = ((double)rand() / RAND_MAX)*max;
+		cout << point.toString() << endl;
 		myfile.write((char*)&point, sizeof(poi2D));
 	}
 	myfile.close();
 }
 
-int main() {
-	srand ( time(0) );
-	generateRandom(1000000, 100.0);
+int main(int argc, char* argv[]) {
+	srand ( time(0) );	//seed rand using time
+	generateCloseToCricle(120, 100.0); //
     return 0;
 }
