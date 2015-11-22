@@ -54,7 +54,21 @@ public:
 private:
     // only one instance of ParallelObjectTraversal exist!
     ParallelObjectTraversal * pot;
-    AVL<Number,Seg2D&> *sweepline;
+
+    /* The state of the intersection of the sweep line with the geometric structure
+     * being swept at the current sweep line position is recorded in vertical order
+     * in a data structure called sweep line status.
+     */
+    AVL<Number, PlaneSweepLineStatusObject&> *sweepLineStatus;
+
+    /* A vertical sweep line traversing the plane from left to right stops at special
+     * event points which are stored in a queue called event point schedule. The event
+     * point schedule must allow one to insert new event points discovered during
+     * processing; these are normally the initially unknown intersections of line segments.
+     * Below are the DYNAMIC eventPointSchedules corresponding to each object.
+     */
+    AVL<Number, HalfSeg2D&> *dynamicEPSObjF;
+    AVL<Number, HalfSeg2D&> *dynamicEPSObjG;
 
 };
 
