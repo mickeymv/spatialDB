@@ -120,7 +120,7 @@ private:
      *  The insertIntoDynamicEPS() function is just the insert() function for the
      *  two different min-heaps for the objects under consideration.
      */
-    void splitLines(Seg2D firstSegment, Seg2D secondSegment, poi2D intersectionPoint);
+    void splitLines(Seg2D firstSegment, Seg2D secondSegment, Poi2D intersectionPoint);
 
     /*
      * This function is called within the splitLines function and would update the
