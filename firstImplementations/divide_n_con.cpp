@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <ctime>
 
 #include "poi2D.h"
 
@@ -38,7 +39,7 @@ vector<poi2D> orderHullClockwise(vector<poi2D> &hull){
 }
 
 //prints vector of poi2D's
-void printVec(const vector<poi2D> & vec){
+void printVec(vector<poi2D> & vec){
 	for (vector<poi2D>::iterator it = vec.begin(); it != vec.end(); ++it) {
 	    cout << it->toString() << endl;
 	}
@@ -164,6 +165,11 @@ int main(){
 
 	infile.close();
 	
+	clock_t begin = clock();
 
-	printVec(divideAndConquer(input));
+	divideAndConquer(input);
+
+	clock_t end = clock();
+	double elapsed_secs = double(end - begin);
+	cout << elapsed_secs << endl;
 }

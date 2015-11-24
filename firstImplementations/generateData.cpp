@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <ctime>
+#include <cstdlib>
 
 #include "poi2D.h"
 
@@ -18,7 +19,6 @@ void generateInCircle(int number, double radius){
 		double angle = ((double)rand() / RAND_MAX);
 		point.x = cos(angle) * radius;
 		point.y = sin(angle) * radius;
-		cout << point.toString() << endl;
 		myfile.write((char*)&point, sizeof(poi2D));
 	}
 	myfile.close();
@@ -35,7 +35,6 @@ void generateCloseToCricle(int number, double radius){
 		point.y = sin(angle) * radius;
 		point.x += (sqrt((double)rand() / RAND_MAX)-1) * radius/2;
 		point.y += (sqrt((double)rand() / RAND_MAX)-1) * radius/2;
-		cout << point.toString() << endl;
 		myfile.write((char*)&point, sizeof(poi2D));
 	}
 	myfile.close();
@@ -49,7 +48,6 @@ void generateRandom(int number, double max){
 	for(int i = 0; i < number; i++){
 		point.x = ((double)rand() / RAND_MAX)*max;
 		point.y = ((double)rand() / RAND_MAX)*max;
-		cout << point.toString() << endl;
 		myfile.write((char*)&point, sizeof(poi2D));
 	}
 	myfile.close();
@@ -57,6 +55,6 @@ void generateRandom(int number, double max){
 
 int main(int argc, char* argv[]) {
 	srand ( time(0) );	//seed rand using time
-	generateCloseToCricle(120, 100.0); //
+	generateRandom(atoi(argv[1]), atof(argv[2]));
     return 0;
 }
