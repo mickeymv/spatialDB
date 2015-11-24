@@ -17,6 +17,7 @@
 #include "Obj2D.h"
 #include "AVL.h"
 #include "Attribute.h"
+#include "PlaneSweepLineStatusObject.h"
 
 
 class PlaneSweep {
@@ -32,8 +33,12 @@ public:
         return pot;
     }
 
-	//Should increment the object pointers within either/both of the two objects.
-    void select_first();
+    /*
+     * Should select the next point to stop at for the sweepLineStatus.
+     * Should call the findLeast function within it to check whether to
+     * increment the static EPS (objects themselves) or the dynamic EPS
+     * (the min-heaps for the objects).
+     */
     void select_next();
     
     //Return the values of the object or status variables from the ParallelObjectTraversal Class
@@ -46,7 +51,13 @@ public:
 
     //Returns a new sweep line as an AVL Tree
     void new_sweep();
-    void add_left(Seg2D&);
+
+    /*
+     * The addLeft function would enter a new segment into the sweepLineStatus
+     * data structure.
+     * It should call calculateIntersection() and calculateOverlap() within it.
+     */
+    void addLeft(Seg2D&);
     void del_right(Seg2D&);
     Attribute get_attr(Seg2D&);
     void set_attr(Seg2D&,Attribute);
@@ -61,6 +72,9 @@ private:
      */
     AVL<Number, PlaneSweepLineStatusObject&> *sweepLineStatus;
 
+    //Should increment the object pointers within either/both of the two objects.
+    void select_first();
+
     /* A vertical sweep line traversing the plane from left to right stops at special
      * event points which are stored in a queue called event point schedule. The event
      * point schedule must allow one to insert new event points discovered during
@@ -69,6 +83,50 @@ private:
      */
     AVL<Number, HalfSeg2D&> *dynamicEPSObjF;
     AVL<Number, HalfSeg2D&> *dynamicEPSObjG;
+
+    /*
+     *  This function would be called from within the selectNext() function.
+     *  What this would do is find the least poi2D for the PlaneSweepLineStatus
+     *  to stop next.
+     *  If the next point is from the static Event Point schedule (EPS) (which
+     *  is either of the two objects (objF/objG) ), we update the iterator of the
+     *  corresponding object ( POT.selectNext() ) . If it is from the dynamic
+     *  EPS of the min-heap, we update the current of that particular object's min-heap
+     *  ( objFMinHeap.selectNext() / objGMinHeap.selectNext() )
+     *  Why we need this is to obtain the next x-coordinate point to stop at for the
+     *  PlaneSweepLineStatus.
+     */
+    Poi2D findLeast();
+
+    /*
+     *  Checks whether a Seg2D has intersections with any of the Seg2Ds already
+     *  in the sweepLineStatus. If it does, it calls the functions
+     *  splitLines().
+     */
+    Poi2D calculateIntersection(Seg2D);
+
+    /*
+     *  Checks whether a Seg2D has overlaps with any of the Seg2Ds already
+     *  in the sweepLineStatus. If it does, it calls the functions
+     *  splitLines().
+     */
+    void calculateOverlap(Seg2D);
+
+    /*
+     *  This function which is called from within the calculateIntersection/Overlap functions,
+     *  it would split the two passed segments into four segments at the intersectionPoint,
+     *  and call the functions updateSweepLineStatus and the insertIntoDynamicEPS().
+     *
+     *  The insertIntoDynamicEPS() function is just the insert() function for the
+     *  two different min-heaps for the objects under consideration.
+     */
+    void splitLines(Seg2D firstSegment, Seg2D secondSegment, poi2D intersectionPoint);
+
+    /*
+     * This function is called within the splitLines function and would update the
+     * sweepLineStatus data structure with the new updated split segment.
+     */
+    void updateSweepLineStatus(Seg2D segmentToBeReplaced, Seg2D segmentToReplaceWith);
 
 };
 
