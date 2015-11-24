@@ -1,33 +1,24 @@
 /******************************************************************************
  *  File: Point2D.h	
  ******************************************************************************
- *  Purpose:  This file specifies the interfaces to the class Point2D and to
- *   several nested iterator classes that enable access to components (that is,
- *   faces, cycles, segments) of Point2D objects.
+ *  Purpose:  This file specifies the interface to the class Point2D and to
+ *  the nested iterator class that enables access to the simple points of the
+ *  Point2D objects.
  
  *  Created on: Oct 8, 2015
  
  *  Authors: Ahmed Khaled, Revathi Kadari, Deepa Narain, Namrata Choudhury
  
- * Date: Fall Semester 2015
+ *  Date: Fall Semester 2015
  *******************************************************************************/
 
 #ifndef POINT2D_H_
 #define POINT2D_H_
 
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <cstring>
 #include <vector>
-#include <algorithm>
-#include <iterator>
-#include <regex>
 #include "RobustGeometricPrimitives2D.h"
 using namespace std;
 
-struct ConstPoiIteratorImplementation; //Forward declaration. Complete declaration is in implementation file.
-struct point2DImplementation; //Forward declaration. Complete declaration is in implementation file.
 
 class Point2D
 {
@@ -42,28 +33,27 @@ class Point2D
 
       // Constructor for complex Point2D object. It takes
       // inputs as a vector of poi2D objects and creates a
-      // Poi2D object after checking if a valid Point2D
+      // Point2D object after checking if a valid Point2D
       // object can be created from the input.
       Point2D(std::vector<Poi2D> pointList);
 
-      // Constructor for complex point structure. It takes as input a string name that can represent either :
-      // 1) file name which contains the vector of points from which to construct the Point2D object 
-      // 2) string the textually represents the input vector of points.
+      // Constructor for complex point structure. It takes as input a string name that represents the  
+      // string that textually represents the input vector of points.
       //
       // The grammar for representing a point vector in both cases 1 and 2 are structured as follows:
-      // Expression       := '(' (Point,)* Point ')'
-      // Point            := '(' Number ',' Number ')'
+      // Expression       := '(' Point (',' [WhiteSpace] Point)* ')'
+      // Point            := '(' Number ',' [WhiteSpace] Number ')'
       // Number           := Sign ((DigitWithoutZero Digit* '.' Digit+) | ('0' '.' Digit+ ))
       // Sign             := ['+' | '-']
+      // WhiteSpace       := ' '
       // DigitWithoutZero := '1' | '2' |'3' | '4' | '5' | '6' | '7' | '8' | '9'
       // Digit            := '0' | DigitWithoutZero
       //
-      // example for pointslist of point1, point2 and point3 here is: ((x1, y1),(x2, y2),(x3, y3))
+      // example for pointslist of point1, point2 and point3 here is: ((0, 0),(4, 5),(10, 10))
       Point2D(std::string textualPointList);
 
       // Copy constructor that constructs a new Point2D object with the same
-      // properties as the inputted Point2D object.
-        
+      // properties as the inputted Point2D object. 
       Point2D(const Point2D& originalPoint);
 
       // Move constructor that moves the inputed Point2D object to a
@@ -80,7 +70,7 @@ class Point2D
       
       //copy assignment operator that copies the inputted object
       //to the Point2D object
-      Point2D& operator = (Point2D& originalPoint);
+      Point2D& operator = (const Point2D& originalPoint);
 
       // Move assignment operator that moves the inputted Point2D object to the
       // Point2D object. The inputted object gets the empty Point2D
@@ -99,28 +89,16 @@ class Point2D
       // of the == operator.
       bool operator != (Point2D& operand);
 
-      // less than operator that compares 2 Point2D objects through comparing their minimum bounding rectangles in the following way:
-      // if (min(x1) < min(x2)) the object is less than the operand object
-      // if ((min(x1) = min(x2)) and (min(y1) < min(y2))) the object is less than the operand object
-      // where min(x) and min(y) are the points with the minimum x,y values within the structure respectively.
+      // less than comparision of lexicographic order of points
       bool operator < (Point2D& operand);
       
-      // less or equal than operator that compares 2 Point2D objects through comparing their minimum bounding rectangles in the following way:
-      // if (min(x1) <= min(x2)) the object is less than or equal the operand object
-      // if ((min(x1) = min(x2)) and (min(y1) <= min(y2))) the object is less than or equal the operand object
-      // where min(x) and min(y) are the points with the minimum x,y values within the structure respectively.
+      // less than or equal comparision of lexicographic order of points
       bool operator <= (Point2D& operand);
         
-      // greater than operator that compares 2 Point2D objects through comparing their minimum bounding rectangles in the following way:
-      // if (min(x1) > min(x2)) the object is greater the operand object
-      // if ((min(x1) = min(x2)) and (min(y1) > min(y2))) the object is greater the operand object
-      // where min(x) and min(y) are the points with the minimum x,y values within the structure respectively.
+      // greater than comparision of lexicographic order of points
       bool operator > (Point2D& operand);
       
-      // greater or equal than operator that compares 2 Point2D objects through comparing their minimum bounding rectangles in the following way:
-      // if (min(x1) >= min(x2)) the object is greater than or equal the operand object
-      // if ((min(x1) = min(x2)) and (min(y1) >= min(y2))) the object is greater than or equal the operand object
-      // where min(x) and min(y) are the points with the minimum x,y values within the structure respectively.
+      // greater than or equal comparision of lexicographic order of points
       bool operator >= (Point2D& operand);
 
       // Display function, that displayes the information of Point2D structure as follows:
@@ -200,8 +178,8 @@ class Point2D
             bool operator >= (const ConstPoiIterator& rhs) const;
 
             private:
-              // Declaration of an opaque pointer
-              ConstPoiIteratorImplementation* handle;
+              struct ConstPoiIteratorImplementation;  
+              ConstPoiIteratorImplementation* handle;  // Declaration of an opaque pointer
         }; // class ConstPoiIterator
 
         // Method that returns a constant poi iterator to the first Point of a
@@ -223,6 +201,8 @@ class Point2D
         ConstPoiIterator ctail() const;
     
   private:
+  
+    struct point2DImplementation; 
     point2DImplementation* points;
 };
 

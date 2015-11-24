@@ -1,1 +1,0 @@
-Topic 2 deals with implementing spatial data types. The three main data types are Point2D, Line2D, Region2D. This implentation is expected to deliver constructors and oprators that can be used by further groups in implenting operations on Spatial objects.
