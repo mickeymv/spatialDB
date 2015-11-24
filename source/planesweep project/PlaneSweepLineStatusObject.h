@@ -6,11 +6,13 @@
 #define PLANESWEEP_PROJECT_PLANESWEEPSTATUSOBJECT_H
 
 
+#include "SegmentClass.h"
+#include "Topic2/Implementation/Point2D.h"
+
 class PlaneSweepLineStatusObject {
 
     SegmentClass segmentClass;
-    Point2D point2D;
-    Line2D segment2D;
+    Seg2D segment2D;
 
 public:
 
@@ -19,22 +21,15 @@ public:
     }
 
     void setSegmentClass(int lOrR, int uOrL) {
-        segmentClass(lOrR, uOrL);
+        segmentClass.setLowerOrRight(lOrR);
+        segmentClass.setUpperOrLeft(uOrL);
     }
 
-    Point2D getPoint2D() {
-        return point2D;
-    }
-
-    void setPoint2D(Point2D point) {
-        point2D = point;
-    }
-
-    Line2D getSegment2D() {
+    Seg2D getSegment2D() {
         return segment2D;
     }
 
-    void setSegment2D(Line2D line) {
+    void setSegment2D(Seg2D line) {
         segment2D = line;
     }
 };

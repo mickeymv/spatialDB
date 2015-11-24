@@ -28,7 +28,7 @@ public:
          lowerOrRight = lOrR;
     }
 
-    void getUpperOrLeft(int uOrL) {
+    void setUpperOrLeft(int uOrL) {
          upperOrLeft = uOrL;
     }
 };
