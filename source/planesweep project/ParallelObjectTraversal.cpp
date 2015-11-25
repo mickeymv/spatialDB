@@ -192,13 +192,13 @@ void ParallelObjectTraversal::selectNext() {
     }
 }
 
-ObjectIterator * ParallelObjectTraversal::getObjIterator(Object2D object2D)
+ObjectIterator * ParallelObjectTraversal::getObjIterator(int object)
 {
-    if(object2D.operator==(*objF))
+    if(object==1)
     {
         return objFIterator;
     }
-    else if(object2D.operator==(*objG))
+    else if(object==2)
     {
         return objGIterator;
     }

@@ -25,22 +25,25 @@ public:
     void selectNext();
 
     object getObject();
+
     status getStatus();
 
-    ObjectIterator * getObjIterator(Object2D);
+    ObjectIterator *getObjIterator(int object);
 
-    typedef enum  {
+    typedef enum {
         none, first, second, both
     } object;
 
-    typedef enum  {
-        end_of_none, end_of_first, end_of_second, end_of_both
+    typedef enum {
+        end_of_none,
+        end_of_first, end_of_second, end_of_both
     } status;
 
 private:
     //SelectFirst should be called in the POT constructor.
     void selectFirst();
-    ParallelObjectTraversal* pot;
+
+    ParallelObjectTraversal *pot;
     object object_value;
     status status_value;
     Object2D *objF, *objG;
