@@ -128,6 +128,12 @@ private:
      */
     void updateSweepLineStatus(Seg2D segmentToBeReplaced, Seg2D segmentToReplaceWith);
 
+    //There is one small problem with the methods mentioned above. We need to check all cases (intersection, touch, collinearity etc).
+    //In the current implementation style, it would be hard to determine which of the cases has occured when splitLines() is called from calculateIntersection(Seg2D) or calculateOverlap(Seg2D)
+    //To overcome this I (Natasha Mandal) will try to define the following functions
+    void calculateRelation(Seg2D);
+    void splitLines(Seg2D firstSegment, Seg2D secondSegment);
+
 };
 
 

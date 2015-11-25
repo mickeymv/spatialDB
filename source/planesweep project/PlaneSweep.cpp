@@ -36,10 +36,105 @@ ParallelObjectTraversal::status  PlaneSweep::getStatus()
 
 void PlaneSweep::new_sweep()
 {
-    sweepLineStatus = new AVL<Number,PlaneSweepLineStatusObject&>();
+    sweepLineStatus = new AVL<Number, PlaneSweepLineStatusObject &>();
     return;
 }
 
+//There is one small problem with the methods mentioned above. We need to check all cases (intersection, touch, collinearity etc).
+//In the current implementation style, it would be hard to determine which of the cases has occured when splitLines() is called from calculateIntersection(Seg2D) or calculateOverlap(Seg2D)
+//To overcome this I (Natasha Mandal) will try to define the following functions
+
+void PlaneSweep::calculateRelation(Seg2D)
+{
+
+}
+
+//Assumption - firstSegment is from object F and secondSegment is from object G
+//Will add dynamic insertion after min heap class is inserted here
+void PlaneSweep::splitLines(Seg2D firstSegment, Seg2D secondSegment)
+{
+    if(Intersects(firstSegment,secondSegment))
+    {
+        Poi2D mp = IntersectionPoint(firstSegment,secondSegment);
+        Seg2D S11(firstSegment.p1,mp);
+        Seg2D S21(secondSegment.p1,mp);
+        Seg2D S12(mp,firstSegment.p2);
+        Seg2D S22(mp,secondSegment.p2);
+
+        updateSweepLineStatus(firstSegment,S11);
+        updateSweepLineStatus(secondSegment,S21);
+
+    }
+    else if(Touch(firstSegment,secondSegment))
+    {
+        Poi2D tp = TouchingPoint(firstSegment,secondSegment);
+        Seg2D S11(firstSegment.p1,tp);
+        Seg2D S21(secondSegment.p1,tp);
+
+        updateSweepLineStatus(firstSegment,S11);
+        updateSweepLineStatus(secondSegment,S21);
+
+        if(LiesOnRightEndPointOfSegment(tp,secondSegment))
+        {
+            Seg2D S12(tp,firstSegment.p1);
+        }
+        else if(LiesOnRightEndPointOfSegment(tp,firstSegment))
+        {
+            Seg2D S22(tp,secondSegment.p2);
+        }
+    }
+    else if(IsCollinearAndMeetsLeftEndpoint(firstSegment,secondSegment))
+    {
+        Seg2D S11(firstSegment.p1,secondSegment.p2);
+        Seg2D S12(secondSegment.p2,firstSegment.p2);
+
+        updateSweepLineStatus(firstSegment,S11);
+        updateSweepLineStatus(secondSegment,S11);
+    }
+    else if(IsCollinearAndMeetsLeftEndpoint(secondSegment,firstSegment))
+    {
+        Seg2D S21(secondSegment.p1,firstSegment.p2);
+        Seg2D S22(firstSegment.p2,secondSegment.p2);
+
+        updateSweepLineStatus(secondSegment,S21);
+        updateSweepLineStatus(firstSegment,S21);
+    }
+    else if(LiesOn(firstSegment,secondSegment)&&IsCollinearAndCrossesLeftEndpoint(secondSegment,firstSegment)&&IsCollinearAndCrossesRightEndpoint(secondSegment,firstSegment))
+    {
+        Seg2D S11(firstSegment.p1,secondSegment.p1);
+        Seg2D S12(secondSegment.p1,secondSegment.p2);
+        Seg2D S13(firstSegment.p2,secondSegment.p2);
+
+        updateSweepLineStatus(firstSegment,S11);
+        updateSweepLineStatus(secondSegment,S12);
+    }
+    else if(LiesOn(secondSegment,firstSegment)&&IsCollinearAndCrossesLeftEndpoint(firstSegment,secondSegment)&&IsCollinearAndCrossesRightEndpoint(firstSegment,secondSegment))
+    {
+        Seg2D S21(secondSegment.p1,firstSegment.p1);
+        Seg2D S22(firstSegment.p1,firstSegment.p2);
+        Seg2D S23(firstSegment.p2,secondSegment.p2);
+
+        updateSweepLineStatus(firstSegment,S21);
+        updateSweepLineStatus(secondSegment,S22);
+    }
+    else if(IsCollinearAndMeetsRightEndpoint(firstSegment,secondSegment))
+    {
+        Seg2D S11(firstSegment.p1,secondSegment.p1);
+        Seg2D S12(secondSegment.p1,secondSegment.p2);
+
+        updateSweepLineStatus(firstSegment,S11);
+        updateSweepLineStatus(secondSegment,S12);
+    }
+    else if(IsCollinearAndMeetsRightEndpoint(secondSegment,firstSegment))
+    {
+        Seg2D S21(secondSegment.p1,firstSegment.p1);
+        Seg2D S22(firstSegment.p1,firstSegment.p2);
+
+        updateSweepLineStatus(firstSegment,S22);
+        updateSweepLineStatus(secondSegment,S21);
+    }
+
+}
 
 /*
  *  Change the following functions based on our discussion on Saturday
