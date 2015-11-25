@@ -13,6 +13,7 @@ class PlaneSweepLineStatusObject {
 
     SegmentClass segmentClass;
     Seg2D segment2D;
+    bool insideAbove;
 
 public:
 
@@ -31,6 +32,14 @@ public:
 
     void setSegment2D(Seg2D line) {
         segment2D = line;
+    }
+
+    bool getInsideAbove() {
+        return insideAbove;
+    }
+
+    void setInsideAbove(bool ia) {
+        insideAbove = ia;
     }
 };
 
