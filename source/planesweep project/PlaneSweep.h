@@ -40,7 +40,7 @@ public:
      * increment the static EPS (objects themselves) or the dynamic EPS
      * (the min-heaps for the objects).
      */
-    void select_next();
+    void selectNext();
     
     //Return the values of the object or status variables from the ParallelObjectTraversal Class
     ParallelObjectTraversal::object getObject();
@@ -49,9 +49,6 @@ public:
     //Returns the value of the current "event" on the "sweep line status" datastructure
     //Object2D getEvent();
     Obj2D getEvent(Object2D);
-
-    //Returns a new sweep line as an AVL Tree
-    void new_sweep();
 
     /*
      * The addLeft function would enter a new segment into the sweepLineStatus
@@ -72,6 +69,9 @@ private:
      * in a data structure called sweep line status.
      */
     AVLTree<PlaneSweepLineStatusObject&> *sweepLineStatus;
+
+    //Initializes a new sweep line as an AVL Tree
+    void newSweep();
 
     //Should increment the object pointers within either/both of the two objects.
     void selectFirst();
@@ -100,11 +100,11 @@ private:
     Poi2D findLeast();
 
     /*
-     *  Checks whether a Seg2D has intersections with any of the predecessor and successor already
-     *  in the sweepLineStatus. If it does, it calls the functions
-     *  splitLines().
+     *  Checks whether a Seg2D has intersections/overlap with any of the predecessor and successor already
+     *  in the sweepLineStatus. If it does, it calls the necessary splitLines() functions and returns true.
+     *  If not, it returns false.
      */
-    void calculateRelation(Seg2D);
+    bool hasRelation(Seg2D);
 
 
     /*
