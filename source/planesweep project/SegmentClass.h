@@ -11,12 +11,20 @@
 class SegmentClass {
 
     int lowerOrRight, upperOrLeft;
+
+public:
+
+    SegmentClass() {
+        //default
+        lowerOrRight = 0;
+        upperOrLeft = 0;
+    }
+
     SegmentClass(int lOrR, int uOrL) {
         lowerOrRight = lOrR;
         upperOrLeft = uOrL;
     }
 
-public:
     int getLowerOrRight() {
         return lowerOrRight;
     }

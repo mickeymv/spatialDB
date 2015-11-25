@@ -8,6 +8,7 @@
 
 #include "SegmentClass.h"
 #include "Topic2/Implementation/Point2D.h"
+#include "ParallelObjectTraversal.h"
 
 class PlaneSweepLineStatusObject {
 
@@ -15,7 +16,21 @@ class PlaneSweepLineStatusObject {
     Seg2D segment2D;
     bool insideAbove;
 
+    //To determine which object this segment is from.
+    ParallelObjectTraversal::object objectValue;
+
 public:
+
+    PlaneSweepLineStatusObject(Seg2D seg2D) {
+        setSegment2D(seg2D);
+        setInsideAbove(false); //default behaviour
+    }
+
+    bool operator<(PlaneSweepLineStatusObject &operand);
+
+    bool operator>(PlaneSweepLineStatusObject &operand);
+
+    bool operator==(PlaneSweepLineStatusObject &operand);
 
     SegmentClass getSegmentClass() {
         return segmentClass;
@@ -40,6 +55,14 @@ public:
 
     void setInsideAbove(bool ia) {
         insideAbove = ia;
+    }
+
+    void setObject(ParallelObjectTraversal::object object) {
+        objectValue = object;
+    }
+
+    ParallelObjectTraversal::object getObject() {
+        return objectValue;
     }
 };
 

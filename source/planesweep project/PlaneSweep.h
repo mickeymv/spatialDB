@@ -47,12 +47,10 @@ public:
     
     //Returns the value of the current "event" on the "sweep line status" datastructure
     //Object2D getEvent();
-    Poi2D getEventPoi(int object);
-    HalfSeg2D getEventHalfSeg(int object);
-    AttrHalfSeg2D getEventAttrHalfSeg(int object);
+    Obj2D getEvent(Object2D);
 
     //Returns a new sweep line as an AVL Tree
-    void newSweep();
+    void new_sweep();
 
     /*
      * The addLeft function would enter a new segment into the sweepLineStatus
@@ -60,14 +58,9 @@ public:
      * It should call calculateIntersection() and calculateOverlap() within it.
      */
     void addLeft(Seg2D&);
-    void delRight(Seg2D&);
-    Attribute getAttr(Seg2D&);
-    void setAttr(Seg2D&,Attribute);
-    bool predExists(Seg2D&);
-    Attribute getPredAttr(Seg2D&);
-    Seg2D& predOfP(Poi2D&);
-    bool lookAhead(HalfSeg2D&,Line2D&);//Look at region-region case for additional return type
-    bool lookAhead(AttrHalfSeg2D&,Region2D&);//Look at region-region case for additional return type
+    void del_right(Seg2D&);
+    Attribute get_attr(Seg2D&);
+    void set_attr(Seg2D&,Attribute);
 
 private:
     // only one instance of ParallelObjectTraversal exist!
@@ -80,7 +73,7 @@ private:
     AVL<Number, PlaneSweepLineStatusObject&> *sweepLineStatus;
 
     //Should increment the object pointers within either/both of the two objects.
-    void selectFirst();
+    void select_first();
 
     /* A vertical sweep line traversing the plane from left to right stops at special
      * event points which are stored in a queue called event point schedule. The event

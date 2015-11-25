@@ -34,7 +34,7 @@ ParallelObjectTraversal::status  PlaneSweep::getStatus()
     return getPot()->getStatus();
 }
 
-void PlaneSweep::newSweep()
+void PlaneSweep::new_sweep()
 {
     sweepLineStatus = new AVL<Number, PlaneSweepLineStatusObject &>();
     return;
@@ -131,16 +131,6 @@ void PlaneSweep::splitLines(Seg2D firstSegment, Seg2D secondSegment)
     }
 
 }
-
-Poi2D PlaneSweep::getEventPoi(int object)
-{
-    ObjectIterator * pos = getPot()->getObjIterator(object);
-    Point2D::ConstPoiIterator *val = dynamic_cast<Point2D::ConstPoiIterator *>(pos);
-    Poi2D poi2D = val->operator*();
-    return poi2D;
-}
-
-
 
 /*
  *  Change the following functions based on our discussion on Saturday

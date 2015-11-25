@@ -172,7 +172,7 @@ class Point2D
             // Dereferencing operators that return the value at the constant poi
             // iterator position. Dereferencing is only allowed if the iterator
             // points to a point. The dereferenced value cannot be changed.
-            const Point2D& operator *() const;
+            const Poi2D& operator *() const;
             const Point2D* operator ->() const;
 
             // Comparison operators that compares a constant poi iterator position

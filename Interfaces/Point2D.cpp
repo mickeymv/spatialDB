@@ -180,7 +180,7 @@
   // Dereferencing operators that return the value at the constant poi
   // iterator position. Dereferencing is only allowed if the iterator
   // points to a point. The dereferenced value cannot be changed.
-  const Point2D& Point2D::ConstPoiIterator::operator *() const
+  const Poi2D& Point2D::ConstPoiIterator::operator *() const
   {
 
   }
