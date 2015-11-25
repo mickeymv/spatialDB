@@ -19,92 +19,21 @@
 // class Object2D is the base template class for the F and G objects
 
 class Object2D {
-// *** begin template declaration ***
-    template<class T>
-    class wrp;
-
-    size_t typeID; // this holds the actual typeID of the instance
-
-
-    class base {
-    public:
-        virtual ~base() { }
-
-        template<class T>
-        T *has_value() {
-            auto *ptr = dynamic_cast<wrp<T> *>(this);
-            return ptr ? &ptr->m : nullptr;
-        };
-    };
-
-    template<class T>
-    class wrp : public base {
-    public:
-        wrp() : m() { };
-
-        wrp(const T &t) : m(t) { };
-        T m;
-    };
-
-    std::unique_ptr<base> pb;
 
 public:
-    Object2D() { };
-    virtual ~Object2D() { };
 
-    template<class T>
-    Object2D &operator=(const T &t) {
-        pb = std::unique_ptr<base>(new wrp<T>(t));
-        return *this;
-    }
+    Object2D();
 
-    Object2D(Object2D &&) = default;
+    ~Object2D();
 
-    Object2D& operator=(Object2D &&) = default;
+    ObjectIterator cbegin() const;
 
-    Object2D& operator=(Point2D &&)= default;
-    Object2D& operator=(Line2D &&)= default;
-    Object2D& operator=(Region2D &&)= default;
+    ObjectIterator cend() const;
 
-    bool operator==(Object2D &operand)
-    {
-        if(&this==operand)
-        {
-            return true;
-        }
-        return false;
-    }
+    ObjectIterator chead() const;
 
+    ObjectIterator ctail() const;
 
-    template<class T>
-    Object2D(const T &t) : pb(new wrp<T>(t)) {
-        typeID = typeid(t).hash_code();
-    }
-
-    template<class T>
-    T *get() const { //ret nullptr if not a T*
-        return bool(pb) ? pb->has_value<T>() : nullptr;
-    }
-
-    template<class T>
-    bool set(T &t) {
-        T *pt = get<T>();
-        if (pt) t = *pt;
-        return bool(pt);
-    }
-
-
-    bool isPoint2D() {
-        return typeID == typeid(Point2D).hash_code() ? true : false;
-    };
-
-    bool isLine2D() {
-        return typeID == typeid(Line2D).hash_code() ? true : false;
-    };
-
-    bool isRegion2D() {
-        return typeID == typeid(Region2D).hash_code() ? true : false;
-    };
 
 };
 

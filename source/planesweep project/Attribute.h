@@ -9,6 +9,7 @@
 #include <typeinfo>
 
 #include "Topic2/Implementation/RobustGeometricPrimitives2D.h"
+#include "SegmentClass.h"
 
 
 
@@ -77,9 +78,9 @@ public:
         return typeID == typeid(bool).hash_code() ? true : false;
     };
 
-//    bool isSegClass() {
-//        return typeID == typeid(SegClass).hash_code() ? true : false;
-//    };
+    bool isSegmentClass() {
+        return typeID == typeid(SegmentClass).hash_code() ? true : false;
+    };
 
 };
 
