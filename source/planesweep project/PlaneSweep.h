@@ -17,6 +17,7 @@
 #include "Obj2D.h"
 #include "AVL.h"
 #include "Attribute.h"
+#include "MinHeap.h"
 #include "PlaneSweepLineStatusObject.h"
 
 
@@ -58,9 +59,9 @@ public:
      * It should call calculateIntersection() and calculateOverlap() within it.
      */
     void addLeft(Seg2D&);
-    void del_right(Seg2D&);
-    Attribute get_attr(Seg2D&);
-    void set_attr(Seg2D&,Attribute);
+    void delRight(Seg2D&);
+    Attribute getAttr(Seg2D&);
+    void setAttr(Seg2D&,Attribute);
 
 private:
     // only one instance of ParallelObjectTraversal exist!
