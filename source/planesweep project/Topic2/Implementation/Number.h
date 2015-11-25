@@ -5,52 +5,39 @@
 #include <string>
 
 struct PrivateRec;
-
-class Number {
+class Number
+{
 private:
-    PrivateRec *p;
+	PrivateRec * p;
 
 public:
-    Number();
+	Number();
+	Number(float value);
+	//Number(std::string value);
+	Number(const Number& obj);
+	Number(const Number&& obj);
+	Number operator=(const Number& obj);
+	//Number operator=(const Number&& obj);
+	~Number();
 
-    Number(float value);
+	/*mathematical operations*/
+	Number operator+(const Number& operand);
+	Number operator-(const Number& operand);
+	Number operator*(const Number& operand);
+	Number operator/(const Number& operand);
 
-    //Number(std::string value);
-    Number(const Number &obj);
+	/*logical operations*/
+	bool operator<(const Number& operand);
+	bool operator>(const Number& operand);
+	bool operator<=(const Number& operand);
+	bool operator>=(const Number& operand);
+	bool operator==(const Number& operand);
+	bool operator!=(const Number& operand);
 
-    Number(const Number &&obj);
-
-    Number operator=(const Number &obj);
-
-    //Number operator=(const Number&& obj);
-    ~Number();
-
-    /*mathematical operations*/
-    Number operator+(const Number &operand);
-
-    Number operator-(const Number &operand);
-
-    Number operator*(const Number &operand);
-
-    Number operator/(const Number &operand);
-
-    /*logical operations*/
-    bool operator<(const Number &operand);
-
-    bool operator>(const Number &operand);
-
-    bool operator<=(const Number &operand);
-
-    bool operator>=(const Number &operand);
-
-    bool operator==(const Number &operand);
-
-    bool operator!=(const Number &operand);
-
-    friend std::ostream &operator<<(std::ostream &os, const Number &output);
-
-    friend std::istream &operator>>(std::istream &is, const Number &input);
+	friend std::ostream&operator<<(std::ostream& os, const Number& output);
+	friend std::istream&operator>>(std::istream& is, const Number& input);
 };
+
 
 
 #endif
