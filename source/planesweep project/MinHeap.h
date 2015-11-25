@@ -6,23 +6,25 @@
 #define PLANESWEEP_PROJECT_MINHEAP_H
 
 #include "vector"
+#include "Topic2/Implementation/RobustGeometricPrimitives2D.h"
+
 using namespace std;
 
 class MinHeap
 {
 private:
-    vector<int> _vector;
+    vector<AttrHalfSeg2D> _vector;
     void BubbleDown(int index);
     void BubbleUp(int index);
     void Heapify();
 
 public:
-    MinHeap(int* array, int length);
-    MinHeap(const vector<int>& vector);
+    MinHeap(AttrHalfSeg2D* array, int length);
+    MinHeap(const vector<AttrHalfSeg2D>& vector);
     MinHeap();
 
-    void Insert(int newValue);
-    int GetMin();
+    void Insert(AttrHalfSeg2D newValue);
+    AttrHalfSeg2D GetMin();
     void DeleteMin();
 };
 
