@@ -99,40 +99,27 @@ private:
     Poi2D findLeast();
 
     /*
-     *  Checks whether a Seg2D has intersections with any of the Seg2Ds already
+     *  Checks whether a Seg2D has intersections with any of the predecessor and successor already
      *  in the sweepLineStatus. If it does, it calls the functions
      *  splitLines().
      */
-    Poi2D calculateIntersection(Seg2D);
+    void calculateRelation(Seg2D);
+
 
     /*
-     *  Checks whether a Seg2D has overlaps with any of the Seg2Ds already
-     *  in the sweepLineStatus. If it does, it calls the functions
-     *  splitLines().
-     */
-    void calculateOverlap(Seg2D);
-
-    /*
-     *  This function which is called from within the calculateIntersection/Overlap functions,
-     *  it would split the two passed segments into four segments at the intersectionPoint,
-     *  and call the functions updateSweepLineStatus and the insertIntoDynamicEPS().
-     *
+     *  This function which is called from within the calculateRelation functions,
+     *  it would split the two passed segments into more segments based on the relation between them and
+     *  call the functions updateSweepLineStatus and the insertIntoDynamicEPS().
      *  The insertIntoDynamicEPS() function is just the insert() function for the
      *  two different min-heaps for the objects under consideration.
      */
-    void splitLines(Seg2D firstSegment, Seg2D secondSegment, Poi2D intersectionPoint);
+    void splitLines(Seg2D firstSegment, Seg2D secondSegment);
 
     /*
      * This function is called within the splitLines function and would update the
      * sweepLineStatus data structure with the new updated split segment.
      */
     void updateSweepLineStatus(Seg2D segmentToBeReplaced, Seg2D segmentToReplaceWith);
-
-    //There is one small problem with the methods mentioned above. We need to check all cases (intersection, touch, collinearity etc).
-    //In the current implementation style, it would be hard to determine which of the cases has occured when splitLines() is called from calculateIntersection(Seg2D) or calculateOverlap(Seg2D)
-    //To overcome this I (Natasha Mandal) will try to define the following functions
-    void calculateRelation(Seg2D);
-    void splitLines(Seg2D firstSegment, Seg2D secondSegment);
 
 };
 
