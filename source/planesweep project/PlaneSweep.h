@@ -15,7 +15,7 @@
 #include "Object2D.h"
 #include "ParallelObjectTraversal.h"
 #include "Obj2D.h"
-#include "AVL.h"
+#include "AVLTree.h"
 #include "Attribute.h"
 #include "MinHeap.h"
 #include "PlaneSweepLineStatusObject.h"
@@ -71,7 +71,7 @@ private:
      * being swept at the current sweep line position is recorded in vertical order
      * in a data structure called sweep line status.
      */
-    AVL<Number, PlaneSweepLineStatusObject&> *sweepLineStatus;
+    AVLTree<PlaneSweepLineStatusObject&> *sweepLineStatus;
 
     //Should increment the object pointers within either/both of the two objects.
     void selectFirst();
@@ -82,8 +82,8 @@ private:
      * processing; these are normally the initially unknown intersections of line segments.
      * Below are the DYNAMIC eventPointSchedules corresponding to each object.
      */
-    MinHeap dynamicEPSObjF;
-    MinHeap dynamicEPSObjG;
+    MinHeap dynamicEPSObjF();
+    MinHeap dynamicEPSObjG();
 
     /*
      *  This function would be called from within the selectNext() function.
