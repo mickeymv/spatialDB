@@ -73,7 +73,7 @@ private:
     AVL<Number, PlaneSweepLineStatusObject&> *sweepLineStatus;
 
     //Should increment the object pointers within either/both of the two objects.
-    void select_first();
+    void selectFirst();
 
     /* A vertical sweep line traversing the plane from left to right stops at special
      * event points which are stored in a queue called event point schedule. The event
@@ -81,8 +81,8 @@ private:
      * processing; these are normally the initially unknown intersections of line segments.
      * Below are the DYNAMIC eventPointSchedules corresponding to each object.
      */
-    AVL<Number, HalfSeg2D&> *dynamicEPSObjF;
-    AVL<Number, HalfSeg2D&> *dynamicEPSObjG;
+    MinHeap dynamicEPSObjF;
+    MinHeap dynamicEPSObjG;
 
     /*
      *  This function would be called from within the selectNext() function.
