@@ -110,11 +110,11 @@ status ParallelObjectTraversal::getStatus() {
 void ParallelObjectTraversal::selectFirst() {
     if (!(objFIterator->isEmpty()))
     {
-        objFIterator = objF->cbegin();
+        *objFIterator = objF->cbegin();
     }
     if (!(objGIterator->isEmpty()))
     {
-        objGIterator = objG->cbegin();
+        *objGIterator = objG->cbegin();
     }
 
     if (objFIterator->isEmpty() && objGIterator->isEmpty())

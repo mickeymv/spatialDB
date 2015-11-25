@@ -34,6 +34,13 @@ public:
 
     ObjectIterator ctail() const;
 
+    bool operator == (Object2D& operand);
+
+    bool isPoint2D();
+
+    bool isLine2D();
+
+    bool isRegion2D();
 
 };
 
