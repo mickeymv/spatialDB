@@ -114,13 +114,14 @@ void PlaneSweep::splitLines(Seg2D firstSegment, Seg2D secondSegment) {
 
 }
 
-Poi2D PlaneSweep::getEventPoi(int object) {
+/*
+Poi2D PlaneSweep::getPoiEvent(ParallelObjectTraversal::object objectValue){
     ObjectIterator *pos = getPot()->getObjIterator(object);
     Point2D::ConstPoiIterator *val = dynamic_cast<Point2D::ConstPoiIterator *>(pos);
     Poi2D poi2D = val->operator*();
     return poi2D;
 }
-
+*/
 
 
 /*

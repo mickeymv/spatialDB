@@ -41,46 +41,59 @@ public:
      * (the min-heaps for the objects).
      */
     void selectNext();
-    
+
     //Return the values of the object or status variables from the ParallelObjectTraversal Class
     ParallelObjectTraversal::object getObject();
+
     ParallelObjectTraversal::status getStatus();
 
-    //Returns the value of the current "event" on the "sweep line status" datastructure
-    //Object2D getEvent();
-    Poi2D getEventPoi(int object);
-    HalfSeg2D getEventHalfSeg(int object);
-    AttrHalfSeg2D getEventAttrHalfSeg(int object);
+    /*
+     * getEvent() functions would return the Poi, HalfSeg or
+     * AttrHalfSeg events from either of the two objects based on the
+     * 'object' variable's value. If object=first (second), it would return the
+     *  next event in the first (second) object.
+     */
+    Poi2D getPoiEvent(ParallelObjectTraversal::object objectValue);
+
+    HalfSeg2D getHalfSegEvent(ParallelObjectTraversal::object objectValue);
+
+    AttrHalfSeg2D getAttrHalfSegEvent(ParallelObjectTraversal::object objectValue);
 
     /*
      * The addLeft function would enter a new segment into the sweepLineStatus
      * data structure.
      * It should call calculateIntersection() and calculateOverlap() within it.
      */
-    void addLeft(Seg2D&);
-    void delRight(Seg2D&);
+    void addLeft(Seg2D &);
+
+    void delRight(Seg2D &);
 
 
-    Attribute getAttr(Seg2D&);
-    void setAttr(Seg2D&,Attribute);
+    Attribute getAttr(Seg2D &);
+
+    void setAttr(Seg2D &, Attribute);
 
 
-    bool predExists(Seg2D&);
-    Attribute getPredAttr(Seg2D&);
-    Seg2D& predOfP(Poi2D&);
+    bool predExists(Seg2D &);
 
-    bool lookAhead(HalfSeg2D&,Line2D&);//Look at region-region case for additional return type
-    bool lookAhead(AttrHalfSeg2D&,Region2D&);//Look at region-region case for additional return type
+    Attribute getPredAttr(Seg2D &);
+
+    Seg2D &predOfP(Poi2D &);
+
+    bool lookAhead(HalfSeg2D &, Line2D &);
+
+    //Look at region-region case for additional return type
+    bool lookAhead(AttrHalfSeg2D &, Region2D &);//Look at region-region case for additional return type
 
 private:
     // only one instance of ParallelObjectTraversal exist!
-    ParallelObjectTraversal * pot;
+    ParallelObjectTraversal *pot;
 
     /* The state of the intersection of the sweep line with the geometric structure
      * being swept at the current sweep line position is recorded in vertical order
      * in a data structure called sweep line status.
      */
-    AVLTree<PlaneSweepLineStatusObject&> *sweepLineStatus;
+    AVLTree<PlaneSweepLineStatusObject &> *sweepLineStatus;
 
     //Should increment the object pointers within either/both of the two objects.
     void selectFirst();
