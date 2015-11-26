@@ -15,9 +15,10 @@
 #include "Object2D.h"
 #include "ParallelObjectTraversal.h"
 #include "Obj2D.h"
-#include "AVL.h"
+#include "AVLTree.h"
 #include "Attribute.h"
 #include "PlaneSweepLineStatusObject.h"
+#include "MinHeap.h"
 
 
 class PlaneSweep {
@@ -39,20 +40,17 @@ public:
      * increment the static EPS (objects themselves) or the dynamic EPS
      * (the min-heaps for the objects).
      */
-    void select_next();
+    void selectNext();
     
     //Return the values of the object or status variables from the ParallelObjectTraversal Class
     ParallelObjectTraversal::object getObject();
     ParallelObjectTraversal::status getStatus();
-    
+
     //Returns the value of the current "event" on the "sweep line status" datastructure
     //Object2D getEvent();
     Poi2D getEventPoi(int object);
     HalfSeg2D getEventHalfSeg(int object);
     AttrHalfSeg2D getEventAttrHalfSeg(int object);
-
-    //Returns a new sweep line as an AVL Tree
-    void new_sweep();
 
     /*
      * The addLeft function would enter a new segment into the sweepLineStatus
@@ -61,11 +59,16 @@ public:
      */
     void addLeft(Seg2D&);
     void delRight(Seg2D&);
+
+
     Attribute getAttr(Seg2D&);
     void setAttr(Seg2D&,Attribute);
+
+
     bool predExists(Seg2D&);
     Attribute getPredAttr(Seg2D&);
     Seg2D& predOfP(Poi2D&);
+
     bool lookAhead(HalfSeg2D&,Line2D&);//Look at region-region case for additional return type
     bool lookAhead(AttrHalfSeg2D&,Region2D&);//Look at region-region case for additional return type
 
@@ -77,7 +80,7 @@ private:
      * being swept at the current sweep line position is recorded in vertical order
      * in a data structure called sweep line status.
      */
-    AVL<Number, PlaneSweepLineStatusObject&> *sweepLineStatus;
+    AVLTree<PlaneSweepLineStatusObject&> *sweepLineStatus;
 
     //Should increment the object pointers within either/both of the two objects.
     void selectFirst();
@@ -88,8 +91,9 @@ private:
      * processing; these are normally the initially unknown intersections of line segments.
      * Below are the DYNAMIC eventPointSchedules corresponding to each object.
      */
-    AVL<Number, HalfSeg2D&> *dynamicEPSObjF;
-    AVL<Number, HalfSeg2D&> *dynamicEPSObjG;
+    MinHeap dynamicEPSObjF;
+    MinHeap dynamicEPSObjG;
+
 
     /*
      *  This function would be called from within the selectNext() function.
