@@ -85,6 +85,14 @@ public:
     //Look at region-region case for additional return type
     bool lookAhead(AttrHalfSeg2D &, Region2D &);//Look at region-region case for additional return type
 
+    bool coincident(Seg2D &);
+
+    bool currentExists(Poi2D &); // Adding Poi2D to make our life easier
+
+    bool poiOnSeg(Poi2D &);
+
+    bool poiInSeg(Poi2D &);
+
 private:
     // only one instance of ParallelObjectTraversal exist!
     ParallelObjectTraversal *pot;

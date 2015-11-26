@@ -1,39 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="CPP_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/planesweep project/Attribute.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/planesweep project/Obj2D.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/planesweep project/Object2D.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/planesweep project/ParallelObjectTraversal.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/planesweep project/PlaneSweep.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/planesweep project/Topic2/Implementation/Line2D.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/planesweep project/Topic2/Implementation/Number.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/planesweep project/Topic2/Implementation/Point2D.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/planesweep project/Topic2/Implementation/RobustGeometricPrimitives2D.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/planesweep project/main.cpp" isTestSource="false" />
-    </content>
+    <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library name="Header Search Paths">
-        <CLASSES>
-          <root url="file://C:/MinGW/include" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include-fixed" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include/c++" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include/objc" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include/ssp" />
-        </CLASSES>
-        <SOURCES>
-          <root url="file://C:/MinGW/include" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include-fixed" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include/c++" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include/objc" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include/ssp" />
-        </SOURCES>
+        <CLASSES />
+        <SOURCES />
       </library>
     </orderEntry>
   </component>
