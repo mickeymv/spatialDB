@@ -32,22 +32,74 @@ ParallelObjectTraversal::status  PlaneSweep::getStatus() {
     return getPot()->getStatus();
 }
 
-void PlaneSweep::calculateRelation(Seg2D) {
+void PlaneSweep::calculateRelation(Seg2D& seg2D) {
+
+    Seg2D& pred = getPredecessor(seg2D);
+    Seg2D& succ = getSuccessor(seg2D);
+
+    if(isRelation(seg2D,pred))
+    {
+        splitLines(seg2D,pred);
+    }
+    else if(isRelation(seg2D,succ))
+    {
+        splitLines(seg2D,succ);
+    }
 
 }
 
-//Assumption - firstSegment is from object F and secondSegment is from object G
-//Will add dynamic insertion after min heap class is inserted here
-void PlaneSweep::splitLines(Seg2D firstSegment, Seg2D secondSegment) {
-    if (Intersects(firstSegment, secondSegment)) {
-        Poi2D mp = IntersectionPoint(firstSegment, secondSegment);
-        Seg2D S11(firstSegment.p1, mp);
-        Seg2D S21(secondSegment.p1, mp);
-        Seg2D S12(mp, firstSegment.p2);
-        Seg2D S22(mp, secondSegment.p2);
+bool PlaneSweep::isRelation(Seg2D& firstSegment, Seg2D& secondSegment)
+{
+    if((Intersects(firstSegment, secondSegment))||(Touch(firstSegment, secondSegment))||(IsCollinearAndMeetsLeftEndpoint(firstSegment, secondSegment))||
+            (LiesOn(firstSegment, secondSegment) && IsCollinearAndCrossesLeftEndpoint(secondSegment, firstSegment) && IsCollinearAndCrossesRightEndpoint(secondSegment, firstSegment))||(IsCollinearAndMeetsRightEndpoint(firstSegment, secondSegment))||
+            (LiesOn(firstSegment,secondSegment)&&IsCollinearAndCrossesLeftEndpoint(secondSegment,firstSegment)&&IsCollinearAndCrossesRightEndpoint(firstSegment,secondSegment))||
+                (IsCollinearAndMeetsLeftEndpoint(secondSegment, firstSegment))||(LiesOn(secondSegment, firstSegment) && IsCollinearAndCrossesLeftEndpoint(firstSegment, secondSegment) && IsCollinearAndCrossesRightEndpoint(firstSegment, secondSegment))||(IsCollinearAndMeetsRightEndpoint(secondSegment, firstSegment))||
+            (IsCollinearAndMeetsRightEndpoint(secondSegment, firstSegment)))
+    {
+        return true;
+    }
+    return false;
+}
 
-        updateSweepLineStatus(firstSegment, S11);
-        updateSweepLineStatus(secondSegment, S21);
+void PlaneSweep::splitLines(Seg2D& firstSegment, Seg2D& secondSegment) {
+    if (Intersects(firstSegment, secondSegment)) {
+        if((isInObjF(firstSegment) && isInObjG(secondSegment))||(isInObjG(firstSegment)&&isInObjF(secondSegment)))
+        {
+            Poi2D mp = IntersectionPoint(firstSegment, secondSegment);
+            Seg2D S11(firstSegment.p1, mp);
+            Seg2D S21(secondSegment.p1, mp);
+            Seg2D S12(mp, firstSegment.p2);
+            Seg2D S22(mp, secondSegment.p2);
+
+            updateSweepLineStatus(firstSegment, S11);
+            updateSweepLineStatus(secondSegment, S21);
+
+            AttrHalfSeg2D attrHalfSeg11Right = new AttrHalfSeg2D(S11.ComputeRightHalfSegment());
+            AttrHalfSeg2D attrHalfSeg12Left =  new AttrHalfSeg2D(S12.ComputeLeftHalfSegment());
+            AttrHalfSeg2D attrHalfSeg12Right = new AttrHalfSeg2D(S12.ComputeRightHalfSegment());
+            AttrHalfSeg2D attrHalfSeg21Right = new AttrHalfSeg2D(S21.ComputeRightHalfSegment());
+            AttrHalfSeg2D attrHalfSeg22Left = new AttrHalfSeg2D(S22.ComputeLeftHalfSegment());
+            AttrHalfSeg2D attrHalfSeg22Right = new AttrHalfSeg2D(S22.ComputeRightHalfSegment());
+
+            if (isInObjF(firstSegment) && isInObjG(secondSegment))
+            {
+                dynamicEPSObjF.Insert(attrHalfSeg11Right);
+                dynamicEPSObjF.Insert(attrHalfSeg12Left);
+                dynamicEPSObjF.Insert(attrHalfSeg12Right);
+                dynamicEPSObjG.Insert(attrHalfSeg21Right);
+                dynamicEPSObjG.Insert(attrHalfSeg22Left);
+                dynamicEPSObjG.Insert(attrHalfSeg22Right);
+            }
+            else if(isInObjG(firstSegment)&&isInObjF(secondSegment))
+            {
+                dynamicEPSObjG.Insert(attrHalfSeg11Right);
+                dynamicEPSObjG.Insert(attrHalfSeg12Left);
+                dynamicEPSObjG.Insert(attrHalfSeg12Right);
+                dynamicEPSObjF.Insert(attrHalfSeg21Right);
+                dynamicEPSObjF.Insert(attrHalfSeg22Left);
+                dynamicEPSObjF.Insert(attrHalfSeg22Right);
+            }
+        }
 
     }
     else if (Touch(firstSegment, secondSegment)) {
@@ -58,11 +110,52 @@ void PlaneSweep::splitLines(Seg2D firstSegment, Seg2D secondSegment) {
         updateSweepLineStatus(firstSegment, S11);
         updateSweepLineStatus(secondSegment, S21);
 
-        if (LiesOnRightEndPointOfSegment(tp, secondSegment)) {
-            Seg2D S12(tp, firstSegment.p1);
-        }
-        else if (LiesOnRightEndPointOfSegment(tp, firstSegment)) {
-            Seg2D S22(tp, secondSegment.p2);
+        if((isInObjF(firstSegment) && isInObjG(secondSegment))||(isInObjG(firstSegment)&&isInObjF(secondSegment))) {
+            if (LiesOnRightEndPointOfSegment(tp, secondSegment)) {
+                Seg2D S12(tp, firstSegment.p2);
+                AttrHalfSeg2D attrHalfSeg11Right = new AttrHalfSeg2D(S11.ComputeRightHalfSegment());
+                AttrHalfSeg2D attrHalfSeg12Left =  new AttrHalfSeg2D(S12.ComputeLeftHalfSegment());
+                AttrHalfSeg2D attrHalfSeg12Right = new AttrHalfSeg2D(S12.ComputeRightHalfSegment());
+                AttrHalfSeg2D attrHalfSeg21Right = new AttrHalfSeg2D(S21.ComputeRightHalfSegment());
+
+                if (isInObjF(firstSegment) && isInObjG(secondSegment))
+                {
+                   dynamicEPSObjF.Insert(attrHalfSeg11Right);
+                    dynamicEPSObjF.Insert(attrHalfSeg12Left);
+                    dynamicEPSObjF.Insert(attrHalfSeg12Right);
+                    dynamicEPSObjG.Insert(attrHalfSeg21Right);
+                }
+                else if(isInObjG(firstSegment)&&isInObjF(secondSegment))
+                {
+                    dynamicEPSObjG.Insert(attrHalfSeg11Right);
+                    dynamicEPSObjG.Insert(attrHalfSeg12Left);
+                    dynamicEPSObjG.Insert(attrHalfSeg12Right);
+                    dynamicEPSObjF.Insert(attrHalfSeg21Right);
+                }
+
+            }
+            else if (LiesOnRightEndPointOfSegment(tp, firstSegment)) {
+                Seg2D S22(tp, secondSegment.p2);
+                AttrHalfSeg2D attrHalfSeg11Right = new AttrHalfSeg2D(S11.ComputeRightHalfSegment());
+                AttrHalfSeg2D attrHalfSeg21Right = new AttrHalfSeg2D(S21.ComputeRightHalfSegment());
+                AttrHalfSeg2D attrHalfSeg22Left = new AttrHalfSeg2D(S22.ComputeLeftHalfSegment());
+                AttrHalfSeg2D attrHalfSeg22Right = new AttrHalfSeg2D(S22.ComputeRightHalfSegment());
+
+                if (isInObjF(firstSegment) && isInObjG(secondSegment))
+                {
+                    dynamicEPSObjG.Insert(attrHalfSeg21Right);
+                    dynamicEPSObjG.Insert(attrHalfSeg22Left);
+                    dynamicEPSObjG.Insert(attrHalfSeg22Right);
+                    dynamicEPSObjF.Insert(attrHalfSeg11Right);
+                }
+                else if(isInObjG(firstSegment)&&isInObjF(secondSegment))
+                {
+                    dynamicEPSObjF.Insert(attrHalfSeg21Right);
+                    dynamicEPSObjF.Insert(attrHalfSeg22Left);
+                    dynamicEPSObjF.Insert(attrHalfSeg22Right);
+                    dynamicEPSObjG.Insert(attrHalfSeg11Right);
+                }
+            }
         }
     }
     else if (IsCollinearAndMeetsLeftEndpoint(firstSegment, secondSegment)) {
@@ -71,6 +164,28 @@ void PlaneSweep::splitLines(Seg2D firstSegment, Seg2D secondSegment) {
 
         updateSweepLineStatus(firstSegment, S11);
         updateSweepLineStatus(secondSegment, S11);
+        if((isInObjF(firstSegment) && isInObjG(secondSegment))||(isInObjG(firstSegment)&&isInObjF(secondSegment))) {
+
+            AttrHalfSeg2D attrHalfSeg11Right = new AttrHalfSeg2D(S11.ComputeRightHalfSegment());
+            AttrHalfSeg2D attrHalfSeg12Left = new AttrHalfSeg2D(S12.ComputeLeftHalfSegment());
+            AttrHalfSeg2D attrHalfSeg12Right = new AttrHalfSeg2D(S12.ComputeRightHalfSegment());
+
+            if (isInObjF(firstSegment) && isInObjG(secondSegment))
+            {
+                dynamicEPSObjF.Insert(attrHalfSeg11Right);
+                dynamicEPSObjF.Insert(attrHalfSeg12Left);
+                dynamicEPSObjF.Insert(attrHalfSeg12Right);
+                dynamicEPSObjG.Insert(attrHalfSeg11Right); // Is it required?? Should it be S21??
+            }
+            else if(isInObjG(firstSegment)&&isInObjF(secondSegment))
+            {
+                dynamicEPSObjG.Insert(attrHalfSeg11Right);
+                dynamicEPSObjG.Insert(attrHalfSeg12Left);
+                dynamicEPSObjG.Insert(attrHalfSeg12Right);
+                dynamicEPSObjF.Insert(attrHalfSeg11Right); // Is it required?? Should it be S21??
+            }
+
+        }
     }
     else if (IsCollinearAndMeetsLeftEndpoint(secondSegment, firstSegment)) {
         Seg2D S21(secondSegment.p1, firstSegment.p2);
@@ -78,24 +193,109 @@ void PlaneSweep::splitLines(Seg2D firstSegment, Seg2D secondSegment) {
 
         updateSweepLineStatus(secondSegment, S21);
         updateSweepLineStatus(firstSegment, S21);
+
+        if((isInObjF(firstSegment) && isInObjG(secondSegment))||(isInObjG(firstSegment)&&isInObjF(secondSegment))) {
+
+            AttrHalfSeg2D attrHalfSeg21Right = new AttrHalfSeg2D(S21.ComputeRightHalfSegment());
+            AttrHalfSeg2D attrHalfSeg22Left = new AttrHalfSeg2D(S22.ComputeLeftHalfSegment());
+            AttrHalfSeg2D attrHalfSeg22Right = new AttrHalfSeg2D(S22.ComputeRightHalfSegment());
+
+            if (isInObjF(secondSegment) && isInObjG(firstSegment))
+            {
+                dynamicEPSObjF.Insert(attrHalfSeg21Right);
+                dynamicEPSObjF.Insert(attrHalfSeg22Left);
+                dynamicEPSObjF.Insert(attrHalfSeg22Right);
+                dynamicEPSObjG.Insert(attrHalfSeg21Right); // Is it required?? Should it be S11??
+            }
+            else if(isInObjG(secondSegment)&&isInObjF(firstSegment))
+            {
+                dynamicEPSObjG.Insert(attrHalfSeg21Right);
+                dynamicEPSObjG.Insert(attrHalfSeg22Left);
+                dynamicEPSObjG.Insert(attrHalfSeg22Right);
+                dynamicEPSObjF.Insert(attrHalfSeg21Right); // Is it required?? Should it be S11??
+            }
+
+        }
     }
     else if (LiesOn(firstSegment, secondSegment) && IsCollinearAndCrossesLeftEndpoint(secondSegment, firstSegment) &&
              IsCollinearAndCrossesRightEndpoint(secondSegment, firstSegment)) {
         Seg2D S11(firstSegment.p1, secondSegment.p1);
         Seg2D S12(secondSegment.p1, secondSegment.p2);
-        Seg2D S13(firstSegment.p2, secondSegment.p2);
+        Seg2D S13(secondSegment.p2, firstSegment.p2);
 
         updateSweepLineStatus(firstSegment, S11);
         updateSweepLineStatus(secondSegment, S12);
+
+        if((isInObjF(firstSegment) && isInObjG(secondSegment))||(isInObjG(firstSegment)&&isInObjF(secondSegment))) {
+
+            AttrHalfSeg2D attrHalfSeg11Right = new AttrHalfSeg2D(S11.ComputeRightHalfSegment());
+            AttrHalfSeg2D attrHalfSeg12Left = new AttrHalfSeg2D(S12.ComputeLeftHalfSegment());
+            AttrHalfSeg2D attrHalfSeg12Right = new AttrHalfSeg2D(S12.ComputeRightHalfSegment());
+            AttrHalfSeg2D attrHalfSeg13Left = new AttrHalfSeg2D(S13.ComputeLeftHalfSegment());
+            AttrHalfSeg2D attrHalfSeg13Right = new AttrHalfSeg2D(S13.ComputeRightHalfSegment());
+
+            if (isInObjF(firstSegment) && isInObjG(secondSegment))
+            {
+                dynamicEPSObjF.Insert(attrHalfSeg11Right);
+                dynamicEPSObjF.Insert(attrHalfSeg12Left);
+                dynamicEPSObjF.Insert(attrHalfSeg12Right);
+                dynamicEPSObjF.Insert(attrHalfSeg13Left);
+                dynamicEPSObjF.Insert(attrHalfSeg13Right);
+                dynamicEPSObjG.Insert(attrHalfSeg12Left); // Is it required?? Should it be S22??
+                dynamicEPSObjG.Insert(attrHalfSeg12Right); // Is it required?? Should it be S22??
+            }
+            else if(isInObjG(firstSegment)&&isInObjF(secondSegment))
+            {
+                dynamicEPSObjG.Insert(attrHalfSeg11Right);
+                dynamicEPSObjG.Insert(attrHalfSeg12Left);
+                dynamicEPSObjG.Insert(attrHalfSeg12Right);
+                dynamicEPSObjG.Insert(attrHalfSeg13Left);
+                dynamicEPSObjG.Insert(attrHalfSeg13Right);
+                dynamicEPSObjF.Insert(attrHalfSeg12Left); // Is it required?? Should it be S22??
+                dynamicEPSObjF.Insert(attrHalfSeg12Right); // Is it required?? Should it be S22??
+            }
+
+        }
     }
     else if (LiesOn(secondSegment, firstSegment) && IsCollinearAndCrossesLeftEndpoint(firstSegment, secondSegment) &&
              IsCollinearAndCrossesRightEndpoint(firstSegment, secondSegment)) {
         Seg2D S21(secondSegment.p1, firstSegment.p1);
         Seg2D S22(firstSegment.p1, firstSegment.p2);
-        Seg2D S23(firstSegment.p2, secondSegment.p2);
+        Seg2D S23(secondSegment.p2, firstSegment.p2);
 
-        updateSweepLineStatus(firstSegment, S21);
-        updateSweepLineStatus(secondSegment, S22);
+        updateSweepLineStatus(firstSegment, S22);
+        updateSweepLineStatus(secondSegment, S21);
+
+        if((isInObjF(firstSegment) && isInObjG(secondSegment))||(isInObjG(firstSegment)&&isInObjF(secondSegment))) {
+
+            AttrHalfSeg2D attrHalfSeg21Right = new AttrHalfSeg2D(S21.ComputeRightHalfSegment());
+            AttrHalfSeg2D attrHalfSeg22Left = new AttrHalfSeg2D(S22.ComputeLeftHalfSegment());
+            AttrHalfSeg2D attrHalfSeg22Right = new AttrHalfSeg2D(S22.ComputeRightHalfSegment());
+            AttrHalfSeg2D attrHalfSeg23Left = new AttrHalfSeg2D(S23.ComputeLeftHalfSegment());
+            AttrHalfSeg2D attrHalfSeg23Right = new AttrHalfSeg2D(S23.ComputeRightHalfSegment());
+
+            if (isInObjF(secondSegment) && isInObjG(firstSegment))
+            {
+                dynamicEPSObjF.Insert(attrHalfSeg21Right);
+                dynamicEPSObjF.Insert(attrHalfSeg22Left);
+                dynamicEPSObjF.Insert(attrHalfSeg22Right);
+                dynamicEPSObjF.Insert(attrHalfSeg23Left);
+                dynamicEPSObjF.Insert(attrHalfSeg23Right);
+                dynamicEPSObjG.Insert(attrHalfSeg22Left); // Is it required?? Should it be S12??
+                dynamicEPSObjG.Insert(attrHalfSeg22Right); // Is it required?? Should it be S12??
+            }
+            else if(isInObjG(secondSegment)&&isInObjF(firstSegment))
+            {
+                dynamicEPSObjG.Insert(attrHalfSeg21Right);
+                dynamicEPSObjG.Insert(attrHalfSeg22Left);
+                dynamicEPSObjG.Insert(attrHalfSeg22Right);
+                dynamicEPSObjG.Insert(attrHalfSeg23Left);
+                dynamicEPSObjG.Insert(attrHalfSeg23Right);
+                dynamicEPSObjF.Insert(attrHalfSeg22Left); // Is it required?? Should it be S12??
+                dynamicEPSObjF.Insert(attrHalfSeg22Right); // Is it required?? Should it be S12??
+            }
+
+        }
     }
     else if (IsCollinearAndMeetsRightEndpoint(firstSegment, secondSegment)) {
         Seg2D S11(firstSegment.p1, secondSegment.p1);
@@ -103,6 +303,32 @@ void PlaneSweep::splitLines(Seg2D firstSegment, Seg2D secondSegment) {
 
         updateSweepLineStatus(firstSegment, S11);
         updateSweepLineStatus(secondSegment, S12);
+
+        if((isInObjF(firstSegment) && isInObjG(secondSegment))||(isInObjG(firstSegment)&&isInObjF(secondSegment))) {
+
+            AttrHalfSeg2D attrHalfSeg11Right = new AttrHalfSeg2D(S11.ComputeRightHalfSegment());
+            AttrHalfSeg2D attrHalfSeg12Left = new AttrHalfSeg2D(S12.ComputeLeftHalfSegment());
+            AttrHalfSeg2D attrHalfSeg12Right = new AttrHalfSeg2D(S12.ComputeRightHalfSegment());
+
+            if (isInObjF(firstSegment) && isInObjG(secondSegment))
+            {
+                dynamicEPSObjF.Insert(attrHalfSeg11Right);
+                dynamicEPSObjF.Insert(attrHalfSeg12Left);
+                dynamicEPSObjF.Insert(attrHalfSeg12Right);
+                dynamicEPSObjG.Insert(attrHalfSeg12Left); // Is it required?? Should it be S22??
+                dynamicEPSObjG.Insert(attrHalfSeg12Right); // Is it required?? Should it be S22??
+            }
+            else if(isInObjG(firstSegment)&&isInObjF(secondSegment))
+            {
+                dynamicEPSObjG.Insert(attrHalfSeg11Right);
+                dynamicEPSObjG.Insert(attrHalfSeg12Left);
+                dynamicEPSObjG.Insert(attrHalfSeg12Right);
+                dynamicEPSObjF.Insert(attrHalfSeg12Left); // Is it required?? Should it be S22??
+                dynamicEPSObjF.Insert(attrHalfSeg12Right); // Is it required?? Should it be S22??
+            }
+
+        }
+
     }
     else if (IsCollinearAndMeetsRightEndpoint(secondSegment, firstSegment)) {
         Seg2D S21(secondSegment.p1, firstSegment.p1);
@@ -110,6 +336,115 @@ void PlaneSweep::splitLines(Seg2D firstSegment, Seg2D secondSegment) {
 
         updateSweepLineStatus(firstSegment, S22);
         updateSweepLineStatus(secondSegment, S21);
+
+        if((isInObjF(firstSegment) && isInObjG(secondSegment))||(isInObjG(firstSegment)&&isInObjF(secondSegment))) {
+
+            AttrHalfSeg2D attrHalfSeg21Right = new AttrHalfSeg2D(S21.ComputeRightHalfSegment());
+            AttrHalfSeg2D attrHalfSeg22Left = new AttrHalfSeg2D(S22.ComputeLeftHalfSegment());
+            AttrHalfSeg2D attrHalfSeg22Right = new AttrHalfSeg2D(S22.ComputeRightHalfSegment());
+
+            if (isInObjF(secondSegment) && isInObjG(firstSegment))
+            {
+                dynamicEPSObjF.Insert(attrHalfSeg21Right);
+                dynamicEPSObjF.Insert(attrHalfSeg22Left);
+                dynamicEPSObjF.Insert(attrHalfSeg22Right);
+                dynamicEPSObjG.Insert(attrHalfSeg22Left); // Is it required?? Should it be S12??
+                dynamicEPSObjG.Insert(attrHalfSeg22Right); // Is it required?? Should it be S12??
+            }
+            else if(isInObjG(secondSegment)&&isInObjF(firstSegment))
+            {
+                dynamicEPSObjG.Insert(attrHalfSeg21Right);
+                dynamicEPSObjG.Insert(attrHalfSeg22Left);
+                dynamicEPSObjG.Insert(attrHalfSeg22Right);
+                dynamicEPSObjF.Insert(attrHalfSeg22Left); // Is it required?? Should it be S12??
+                dynamicEPSObjF.Insert(attrHalfSeg22Right); // Is it required?? Should it be S12??
+            }
+
+        }
+    }
+    else if(LiesOn(firstSegment,secondSegment)&&IsCollinearAndCrossesLeftEndpoint(secondSegment,firstSegment)&&IsCollinearAndCrossesRightEndpoint(firstSegment,secondSegment))
+    {
+        Seg2D S11(firstSegment.p1,secondSegment.p1);
+        Seg2D S12(secondSegment.p1,firstSegment.p2);
+        Seg2D S22(firstSegment.p2,secondSegment.p2);
+
+        updateSweepLineStatus(firstSegment,S11);
+        updateSweepLineStatus(secondSegment,S12);
+
+        if((isInObjF(firstSegment) && isInObjG(secondSegment))||(isInObjG(firstSegment)&&isInObjF(secondSegment))) {
+
+            AttrHalfSeg2D attrHalfSeg11Right = new AttrHalfSeg2D(S11.ComputeRightHalfSegment());
+            AttrHalfSeg2D attrHalfSeg12Left =  new AttrHalfSeg2D(S12.ComputeLeftHalfSegment());
+            AttrHalfSeg2D attrHalfSeg12Right = new AttrHalfSeg2D(S12.ComputeRightHalfSegment());
+            AttrHalfSeg2D attrHalfSeg22Left = new AttrHalfSeg2D(S22.ComputeLeftHalfSegment());
+            AttrHalfSeg2D attrHalfSeg22Right = new AttrHalfSeg2D(S22.ComputeRightHalfSegment());
+
+            if (isInObjF(firstSegment) && isInObjG(secondSegment))
+            {
+                dynamicEPSObjF.Insert(attrHalfSeg11Right);
+                dynamicEPSObjF.Insert(attrHalfSeg12Left);
+                dynamicEPSObjF.Insert(attrHalfSeg12Right);
+                dynamicEPSObjG.Insert(attrHalfSeg12Left); // Is it required?? Should it be S21??
+                dynamicEPSObjG.Insert(attrHalfSeg12Right); // Is it required?? Should it be S21??
+                dynamicEPSObjG.Insert(attrHalfSeg22Left);
+                dynamicEPSObjG.Insert(attrHalfSeg22Right);
+            }
+            else if(isInObjG(firstSegment)&&isInObjF(secondSegment))
+            {
+                dynamicEPSObjG.Insert(attrHalfSeg11Right);
+                dynamicEPSObjG.Insert(attrHalfSeg12Left);
+                dynamicEPSObjG.Insert(attrHalfSeg12Right);
+                dynamicEPSObjF.Insert(attrHalfSeg12Left); // Is it required?? Should it be S21??
+                dynamicEPSObjF.Insert(attrHalfSeg12Right); // Is it required?? Should it be S21??
+                dynamicEPSObjF.Insert(attrHalfSeg22Left);
+                dynamicEPSObjF.Insert(attrHalfSeg22Right);
+            }
+
+        }
+
+
+    }
+    else if(LiesOn(secondSegment,firstSegment)&&IsCollinearAndCrossesLeftEndpoint(firstSegment,secondSegment)&&IsCollinearAndCrossesRightEndpoint(secondSegment,firstSegment))
+    {
+        Seg2D S21(secondSegment.p1,firstSegment.p1);
+        Seg2D S22(firstSegment.p1,secondSegment.p2);
+        Seg2D S12(secondSegment.p2,firstSegment.p2);
+
+        updateSweepLineStatus(firstSegment,S22);
+        updateSweepLineStatus(secondSegment,S21);
+
+        if((isInObjF(firstSegment) && isInObjG(secondSegment))||(isInObjG(firstSegment)&&isInObjF(secondSegment))) {
+
+            AttrHalfSeg2D attrHalfSeg21Right = new AttrHalfSeg2D(S21.ComputeRightHalfSegment());
+            AttrHalfSeg2D attrHalfSeg22Left =  new AttrHalfSeg2D(S22.ComputeLeftHalfSegment());
+            AttrHalfSeg2D attrHalfSeg22Right = new AttrHalfSeg2D(S22.ComputeRightHalfSegment());
+            AttrHalfSeg2D attrHalfSeg12Left = new AttrHalfSeg2D(S12.ComputeLeftHalfSegment());
+            AttrHalfSeg2D attrHalfSeg12Right = new AttrHalfSeg2D(S12.ComputeRightHalfSegment());
+
+            if (isInObjF(secondSegment) && isInObjG(firstSegment))
+            {
+                dynamicEPSObjF.Insert(attrHalfSeg21Right);
+                dynamicEPSObjF.Insert(attrHalfSeg22Left);
+                dynamicEPSObjF.Insert(attrHalfSeg22Right);
+                dynamicEPSObjG.Insert(attrHalfSeg22Left); // Is it required?? Should it be S21??
+                dynamicEPSObjG.Insert(attrHalfSeg22Right); // Is it required?? Should it be S21??
+                dynamicEPSObjG.Insert(attrHalfSeg12Left);
+                dynamicEPSObjG.Insert(attrHalfSeg12Right);
+            }
+            else if(isInObjG(secondSegment)&&isInObjF(firstSegment))
+            {
+                dynamicEPSObjG.Insert(attrHalfSeg21Right);
+                dynamicEPSObjG.Insert(attrHalfSeg22Left);
+                dynamicEPSObjG.Insert(attrHalfSeg22Right);
+                dynamicEPSObjF.Insert(attrHalfSeg22Left); // Is it required?? Should it be S21??
+                dynamicEPSObjF.Insert(attrHalfSeg22Right); // Is it required?? Should it be S21??
+                dynamicEPSObjF.Insert(attrHalfSeg11Left);
+                dynamicEPSObjF.Insert(attrHalfSeg11Left);
+            }
+
+        }
+
+
     }
 
 }

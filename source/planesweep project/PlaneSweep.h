@@ -135,7 +135,7 @@ private:
      *  in the sweepLineStatus. If it does, it calls the functions
      *  splitLines().
      */
-    void calculateRelation(Seg2D);
+    void calculateRelation(Seg2D&);
 
 
     /*
@@ -145,14 +145,29 @@ private:
      *  The insertIntoDynamicEPS() function is just the insert() function for the
      *  two different min-heaps for the objects under consideration.
      */
-    void splitLines(Seg2D firstSegment, Seg2D secondSegment);
+    void splitLines(Seg2D& firstSegment, Seg2D& secondSegment);
 
     /*
      * This function is called within the splitLines function and would update the
      * sweepLineStatus data structure with the new updated split segment.
      */
-    void updateSweepLineStatus(Seg2D segmentToBeReplaced, Seg2D segmentToReplaceWith);
+    void updateSweepLineStatus(Seg2D& segmentToBeReplaced, Seg2D& segmentToReplaceWith);
 
+    /*Checks whether the given segments are within an object
+     */
+    bool isInObjF(Seg2D&);
+    bool isInObjG(Seg2D&);
+
+    /*
+     * Functions for getting predecessor and getting successor
+     */
+    Seg2D& getPredecessor(Seg2D&);
+    Seg2D& getSuccessor(Seg2D&);
+
+    /*
+     * Function for checking if a relation exists between two segments
+     */
+    bool isRelation(Seg2D&, Seg2D&);
 };
 
 
