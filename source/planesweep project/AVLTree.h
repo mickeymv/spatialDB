@@ -31,7 +31,7 @@ public:
  
 private:
     AVLnode<T> *root;
- 
+    AVLTree<T>* Find                ( AVLnode<T> *n, T val);
     AVLnode<T>* rotateLeft          ( AVLnode<T> *a );
     AVLnode<T>* rotateRight         ( AVLnode<T> *a );
     AVLnode<T>* rotateLeftThenRight ( AVLnode<T> *n );
@@ -44,6 +44,18 @@ private:
     void inOrder					( AVLnode<T> *n	);
 };
  
+template <class T>
+ AVLnode<T>* AVLTree<T>::Find(AVLnode<T> *n, T val) {
+     if ( n != NULL ) {
+         if(n->key > val) 
+             return(Find(n->left, val);
+         if(n->key < val)
+             return(Find(n->right, val);
+         return(n);
+         }
+    return(NULL);   
+}
+
 /* AVL class definition */
 template <class T>
 void AVLTree<T>::rebalance(AVLnode<T> *n) {
