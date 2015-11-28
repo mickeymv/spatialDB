@@ -141,7 +141,7 @@ private:
      *  in the sweepLineStatus. If it does, it calls the functions
      *  splitLines().
      */
-    void calculateRelation(Seg2D&);
+    bool calculateRelation(Seg2D&);
 
 
     /*

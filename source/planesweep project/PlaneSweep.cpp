@@ -57,16 +57,39 @@ ParallelObjectTraversal::status  PlaneSweep::getStatus() {
     return getPot()->getStatus();
 }
 
-void PlaneSweep::calculateRelation(Seg2D& seg2D) {
-    Seg2D& pred = getPredecessor(seg2D);
-    Seg2D& succ = getSuccessor(seg2D);
+void PlaneSweep::addLeft(Seg2D &seg2D) {
+    if (calculateRelation(seg2D)) {
+        /* This means there is an overlap/colleanearity
+            with the added segment and segments already in
+            sweepLineStatus. If so, calculateRelation()
+            would automatically add the segment to the
+            sweepLineStatus after doing the necessary splits.
+         */
+         return;
+    } else {
+        sweepLineStatus->insert(seg2D);
+    }
+}
+
+void PlaneSweep::delRight(Seg2D &seg2D) {
+        sweepLineStatus->deleteKey(seg2D);
+}
+
+bool PlaneSweep::calculateRelation(Seg2D &seg2D) {
+//change the name of the variable from seg2D
+    Seg2D &pred = getPredecessor(seg2D);
+    Seg2D &succ = getSuccessor(seg2D);
 
     if (isRelation(seg2D, pred)) {
         splitLines(seg2D, pred);
+        return true;
     }
     else if (isRelation(seg2D, succ)) {
         splitLines(seg2D, succ);
+        return true;
     }
+
+    return false;
 
 }
 
@@ -566,15 +589,6 @@ AttrHalfSeg2D PlaneSweep::getAttrHalfSegEvent(ParallelObjectTraversal::object ob
 
 
 /*
-
-
-Obj2D PlaneSweep::getEvent(Object2D obj)
-{
-    //Return either a poi2D or a seg2D depending on the object combination and the
-    // sweep line status instance.
-    ObjectIterator * pos = getPot()->getObjIterator(obj);
-    return *(pos);
-}
 
 
 void PlaneSweep::add_left(Seg2D& seg2D)
