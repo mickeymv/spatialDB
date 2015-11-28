@@ -143,7 +143,7 @@ void ParallelObjectTraversal::selectFirst() {
     }
 }
 
-"Object2D.comp" getNextMin() {
+AttrHalfSeg2D getNextMin() {
 	obj11 = objFIterator->getCurrent();
 	obj21 = objGIterator->getCurrent();
 	obj12 = objFIterator->getNext();

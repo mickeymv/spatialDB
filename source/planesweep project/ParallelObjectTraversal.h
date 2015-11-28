@@ -30,7 +30,7 @@ public:
 
     ObjectIterator *getObjIterator(ParallelObjectTraversal::object);
 	// need to finalise the return type
-	"Object2D.comp" getNext();
+	AttrHalfSeg2D getNextMin();
 
     typedef enum {
         none, first, second, both

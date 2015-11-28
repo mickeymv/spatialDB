@@ -28,24 +28,22 @@ int findLeast() {
 
 }
 
-void PlaneSweep::selectNext(bool point2d) {
-    //needs implementation based on object types
-    if (point2D || findLeast() == 1) {
-        getPot()->selectNext();
-    }
+void PlaneSweep::selectNext() {
+	if (findLeast() == 1) {
+		getPot()->selectNext();
+	}
     else {
-        AttrHalfSeg2D objD, objD1, objD2;
+		AttrHalfSeg2D objD, objD1, objD2;
+		
+		objD1 = dynamicEPSObjF->GetMin();
+		objD2 = dynamicEPSObjG->GetMin();
+		if (objD1 < objD2) {
+			dynamicEPSObjF->DeleteMin();
+		} else {
+			dynamicEPSObjG->DeleteMin();
+		}
+	}
 
-        objD1 = dynamicEPSObjF->GetMin();
-        objD2 = dynamicEPSObjG->GetMin();
-        if (objD1 < objD2) {
-            objD = objD1;
-            dynamicEPSObjF->DeleteMin();
-        } else {
-            objD = objD2;
-            dynamicEPSObjG->DeleteMin();
-        }
-    }
 }
 
 ParallelObjectTraversal::object  PlaneSweep::getObject() {
@@ -59,10 +57,9 @@ ParallelObjectTraversal::status  PlaneSweep::getStatus() {
     return getPot()->getStatus();
 }
 
-void PlaneSweep::calculateRelation(Seg2D &seg2D) {
-//change the name of the variable from seg2D
-    Seg2D &pred = getPredecessor(seg2D);
-    Seg2D &succ = getSuccessor(seg2D);
+void PlaneSweep::calculateRelation(Seg2D& seg2D) {
+    Seg2D& pred = getPredecessor(seg2D);
+    Seg2D& succ = getSuccessor(seg2D);
 
     if (isRelation(seg2D, pred)) {
         splitLines(seg2D, pred);

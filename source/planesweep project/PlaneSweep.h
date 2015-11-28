@@ -39,11 +39,13 @@ public:
      * Should call the findLeast function within it to check whether to
      * increment the static EPS (objects themselves) or the dynamic EPS
      * (the min-heaps for the objects).
-	 * it takes a boolean paramenter indicating the spatial object type.
-	 * if it is a line or a region, then the selectNext should also consider
-	 * the dynamic EPS
+	 * for any intersection point between 2 attrib half-segments,
+	 * there are two dynamic attrib half segments associated with each of 
+	 * two region objects. Even though the cardinal coordinates are same, 
+	 * it takes 4 iterations of selectNext to move ahead from the intersection
+	 * point, as each attrib half seg is distinct.
      */
-    void selectNext(bool point2d);
+    void selectNext();
 
     //Return the values of the object or status variables from the ParallelObjectTraversal Class
     ParallelObjectTraversal::object getObject();
