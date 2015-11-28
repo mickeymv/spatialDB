@@ -29,6 +29,8 @@ public:
     status getStatus();
 
     ObjectIterator *getObjIterator(int object);
+	// need to finalise the return type
+	"Object2D.comp" getNext();
 
     typedef enum {
         none, first, second, both

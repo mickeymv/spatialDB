@@ -143,6 +143,21 @@ void ParallelObjectTraversal::selectFirst() {
     }
 }
 
+"Object2D.comp" getNextMin() {
+	obj11 = objFIterator->getCurrent();
+	obj21 = objGIterator->getCurrent();
+	obj12 = objFIterator->getNext();
+	obj22 = objGIterator->getNext();
+	if(object_value == first)
+		return (obj12<obj21? obj12: obj21);
+	if(object_value == second)
+		return (obj11<obj22? obj11: obj22);
+	if(object_value == both)
+		return (obj12<obj22? obj12: obj22);
+	return NULL;
+
+}
+
 void ParallelObjectTraversal::selectNext() {
     // increments the iterators for objects F and G
     // depending on the value of 'object' variable

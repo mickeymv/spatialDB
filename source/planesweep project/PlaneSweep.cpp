@@ -15,10 +15,35 @@ PlaneSweep::PlaneSweep(Object2D objF, Object2D objG) {
 PlaneSweep::~PlaneSweep() {
     delete pot;
 }
-
-void PlaneSweep::selectNext() {
+int findLeast() {
+	objS = getPot->getNextMin();
+	objD1 = dynamicEPSObjF->GetMin();
+	objD2 = dynamicEPSObjG->GetMin();
+	objD = (objD1 < objD2)? (objD1): (objD2);
+	
+	if(objS < objD)
+		return 1;
+	return 2;
+	
+}
+void PlaneSweep::selectNext(bool point2d) {
     //needs implementation based on object types
-    return getPot()->selectNext();
+	if (point2D || findLeast() == 1) {
+		getPot()->selectNext();
+	}
+    else {
+		AttrHalfSeg2D objD, objD1, objD2;
+		
+		objD1 = dynamicEPSObjF->GetMin();
+		objD2 = dynamicEPSObjG->GetMin();
+		if (objD1 < objD2) {
+			objD = objD1;
+			dynamicEPSObjF->DeleteMin();
+		} else {
+			objD = objD2;
+			dynamicEPSObjG->DeleteMin();
+		}
+	}
 }
 
 ParallelObjectTraversal::object  PlaneSweep::getObject() {
@@ -33,7 +58,7 @@ ParallelObjectTraversal::status  PlaneSweep::getStatus() {
 }
 
 void PlaneSweep::calculateRelation(Seg2D& seg2D) {
-
+//change the name of the variable from seg2D
     Seg2D& pred = getPredecessor(seg2D);
     Seg2D& succ = getSuccessor(seg2D);
 

@@ -39,8 +39,11 @@ public:
      * Should call the findLeast function within it to check whether to
      * increment the static EPS (objects themselves) or the dynamic EPS
      * (the min-heaps for the objects).
+	 * it takes a boolean paramenter indicating the spatial object type.
+	 * if it is a line or a region, then the selectNext should also consider
+	 * the dynamic EPS
      */
-    void selectNext();
+    void selectNext(bool point2d);
 
     //Return the values of the object or status variables from the ParallelObjectTraversal Class
     ParallelObjectTraversal::object getObject();
@@ -118,8 +121,9 @@ private:
 
     /*
      *  This function would be called from within the selectNext() function.
-     *  What this would do is find the least poi2D for the PlaneSweepLineStatus
-     *  to stop next.
+     *  What this would do is find if the next least poi2D for the 
+     *  PlaneSweepLineStatus to stop next, belongs to the static EPS of the 
+	 *  dynamic EPS.
      *  If the next point is from the static Event Point schedule (EPS) (which
      *  is either of the two objects (objF/objG) ), we update the iterator of the
      *  corresponding object ( POT.selectNext() ) . If it is from the dynamic
@@ -128,7 +132,7 @@ private:
      *  Why we need this is to obtain the next x-coordinate point to stop at for the
      *  PlaneSweepLineStatus.
      */
-    Poi2D findLeast();
+    int findLeast();
 
     /*
      *  Checks whether a Seg2D has intersections with any of the predecessor and successor already
