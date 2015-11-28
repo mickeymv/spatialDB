@@ -28,10 +28,10 @@ public:
     void deleteKey(const T key);
     void printBalance();
     void inOrder();
- 
+    AVLTree<T>* FindKey( const T val);
+    
 private:
     AVLnode<T> *root;
-    AVLTree<T>* Find                ( AVLnode<T> *n, T val);
     AVLnode<T>* rotateLeft          ( AVLnode<T> *a );
     AVLnode<T>* rotateRight         ( AVLnode<T> *a );
     AVLnode<T>* rotateLeftThenRight ( AVLnode<T> *n );
@@ -44,17 +44,6 @@ private:
     void inOrder					( AVLnode<T> *n	);
 };
  
-template <class T>
- AVLnode<T>* AVLTree<T>::Find(AVLnode<T> *n, T val) {
-     if ( n != NULL ) {
-         if(n->key > val) 
-             return(Find(n->left, val);
-         if(n->key < val)
-             return(Find(n->right, val);
-         return(n);
-         }
-    return(NULL);   
-}
 
 /* AVL class definition */
 template <class T>
@@ -219,6 +208,23 @@ bool AVLTree<T>::insert(T key) {
     }
  
     return true;
+}
+
+template <class T>
+ AVLnode<T>* AVLTree<T>::FindKey(const T val) {
+     if ( root != NULL ) {
+		 AVLnode<T> *n = root;
+    	 
+		 while(n) {
+			 if(n->key == val)
+				 return n;			
+			 if(n->key > val)
+				 n = n->left;
+			 else
+				 n = n->right;
+			 }
+		 }
+    return(NULL);   
 }
 
 template <class T>
