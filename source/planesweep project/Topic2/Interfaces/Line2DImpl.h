@@ -19,9 +19,10 @@
 
 #ifndef Line2DImpl_H
 #define Line2DImpl_H
+
 #include "Line2D.h"
 
-class Line2DImpl : protected Line2D 
+class Line2DImpl : public Line2D 
 {
   public:
     //++++++++++++++++++++++++++++
@@ -37,19 +38,20 @@ class Line2DImpl : protected Line2D
     // formal definition of this data type.
     Line2DImpl(std::vector<Seg2D> segs);
 
-    // Constructor for complex Line structure. It takes as input a string that represent the textually represents
-    //        the input vector of Segments.
+    // Constructor for complex region structure. It takes as input a string name that can represent either :
+    // 1) file name which contains the vector of segments from which to construct the region object 
+    // 2) string the textually represents the input vector of segments.
     //
-    // The grammar for representing a Segment vector is structured as follows:
-    // Expression       := '(' Segment (',' [WhiteSpace] Segment)* ')'
-    // Segment          := '(' '(' Number ',' [WhiteSpace] Number ')' ',' [WhiteSpace] '(' Number ',' [WhiteSpace] Number ')' ')'
-    // Number           := Sign ((DigitWithoutZero Digit* '.' Digit+) | ('0' '.' Digit+ ))
-    // Sign             := ['+' | '-']
-    // WhiteSpace       := ' '
+    // The grammar for representing a segment vector in both cases 1 and 2 are structured as follows:
+    // Expression := '(' Segment+ ')'
+    // Segment:= '(' Point ',' Point ')'
+    // Point:= '(' Number ',' Number ')'
+    // Number := Sign ((DigitWithoutZero Digit* '.' Digit+) | ('0' '.' Digit+ ))
+    // Sign := ['+' | '-']
     // DigitWithoutZero := '1' | '2' |'3' | '4' | '5' | '6' | '7' | '8' | '9'
-    // Digit            := '0' | DigitWithoutZero
+    // Digit:= '0' | DigitWithoutZero
     //
-    // example for segment list of seg1 and seg2 here is: (((1,2),(3,4)),((5,6),(7,8))) 
+    // example for segment list of seg1 and seg2 here is: (((1,2),(3,4)),((5,6),(7,8)))
     Line2DImpl(std::string textRepresentation);
 
     // Copy constructor that constructs a Line2D object from a given Line2D
@@ -101,15 +103,15 @@ class Line2DImpl : protected Line2D
 
         // Increment/decrement operators '++', '--'
         ConstBlockIterator& operator ++ ();   // prefix
-        ConstBlockIterator& operator ++ (int); // postfix
+        ConstBlockIterator operator ++ (int); // postfix
         ConstBlockIterator& operator -- ();   // prefix
-        ConstBlockIterator& operator -- (int); // postfix
+        ConstBlockIterator operator -- (int); // postfix
 
         // Dereferencing operators that return the value at the constant block
         // iterator position. Dereferencing is only allowed if the iterator
         // points to a block. The dereferenced value cannot be changed.
-        const std::vector<HalfSeg2D*>& operator *() const;
-        const std::vector<HalfSeg2D*>* operator ->() const;
+        const Line2DImpl& operator *() const;
+        const Line2DImpl* operator ->() const;
 
         // Comparison operators that compare a constant block iterator position
         // with another const block iterator position "rhs"
@@ -119,10 +121,8 @@ class Line2DImpl : protected Line2D
         bool operator <= (const ConstBlockIterator& rhs) const;
         bool operator >  (const ConstBlockIterator& rhs) const;
         bool operator >= (const ConstBlockIterator& rhs) const;
-        
-        friend std::ostream&operator<<(std::ostream&, const ConstBlockIterator&);
 
-      protected:
+      private:
         // Forward struct declaration for the hidden implementation of a
         // constant block iterator
         struct ConstBlockIteratorImplementation;

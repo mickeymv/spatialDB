@@ -23,9 +23,11 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <map>
+#include <algorithm>
 #include "RobustGeometricPrimitives2D.h"
 using namespace std;
+
+//class ConstSegIterator;
 
 
 class Line2D 
@@ -38,41 +40,45 @@ class Line2D
     // Default constructor. It represents the empty Line2D object.
     Line2D();
 
-
     // Constructor that takes a collection (vector) of segments (Seg2D objects)
     // as input. The constructor checks whether the collection of segments
     // forms a correct Line2D object in the sense that it conforms to the
     // formal definition of this data type.
     Line2D(std::vector<Seg2D> segmentList);
 
-    
-    // Constructor for complex Line structure. It takes as input a string that represent the textually represents
-    //        the input vector of Segments.
+    // Constructor for complex region structure. It takes as input a string name that can represent either :
+    // 1) file name which contains the vector of segments from which to construct the region object 
+    // 2) string the textually represents the input vector of segments.
     //
-    // The grammar for representing a Segment vector is structured as follows:
-    // Expression       := '(' Segment (',' [WhiteSpace] Segment)* ')'
-    // Segment          := '(' '(' Number ',' [WhiteSpace] Number ')' ',' [WhiteSpace] '(' Number ',' [WhiteSpace] Number ')' ')'
-    // Number           := Sign ((DigitWithoutZero Digit* '.' Digit+) | ('0' '.' Digit+ ))
-    // Sign             := ['+' | '-']
-    // WhiteSpace       := ' '
+    // The grammar for representing a segment vector in both cases 1 and 2 are structured as follows:
+    // Expression := '(' Segment+ ')'
+    // Segment:= '(' Point ',' Point ')'
+    // Point:= '(' Number ',' Number ')'
+    // Number := Sign ((DigitWithoutZero Digit* '.' Digit+) | ('0' '.' Digit+ ))
+    // Sign := ['+' | '-']
     // DigitWithoutZero := '1' | '2' |'3' | '4' | '5' | '6' | '7' | '8' | '9'
-    // Digit            := '0' | DigitWithoutZero
+    // Digit:= '0' | DigitWithoutZero
     //
-    // example for segment list of seg1 and seg2 here is: (((1,2),(3,4)),((5,6),(7,8)))  
+    // example for segment list of seg1 and seg2 here is: (((1,2),(3,4)),((5,6),(7,8)))
     Line2D(std::string textualLineList);
-    
 
     // Copy constructor that constructs a Line2D object from a given Line2D
     // object "source".
-    Line2D(const Line2D& source);
+    Line2D(Line2D& source);
 
     // Move constructor that moves a given Line2D object "source" to a
     // Line2D object. The Line2D object "source" gets the empty Line2D
     // object as its value.
     Line2D(Line2D&& source);
 
+    //Length: returns the concatenated length of the line
+    Number Length();
+
+    //NumberOfComponents: returns the number of blocks of line structure.
+    Number numberOfComponents();
+
     //Computing the minimum bounding rectangle for a line object
-    Rect2D MinBoundingRect();
+    MBR MinBoundingRect();
 
     //Destructor
     virtual ~Line2D();
@@ -99,12 +105,12 @@ class Line2D
     // Comparison operators ==, !=, <, <=, >, and >=. 
     //equal operator that checks if the Line2D object and input Line2D
     //object are the same spatial region.
-    bool operator == ( Line2D& rhs);
+    bool operator == (const Line2D& rhs);
 	
     //unequal operator that checks if the Line2D object and the inputted
     //Line2D object are different spatial regions. It is the logical opposite
     //of the == operator.
-    bool operator != ( Line2D& rhs);
+    bool operator != (const Line2D& rhs);
 	
     //less than operator that compares 2 Line2D objects and checks which one is lesser 
     //by comparing their lengths in the following way:
@@ -112,7 +118,7 @@ class Line2D
     //length(x1) < length(x2)
     //length(y1) < length(y2)
     //length(y1) < length(y2)
-    bool operator <  ( Line2D& rhs); 
+    bool operator <  (const Line2D& rhs); 
 
     //less than operator that compares 2 Line2D objects and checks which one is lesser 
     //or equal by comparing their lengths in the following way:
@@ -120,7 +126,7 @@ class Line2D
     //length(x1) <= length(x2)
     //length(y1) <= length(y2)
     //length(y1) <= length(y2)	
-    bool operator <= ( Line2D& rhs);   
+    bool operator <= (const Line2D& rhs);   
 
     //less than operator that compares 2 Line2D objects and checks which one is greater 
     //by comparing their lengths in the following way:
@@ -128,7 +134,7 @@ class Line2D
     //length(x1) > length(x2)
     //length(y1) > length(y2)
     //length(y1) > length(y2)	
-    bool operator >  (Line2D& rhs);  
+    bool operator >  (const Line2D& rhs);  
 
     //less than operator that compares 2 Line2D objects and checks which one is greater 
     //or equal by comparing their lengths in the following way:
@@ -136,7 +142,7 @@ class Line2D
     //length(x1) >= length(x2)
     //length(y1) >= length(y2)
     //length(y1) >= length(y2)
-    bool operator >= (Line2D& rhs);    
+    bool operator >= (const Line2D& rhs);    
 
 
     //++++++++++++++++++++++++++++++++
@@ -197,15 +203,15 @@ class Line2D
 
         // Increment/decrement operators '++', '--'
         ConstSegIterator& operator ++ ();   // prefix
-        ConstSegIterator& operator ++ (int postfix); // postfix
+        ConstSegIterator operator ++ (int postfix); // postfix
         ConstSegIterator& operator -- ();   // prefix
-        ConstSegIterator& operator -- (int postfix); // postfix
+        ConstSegIterator operator -- (int postfix); // postfix
 
         // Dereferencing operators that return the value at the constant segment
         // iterator position. Dereferencing is only allowed if the iterator
         // points to a segment. The dereferenced value cannot be changed.
-        const HalfSeg2D& operator *() const;
-        const HalfSeg2D* operator ->() const;
+        const Line2D& operator *() const;
+        const Line2D* operator ->() const;
 
         // Comparison operators that compare a constant segment iterator position
         // with another const segment iterator position "rhs"
@@ -215,10 +221,8 @@ class Line2D
         bool operator <= (const ConstSegIterator& rhs) const;
         bool operator >  (const ConstSegIterator& rhs) const;
         bool operator >= (const ConstSegIterator& rhs) const;
-        
-        friend std::ostream&operator<<(std::ostream&, const ConstSegIterator&);
 
-      protected:
+      private:
         // Forward struct declaration for the hidden implementation of a
         // constant segment iterator
         struct ConstSegIteratorImplementation;
@@ -246,13 +250,13 @@ class Line2D
     ConstSegIterator ctail() const;
 	
 
-  protected:
+  private:
     // Forward struct declaration for the hidden implementation of class
     // "Line2D" as an abstract data type (ADT)
-    struct Line2DSImpl;
+    struct Line2DImpl;
 
     // Declaration of an opaque pointer
-    Line2DSImpl *handle;
+    Line2DImpl *handle;
 }; // class Line2D
 
 #endif // Line2D_H

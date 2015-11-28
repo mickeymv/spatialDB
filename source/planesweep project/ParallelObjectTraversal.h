@@ -28,7 +28,7 @@ public:
 
     status getStatus();
 
-    ObjectIterator *getObjIterator(int object);
+    ObjectIterator *getObjIterator(ParallelObjectTraversal::object);
 	// need to finalise the return type
 	"Object2D.comp" getNext();
 
