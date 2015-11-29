@@ -73,11 +73,10 @@ public:
 
     void delRight(Seg2D &);
 
-
-    Attribute getAttr(Seg2D &);
-
-    void setAttr(Seg2D &, Attribute);
-
+	bool getInsideAbove(Seg2D seg);
+	SegmentClass getSegClass(Seg2D seg);
+	void setInsideAbove(Seg2D seg, bool ia);
+	void setSegClass(Seg2D seg, int lOrR, int uOrL);
 
     bool predExists(Seg2D &);
 

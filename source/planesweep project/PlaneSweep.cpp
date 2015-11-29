@@ -16,7 +16,49 @@ PlaneSweep::~PlaneSweep() {
     delete pot;
 }
 
-int findLeast() {
+void PlaneSweep::setSegClass(Seg2D seg, int lOrR, int uOrL){
+	PlaneSweepLineStatusObject *psso = 
+					new PlaneSweepLineStatusObject(seg);
+	AVLNode<PlaneSweepLineStatusObject> *node = 
+								sweepLineStatus->FindKey(psso);
+	node->setSegmentClass(lOrR, uOrL);
+	node = NULL;
+	psso = NULL;
+}
+
+void PlaneSweep::setInsideAbove(Seg2D seg, bool ia){
+	PlaneSweepLineStatusObject *psso = 
+					new PlaneSweepLineStatusObject(seg);
+	AVLNode<PlaneSweepLineStatusObject> *node = 
+								sweepLineStatus->FindKey(psso);
+	node->setInsideAbove(ia);
+	node = NULL;
+	psso = NULL;
+}
+
+SegmentClass PlaneSweep::getSegClass(Seg2D seg){
+	PlaneSweepLineStatusObject *psso = 
+					new PlaneSweepLineStatusObject(seg);
+	AVLNode<PlaneSweepLineStatusObject> *node = 
+								sweepLineStatus->FindKey(psso);
+	SegmentClass sc = node->getSegmentClass();
+	node = NULL;
+	psso = NULL;
+	return sc;
+}
+
+bool PlaneSweep::getInsideAbove(Seg2D seg){
+	PlaneSweepLineStatusObject *psso = 
+					new PlaneSweepLineStatusObject(seg);
+	AVLNode<PlaneSweepLineStatusObject> *node = 
+								sweepLineStatus->FindKey(psso);
+	bool ia = node->getInsideAbove();
+	node = NULL;
+	psso = NULL;
+	return ia;
+}
+
+int PlaneSweep::findLeast() {
     objS = getPot->getNextMin();
     objD1 = dynamicEPSObjF->GetMin();
     objD2 = dynamicEPSObjG->GetMin();
@@ -638,28 +680,4 @@ void PlaneSweep::del_right(Seg2D& seg2D)
     sweepLineStatus->Remove(seg2D.p1.y);
 }
 
-Attribute PlaneSweep::get_attr(Seg2D& seg2D)
-{
-    Attribute attribute;
-    if(sweepLineStatus->Find(seg2D.p1.y,seg2D)) {
-        // Give attribute depending on type
-        // Check if group 2 can give it
-//    if(seg2D.attribute.isBool())
-//    {
-//
-//    }
-//    else if(seg2D.attribute.isSegClass())
-//    {
-//
-//
-//     }
-    }
-}
-
-void PlaneSweep::set_attr(Seg2D & seg2D, Attribute attribute)
-{
-    if(sweepLineStatus->Find(seg2D.p1.y,seg2D)) {
-        // seg2D.attribute=attribute;
-    }
-}
  */
