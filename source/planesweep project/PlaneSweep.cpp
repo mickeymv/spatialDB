@@ -74,6 +74,21 @@ void PlaneSweep::addLeft(Seg2D &seg2D) {
 void PlaneSweep::delRight(Seg2D &seg2D) {
         sweepLineStatus->deleteKey(seg2D);
 }
+bool PlaneSweep::coincident(Seg2D &givenSeg)
+{
+    int itr=0;
+    int treeSize = sweepLineStatus->sizeOfAVL();
+
+    seg2D* segArray[] = sweepLineStatus->getElements();
+
+    for(itr=o;itr<treeSize;itr++){
+
+        if(Intersects(segArray(itr), givenSeg))
+        return true;
+    }
+    return false;
+
+}
 
 bool PlaneSweep::predExists(Seg2D &seg2D) {
     PlaneSweepLineStatusObject sweepLineStatusObject(seg2D);

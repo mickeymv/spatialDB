@@ -28,6 +28,8 @@ public:
     void deleteKey(const T key);
     void printBalance();
     void inOrder();
+    int sizeOfAVL();
+    AVLNode<T>** getElements();
     AVLnode<T>* FindKey( const T val);
     AVLnode<T>* getPred( const T val);
 
