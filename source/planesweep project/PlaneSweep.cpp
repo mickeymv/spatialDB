@@ -75,6 +75,15 @@ void PlaneSweep::delRight(Seg2D &seg2D) {
         sweepLineStatus->deleteKey(seg2D);
 }
 
+bool PlaneSweep::predExists(Seg2D &seg2D) {
+    PlaneSweepLineStatusObject sweepLineStatusObject(seg2D);
+    AVLnode *nodeInSweepLineStatus = sweepLineStatus->FindKey(sweepLineStatusObject);
+    if (nodeInSweepLineStatus != NULL && nodeInSweepLineStatus->left != NULL) {
+        return true;
+    }
+    return false;
+}
+
 bool PlaneSweep::calculateRelation(Seg2D &seg2D) {
 //change the name of the variable from seg2D
     Seg2D &pred = getPredecessor(seg2D);
