@@ -6,7 +6,7 @@
 #define PLANESWEEP_PROJECT_MINHEAP_H
 
 #include "vector"
-#include "Topic2/Implementation/RobustGeometricPrimitives2D.h"
+#include "Topic1/RobustGeometricPrimitives2D.h"
 
 using namespace std;
 

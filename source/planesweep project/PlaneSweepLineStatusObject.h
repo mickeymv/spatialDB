@@ -21,7 +21,7 @@ class PlaneSweepLineStatusObject {
 
 public:
 
-    PlaneSweepLineStatusObject(Seg2D seg2D) {
+    PlaneSweepLineStatusObject(Seg2D& seg2D) {
         setSegment2D(seg2D);
         setInsideAbove(false); //default behaviour
     }

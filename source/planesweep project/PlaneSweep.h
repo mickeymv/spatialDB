@@ -14,7 +14,6 @@
 
 #include "Object2D.h"
 #include "ParallelObjectTraversal.h"
-#include "Obj2D.h"
 #include "AVLTree.h"
 #include "Attribute.h"
 #include "PlaneSweepLineStatusObject.h"
@@ -159,10 +158,6 @@ private:
      */
     void updateSweepLineStatus(Seg2D& segmentToBeReplaced, Seg2D& segmentToReplaceWith);
 
-    /*Checks whether the given segments are within an object
-     */
-    bool isInObjF(Seg2D&);
-    bool isInObjG(Seg2D&);
 
     /*
      * Functions for getting predecessor and getting successor

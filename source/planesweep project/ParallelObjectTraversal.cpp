@@ -207,15 +207,128 @@ void ParallelObjectTraversal::selectNext() {
     }
 }
 
-ObjectIterator * ParallelObjectTraversal::getObjIterator(ParallelObjectTraversal::object object)
+ObjectIterator * ParallelObjectTraversal::getNextObjIterator(AttrHalfSeg2D attrhalfSeg2D,object objectparam)
 {
-    if(object==first)
+    ObjectIterator * obji;
+    if(objectparam==first)
+    {
+        for(obji->operator=(objF->cbegin());obji->operator<=(objF->cend());obji->operator++() )
+        {
+            AttrHalfSeg2D iter = obji->operator*();
+            if(attrhalfSeg2D.operator==(iter))
+            {
+                return ++obji;
+            }
+        }
+        return nullptr;
+    }
+    if(objectparam==second)
+    {
+        for(obji->operator=(objG->cbegin());obji->operator<=(objG->cend());obji->operator++() )
+        {
+            AttrHalfSeg2D iter = obji->operator*();
+            if(attrhalfSeg2D.operator==(iter))
+            {
+                return ++obji;
+            }
+        }
+        return nullptr;
+    }
+}
+
+ObjectIterator * ParallelObjectTraversal::getObjIterator(object objectparam)
+{
+    if(objectparam==first)
     {
         return objFIterator;
     }
-    else if(object==second)
+    else if(objectparam==second)
     {
         return objGIterator;
     }
     return nullptr;
+}
+
+
+ObjectIterator * ParallelObjectTraversal::getNextObjIterator(HalfSeg2D halfSeg2D,object objectparam)
+{
+    ObjectIterator * obji;
+    if(objectparam==first)
+    {
+       for(obji->operator=(objF->cbegin());obji->operator<=(objF->cend());obji->operator++() )
+       {
+           HalfSeg2D iter = obji->operator*();
+           if(halfSeg2D.operator==(iter))
+           {
+               return ++obji;
+           }
+       }
+        return nullptr;
+    }
+    if(objectparam==second)
+    {
+        for(obji->operator=(objG->cbegin());obji->operator<=(objG->cend());obji->operator++() )
+        {
+            HalfSeg2D iter = obji->operator*();
+            if(halfSeg2D.operator==(iter))
+            {
+                return ++obji;
+            }
+        }
+        return nullptr;
+    }
+}
+
+bool ParallelObjectTraversal::isObjectF(Object2D object2D)
+{
+    if(object2D.operator==(*objF))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool ParallelObjectTraversal::isObjectG(Object2D object2D)
+{
+    if(object2D.operator==(*objG))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool ParallelObjectTraversal::isInObjF(Seg2D & seg2D)
+{
+    ObjectIterator * obji;
+
+        for(obji->operator=(objF->cbegin());obji->operator<=(objF->cend());obji->operator++() )
+        {
+            Seg2D iter = obji->operator*();
+            if(seg2D.operator==(iter))
+            {
+                return true;
+            }
+        }
+        return false;
+}
+
+bool ParallelObjectTraversal::isInObjG(Seg2D & seg2D)
+{
+    ObjectIterator * obji;
+
+    for(obji->operator=(objG->cbegin());obji->operator<=(objG->cend());obji->operator++() )
+    {
+        Seg2D iter = obji->operator*();
+        if(seg2D.operator==(iter))
+        {
+            return true;
+        }
+    }
+    return false;
 }

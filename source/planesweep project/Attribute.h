@@ -8,7 +8,7 @@
 #include <memory>
 #include <typeinfo>
 
-#include "Topic2/Implementation/RobustGeometricPrimitives2D.h"
+#include "Topic1/RobustGeometricPrimitives2D.h"
 #include "SegmentClass.h"
 
 
