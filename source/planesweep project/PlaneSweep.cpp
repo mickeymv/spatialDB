@@ -669,6 +669,20 @@ AttrHalfSeg2D PlaneSweep::getAttrHalfSegEvent(ParallelObjectTraversal::object ob
     return attrHalfSeg2D;
 }
 
+
+bool PlaneSweep::poiInSeg(Poi2D & poi2D) {
+    int itr=0;
+    int treeSize = sweepLineStatus->sizeOfAVL();
+
+    seg2D* segArray[] = sweepLineStatus->getElements();
+
+    for(itr=o;itr<treeSize;itr++){
+
+        if(PointLiesOnSegment(poi2D, segArray(itr)))
+            return true;
+    }
+    return false;
+}
 /*
 */
 
