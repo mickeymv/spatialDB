@@ -132,6 +132,19 @@ bool PlaneSweep::coincident(Seg2D &givenSeg)
 
 }
 
+Seg2D& PlaneSweep::predOfP(Poi2D &p){
+    int itr=0;
+    int treeSize = sweepLineStatus->sizeOfAVL();
+
+    seg2D* segArray[] = sweepLineStatus->getElements();
+    for(itr=o;itr<treeSize;itr++) {
+        poi2D *Ipoint = IntersectionPoint(segArray(itr),sweepLineStatus->getPred());
+        if(Ipoint.y<p.y)
+            return segArray(itr);
+    }
+
+}
+
 bool PlaneSweep::predExists(Seg2D &seg2D) {
     PlaneSweepLineStatusObject sweepLineStatusObject(seg2D);
     AVLnode *nodeInSweepLineStatus = sweepLineStatus->FindKey(sweepLineStatusObject);
