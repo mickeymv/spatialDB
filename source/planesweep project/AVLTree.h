@@ -28,8 +28,8 @@ public:
     void deleteKey(const T key);
     void printBalance();
     void inOrder();
-    AVLNode<T>* FindKey( const T val);
-    
+    AVLnode<T>* FindKey( const T val);
+
 private:
     AVLnode<T> *root;
     AVLnode<T>* rotateLeft          ( AVLnode<T> *a );
