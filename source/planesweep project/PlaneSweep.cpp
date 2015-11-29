@@ -670,7 +670,7 @@ AttrHalfSeg2D PlaneSweep::getAttrHalfSegEvent(ParallelObjectTraversal::object ob
 }
 
 
-bool PlaneSweep::poiInSeg(Poi2D & poi2D) {
+bool PlaneSweep::poiOnSeg(Poi2D & poi2D) {
     int itr=0;
     int treeSize = sweepLineStatus->sizeOfAVL();
 
