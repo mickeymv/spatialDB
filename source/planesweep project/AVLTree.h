@@ -28,6 +28,7 @@ public:
     void deleteKey(const T key);
     void printBalance();
     void inOrder();
+    AVLnode * getElementsFromAVLTree();
     AVLTree<T>* FindKey( const T val);
     
 private:
