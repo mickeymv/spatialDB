@@ -1051,6 +1051,11 @@ bool PlaneSweep::poiOnSeg(Poi2D & poi2D) {
     return false;
 }
 
+void PlaneSweep::newSweep()
+{
+    sweepLineStatus = new AVLTree<PlaneSweepLineStatusObject &>();//Not sure if it is passed like this
+}
+
 
 /*
 */

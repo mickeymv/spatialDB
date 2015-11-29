@@ -51,6 +51,8 @@ public:
 
     ParallelObjectTraversal::status getStatus();
 
+    void newSweep();
+
     /*
      * getEvent() functions would return the Poi, HalfSeg or
      * AttrHalfSeg events from either of the two objects based on the
