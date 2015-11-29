@@ -29,6 +29,7 @@ public:
     void printBalance();
     void inOrder();
     AVLnode<T>* FindKey( const T val);
+    AVLnode<T>* getPred( const T val);
 
 private:
     AVLnode<T> *root;
@@ -44,6 +45,18 @@ private:
     void inOrder					( AVLnode<T> *n	);
 };
  
+
+ AVLnode<T>* AVLTree<T>::getPred(T val) {
+     AVLnode *valTemp = Find(val);
+     if (valTemp != NULL && valTemp->left != NULL) {
+        AVLnode *temp = valTemp->left;
+         while (temp->right != NULL) {
+             temp = temp->right;
+         }
+         return temp;
+     }
+     return(NULL);
+ }
 
 /* AVL class definition */
 template <class T>

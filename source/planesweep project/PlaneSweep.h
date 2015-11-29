@@ -81,7 +81,8 @@ public:
 
     bool predExists(Seg2D &);
 
-    Attribute getPredAttr(Seg2D &);
+    SegmentClass getPredSegmentClass(Seg2D);
+    bool getPredInsideAbove(Seg2D);
 
     Seg2D &predOfP(Poi2D &);
 

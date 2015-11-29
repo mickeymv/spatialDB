@@ -84,6 +84,18 @@ bool PlaneSweep::predExists(Seg2D &seg2D) {
     return false;
 }
 
+SegmentClass PlaneSweep::getPredSegmentClass(Seg2D seg2D) {
+    AVLnode *pred = sweepLineStatus->getPred(seg2D);
+    PlaneSweepLineStatusObject predObject = pred->key;
+    return predObject.getSegmentClass();
+}
+
+bool getPredInsideAbove(Seg2D) {
+    AVLnode *pred = sweepLineStatus->getPred(seg2D);
+    PlaneSweepLineStatusObject predObject = pred->key;
+    return predObject.getInsideAbove();
+}
+
 bool PlaneSweep::calculateRelation(Seg2D &seg2D) {
 //change the name of the variable from seg2D
     Seg2D &pred = getPredecessor(seg2D);
