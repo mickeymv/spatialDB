@@ -19,10 +19,10 @@ int main()
 	cout << "Big Rational varaiable multiplication:" << a * b << endl;
 	cout << "Big Rational varaiable division:" << a / b << endl;
 
-	Poi2D p1(Number("1.0"), Number("2.0"));
-	Poi2D p2(Number("2.0"), Number("2.0"));
-	Poi2D p3(Number("3.0"), Number("3.0"));
-	Poi2D p4(Number("5.0"), Number("3.0"));
+	Poi2D p1(Number("2.0"), Number("2.0"));
+	Poi2D p2(Number("5.0"), Number("5.0"));
+	Poi2D p3(Number("3.0"), Number("0.0"));
+	Poi2D p4(Number("4.0"), Number("4.0"));
 	Poi2D p5(Number("2.0"), Number("5.0"));
 	cout << "Point p1:" << p1 << endl;
 	cout << "Point p2:" << p2 << endl;
@@ -82,6 +82,15 @@ int main()
 		cout<<"They meet----- ";
 	}else{
 		cout << "They don't meet -----";
+	}
+	if (Intersects(s1, s2))
+	{
+		cout << "they intersect";
+		cout << "point of intersection:" << IntersectionPoint(s1, s2);
+	}
+	else
+	{
+		cout << "dont intersect";
 	}
 
 	// if (p1 < p2)
