@@ -1,4 +1,3 @@
-
 /******************************************************************************
 * File: Line2D.h
 *******************************************************************************
@@ -9,7 +8,7 @@
 *   segments) of Line2D objects. The class Line2D contains
 *   specifications of several constructors, a destructor, and several
 *   type-specific unary methods of this spatial data type. Binary spatial
-*   operations that involve Line2D objects are specified elsewhere.
+*   operations that involve Line2D objects are specified elsewhere. 
 *
 * Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
 *
@@ -31,9 +30,9 @@ using namespace std;
 //class ConstSegIterator;
 
 
-class Line2D
+class Line2D 
 {
-public:
+  public:
     //++++++++++++++++++++++++++++
     // Constructors and destructor
     //++++++++++++++++++++++++++++
@@ -48,7 +47,7 @@ public:
     Line2D(std::vector<Seg2D> segmentList);
 
     // Constructor for complex region structure. It takes as input a string name that can represent either :
-    // 1) file name which contains the vector of segments from which to construct the region object
+    // 1) file name which contains the vector of segments from which to construct the region object 
     // 2) string the textually represents the input vector of segments.
     //
     // The grammar for representing a segment vector in both cases 1 and 2 are structured as follows:
@@ -84,7 +83,7 @@ public:
     //Destructor
     virtual ~Line2D();
 
-
+    
     //+++++++++++++++++++++
     // Assignment operators
     //+++++++++++++++++++++
@@ -98,52 +97,52 @@ public:
     // object as its value.
     Line2D& operator = (Line2D&& source);
 
-
+    
     //+++++++++++++++++++++
     // Comparison operators
     //+++++++++++++++++++++
 
-    // Comparison operators ==, !=, <, <=, >, and >=.
+    // Comparison operators ==, !=, <, <=, >, and >=. 
     //equal operator that checks if the Line2D object and input Line2D
     //object are the same spatial region.
     bool operator == (const Line2D& rhs);
-
+	
     //unequal operator that checks if the Line2D object and the inputted
     //Line2D object are different spatial regions. It is the logical opposite
     //of the == operator.
     bool operator != (const Line2D& rhs);
-
-    //less than operator that compares 2 Line2D objects and checks which one is lesser
+	
+    //less than operator that compares 2 Line2D objects and checks which one is lesser 
     //by comparing their lengths in the following way:
     //if length(x1) < length(x2) the object is less than "source" object
     //length(x1) < length(x2)
     //length(y1) < length(y2)
     //length(y1) < length(y2)
-    bool operator <  (const Line2D& rhs);
+    bool operator <  (const Line2D& rhs); 
 
-    //less than operator that compares 2 Line2D objects and checks which one is lesser
+    //less than operator that compares 2 Line2D objects and checks which one is lesser 
     //or equal by comparing their lengths in the following way:
     //if length(x1) <= length(x2) the object is less than "source" object
     //length(x1) <= length(x2)
     //length(y1) <= length(y2)
-    //length(y1) <= length(y2)
-    bool operator <= (const Line2D& rhs);
+    //length(y1) <= length(y2)	
+    bool operator <= (const Line2D& rhs);   
 
-    //less than operator that compares 2 Line2D objects and checks which one is greater
+    //less than operator that compares 2 Line2D objects and checks which one is greater 
     //by comparing their lengths in the following way:
     //if length(x1) > length(x2) the object is less than "source" object
     //length(x1) > length(x2)
     //length(y1) > length(y2)
-    //length(y1) > length(y2)
-    bool operator >  (const Line2D& rhs);
+    //length(y1) > length(y2)	
+    bool operator >  (const Line2D& rhs);  
 
-    //less than operator that compares 2 Line2D objects and checks which one is greater
+    //less than operator that compares 2 Line2D objects and checks which one is greater 
     //or equal by comparing their lengths in the following way:
     //if length(x1) >= length(x2) the object is less than "source" object
     //length(x1) >= length(x2)
     //length(y1) >= length(y2)
     //length(y1) >= length(y2)
-    bool operator >= (const Line2D& rhs);
+    bool operator >= (const Line2D& rhs);    
 
 
     //++++++++++++++++++++++++++++++++
@@ -151,7 +150,7 @@ public:
     //++++++++++++++++++++++++++++++++
 
     // Predicate that checks whether a Line2D object is an empty Line2D
-    // object.
+    // object. 
     bool isEmptyLine2D();
 
     // Method that yields the number of segments of Line2D object
@@ -176,9 +175,9 @@ public:
     // segments is not possible.
     class ConstSegIterator
     {
-        friend class Line2D;
+      friend class Line2D;
 
-    public:
+      public:
         // Default constructor that creates an empty constant segment iterator.
         ConstSegIterator();
 
@@ -223,7 +222,7 @@ public:
         bool operator >  (const ConstSegIterator& rhs) const;
         bool operator >= (const ConstSegIterator& rhs) const;
 
-    private:
+      private:
         // Forward struct declaration for the hidden implementation of a
         // constant segment iterator
         struct ConstSegIteratorImplementation;
@@ -249,9 +248,9 @@ public:
     // last segment of a Line2D object. Note that dereferencing this iterator
     // yields the empty constant segment iterator.
     ConstSegIterator ctail() const;
+	
 
-
-private:
+  private:
     // Forward struct declaration for the hidden implementation of class
     // "Line2D" as an abstract data type (ADT)
     struct Line2DImpl;
