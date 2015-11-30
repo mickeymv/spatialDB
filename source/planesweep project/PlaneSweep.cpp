@@ -155,7 +155,7 @@ SegmentClass PlaneSweep::getPredSegmentClass(Seg2D seg2D) {
     return predObject.getSegmentClass();
 }
 
-bool getPredInsideAbove(Seg2D) {
+bool PlaneSweep::getPredInsideAbove(Seg2D seg2D) {
     AVLnode *pred = sweepLineStatus->getPred(seg2D);
     PlaneSweepLineStatusObject predObject = pred->key;
     return predObject.getInsideAbove();
@@ -590,7 +590,7 @@ Poi2D PlaneSweep::getPoiEvent(ParallelObjectTraversal::object objectValue) {
     if (objectValue == ParallelObjectTraversal::first) {
 
         attrHalfSegDynamic = dynamicEPSObjF.GetMin();
-        halfSeg2D = attrHalfSegDynamic.HalfSeg2D(); //TODO: update with HalfSeg getter of AttrHalfSeg
+        halfSeg2D = attrHalfSegDynamic.hseg;
         bool isLeft = halfSeg2D.isLeft;
         if (isLeft) {
             poi2DDynamic = halfSeg2D.seg.p1;
@@ -601,7 +601,7 @@ Poi2D PlaneSweep::getPoiEvent(ParallelObjectTraversal::object objectValue) {
 
     } else if (objectValue == ParallelObjectTraversal::second) {
         attrHalfSegDynamic = dynamicEPSObjG.GetMin();
-        halfSeg2D = attrHalfSegDynamic.HalfSeg2D();
+        halfSeg2D = attrHalfSegDynamic.hseg;
         bool isLeft = halfSeg2D.isLeft;
         if (isLeft) {
             poi2DDynamic = halfSeg2D.seg.p1;
@@ -627,14 +627,14 @@ HalfSeg2D PlaneSweep::getHalfSegEvent(ParallelObjectTraversal::object objectValu
     if (objectValue == ParallelObjectTraversal::first) {
 
         attrHalfSegDynamic = dynamicEPSObjF.GetMin();
-        halfSeg2DDynamic = attrHalfSegDynamic.HalfSeg2D(); //TODO: update with HalfSeg getter of AttrHalfSeg
+        halfSeg2DDynamic = attrHalfSegDynamic.hseg; //TODO: update with HalfSeg getter of AttrHalfSeg
 
 
 
 
     } else if (objectValue == ParallelObjectTraversal::second) {
         attrHalfSegDynamic = dynamicEPSObjG.GetMin();
-        halfSeg2DDynamic = attrHalfSegDynamic.HalfSeg2D();
+        halfSeg2DDynamic = attrHalfSegDynamic.hseg;
 
 
     }

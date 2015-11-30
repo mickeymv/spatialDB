@@ -105,10 +105,11 @@ public:
 *Attributed Half Segment Class
 */
 struct AttHalfSegVariable;
-class AttrHalfSeg2D :public HalfSeg2D
+class AttrHalfSeg2D
 {
 public:
 	/*Member variables */
+	HalfSeg2D hseg;
 	bool insideAbove;
 	/*Member Functions */
 	AttrHalfSeg2D();
@@ -189,6 +190,8 @@ private:
 */
 
 bool PointLiesOnSegment(Poi2D& poi, Seg2D& seg);
+Poi2D getPointLiesOnSegmentAndNotEndpoints(Poi2D& poi, Seg2D& seg);
+bool PointLiesOnSegmentAndNotEndpoints(Poi2D& poi, Seg2D& seg);
 bool PointLiesAboveSegment(Poi2D& poi, Seg2D& seg);
 bool PointLiesBelowSegment(Poi2D& poi, Seg2D& seg);
 bool PointLiesAboveOrOnSegment(Poi2D& poi,Seg2D& seg);
@@ -203,10 +206,10 @@ bool PointLiesRightOfSegmentAndIsCollinear(Poi2D& poi, Seg2D& seg);
 *Relationships between Segments
 */
 bool SegmentLiesOnSegment(Seg2D& seg, Seg2D& seg1);
-bool SegmentLiesAboveSegment(const Seg2D& seg, const Seg2D& seg1);
-bool SegmentLiesBelowSegment(const Seg2D& seg, const Seg2D& seg1);
-bool SegmentLiesLeftOFSegment(const Seg2D& seg, const Seg2D& seg1);
-bool SegmentLiesRightOfSegment(const Seg2D& seg, const Seg2D& seg1);
+bool SegmentLiesAboveSegment(Seg2D& seg, Seg2D& seg1);
+bool SegmentLiesBelowSegment(Seg2D& seg, Seg2D& seg1);
+bool SegmentLiesLeftOFSegment(Seg2D& seg, Seg2D& seg1);
+bool SegmentLiesRightOfSegment(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsCollinear(Seg2D& seg, Seg2D& seg1);
 bool SegmentLiesLeftOFSegmentAndIsCollinear(Seg2D& seg, Seg2D& seg1);
 bool SegmentLiesRightOfSegmentAndIsCollinear(Seg2D& seg, Seg2D& seg1);
@@ -220,21 +223,23 @@ bool SegmentIsParallelAndAbove(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsParallelAndBelow(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsParallelAndLiesLeft(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsParallelAndLiesRight(Seg2D& seg, Seg2D& seg1);
-bool Intersects(const Seg2D& seg, const Seg2D& seg1);
-Poi2D IntersectionPoint(const Seg2D& seg, const Seg2D& seg1);
+bool Intersects(Seg2D& seg, Seg2D& seg1);
+int orientation(Poi2D p, Poi2D q, Poi2D r);
+bool SegmentIsLesserThanSegment(Seg2D& seg1, Seg2D& seg2);
+Poi2D IntersectionPoint(Seg2D& seg, Seg2D& seg1);
 bool Meet(Seg2D& seg, Seg2D& seg1);
-Poi2D MeetingPoint(const Seg2D& seg, const Seg2D& seg1);
-bool Touch(const Seg2D& seg, const Seg2D& seg1);
-Poi2D TouchingPoint(const Seg2D& seg, const Seg2D& seg1);
-Poi2D MidPoint(const Seg2D& seg1);
+Poi2D MeetingPoint(Seg2D& seg, Seg2D& seg1);
+bool Touch(Seg2D& seg, Seg2D& seg1);
+Poi2D TouchingPoint(Seg2D& seg, Seg2D& seg1);
+Poi2D MidPoint(Seg2D& seg1);
 
 //Determines whether a point is located on theboundary of a simple polygon.
 bool simplePointInsideSimplePolygon(const Poi2D& poi, const SimplePolygon2D& simplepolygon);
-//Determines whether the point is located in the interior or on the boundary of the simple polygon 
+//Determines whether the point is located in the interior or on the boundary of the simple polygon
 bool simplePointOnBoundaryOfSimplePoly(const Poi2D& poi, const SimplePolygon2D& simplepolygon);
-//Determines whether the segment is located in the interior of the simple polygon 
+//Determines whether the segment is located in the interior of the simple polygon
 bool segInsideSimplePolygon(const Seg2D& seg, const SimplePolygon2D& simplepolygon);
-//Determines whether the segment is located on the boundary of the simple polygon 
+//Determines whether the segment is located on the boundary of the simple polygon
 bool segOnBoundaryOfSimplePolygon(const Seg2D& seg, const SimplePolygon2D& simplepolygon);
 //Determines whether the segment is located in the interior and/or on the boundary of the simple polygon
 bool segOnSimplePolygon(const Seg2D& seg, const SimplePolygon2D& simplepolygon);
@@ -245,7 +250,6 @@ Rect2D computeRect2D(const Seg2D& seg);
 Rect2D computeRect2D(const SimplePolygon2D& simplepolygon);
 //Returns whether Rect2D computation is possible
 bool isRect2DPossible();
-bool SegmentIsLesserThanSegment(Seg2D& seg1, Seg2D& seg2);
-#endif
 
+#endif
 
