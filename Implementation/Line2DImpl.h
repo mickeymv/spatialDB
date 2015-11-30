@@ -101,15 +101,15 @@ class Line2DImpl : protected Line2D
 
         // Increment/decrement operators '++', '--'
         ConstBlockIterator& operator ++ ();   // prefix
-        ConstBlockIterator& operator ++ (int); // postfix
+        ConstBlockIterator operator ++ (int); // postfix
         ConstBlockIterator& operator -- ();   // prefix
-        ConstBlockIterator& operator -- (int); // postfix
+        ConstBlockIterator operator -- (int); // postfix
 
         // Dereferencing operators that return the value at the constant block
         // iterator position. Dereferencing is only allowed if the iterator
         // points to a block. The dereferenced value cannot be changed.
-        const std::vector<HalfSeg2D*>& operator *() const;
-        const std::vector<HalfSeg2D*>* operator ->() const;
+        const Line2D operator *() const;
+        const Line2D operator ->() const;
 
         // Comparison operators that compare a constant block iterator position
         // with another const block iterator position "rhs"

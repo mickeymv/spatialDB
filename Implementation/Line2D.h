@@ -197,9 +197,9 @@ class Line2D
 
         // Increment/decrement operators '++', '--'
         ConstSegIterator& operator ++ ();   // prefix
-        ConstSegIterator& operator ++ (int postfix); // postfix
+        ConstSegIterator operator ++ (int postfix); // postfix
         ConstSegIterator& operator -- ();   // prefix
-        ConstSegIterator& operator -- (int postfix); // postfix
+        ConstSegIterator operator -- (int postfix); // postfix
 
         // Dereferencing operators that return the value at the constant segment
         // iterator position. Dereferencing is only allowed if the iterator
