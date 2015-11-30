@@ -1,13 +1,13 @@
 #include "SpatialOperations.h" 
 #include <stdio.h>
-#include "Point2D.h"
-#include "Line2D.h"
-#include "Region2D.h"
+#include "planesweep-project/Topic1/RobustGeometricPrimitives2D.h"
+#include "planesweep-project/Topic2/Implementation/Line2D.h"
+#include "planesweep-project/Topic2/Interfaces/Region2D.h"
 
 int main()
 { 
 
-  Point2D point;
+  Poi2D point;
   Line2D line;
   Region2D region;
 

@@ -2,7 +2,7 @@
 * File: SpatialOperations.h
 *******************************************************************************
 * Purpose: Interface to the Spatial operations union, intersection, and
-*   difference between two complex objects of the spatial data types Point2D,
+*   difference between two complex objects of the spatial data types Poi2D,
 *   Line2D, or Region2D
 * Description: Any of the Spatial operations takes two objects of the
 *   same spatial data type as operands, computes their Spatial union,
@@ -21,30 +21,30 @@
 #ifndef SPATIALOPERATIONS_h
 #define SPATIALOPERATIONS_h
 
-#include "Point2D.h"
-#include "Line2D.h"
-#include "Region2D.h"
+#include "planesweep-project/Topic1/RobustGeometricPrimitives2D.h"
+#include "planesweep-project/Topic2/Implementation/Line2D.h"
+#include "planesweep-project/Topic2/Interfaces/Region2D.h"
 
 /******************************************************************************
 * Spatial operations union, intersection, and difference applied to two
-* Point2D objects and yielding a Point2D object
+* Poi2D objects and yielding a Poi2D object
 *******************************************************************************
-* The spatial intersection operation returns those single points in a Point2D
-* object that belong to both argument Point2D objects.
+* The spatial intersection operation returns those single points in a Poi2D
+* object that belong to both argument Poi2D objects.
 *
-* The spatial intersection operation returns a Point2D object that is the
-*  intersection  of two Point2D objects. 
-* The spatial union operation returns a Point2D object that is the 
-* union  of two Point2D objects.
-* The spatial Difference operation returns a Point2D object that is the
-*  difference  of two Point2D objects.
+* The spatial intersection operation returns a Poi2D object that is the
+*  intersection  of two Poi2D objects. 
+* The spatial union operation returns a Poi2D object that is the 
+* union  of two Poi2D objects.
+* The spatial Difference operation returns a Poi2D object that is the
+*  difference  of two Poi2D objects.
 *
-* Parameters : const Point2D& pointLhs and const Point2D& pointRhs
-* Returns    : Point2D 
+* Parameters : const Poi2D& pointLhs and const Poi2D& pointRhs
+* Returns    : Poi2D 
 ******************************************************************************/
-Point2D spatialIntersection (const Point2D& pointLhs, const Point2D& pointRhs);
-Point2D spatialUnion (const Point2D& pointLhs, const Point2D& pointRhs);
-Point2D spatialDifference (const Point2D& pointLhs, const Point2D& pointRhs);
+Poi2D spatialIntersection (const Poi2D& pointLhs, const Poi2D& pointRhs);
+Poi2D spatialUnion (const Poi2D& pointLhs, const Poi2D& pointRhs);
+Poi2D spatialDifference (const Poi2D& pointLhs, const Poi2D& pointRhs);
 
 /******************************************************************************
 * Spatial operations union, intersection, and difference applied to two

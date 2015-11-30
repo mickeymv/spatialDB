@@ -2,7 +2,7 @@
 * File: SpatialOperations.cpp
 *******************************************************************************
 * Purpose: Interface to the Spatial operations union, intersection, and
-*   difference between two complex objects of the spatial data types Point2D,
+*   difference between two complex objects of the spatial data types Poi2D,
 *   Line2D, or Region2D
 * Description: Any of the Spatial operations takes two objects of the
 *   same spatial data type as operands, computes their Spatial union,
@@ -21,36 +21,40 @@
 
 /******************************************************************************
 * Spatial operations union, intersection, and difference applied to two
-* Point2D objects and yielding a Point2D object.
+* Poi2D objects and yielding a Poi2D object.
 *******************************************************************************
-* The spatial intersection operation returns those single points in a Point2D
-* object that belong to both argument Point2D objects. 
-* The spatial union operation merges two Point2D objects into a single Point2D 
+* The spatial intersection operation returns those single points in a Poi2D
+* object that belong to both argument Poi2D objects. 
+* The spatial union operation merges two Poi2D objects into a single Poi2D 
 * object. Duplicate single points are eliminated. 
 * The spatial difference operation subtracts any single point of the second 
-* argument Point2D object from the first argument Point2D object.
+* argument Poi2D object from the first argument Poi2D object.
 *
-* Parameters : const Point2D& lhs and const Point2D& rhs
-* Returns    : Point2D 
+* Parameters : const Poi2D& lhs and const Poi2D& rhs
+* Returns    : Poi2D 
 ******************************************************************************/
 
-Point2D spatialIntersection(const Point2D& pointLhs, const Point2D& pointRhs) 
+#include "planesweep-project/Topic1/RobustGeometricPrimitives2D.h"
+#include "planesweep-project/Topic2/Implementation/Line2D.h"
+#include "planesweep-project/Topic2/Interfaces/Region2D.h"
+
+Poi2D spatialIntersection(const Poi2D& pointLhs, const Poi2D& pointRhs) 
 {
-  Point2D point;
+  Poi2D point;
   //implementation
   return point;
 }
 
-Point2D spatialUnion(const Point2D& pointLhs, const Point2D& pointRhs) 
+Poi2D spatialUnion(const Poi2D& pointLhs, const Poi2D& pointRhs) 
 {
-  Point2D point;
+  Poi2D point;
   //implementation
   return point;
 }
 
-Point2D spatialDifference(const Point2D& pointLhs, const Point2D& pointRhs) 
+Poi2D spatialDifference(const Poi2D& pointLhs, const Poi2D& pointRhs) 
 {
-  Point2D point;
+  Poi2D point;
   //implementation
   return point;
 }
