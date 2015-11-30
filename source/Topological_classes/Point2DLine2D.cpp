@@ -248,7 +248,20 @@ void Point2DLine2D::Evaluate()
     return;
 }
 
-Point2DLine2D::TopPredNumberPoint2DLine2D Point2DLine2D::getRelation()
+TopPredNumberPoint2DLine2D Point2DLine2D::getTopologicalRelationship()
 {
+    Explore();
+    Evaluate();
     return topPredNumberPoint2DLine2D;
+}
+
+bool Point2DLine2D::isTopologicalRelationship(TopPredNumberPoint2DLine2D predicate)
+{
+    Explore();
+    Evaluate();
+    if(topPredNumberPoint2DLine2D==predicate)
+    {
+        return true;
+    }
+    return false;
 }

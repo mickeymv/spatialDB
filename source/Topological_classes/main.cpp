@@ -12,8 +12,8 @@ int main() {
     Point2D a;
     Line2D b;
     Point2DLine2D pl(a,b);
-    pl.Explore();
-    pl.Evaluate();
-    Point2DLine2D::TopPredNumberPoint2DLine2D result = pl.getRelation();
-    cout<<result;
+    Point2DLine2D::TopPredNumberPoint2DLine2D resultGet = pl.getTopologicalRelationship();
+    bool resultIs=pl.isTopologicalRelationship(Point2DLine2D::pl_disjoint_m1);
+    cout<<resultGet;
+    cout<<resultIs;
 }
