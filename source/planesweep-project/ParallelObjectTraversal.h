@@ -19,7 +19,9 @@
 class ParallelObjectTraversal {
 
 public:
-    ParallelObjectTraversal(Object2D &, Object2D &);
+    ParallelObjectTraversal(const Object2D &, const Object2D &);
+
+    ParallelObjectTraversal(const Poi2D &, const Poi2D &);
 
     ~ParallelObjectTraversal();
 

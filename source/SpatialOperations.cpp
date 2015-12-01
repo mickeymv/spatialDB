@@ -37,11 +37,24 @@
 #include "planesweep-project/Topic1/RobustGeometricPrimitives2D.h"
 #include "planesweep-project/Topic2/Implementation/Line2D.h"
 #include "planesweep-project/Topic2/Interfaces/Region2D.h"
+#include "planesweep-project/ParallelObjectTraversal.h"
 
 Poi2D spatialIntersection(const Poi2D& pointLhs, const Poi2D& pointRhs) 
 {
-  Poi2D point;
-  //implementation
+  vector<Poi2D> intersectionPointsVector;
+    if (pointLhs == NULL || pointRhs == NULL) { //TODO: Update to check for empty point objects
+        return point;
+    }
+  //Have Iterators for each of the Poi2D objects
+  ParallelObjectTraversal parallelObjectTraversal(pointLhs, pointRhs);
+    //pot.selectFirst would be called implicitly in the pot constructor.
+  while (parallelObjectTraversal.getObject() != ParallelObjectTraversal::none && parallelObjectTraversal.getStatus() == ParallelObjectTraversal::end_of_none) {
+      if (parallelObjectTraversal.getObject() != ParallelObjectTraversal::both) {
+          //intersectionPointsVector.push_back(/*Insert the current element pointed to by either of the two Poi2DIterators*/);
+      }
+      parallelObjectTraversal.selectNext();
+  }
+   // Poi2D point(intersectionPointsVector); -> get implementation from group2
   return point;
 }
 
