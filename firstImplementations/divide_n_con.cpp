@@ -62,7 +62,6 @@ vector<poi2D> combineHulls(vector<poi2D> &part1, vector<poi2D> &part2){
 			if(slopeIncreased(*tangentTopRight, *temp, *tangentTopLeft)){
 				tangentTopLeft = temp;
 				break;
-			} else {
 			}
 			if(tangentTopLeft == left)
 				break;
@@ -78,7 +77,10 @@ vector<poi2D> combineHulls(vector<poi2D> &part1, vector<poi2D> &part2){
 			} else {
 				changed = true;
 			}
-			if(tangentTopRight == right)	break;
+			if(tangentTopRight == right){
+				changed = false;
+				break;
+			}
 		}
 		if(!changed)
 			break;
@@ -110,7 +112,10 @@ vector<poi2D> combineHulls(vector<poi2D> &part1, vector<poi2D> &part2){
 			} else {
 				changed = true;
 			}
-			if(tangentBottomRight == right) break;
+			if(tangentBottomRight == right){
+				changed = false;
+				break;
+			}
 		}
 		if(!changed)
 			break;
@@ -163,7 +168,17 @@ int main(){
 	  input.push_back(fileRead);
 	}
 
-	infile.close();
+	// infile.close();
+	// poi2D fileRead;
+	// fileRead.y = 3.0;
+	// for (int i = 0; i < 15; ++i)
+	// {
+	// 	fileRead.x = i;
+	// 	fileRead.y = i;
+	// 	input.push_back(fileRead);
+	// }
+	
+	
 	
 	clock_t begin = clock();
 
