@@ -4,73 +4,73 @@
 #include <math.h>
 #include <ctime>
 #include <cstdlib>
+#include <vector>
 
 #include "poi2D.h"
 
 using namespace std;
 
-
 //generates data in perfect circle
-void generateOnCircle(int number, double radius, char* filename){
+vector<poi2D> generateOnCircle(int number, double radius, char* filename){
 	poi2D point;
 	ofstream myfile;
-	myfile.open(filename, ios::out | ios::binary);
+	vector<poi2D> points;
 	for(int i = 0; i < number; i++){
 		double angle = ((double)rand() / RAND_MAX);
 		point.x = cos(angle) * radius;
 		point.y = sin(angle) * radius;
-		myfile.write((char*)&point, sizeof(poi2D));
+		points.push_back(point);
 	}
-	myfile.close();
+	return points;
 }
 
-void generateInCircle(int number, double radius, char* filename){
+vector<poi2D> generateInCircle(int number, double radius, char* filename){
 	poi2D point;
 	ofstream myfile;
-	myfile.open(filename, ios::out | ios::binary);
+	vector<poi2D> points;
 	for(int i = 0; i < number; i++){
 		double angle = ((double)rand() / RAND_MAX);
 		point.x = cos(angle) * ((double)rand() / RAND_MAX) * radius;
 		point.y = sin(angle) * ((double)rand() / RAND_MAX) * radius;
-		myfile.write((char*)&point, sizeof(poi2D));
+		points.push_back(point);
 	}
-	myfile.close();
+	return points;
 }
 
 //generates data where points are all close to the shapes border
-void generateCloseToCricle(int number, double radius, char* filename){
+vector<poi2D> generateCloseToCricle(int number, double radius, char* filename){
 	poi2D point;
 	ofstream myfile;
-	myfile.open(filename, ios::out | ios::binary);
+	vector<poi2D> points;
 	for(int i = 0; i < number; i++){
 		double angle = ((double)rand() / RAND_MAX)*44/7;
 		point.x = cos(angle) * radius;
 		point.y = sin(angle) * radius;
-		point.x += (sqrt((double)rand() / RAND_MAX)-1) * radius/2;
-		point.y += (sqrt((double)rand() / RAND_MAX)-1) * radius/2;
-		myfile.write((char*)&point, sizeof(poi2D));
+		point.x += (sqrt((double)rand() / RAND_MAX)-0.5) * radius/2;
+		point.y += (sqrt((double)rand() / RAND_MAX)-0.5) * radius/2;
+		points.push_back(point);
 	}
-	myfile.close();
+	return points;
 }
 
 //generates random set of data in a square
-void generateInSquare(int number, double max, char* filename){
+vector<poi2D> generateInSquare(int number, double max, char* filename){
 	poi2D point;
 	ofstream myfile;
-	myfile.open(filename, ios::out | ios::binary);
+	vector<poi2D> points;
 	for(int i = 0; i < number; i++){
 		point.x = ((double)rand() / RAND_MAX)*max;
 		point.y = ((double)rand() / RAND_MAX)*max;
-		myfile.write((char*)&point, sizeof(poi2D));
+		points.push_back(point);
 	}
-	myfile.close();
+	return points;
 }
 
 //generates random set of data in a square
-void generateOnSquare(int number, double max, char* filename){
+vector<poi2D> generateOnSquare(int number, double max, char* filename){
 	poi2D point;
 	ofstream myfile;
-	myfile.open(filename, ios::out | ios::binary);
+	vector<poi2D> points;
 	for(int i = 0; i < number; i++){
 		if(rand() % 2){	//generates points along the top and bottom of the square
 			if(rand() % 2){
@@ -78,27 +78,27 @@ void generateOnSquare(int number, double max, char* filename){
 				point.y = max;
 			} else {
 				point.x = ((double)rand() / RAND_MAX)*max;
-				point.y = (-1)*max;
+				point.y = 0.0;
 			}
 		} else {	//generates points along the sides of the square
 			if(rand() % 2){
 				point.x = max;
 				point.y = ((double)rand() / RAND_MAX)*max;
 			} else {
-				point.x = (-1)*max;
+				point.x = 0.0;
 				point.y = ((double)rand() / RAND_MAX)*max;
 			}
 		}
-		myfile.write((char*)&point, sizeof(poi2D));
+		points.push_back(point);
 	}
-	myfile.close();
+	return points;
 }
 
 //generates random set of data in a square
-void generateCloseToSquare(int number, double max, char* filename){
+vector<poi2D> generateCloseToSquare(int number, double max, char* filename){
 	poi2D point;
 	ofstream myfile;
-	myfile.open(filename, ios::out | ios::binary);
+	vector<poi2D> points;
 	for(int i = 0; i < number; i++){
 		if(rand() % 2){	//generates points along the top and bottom of the square
 			if(rand() % 2){
@@ -106,23 +106,23 @@ void generateCloseToSquare(int number, double max, char* filename){
 				point.y = max;
 			} else {
 				point.x = ((double)rand() / RAND_MAX)*max;
-				point.y = (-1)*max;
+				point.y = 0.0;
 			}
 		} else {	//generates points along the sides of the square
 			if(rand() % 2){
 				point.x = max;
 				point.y = ((double)rand() / RAND_MAX)*max;
 			} else {
-				point.x = (-1)*max;
+				point.x = 0.0;
 				point.y = ((double)rand() / RAND_MAX)*max;
 			}
 		}
 		//adding spread to the points away from the square edges
-		point.x += (sqrt((double)rand() / RAND_MAX)-1) * max/2;
-		point.y += (sqrt((double)rand() / RAND_MAX)-1) * max/2;
-		myfile.write((char*)&point, sizeof(poi2D));
+		point.x += (sqrt((double)rand() / RAND_MAX)-0.5) * max/2;
+		point.y += (sqrt((double)rand() / RAND_MAX)-0.5) * max/2;
+		points.push_back(point);
 	}
-	myfile.close();
+	return points;
 }
 
 /*
