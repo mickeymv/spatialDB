@@ -54,9 +54,10 @@ bool PlaneSweep::getInsideAbove(Seg2D seg) {
 }
 
 int PlaneSweep::findLeast() {
-    objS = getPot->getNextMin();
-    objD1 = dynamicEPSObjF->GetMin();
-    objD2 = dynamicEPSObjG->GetMin();
+    AttrHalfSeg2D objS, objD1, objD2, objD;
+    objS = getPot()->getNextMin();
+    objD1 = dynamicEPSObjF.GetMin();
+    objD2 = dynamicEPSObjG.GetMin();
     objD = (objD1 < objD2) ? (objD1) : (objD2);
 
     if (objS < objD)
@@ -72,12 +73,12 @@ void PlaneSweep::selectNext() {
     else {
         AttrHalfSeg2D objD, objD1, objD2;
 
-        objD1 = dynamicEPSObjF->GetMin();
-        objD2 = dynamicEPSObjG->GetMin();
+        objD1 = dynamicEPSObjF.GetMin();
+        objD2 = dynamicEPSObjG.GetMin();
         if (objD1 < objD2) {
-            dynamicEPSObjF->DeleteMin();
+            dynamicEPSObjF.DeleteMin();
         } else {
-            dynamicEPSObjG->DeleteMin();
+            dynamicEPSObjG.DeleteMin();
         }
     }
 
@@ -95,30 +96,35 @@ ParallelObjectTraversal::status  PlaneSweep::getStatus() {
 }
 
 void PlaneSweep::addLeft(Seg2D &seg2D) {
-    if (calculateRelation(seg2D)) {
-        /* This means there is an overlap/colleanearity
-            with the added segment and segments already in
-            sweepLineStatus. If so, calculateRelation()
-            would automatically add the segment to the
-            sweepLineStatus after doing the necessary splits.
-         */
-        return;
-    } else {
-        sweepLineStatus->insert(seg2D);
+    sweepLineStatus->insert(seg2D);
+
+    Seg2D &pred = getPredecessor(seg2D);
+    Seg2D &succ = getSuccessor(seg2D);
+
+    if (isRelation(seg2D, pred)) {
+        splitLines(seg2D, pred);
+    }
+    else if (isRelation(seg2D, succ)) {
+        splitLines(seg2D, succ);
     }
 }
 
 void PlaneSweep::delRight(Seg2D &seg2D) {
+    Seg2D &pred = getPredecessor(seg2D);
+    Seg2D &succ = getSuccessor(seg2D);
     sweepLineStatus->deleteKey(seg2D);
+    if (isRelation(pred, succ)) {
+        splitLines(pred, succ);
+    }
 }
 
 bool PlaneSweep::coincident(Seg2D &givenSeg) {
     int itr = 0;
     int treeSize = sweepLineStatus->sizeOfAVL();
 
-    seg2D *segArray[] = sweepLineStatus->getElements();
+    PlaneSweepLineStatusObject *segArray[] = sweepLineStatus->getElements();
 
-    for (itr = o; itr < treeSize; itr++) {
+    for (itr = 0; itr < treeSize; itr++) {
 
         if (Intersects(segArray(itr), givenSeg))
             return true;
@@ -131,9 +137,9 @@ Seg2D &PlaneSweep::predOfP(Poi2D &p) {
     int itr = 0;
     int treeSize = sweepLineStatus->sizeOfAVL();
 
-    seg2D *segArray[] = sweepLineStatus->getElements();
-    for (itr = o; itr < treeSize; itr++) {
-        poi2D *Ipoint = IntersectionPoint(segArray(itr), sweepLineStatus->getPred());
+    PlaneSweepLineStatusObject *segArray[] = sweepLineStatus->getElements();
+    for (itr = 0; itr < treeSize; itr++) {
+        Poi2D *Ipoint = IntersectionPoint(segArray(itr), sweepLineStatus->getPred());
         if (Ipoint.y < p.y)
             return segArray(itr);
     }
