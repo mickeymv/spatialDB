@@ -74,6 +74,7 @@ void AVLTree<T>::getElements(AVLnode<T>** result) {
      inOrder1(root, result, count);
  }
 
+ template <class T>
  AVLnode<T>* AVLTree<T>::getSucc(T val) {
      AVLnode *valTemp = FindKey(val);
      if (valTemp != NULL && valTemp->right != NULL) {
@@ -86,7 +87,7 @@ void AVLTree<T>::getElements(AVLnode<T>** result) {
      return(NULL);
  }
 
-
+ template <class T>
  AVLnode<T>* AVLTree<T>::getPred(T val) {
      AVLnode *valTemp = FindKey(val);
      if (valTemp != NULL && valTemp->left != NULL) {
