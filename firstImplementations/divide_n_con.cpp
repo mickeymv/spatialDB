@@ -178,8 +178,6 @@ int main(){
 	// 	input.push_back(fileRead);
 	// }
 	
-	
-	
 	clock_t begin = clock();
 
 	divideAndConquer(input);
