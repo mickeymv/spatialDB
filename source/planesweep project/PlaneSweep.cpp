@@ -1007,14 +1007,25 @@ bool PlaneSweep::poiOnSeg(Poi2D &poi2D) {
     int itr = 0;
     int treeSize = sweepLineStatus->sizeOfAVL();
 
-    seg2D *segArray[] = sweepLineStatus->getElements();
+//    AVLnode<PlaneSweepLineStatusObject &> temp = sweepLineStatus->getElements();
+
+    AVLnode<PlaneSweepLineStatusObject &> *segArray[treeSize] = {};
+//    segArray = sweepLineStatus->getElements();
+    sweepLineStatus->getElements(segArray);
 
     for (itr = o; itr < treeSize; itr++) {
 
-        if (PointLiesOnSegment(poi2D, segArray(itr)))
+        if (PointLiesOnSegment(poi2D, segArray[itr]->key.getSegment2D()))
             return true;
     }
     return false;
+}
+
+Seg2D& PlaneSweep::getPredecessor(Seg2D& s) {
+    return sweepLineStatus->getPred(s)->key.getSegment2D();
+}
+Seg2D& PlaneSweep::getSuccessor(Seg2D& s){
+    return sweepLineStatus->getSucc(s)->key.getSegment2D();
 }
 
 void PlaneSweep::newSweep() {
