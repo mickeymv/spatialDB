@@ -55,6 +55,8 @@ public:
         end_of_first, end_of_second, end_of_both
     } status;
 
+    Poi2D getEvent(object objectEnumVal);
+
 private:
     //SelectFirst should be called in the POT constructor.
     void selectFirst();
