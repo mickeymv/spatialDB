@@ -204,7 +204,8 @@ bool PlaneSweep::isRelation(Seg2D &firstSegment, Seg2D &secondSegment) {
     return false;
 }
 /*TODO Need to see how ConstSegIterator can be used for pot->isInObjF(Seg2D) and pot->isInObjG(seg2D) and ConstHalsegInterator, ConstAttrHalfsegIterator for getNextObjIterator
- * TODO see how Attributed half segments can be generated
+ * TODO see how Attributed half segments can be generated from segments
+ * TODO see what to insert for ia since attributed halfsegment iterators can consider ia for comparison
  * VERY IMPORTANT
  * */
 void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
@@ -699,10 +700,14 @@ bool PlaneSweep::lookAhead(HalfSeg2D & halfseg2D, Line2D & line2D)
         }
 
         //Dynamic
-        dynamicEPSObjF.DeleteMin();
-        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjF.GetMin();
+//        dynamicEPSObjF.DeleteMin();
+//        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjF.GetMin();
+//        AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
+//        dynamicEPSObjF.Insert(attrhalfsegReinsert);
+//        HalfSeg2D halfsegDynSucc = attrhalfsegDynSucc.halfsegment; //change later
+
         AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
-        dynamicEPSObjF.Insert(attrhalfsegReinsert);
+        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjF.GetNext(attrhalfsegReinsert);
         HalfSeg2D halfsegDynSucc = attrhalfsegDynSucc.halfsegment; //change later
 
         if(halfsegStaticSucc== nullptr&&halfsegDynSucc== nullptr)
@@ -792,10 +797,14 @@ bool PlaneSweep::lookAhead(HalfSeg2D & halfseg2D, Line2D & line2D)
         }
 
         //Dynamic
-        dynamicEPSObjG.DeleteMin();
-        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjG.GetMin();
+//        dynamicEPSObjG.DeleteMin();
+//        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjG.GetMin();
+//        AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
+//        dynamicEPSObjG.Insert(attrhalfsegReinsert);
+//        HalfSeg2D halfsegDynSucc = attrhalfsegDynSucc.halfsegment; //change later
+
         AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
-        dynamicEPSObjG.Insert(attrhalfsegReinsert);
+        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjG.GetNext(attrhalfsegReinsert);
         HalfSeg2D halfsegDynSucc = attrhalfsegDynSucc.halfsegment; //change later
 
         if(halfsegStaticSucc== nullptr&&halfsegDynSucc== nullptr)
@@ -894,11 +903,12 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D & attrhalfseg2D, Region2D & region2D) {
         }
 
         //Dynamic
-        dynamicEPSObjF.DeleteMin();
-        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjF.GetMin();
-        //AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
-        dynamicEPSObjF.Insert(attrhalfseg2D);
+//        dynamicEPSObjF.DeleteMin();
+//        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjF.GetMin();
+//        //AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
+//        dynamicEPSObjF.Insert(attrhalfseg2D);
         //AttrHalfSeg2D attrhalfsegDynSucc = attrhalfsegDynSucc.halfsegment //change later
+        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjF.GetNext(attrhalfseg2D);
 
         if(attrhalfsegStaticSucc== nullptr&&attrhalfsegDynSucc== nullptr)
         {
@@ -974,11 +984,12 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D & attrhalfseg2D, Region2D & region2D) {
         }
 
         //Dynamic
-        dynamicEPSObjG.DeleteMin();
-        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjG.GetMin();
-        //AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
-        dynamicEPSObjG.Insert(attrhalfseg2D);
+//        dynamicEPSObjG.DeleteMin();
+//        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjG.GetMin();
+//        //AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
+//        dynamicEPSObjG.Insert(attrhalfseg2D);
         //AttrHalfSeg2D attrhalfsegDynSucc = attrhalfsegDynSucc.halfsegment //change later
+        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjG.GetNext(attrhalfseg2D);
 
         if(attrhalfsegStaticSucc== nullptr&&attrhalfsegDynSucc== nullptr)
         {

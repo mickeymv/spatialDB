@@ -107,3 +107,24 @@ void MinHeap::DeleteMin()
 
     BubbleDown(0);
 }
+
+AttrHalfSeg2D MinHeap::GetNext(AttrHalfSeg2D attrHalfSeg2D)
+{
+    vector<AttrHalfSeg2D>::iterator val;
+    AttrHalfSeg2D next = nullptr;
+    for(val=_vector.begin();val<=_vector.end();val++)
+    {
+        if(*(val)>attrHalfSeg2D && next== nullptr)
+        {
+            next = *(val);
+        }
+        else if(*(val)>attrHalfSeg2D && next!= nullptr)
+        {
+            if(*(val)<next)
+            {
+                next = *(val);
+            }
+        }
+    }
+    return next;
+}

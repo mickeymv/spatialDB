@@ -26,6 +26,7 @@ public:
     void Insert(AttrHalfSeg2D newValue);
     AttrHalfSeg2D GetMin();
     void DeleteMin();
+    AttrHalfSeg2D GetNext(AttrHalfSeg2D attrHalfSeg2D);
 };
 
 #endif //PLANESWEEP_PROJECT_MINHEAP_H
