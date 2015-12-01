@@ -6,7 +6,6 @@
 
 
 #include "PlaneSweep.h"
-#include "ObjectIterator.h"
 
 PlaneSweep::PlaneSweep(Object2D objF, Object2D objG) {
     pot = new ParallelObjectTraversal(objF, objG);
@@ -18,8 +17,8 @@ PlaneSweep::~PlaneSweep() {
 
 void PlaneSweep::setSegClass(Seg2D seg, int lOrR, int uOrL) {
     PlaneSweepLineStatusObject psso(seg);
-    AVLnode<PlaneSweepLineStatusObject &> *node =
-            sweepLineStatus->FindKey(psso);
+    AVLnode < PlaneSweepLineStatusObject &> *node =
+                                                    sweepLineStatus->FindKey(psso);
     node->key.setSegmentClass(lOrR, uOrL);
     node = NULL;
     delete psso;
@@ -27,8 +26,8 @@ void PlaneSweep::setSegClass(Seg2D seg, int lOrR, int uOrL) {
 
 void PlaneSweep::setInsideAbove(Seg2D seg, bool ia) {
     PlaneSweepLineStatusObject psso(seg);
-    AVLnode<PlaneSweepLineStatusObject &> *node =
-            sweepLineStatus->FindKey(psso);
+    AVLnode < PlaneSweepLineStatusObject &> *node =
+                                                    sweepLineStatus->FindKey(psso);
     node->key.setInsideAbove(ia);
     node = NULL;
     delete psso;
@@ -36,8 +35,8 @@ void PlaneSweep::setInsideAbove(Seg2D seg, bool ia) {
 
 SegmentClass PlaneSweep::getSegClass(Seg2D seg) {
     PlaneSweepLineStatusObject psso(seg);
-    AVLnode<PlaneSweepLineStatusObject &> *node =
-            sweepLineStatus->FindKey(psso);
+    AVLnode < PlaneSweepLineStatusObject &> *node =
+                                                    sweepLineStatus->FindKey(psso);
     SegmentClass sc = node->key.getSegmentClass();
     node = NULL;
     delete psso;
@@ -46,8 +45,8 @@ SegmentClass PlaneSweep::getSegClass(Seg2D seg) {
 
 bool PlaneSweep::getInsideAbove(Seg2D seg) {
     PlaneSweepLineStatusObject psso(seg);
-    AVLnode<PlaneSweepLineStatusObject&> *node =
-            sweepLineStatus->FindKey(psso);
+    AVLnode < PlaneSweepLineStatusObject &> *node =
+                                                    sweepLineStatus->FindKey(psso);
     bool ia = node->key.getInsideAbove();
     node = NULL;
     delete psso;
@@ -118,6 +117,7 @@ void PlaneSweep::delRight(Seg2D &seg2D) {
         splitLines(pred, succ);
     }
 }
+
 //TODO change type of getElements() from AVLtree
 bool PlaneSweep::coincident(Seg2D &givenSeg) {
     int itr = 0;
@@ -149,7 +149,7 @@ Seg2D PlaneSweep::predOfP(Poi2D &p) {
 
 bool PlaneSweep::predExists(Seg2D &seg2D) {
     PlaneSweepLineStatusObject sweepLineStatusObject(seg2D);
-    AVLnode<PlaneSweepLineStatusObject &> *nodeInSweepLineStatus = sweepLineStatus->FindKey(sweepLineStatusObject);
+    AVLnode <PlaneSweepLineStatusObject> *nodeInSweepLineStatus = sweepLineStatus->FindKey(sweepLineStatusObject);
     if (nodeInSweepLineStatus != NULL && nodeInSweepLineStatus->left != NULL) {
         return true;
     }
@@ -157,13 +157,13 @@ bool PlaneSweep::predExists(Seg2D &seg2D) {
 }
 
 SegmentClass PlaneSweep::getPredSegmentClass(Seg2D seg2D) {
-    AVLnode<PlaneSweepLineStatusObject &> *pred = sweepLineStatus->getPred(seg2D);
+    AVLnode <PlaneSweepLineStatusObject> *pred = sweepLineStatus->getPred(seg2D);
     PlaneSweepLineStatusObject predObject = pred->key;
     return predObject.getSegmentClass();
 }
 
 bool PlaneSweep::getPredInsideAbove(Seg2D seg2D) {
-    AVLnode<PlaneSweepLineStatusObject &> *pred = sweepLineStatus->getPred(seg2D);
+    AVLnode <PlaneSweepLineStatusObject> *pred = sweepLineStatus->getPred(seg2D);
     PlaneSweepLineStatusObject predObject = pred->key;
     return predObject.getInsideAbove();
 }
@@ -189,20 +189,24 @@ bool PlaneSweep::calculateRelation(Seg2D &seg2D) {
 bool PlaneSweep::isRelation(Seg2D &firstSegment, Seg2D &secondSegment) {
     if ((Intersects(firstSegment, secondSegment)) || (Touch(firstSegment, secondSegment)) ||
         (SegmentIsCollinearAndMeetsLeftEndpoint(firstSegment, secondSegment)) ||
-        (SegmentLiesOnSegment(firstSegment, secondSegment) && SegmentIsCollinearAndCrossesLeftEndpoint(secondSegment, firstSegment) &&
-        SegmentIsCollinearAndCrossesRightEndpoint(secondSegment, firstSegment)) ||
+        (SegmentLiesOnSegment(firstSegment, secondSegment) &&
+         SegmentIsCollinearAndCrossesLeftEndpoint(secondSegment, firstSegment) &&
+         SegmentIsCollinearAndCrossesRightEndpoint(secondSegment, firstSegment)) ||
         (SegmentIsCollinearAndMeetsRightEndpoint(firstSegment, secondSegment)) ||
-        (SegmentLiesOnSegment(firstSegment, secondSegment) && SegmentIsCollinearAndCrossesLeftEndpoint(secondSegment, firstSegment) &&
-        SegmentIsCollinearAndCrossesRightEndpoint(firstSegment, secondSegment)) ||
+        (SegmentLiesOnSegment(firstSegment, secondSegment) &&
+         SegmentIsCollinearAndCrossesLeftEndpoint(secondSegment, firstSegment) &&
+         SegmentIsCollinearAndCrossesRightEndpoint(firstSegment, secondSegment)) ||
         (SegmentIsCollinearAndMeetsLeftEndpoint(secondSegment, firstSegment)) ||
-        (SegmentLiesOnSegment(secondSegment, firstSegment) && SegmentIsCollinearAndCrossesLeftEndpoint(firstSegment, secondSegment) &&
-        SegmentIsCollinearAndCrossesRightEndpoint(firstSegment, secondSegment)) ||
+        (SegmentLiesOnSegment(secondSegment, firstSegment) &&
+         SegmentIsCollinearAndCrossesLeftEndpoint(firstSegment, secondSegment) &&
+         SegmentIsCollinearAndCrossesRightEndpoint(firstSegment, secondSegment)) ||
         (SegmentIsCollinearAndMeetsRightEndpoint(secondSegment, firstSegment)) ||
         (SegmentIsCollinearAndMeetsRightEndpoint(secondSegment, firstSegment))) {
         return true;
     }
     return false;
 }
+
 /*TODO Need to see how ConstSegIterator can be used for pot->isInObjF(Seg2D) and pot->isInObjG(seg2D) and ConstHalsegInterator, ConstAttrHalfsegIterator for getNextObjIterator
  * TODO see how Attributed half segments can be generated from segments
  * TODO see what to insert for ia since attributed halfsegment iterators can consider ia for comparison
@@ -357,8 +361,9 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
         }
     }
-    else if (SegmentLiesOnSegment(firstSegment, secondSegment) && SegmentIsCollinearAndCrossesLeftEndpoint(secondSegment, firstSegment) &&
-            SegmentIsCollinearAndCrossesRightEndpoint(secondSegment, firstSegment)) {
+    else if (SegmentLiesOnSegment(firstSegment, secondSegment) &&
+             SegmentIsCollinearAndCrossesLeftEndpoint(secondSegment, firstSegment) &&
+             SegmentIsCollinearAndCrossesRightEndpoint(secondSegment, firstSegment)) {
         Seg2D S11(firstSegment.p1, secondSegment.p1);
         Seg2D S12(secondSegment.p1, secondSegment.p2);
         Seg2D S13(secondSegment.p2, firstSegment.p2);
@@ -396,8 +401,9 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
         }
     }
-    else if (SegmentLiesOnSegment(secondSegment, firstSegment) && SegmentIsCollinearAndCrossesLeftEndpoint(firstSegment, secondSegment) &&
-            SegmentIsCollinearAndCrossesRightEndpoint(firstSegment, secondSegment)) {
+    else if (SegmentLiesOnSegment(secondSegment, firstSegment) &&
+             SegmentIsCollinearAndCrossesLeftEndpoint(firstSegment, secondSegment) &&
+             SegmentIsCollinearAndCrossesRightEndpoint(firstSegment, secondSegment)) {
         Seg2D S21(secondSegment.p1, firstSegment.p1);
         Seg2D S22(firstSegment.p1, firstSegment.p2);
         Seg2D S23(secondSegment.p2, firstSegment.p2);
@@ -500,8 +506,9 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
         }
     }
-    else if (SegmentLiesOnSegment(firstSegment, secondSegment) && SegmentIsCollinearAndCrossesLeftEndpoint(secondSegment, firstSegment) &&
-            SegmentIsCollinearAndCrossesRightEndpoint(firstSegment, secondSegment)) {
+    else if (SegmentLiesOnSegment(firstSegment, secondSegment) &&
+             SegmentIsCollinearAndCrossesLeftEndpoint(secondSegment, firstSegment) &&
+             SegmentIsCollinearAndCrossesRightEndpoint(firstSegment, secondSegment)) {
         Seg2D S11(firstSegment.p1, secondSegment.p1);
         Seg2D S12(secondSegment.p1, firstSegment.p2);
         Seg2D S22(firstSegment.p2, secondSegment.p2);
@@ -541,8 +548,9 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
 
     }
-    else if (SegmentLiesOnSegment(secondSegment, firstSegment) && SegmentIsCollinearAndCrossesLeftEndpoint(firstSegment, secondSegment) &&
-            SegmentIsCollinearAndCrossesRightEndpoint(secondSegment, firstSegment)) {
+    else if (SegmentLiesOnSegment(secondSegment, firstSegment) &&
+             SegmentIsCollinearAndCrossesLeftEndpoint(firstSegment, secondSegment) &&
+             SegmentIsCollinearAndCrossesRightEndpoint(secondSegment, firstSegment)) {
         Seg2D S21(secondSegment.p1, firstSegment.p1);
         Seg2D S22(firstSegment.p1, secondSegment.p2);
         Seg2D S12(secondSegment.p2, firstSegment.p2);
@@ -681,21 +689,18 @@ AttrHalfSeg2D PlaneSweep::getAttrHalfSegEvent(ParallelObjectTraversal::object ob
  * TODO Need to update code to get next object after a given object in an AVL tree to get dynSucc
  */
 
-bool PlaneSweep::lookAhead(HalfSeg2D & halfseg2D, Line2D & line2D)
-{
-    Seg2D & seg2D = halfseg2D.seg;
-    if(pot->isObjectF(line2D))
-    {
+bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
+    Seg2D &seg2D = halfseg2D.seg;
+    if (pot->isObjectF(line2D)) {
         //Static
         ParallelObjectTraversal::object objf = ParallelObjectTraversal::first;
-        ObjectIterator *obji = pot->getNextObjIterator(halfseg2D,objf);
+        ObjectIterator *obji = pot->getNextObjIterator(halfseg2D, objf);
         Line2D::ConstSegIterator *val = dynamic_cast<Line2D::ConstSegIterator *>(obji);
         HalfSeg2D halfsegStaticSucc;
-        if(obji!= nullptr) {
+        if (obji != nullptr) {
             halfsegStaticSucc = *(*val);
         }
-        else
-        {
+        else {
             halfsegStaticSucc = nullptr;
         }
 
@@ -710,89 +715,72 @@ bool PlaneSweep::lookAhead(HalfSeg2D & halfseg2D, Line2D & line2D)
         AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjF.GetNext(attrhalfsegReinsert);
         HalfSeg2D halfsegDynSucc = attrhalfsegDynSucc.halfsegment; //change later
 
-        if(halfsegStaticSucc== nullptr&&halfsegDynSucc== nullptr)
-        {
+        if (halfsegStaticSucc == nullptr && halfsegDynSucc == nullptr) {
             return false;
         }
 
-        if((halfsegStaticSucc!= nullptr&&halfsegDynSucc== nullptr)||(halfsegStaticSucc<halfsegDynSucc ))
-        {
+        if ((halfsegStaticSucc != nullptr && halfsegDynSucc == nullptr) || (halfsegStaticSucc < halfsegDynSucc)) {
             bool isDirGiven = halfseg2D.isLeft;
             bool isDirSucc = halfsegStaticSucc.isLeft;
             Poi2D dpGiven, dpSucc;
 
-            if(isDirGiven)
-            {
+            if (isDirGiven) {
                 dpGiven = halfseg2D.seg.p1;
             }
-            else
-            {
+            else {
                 dpGiven = halfseg2D.seg.p2;
             }
-            if(isDirSucc)
-            {
+            if (isDirSucc) {
                 dpSucc = halfsegStaticSucc.seg.p1;
             }
-            else
-            {
+            else {
                 dpSucc = halfsegStaticSucc.seg.p2;
             }
 
-            if(dpGiven==(dpSucc))
-            {
+            if (dpGiven == (dpSucc)) {
                 return true;
             }
-            else
-            {
+            else {
                 return false;
             }
         }
-        else if((halfsegStaticSucc== nullptr&&halfsegDynSucc!= nullptr)||(halfsegDynSucc>halfsegStaticSucc))
-        {
+        else if ((halfsegStaticSucc == nullptr && halfsegDynSucc != nullptr) || (halfsegDynSucc > halfsegStaticSucc)) {
             bool isDirGiven = halfseg2D.isLeft;
             bool isDirSucc = halfsegDynSucc.isLeft;
             Poi2D dpGiven, dpSucc;
 
-            if(isDirGiven)
-            {
+            if (isDirGiven) {
                 dpGiven = halfseg2D.seg.p1;
             }
-            else
-            {
+            else {
                 dpGiven = halfseg2D.seg.p2;
             }
-            if(isDirSucc)
-            {
+            if (isDirSucc) {
                 dpSucc = halfsegDynSucc.seg.p1;
             }
-            else
-            {
+            else {
                 dpSucc = halfsegDynSucc.seg.p2;
             }
-            if(dpGiven==(dpSucc))
-            {
+            if (dpGiven == (dpSucc)) {
                 return true;
             }
-            else
-            {
+            else {
                 return false;
             }
         }
 
 
     }
-    else if(pot->isObjectG(line2D))
-    {
+    else if (pot->isObjectG(line2D)) {
         //Static
         ParallelObjectTraversal::object objg = ParallelObjectTraversal::second;
-        ObjectIterator *obji = pot->getNextObjIterator(halfseg2D,objg);
+        ObjectIterator *obji = pot->getNextObjIterator(halfseg2D, objg);
         Line2D::ConstSegIterator *val = dynamic_cast<Line2D::ConstSegIterator *>(obji);
         HalfSeg2D halfsegStaticSucc;
-        if(obji!= nullptr) {
+        if (obji != nullptr) {
             halfsegStaticSucc = *(*val);
         }
-        else
-        {
+        else {
             halfsegStaticSucc = nullptr;
         }
 
@@ -807,72 +795,58 @@ bool PlaneSweep::lookAhead(HalfSeg2D & halfseg2D, Line2D & line2D)
         AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjG.GetNext(attrhalfsegReinsert);
         HalfSeg2D halfsegDynSucc = attrhalfsegDynSucc.halfsegment; //change later
 
-        if(halfsegStaticSucc== nullptr&&halfsegDynSucc== nullptr)
-        {
+        if (halfsegStaticSucc == nullptr && halfsegDynSucc == nullptr) {
             return false;
         }
 
-        if((halfsegStaticSucc!= nullptr&&halfsegDynSucc== nullptr)||(halfsegStaticSucc<=( halfsegDynSucc )))
-        {
+        if ((halfsegStaticSucc != nullptr && halfsegDynSucc == nullptr) || (halfsegStaticSucc <= (halfsegDynSucc))) {
             bool isDirGiven = halfseg2D.isLeft;
             bool isDirSucc = halfsegStaticSucc.isLeft;
             Poi2D dpGiven, dpSucc;
 
-            if(isDirGiven)
-            {
+            if (isDirGiven) {
                 dpGiven = halfseg2D.seg.p1;
             }
-            else
-            {
+            else {
                 dpGiven = halfseg2D.seg.p2;
             }
-            if(isDirSucc)
-            {
+            if (isDirSucc) {
                 dpSucc = halfsegStaticSucc.seg.p1;
             }
-            else
-            {
+            else {
                 dpSucc = halfsegStaticSucc.seg.p2;
             }
 
-            if(dpGiven==(dpSucc))
-            {
+            if (dpGiven == (dpSucc)) {
                 return true;
             }
-            else
-            {
+            else {
                 return false;
             }
         }
-        else if((halfsegStaticSucc== nullptr&&halfsegDynSucc!= nullptr)||(halfsegDynSucc>(halfsegStaticSucc)))
-        {
+        else if ((halfsegStaticSucc == nullptr && halfsegDynSucc != nullptr) ||
+                 (halfsegDynSucc > (halfsegStaticSucc))) {
             bool isDirGiven = halfseg2D.isLeft;
             bool isDirSucc = halfsegDynSucc.isLeft;
             Poi2D dpGiven, dpSucc;
 
-            if(isDirGiven)
-            {
+            if (isDirGiven) {
                 dpGiven = halfseg2D.seg.p1;
             }
-            else
-            {
+            else {
                 dpGiven = halfseg2D.seg.p2;
             }
-            if(isDirSucc)
-            {
+            if (isDirSucc) {
                 dpSucc = halfsegDynSucc.seg.p1;
             }
-            else
-            {
+            else {
                 dpSucc = halfsegDynSucc.seg.p2;
             }
 
-            if(dpGiven==(dpSucc))
-            {
+            if (dpGiven == (dpSucc)) {
                 return true;
             }
-            else
-            {
+            else {
                 return false;
             }
         }
@@ -884,21 +858,19 @@ bool PlaneSweep::lookAhead(HalfSeg2D & halfseg2D, Line2D & line2D)
  * TODO Need to update code to get next object after a given object in an AVL tree to get dynSucc
  */
 
-bool PlaneSweep::lookAhead(AttrHalfSeg2D & attrhalfseg2D, Region2D & region2D) {
+bool PlaneSweep::lookAhead(AttrHalfSeg2D &attrhalfseg2D, Region2D &region2D) {
     Seg2D &seg2D = attrhalfseg2D.halfseg.seg;//Implement when updated
-    if(pot->isObjectF(region2D))
-    {
+    if (pot->isObjectF(region2D)) {
         //Static
         ParallelObjectTraversal::object objf = ParallelObjectTraversal::first;
-        ObjectIterator *obji = pot->getNextObjIterator(attrhalfseg2D,objf);
+        ObjectIterator *obji = pot->getNextObjIterator(attrhalfseg2D, objf);
         Line2D::ConstSegIterator *val = dynamic_cast<Line2D::ConstSegIterator *>(obji);
         AttrHalfSeg2D attrhalfsegStaticSucc;
-        if(obji!= nullptr) {
+        if (obji != nullptr) {
             attrhalfsegStaticSucc = *(*val);
 
         }
-        else
-        {
+        else {
             attrhalfsegStaticSucc = nullptr;
         }
 
@@ -910,12 +882,12 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D & attrhalfseg2D, Region2D & region2D) {
         //AttrHalfSeg2D attrhalfsegDynSucc = attrhalfsegDynSucc.halfsegment //change later
         AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjF.GetNext(attrhalfseg2D);
 
-        if(attrhalfsegStaticSucc== nullptr&&attrhalfsegDynSucc== nullptr)
-        {
+        if (attrhalfsegStaticSucc == nullptr && attrhalfsegDynSucc == nullptr) {
             return false;
         }
 
-        if ((attrhalfsegStaticSucc!= nullptr&&attrhalfsegDynSucc== nullptr)||(attrhalfsegStaticSucc<=(attrhalfsegDynSucc))) {
+        if ((attrhalfsegStaticSucc != nullptr && attrhalfsegDynSucc == nullptr) ||
+            (attrhalfsegStaticSucc <= (attrhalfsegDynSucc))) {
             bool isDirGiven = attrhalfseg2D.halfseg.isLeft;//Implement when updated
             bool isDirSucc = attrhalfsegStaticSucc.halfseg.isLeft;//Implement when updated
             Poi2D dpGiven, dpSucc;
@@ -933,15 +905,15 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D & attrhalfseg2D, Region2D & region2D) {
                 dpSucc = attrhalfsegStaticSucc.halfseg.seg.p2;
             }
 
-            if (dpGiven==(dpSucc)) {
+            if (dpGiven == (dpSucc)) {
                 return true;
             }
             else {
                 return false;
             }
         }
-        else if((attrhalfsegStaticSucc== nullptr&&attrhalfsegDynSucc!= nullptr)||(attrhalfsegDynSucc>(attrhalfsegStaticSucc)))
-        {
+        else if ((attrhalfsegStaticSucc == nullptr && attrhalfsegDynSucc != nullptr) ||
+                 (attrhalfsegDynSucc > (attrhalfsegStaticSucc))) {
             bool isDirGiven = attrhalfseg2D.halfseg.isLeft;//Implement when updated
             bool isDirSucc = attrhalfsegDynSucc.halfseg.isLeft;//Implement when updated
             Poi2D dpGiven, dpSucc;
@@ -958,7 +930,7 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D & attrhalfseg2D, Region2D & region2D) {
             else {
                 dpSucc = attrhalfsegDynSucc.halfseg.seg.p2;
             }
-            if (dpGiven==(dpSucc)) {
+            if (dpGiven == (dpSucc)) {
                 return true;
             }
             else {
@@ -968,18 +940,16 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D & attrhalfseg2D, Region2D & region2D) {
 
 
     }
-    else if(pot->isObjectG(region2D))
-    {
+    else if (pot->isObjectG(region2D)) {
         //Static
         ParallelObjectTraversal::object objg = ParallelObjectTraversal::second;
-        ObjectIterator *obji = pot->getNextObjIterator(attrhalfseg2D,objg);
+        ObjectIterator *obji = pot->getNextObjIterator(attrhalfseg2D, objg);
         Line2D::ConstSegIterator *val = dynamic_cast<Line2D::ConstSegIterator *>(obji);
         AttrHalfSeg2D attrhalfsegStaticSucc;
-        if(obji!= nullptr) {
+        if (obji != nullptr) {
             attrhalfsegStaticSucc = *(*val);
         }
-        else
-        {
+        else {
             attrhalfsegStaticSucc = nullptr;
         }
 
@@ -991,12 +961,12 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D & attrhalfseg2D, Region2D & region2D) {
         //AttrHalfSeg2D attrhalfsegDynSucc = attrhalfsegDynSucc.halfsegment //change later
         AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjG.GetNext(attrhalfseg2D);
 
-        if(attrhalfsegStaticSucc== nullptr&&attrhalfsegDynSucc== nullptr)
-        {
+        if (attrhalfsegStaticSucc == nullptr && attrhalfsegDynSucc == nullptr) {
             return false;
         }
 
-        if ((attrhalfsegStaticSucc!= nullptr&&attrhalfsegDynSucc== nullptr)||(attrhalfsegStaticSucc<=(attrhalfsegDynSucc))) {
+        if ((attrhalfsegStaticSucc != nullptr && attrhalfsegDynSucc == nullptr) ||
+            (attrhalfsegStaticSucc <= (attrhalfsegDynSucc))) {
             bool isDirGiven = attrhalfseg2D.halfseg.isLeft;//Implement when updated
             bool isDirSucc = attrhalfsegStaticSucc.halfseg.isLeft;//Implement when updated
             Poi2D dpGiven, dpSucc;
@@ -1014,15 +984,15 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D & attrhalfseg2D, Region2D & region2D) {
                 dpSucc = attrhalfsegStaticSucc.halfseg.seg.p2;
             }
 
-            if (dpGiven==(dpSucc)) {
+            if (dpGiven == (dpSucc)) {
                 return true;
             }
             else {
                 return false;
             }
         }
-        else if((attrhalfsegStaticSucc== nullptr&&attrhalfsegDynSucc!= nullptr)||(attrhalfsegDynSucc>(attrhalfsegStaticSucc)))
-        {
+        else if ((attrhalfsegStaticSucc == nullptr && attrhalfsegDynSucc != nullptr) ||
+                 (attrhalfsegDynSucc > (attrhalfsegStaticSucc))) {
             bool isDirGiven = attrhalfseg2D.halfseg.isLeft;
             bool isDirSucc = attrhalfsegDynSucc.halfseg.isLeft;
             Poi2D dpGiven, dpSucc;
@@ -1040,7 +1010,7 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D & attrhalfseg2D, Region2D & region2D) {
                 dpSucc = attrhalfsegDynSucc.halfseg.seg.p2;
             }
 
-            if (dpGiven==(dpSucc)) {
+            if (dpGiven == (dpSucc)) {
                 return true;
             }
             else {
@@ -1051,8 +1021,7 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D & attrhalfseg2D, Region2D & region2D) {
     }
 }
 
-void PlaneSweep::updateSweepLineStatus(Seg2D &segmentToBeReplaced, Seg2D &segmentToReplaceWith)
-{
+void PlaneSweep::updateSweepLineStatus(Seg2D &segmentToBeReplaced, Seg2D &segmentToReplaceWith) {
     sweepLineStatus->deleteKey(segmentToBeReplaced);
     PlaneSweepLineStatusObject obj(segmentToReplaceWith);
     sweepLineStatus->insert(obj);// should it be key??
@@ -1062,54 +1031,26 @@ bool PlaneSweep::poiOnSeg(Poi2D &poi2D) {
     int itr = 0;
     int treeSize = sweepLineStatus->sizeOfAVL();
 
-//    AVLnode<PlaneSweepLineStatusObject &> temp = sweepLineStatus->getElements();
-
-    AVLnode<PlaneSweepLineStatusObject &> *segArray[treeSize] = {};
-//    segArray = sweepLineStatus->getElements();
+    AVLnode <PlaneSweepLineStatusObject> *segArray[treeSize] = {};
     sweepLineStatus->getElements(segArray);
 
     for (itr = 0; itr < treeSize; itr++) {
 
-        if (PointLiesOnSegment(poi2D, segArray[itr]->key.getSegment2D()))
+        if (PointLiesOnSegment(poi2D, segArray[itr]->key.getSegment2D())) {
             return true;
+        }
     }
     return false;
 }
 
-Seg2D PlaneSweep::getPredecessor(Seg2D& s) {
+Seg2D PlaneSweep::getPredecessor(Seg2D &s) {
     return sweepLineStatus->getPred(s)->key.getSegment2D();
 }
-Seg2D PlaneSweep::getSuccessor(Seg2D& s){
+
+Seg2D PlaneSweep::getSuccessor(Seg2D &s) {
     return sweepLineStatus->getSucc(s)->key.getSegment2D();
 }
 
 void PlaneSweep::newSweep() {
     sweepLineStatus = new AVLTree<PlaneSweepLineStatusObject &>();//Not sure if it is passed like this
 }
-
-
-/*
-*/
-
-
-/*
- *  Change the following functions based on our discussion on Saturday
- *  11/21/15.
- */
-
-
-/*
-
-
-void PlaneSweep::add_left(Seg2D& seg2D)
-{
-    sweepLineStatus->Insert(seg2D.p1.y,seg2D);
-}
-
-void PlaneSweep::del_right(Seg2D& seg2D)
-{
-    //sweepLineStatus->deleteKey(Seg2D.p2.y,Seg2D);
-    sweepLineStatus->Remove(seg2D.p1.y);
-}
-
- */

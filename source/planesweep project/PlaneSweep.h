@@ -109,9 +109,6 @@ private:
      */
     AVLTree<PlaneSweepLineStatusObject &> *sweepLineStatus;
 
-    //Should increment the object pointers within either/both of the two objects.
-    void selectFirst();
-
     /* A vertical sweep line traversing the plane from left to right stops at special
      * event points which are stored in a queue called event point schedule. The event
      * point schedule must allow one to insert new event points discovered during
