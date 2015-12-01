@@ -29,7 +29,8 @@ public:
     void printBalance();
     void inOrder();
     int sizeOfAVL();
-    AVLNode<T>** getElements();
+    //AVLNode<T>** getElements();
+    T** getElements();
     AVLnode<T>* FindKey( const T val);
     AVLnode<T>* getPred( const T val);
 
@@ -49,7 +50,7 @@ private:
  
 
  AVLnode<T>* AVLTree<T>::getPred(T val) {
-     AVLnode *valTemp = Find(val);
+     AVLnode *valTemp = FindKey(val);
      if (valTemp != NULL && valTemp->left != NULL) {
         AVLnode *temp = valTemp->left;
          while (temp->right != NULL) {
