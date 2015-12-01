@@ -19,19 +19,19 @@
 
 #include "Line2DImpl.h"
     
-    struct Line2D::ConstSegIterator::ConstSegIteratorImplementation{
-      int iteratorIndex;
-      Line2D::Line2DSImpl* current;     //pointer to the full structure
+    struct Line2DImpl::ConstSegIterator::ConstSegIteratorImplementation{
+      int iteratorIndex=-1;
+      Line2D::Line2DSImpl* current=NULL;     //pointer to the full structure
+    };
+    struct Line2D::ConstBlockIterator::ConstBlockIteratorImplementation{
+      int iteratorIndex = -1;
+      Line2D::Line2DSImpl* current = NULL;     //pointer to the full structure
     };
     struct Line2D::Line2DSImpl{
 	  std::map<int, std::vector<HalfSeg2D *>> mapHseg; //map of vectors holding pointers for the blocks' halfsegments within segments 
-      std::vector<HalfSeg2D> segments;                 //ordered set of all segments regarding the full Line2D structure
-      Line2D::ConstSegIterator::ConstSegIteratorImplementation first;  //pointer to the segments vector
-      Line2D::ConstSegIterator::ConstSegIteratorImplementation last;   //pointer to the segments vector
-    };
-    struct Line2DImpl::ConstBlockIterator::ConstBlockIteratorImplementation{
-      int iteratorIndex;
-      Line2D::Line2DSImpl* current=NULL;     //pointer to the full structure
+      std::vector<HalfSeg2D> segments;                 //ordered set of all HalfSegments regarding the full Line2D structure
+      Line2D::ConstBlockIterator::ConstBlockIteratorImplementation firstBlock;  //pointer to the segments vector
+      Line2D::ConstBlockIterator::ConstBlockIteratorImplementation lastBlock;   //pointer to the segments vector
     };
 
     //++++++++++++++++++++++++++++
@@ -70,10 +70,10 @@
 		handle = new Line2DSImpl;
 		handle->segments.clear();
 		handle->mapHseg.clear();
-	    handle->first.iteratorIndex = source.handle->first.iteratorIndex;
-	    handle->last.iteratorIndex = source.handle->last.iteratorIndex;
-	    handle->first.current = source.handle;
-	    handle->last.current = source.handle;
+	    handle->firstBlock.iteratorIndex = source.handle->firstBlock.iteratorIndex;
+	    handle->lastBlock.iteratorIndex = source.handle->lastBlock.iteratorIndex;
+	    handle->firstBlock.current = source.handle;
+	    handle->lastBlock.current = source.handle;
 		std::copy(source.handle->segments.begin(), source.handle->segments.end(),std::back_inserter(handle->segments));
 		std::copy(source.handle->mapHseg.begin(), source.handle->mapHseg.end(), std::inserter(handle->mapHseg,handle->mapHseg.end()) );
 	}
@@ -85,10 +85,10 @@
 	    handle = new Line2DSImpl;
 		handle->segments.clear();
 		handle->mapHseg.clear();
-	    handle->first.iteratorIndex = source.handle->first.iteratorIndex;
-	    handle->last.iteratorIndex = source.handle->last.iteratorIndex;
-	    handle->first.current = source.handle;
-	    handle->last.current = source.handle;
+	    handle->firstBlock.iteratorIndex = source.handle->firstBlock.iteratorIndex;
+	    handle->lastBlock.iteratorIndex = source.handle->lastBlock.iteratorIndex;
+	    handle->firstBlock.current = source.handle;
+	    handle->lastBlock.current = source.handle;
 		std::move(source.handle->segments.begin(), source.handle->segments.end(),std::back_inserter(handle->segments));
 		std::move(source.handle->mapHseg.begin(), source.handle->mapHseg.end(), std::inserter(handle->mapHseg,handle->mapHseg.end()) );
 	}
@@ -98,160 +98,169 @@
 		//delete Line2D::handle;
     }
    	
-    //++++++++++++++++++++++
-    //++ Block iterator ++++
-    //++++++++++++++++++++++
-    // Constant block iterator type that allows to navigate through the blocks of
+   	
+   	
+    //+++++++++++++++++
+    // Iterator classes
+    //+++++++++++++++++
+
+    // Constant segment iterator type that allows to navigate through the segments of
     // a Line2D object in forward and reverse direction. A change of the
-    // blocks is not possible.
+    // segments is not possible.
         
-        // Default constructor that creates an empty constant block iterator.
-        Line2DImpl::ConstBlockIterator::ConstBlockIterator(){
-		  handlei = new ConstBlockIteratorImplementation;
-		  handlei->iteratorIndex = 0;
+     // Default constructor that creates an empty constant segment iterator.
+        Line2DImpl::ConstSegIterator::ConstSegIterator()
+        {
+		  handlei = new ConstSegIteratorImplementation;
+		  handlei->iteratorIndex = -1;
 		  handlei->current = NULL;
         }
 
-        // Copy constructor that constructs a constant block iterator from a
-        // given constant block iterator "source".
-        Line2DImpl::ConstBlockIterator::ConstBlockIterator(const ConstBlockIterator& source){
-		  handlei = new ConstBlockIteratorImplementation;
-		  handlei->iteratorIndex = source.handlei->iteratorIndex;
+        // Copy constructor that constructs a constant segment iterator from a
+        // given constant segment iterator "source".
+        Line2DImpl::ConstSegIterator::ConstSegIterator(const ConstSegIterator& source)
+        {
+		  handlei = new ConstSegIteratorImplementation;
+          handlei->iteratorIndex = source.handlei->iteratorIndex;
 		  handlei->current = source.handlei->current;
         }
 
-        // Move constructor that moves a given constant block iterator "source"
-        // to a constant block iterator. The constant block iterator "source"
-        // gets the empty constant block iterator as its value.
-        Line2DImpl::ConstBlockIterator::ConstBlockIterator(const ConstBlockIterator&& source){
-		    handlei = new ConstBlockIteratorImplementation;
-			handlei->iteratorIndex = std::move(source.handlei->iteratorIndex);
+        // Move constructor that moves a given constant segment iterator "source"
+        // to a constant segment iterator. The constant segment iterator "source"
+        // gets the empty constant segment iterator as its value.
+        Line2DImpl::ConstSegIterator::ConstSegIterator(const ConstSegIterator&& source)
+        {	
+			handlei = new ConstSegIteratorImplementation;
+            handlei->iteratorIndex = std::move(source.handlei->iteratorIndex);
 			handlei->current = std::move(source.handlei->current);
         }
 
         // Destructor that frees the main memory space allocated for a constant
-        // block iterator.
-        Line2DImpl::ConstBlockIterator::~ConstBlockIterator(){
+        // segment iterator.
+        Line2DImpl::ConstSegIterator::~ConstSegIterator()
+        {
 			delete handlei;
         }
 
-        // Assignment operator that assigns another constant block iterator
-        // "rhs" to the constant block iterator.
-        Line2DImpl::ConstBlockIterator& Line2DImpl::ConstBlockIterator::operator = (const ConstBlockIterator& rhs){
+        // Assignment operator that assigns another constant segment iterator
+        // "rhs" to the constant segment iterator.
+        Line2DImpl::ConstSegIterator& Line2DImpl::ConstSegIterator::operator = (const ConstSegIterator& rhs)
+        {
 			handlei->iteratorIndex = rhs.handlei->iteratorIndex; 
 			handlei->current = rhs.handlei->current; 
         }
 
-        // Predicate that tests whether a constant block iterator is empty.
-        bool Line2DImpl::ConstBlockIterator::isEmpty() const{
+        // Predicate that tests whether a constant segment iterator is empty.
+        bool Line2DImpl::ConstSegIterator::isEmpty() const
+        {
 			return (handlei->current == NULL);
         }
 
         // Increment/decrement operators '++', '--'
-        Line2DImpl::ConstBlockIterator& Line2DImpl::ConstBlockIterator::operator ++ (){
+        Line2DImpl::ConstSegIterator& Line2DImpl::ConstSegIterator::operator ++ ()
+        {
 			 handlei->iteratorIndex++;
 			 return(*this);
         }   // prefix
-        Line2DImpl::ConstBlockIterator Line2DImpl::ConstBlockIterator::operator ++ (int){
-			 ConstBlockIterator tmp(*this);
-    		 handlei->iteratorIndex++;
-     		 return(tmp);
+        Line2DImpl::ConstSegIterator Line2DImpl::ConstSegIterator::operator ++ (int)
+        {
+			ConstSegIterator tmp(*this);
+    			handlei->iteratorIndex++;
+    			return(tmp);
         } // postfix
-        Line2DImpl::ConstBlockIterator& Line2DImpl::ConstBlockIterator::operator -- (){
+        Line2DImpl::ConstSegIterator& Line2DImpl::ConstSegIterator::operator -- ()
+        {
 			 handlei->iteratorIndex--;
 			 return(*this);
         }   // prefix
-        Line2DImpl::ConstBlockIterator Line2DImpl::ConstBlockIterator::operator -- (int){
-			ConstBlockIterator tmp(*this);
+        Line2DImpl::ConstSegIterator Line2DImpl::ConstSegIterator::operator -- (int)
+        {
+			ConstSegIterator tmp(*this);
     		handlei->iteratorIndex--;
     		return(tmp);
         } // postfix
 
-        // Dereferencing operators that return the value at the constant block
+        // Dereferencing operators that return the value at the constant segment
         // iterator position. Dereferencing is only allowed if the iterator
-        // points to a block. The dereferenced value cannot be changed.
-        const Line2D Line2DImpl::ConstBlockIterator::operator *() const{
-			vector<Seg2D> tmp;
-			int size= handlei->current->mapHseg.find(handlei->iteratorIndex)->second.size();
-			Seg2D* hl;
-			for(int i=0;i<size;i++){
-		        hl = new Seg2D(handlei->current->mapHseg[handlei->iteratorIndex].at(i)->seg);
-				tmp.push_back(*hl);
-			}
-			Line2D x(tmp);
-			return x;
-	    }
-        const Line2D Line2DImpl::ConstBlockIterator::operator ->() const {
-			vector<Seg2D> tmp;
-			int size= handlei->current->mapHseg.find(handlei->iteratorIndex)->second.size();
-			Seg2D* hl;
-			for(int i=0;i<size;i++){
-		        hl = new Seg2D(handlei->current->mapHseg[handlei->iteratorIndex].at(i)->seg);
-				tmp.push_back(*hl);
-			}
-			Line2D x(tmp);
-			return x;
+        // points to a segment. The dereferenced value cannot be changed.
+        const HalfSeg2D& Line2DImpl::ConstSegIterator::operator *() const
+        {
+            return(this->handlei->current->segments.at(this->handlei->iteratorIndex));   
+        }
+        const HalfSeg2D* Line2DImpl::ConstSegIterator::operator ->() const
+        {
+            return(&this->handlei->current->segments.at(this->handlei->iteratorIndex));  
         }
 
-        // Comparison operators that compare a constant block iterator position
-        // with another const block iterator position "rhs"
-        bool Line2DImpl::ConstBlockIterator::operator == (const ConstBlockIterator& rhs) const{	
+        // Comparison operators that compare a constant segment iterator position
+        // with another const segment iterator position "rhs"
+        bool Line2DImpl::ConstSegIterator::operator == (const ConstSegIterator& rhs) const{	
 			return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex == rhs.handlei->iteratorIndex));
         }
-        bool Line2DImpl::ConstBlockIterator::operator != (const ConstBlockIterator& rhs) const{
+        bool Line2DImpl::ConstSegIterator::operator != (const ConstSegIterator& rhs) const{	
 			return ((this->handlei->current != rhs.handlei->current)||(this->handlei->iteratorIndex != rhs.handlei->iteratorIndex));
         }
-        bool Line2DImpl::ConstBlockIterator::operator <  (const ConstBlockIterator& rhs) const{
+        bool Line2DImpl::ConstSegIterator::operator <  (const ConstSegIterator& rhs) const{
 			return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex < rhs.handlei->iteratorIndex));
         }
-        bool Line2DImpl::ConstBlockIterator::operator <= (const ConstBlockIterator& rhs) const{
+        bool Line2DImpl::ConstSegIterator::operator <= (const ConstSegIterator& rhs) const{
 			return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex <= rhs.handlei->iteratorIndex));
         }
-        bool Line2DImpl::ConstBlockIterator::operator >  (const ConstBlockIterator& rhs) const{
+        bool Line2DImpl::ConstSegIterator::operator >  (const ConstSegIterator& rhs) const{
 			return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex > rhs.handlei->iteratorIndex));
         }
-        bool Line2DImpl::ConstBlockIterator::operator >= (const ConstBlockIterator& rhs) const{
-		   return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex > rhs.handlei->iteratorIndex));
+        bool Line2DImpl::ConstSegIterator::operator >= (const ConstSegIterator& rhs) const{
+			return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex > rhs.handlei->iteratorIndex));
         }
 
-	  std::ostream&operator<<(std::ostream& os, const Line2DImpl::ConstBlockIterator& output){
+	  std::ostream&operator<<(std::ostream& os, const Line2DImpl::ConstSegIterator& output)
+	  {
 		os << "index Value:" << output.handlei->iteratorIndex<<" ";
-		os << "size of vector:" << output.handlei->current->mapHseg.find(output.handlei->iteratorIndex)->second.size()<<" ";
+		os << "point Value:" << output.handlei->current->segments.at(output.handlei->iteratorIndex)<<" ";
 		return os;
 	  }
 
-    // Method that returns a constant block iterator to the first block of a
+
+    // Method that returns a constant segment iterator to the first segment of a
     // Line2D object.
-    Line2DImpl::ConstBlockIterator Line2DImpl::cbegin() const
+    Line2DImpl::ConstSegIterator Line2DImpl::cbegin() const
     {
-		ConstBlockIterator begin;
-		begin.handlei->iteratorIndex = 0;
+		ConstSegIterator begin;
+		begin.handlei->iteratorIndex = 1;
 		begin.handlei->current = handle;
 		return begin;
     }
 
-    // Method that returns a constant block iterator to the last block of a
+    // Method that returns a constant segment iterator to the last segment of a
     // Line2D object.
-    Line2DImpl::ConstBlockIterator Line2DImpl::cend() const
+    Line2DImpl::ConstSegIterator Line2DImpl::cend() const
     {
-	   ConstBlockIterator last;
-	   last.handlei->iteratorIndex = handle->mapHseg.size()-1;
+	   ConstSegIterator last;
+	   last.handlei->iteratorIndex = handle->segments.size()-2;
 	   last.handlei->current = handle;
   	   return last;
     }
 
-    // Method that returns a constant block iterator to the position before the
-    // first block of a Line2D object. Note that dereferencing this iterator
-    // yields the empty constant block iterator.
-    Line2DImpl::ConstBlockIterator Line2DImpl::chead() const
+    // Method that returns a constant segment iterator to the position before the
+    // first segment of a Line2D object. Note that dereferencing this iterator
+    // yields the empty constant segment iterator.
+    // Currently gives default value instead of empty iterator
+    Line2DImpl::ConstSegIterator Line2DImpl::chead() const
     {
+     ConstSegIterator h;
+     h.handlei->iteratorIndex = 0;
+     h.handlei->current = handle;
+     return h;
     }
 
-    // Method that returns a constant block iterator to the position after the
-    // last block of a Line2D object. Note that dereferencing this iterator
-    // yields the empty constant block iterator.
-    Line2DImpl::ConstBlockIterator Line2DImpl::ctail() const
+    // Method that returns a constant segment iterator to the position after the
+    // last segment of a Line2D object. Note that dereferencing this iterator
+    // yields the empty constant segment iterator.
+    //Currently gives default values instead of empty iterator
+    Line2DImpl::ConstSegIterator Line2DImpl::ctail() const
     {
+     ConstSegIterator t;
+     t.handlei->iteratorIndex = handle->segments.size()-1;
+     t.handlei->current = handle;
+     return t;
     }
-
-
