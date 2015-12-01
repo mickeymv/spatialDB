@@ -29,10 +29,11 @@ public:
     void printBalance();
     void inOrder();
     int sizeOfAVL();
-    //AVLNode<T>** getElements();
-    T** getElements();
+    void getElements();
+    void getElements(AVLnode<T>** result);
     AVLnode<T>* FindKey( const T val);
     AVLnode<T>* getPred( const T val);
+    AVLnode<T>* getSucc( const T val);
 
 private:
     AVLnode<T> *root;
@@ -40,14 +41,51 @@ private:
     AVLnode<T>* rotateRight         ( AVLnode<T> *a );
     AVLnode<T>* rotateLeftThenRight ( AVLnode<T> *n );
     AVLnode<T>* rotateRightThenLeft ( AVLnode<T> *n );
+
+
+
     void rebalance                  ( AVLnode<T> *n );
     int height                      ( AVLnode<T> *n );
     void setBalance                 ( AVLnode<T> *n );
     void printBalance               ( AVLnode<T> *n );
     void clearNode                  ( AVLnode<T> *n );
     void inOrder					( AVLnode<T> *n	);
+    void inOrder1					( AVLnode<T> *n	,AVLnode<T>** result, int count);
+
 };
- 
+
+
+ template <class T>
+ void AVLTree<T>::inOrder1(AVLnode<T> *n, AVLnode<T>** result,int count) {
+     if ( n != NULL ) {
+         inOrder1(n->left,result,count++);
+         result[count] = n->key;
+         inOrder1(n->right,result,count++);
+         result[count] = n->key;
+     }
+
+ }
+ template <class T>
+void AVLTree<T>::getElements(AVLnode<T>** result) {
+     AVLnode<T> *n = root;
+     int size = sizeOfAVL();
+     int count = 0;
+
+     inOrder1(root, result, count);
+ }
+
+ AVLnode<T>* AVLTree<T>::getSucc(T val) {
+     AVLnode *valTemp = FindKey(val);
+     if (valTemp != NULL && valTemp->right != NULL) {
+         AVLnode *temp = valTemp->right;
+         while (temp->left != NULL) {
+             temp = temp->left;
+         }
+         return temp;
+     }
+     return(NULL);
+ }
+
 
  AVLnode<T>* AVLTree<T>::getPred(T val) {
      AVLnode *valTemp = FindKey(val);
