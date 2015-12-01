@@ -34,42 +34,80 @@
 * Returns    : Poi2D 
 ******************************************************************************/
 
-#include "planesweep-project/Topic1/RobustGeometricPrimitives2D.h"
-#include "planesweep-project/Topic2/Implementation/Line2D.h"
-#include "planesweep-project/Topic2/Interfaces/Region2D.h"
-#include "planesweep-project/ParallelObjectTraversal.h"
+#include "planesweep project/ParallelObjectTraversal.h"
 
-Poi2D spatialIntersection(const Poi2D& pointLhs, const Poi2D& pointRhs) 
-{
-  vector<Poi2D> intersectionPointsVector;
-    if (pointLhs == NULL || pointRhs == NULL) { //TODO: Update to check for empty point objects
-        return point;
+Point2D spatialIntersection(const Point2D &pointLhs, const Point2D &pointRhs) {
+    Point2D emptyPointObject;
+    if (pointLhs == NULL || pointRhs == NULL || pointLhs.isEmptyPoint2D() || pointRhs.isEmptyPoint2D()) {
+        //TODO: ask group2 to make isEmpty const.
+        return emptyPointObject;
     }
-  //Have Iterators for each of the Poi2D objects
-  ParallelObjectTraversal parallelObjectTraversal(pointLhs, pointRhs);
+
+    vector<Poi2D> intersectionPointsVector;
+    ParallelObjectTraversal parallelObjectTraversal(pointLhs, pointRhs);
     //pot.selectFirst would be called implicitly in the pot constructor.
-  while (parallelObjectTraversal.getObject() != ParallelObjectTraversal::none && parallelObjectTraversal.getStatus() == ParallelObjectTraversal::end_of_none) {
-      if (parallelObjectTraversal.getObject() != ParallelObjectTraversal::both) {
-          //intersectionPointsVector.push_back(/*Insert the current element pointed to by either of the two Poi2DIterators*/);
-      }
-      parallelObjectTraversal.selectNext();
-  }
-   // Poi2D point(intersectionPointsVector); -> get implementation from group2
-  return point;
+    while (parallelObjectTraversal.getObject() != ParallelObjectTraversal::none &&
+           parallelObjectTraversal.getStatus() == ParallelObjectTraversal::end_of_none) {
+        if (parallelObjectTraversal.getObject() != ParallelObjectTraversal::both) {
+            intersectionPointsVector.push_back(parallelObjectTraversal.getEvent(ParallelObjectTraversal::first));
+            //The argument could be ParallelObjectTraversal::second as well since they're the same.
+        }
+        parallelObjectTraversal.selectNext();
+    }
+
+    Point2D intersectionPoint(intersectionPointsVector);
+    return intersectionPoint;
 }
 
-Poi2D spatialUnion(const Poi2D& pointLhs, const Poi2D& pointRhs) 
-{
-  Poi2D point;
-  //implementation
-  return point;
+Point2D spatialUnion(const Point2D &pointLhs, const Point2D &pointRhs) {
+    Point2D emptyPointObject;
+    if (pointLhs == NULL && pointRhs == NULL || pointLhs.isEmptyPoint2D() && pointRhs.isEmptyPoint2D()) {
+        //TODO: ask group2 to make isEmpty const.
+        return emptyPointObject;
+    }
+
+    vector<Poi2D> unionPointsVector;
+    ParallelObjectTraversal parallelObjectTraversal(pointLhs, pointRhs);
+    //pot.selectFirst would be called implicitly in the pot constructor.
+    while (parallelObjectTraversal.getObject() != ParallelObjectTraversal::none &&
+           parallelObjectTraversal.getStatus() == ParallelObjectTraversal::end_of_none) {
+        if (parallelObjectTraversal.getObject() == ParallelObjectTraversal::both) {
+            unionPointsVector.push_back(parallelObjectTraversal.getEvent(ParallelObjectTraversal::first));
+            //The argument could be ParallelObjectTraversal::second as well since they're the same.
+        } else if (parallelObjectTraversal.getObject() == ParallelObjectTraversal::first) {
+            unionPointsVector.push_back(parallelObjectTraversal.getEvent(ParallelObjectTraversal::first));
+        } else if (parallelObjectTraversal.getObject() == ParallelObjectTraversal::second) {
+            unionPointsVector.push_back(parallelObjectTraversal.getEvent(ParallelObjectTraversal::second));
+        }
+        parallelObjectTraversal.selectNext();
+    }
+
+
+    Point2D unionPoint(unionPointsVector);
+    return unionPoint;
 }
 
-Poi2D spatialDifference(const Poi2D& pointLhs, const Poi2D& pointRhs) 
-{
-  Poi2D point;
-  //implementation
-  return point;
+Point2D spatialDifference(const Point2D &pointLhs, const Point2D &pointRhs) {
+    Point2D emptyPointObject;
+    if (pointLhs == NULL || pointLhs.isEmptyPoint2D()) {
+        //TODO: ask group2 to make isEmpty const.
+        return emptyPointObject;
+    }
+
+    vector<Poi2D> differencePointsVector;
+    ParallelObjectTraversal parallelObjectTraversal(pointLhs, pointRhs);
+    //pot.selectFirst would be called implicitly in the pot constructor.
+    while (parallelObjectTraversal.getObject() != ParallelObjectTraversal::none &&
+           parallelObjectTraversal.getStatus() == ParallelObjectTraversal::end_of_none) {
+        if (parallelObjectTraversal.getObject() == ParallelObjectTraversal::first) {
+            differencePointsVector.push_back(parallelObjectTraversal.getEvent(ParallelObjectTraversal::first));
+        }
+        parallelObjectTraversal.selectNext();
+    }
+
+
+    Point2D differencePoint(differencePointsVector);
+    return differencePoint;
 }
 
 /******************************************************************************
@@ -86,25 +124,22 @@ Poi2D spatialDifference(const Poi2D& pointLhs, const Poi2D& pointRhs)
 * Parameters : const Line2D& lineLhs and const Line2D& lineRhs
 * Returns    : Line2D
 ******************************************************************************/
-Line2D spatialIntersection(const Line2D& lineLhs, const Line2D& lineRhs) 
-{
-  Line2D line;
-  //implementation
-  return line;
+Line2D spatialIntersection(const Line2D &lineLhs, const Line2D &lineRhs) {
+    Line2D line;
+    //implementation
+    return line;
 }
 
-Line2D spatialUnion(const Line2D& lineLhs, const Line2D& lineRhs) 
-{
- Line2D line;
- //implementation
- return line;
+Line2D spatialUnion(const Line2D &lineLhs, const Line2D &lineRhs) {
+    Line2D line;
+    //implementation
+    return line;
 }
 
-Line2D spatialDifference(const Line2D& lineLhs, const Line2D& lineRhs) 
-{
- Line2D line;
- //implementation
- return line;
+Line2D spatialDifference(const Line2D &lineLhs, const Line2D &lineRhs) {
+    Line2D line;
+    //implementation
+    return line;
 }
 
 /******************************************************************************
@@ -122,25 +157,22 @@ Line2D spatialDifference(const Line2D& lineLhs, const Line2D& lineRhs)
 * Parameters : const Region2D& regionLhs and const Region2D& regionRhs
 * Returns    : Region2D
 ******************************************************************************/
-Region2D spatialIntersection(const Region2D& regionLhs,
-                             const Region2D& regionRhs)  
-{
-  Region2D region;
-  //implementation
-  return region;
+Region2D spatialIntersection(const Region2D &regionLhs,
+                             const Region2D &regionRhs) {
+    Region2D region;
+    //implementation
+    return region;
 }
 
-Region2D spatialUnion(const Region2D& regionLhs, const Region2D& regionRhs) 
-{
-  Region2D region;
-  //implementation
-  return region;
+Region2D spatialUnion(const Region2D &regionLhs, const Region2D &regionRhs) {
+    Region2D region;
+    //implementation
+    return region;
 }
 
-Region2D spatialDifference(const Region2D& regionLhs,
-                           const Region2D& regionRhs)
-{
-  Region2D region;
-  //implementation
-  return region;
+Region2D spatialDifference(const Region2D &regionLhs,
+                           const Region2D &regionRhs) {
+    Region2D region;
+    //implementation
+    return region;
 }

@@ -20,7 +20,7 @@
 using namespace std;
 
 
-class Point2D
+class Point2D : public Object2D
 {
   public:
 
