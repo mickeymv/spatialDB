@@ -210,6 +210,15 @@ void ParallelObjectTraversal::selectNext() {
     }
 }
 
+Poi2D ParallelObjectTraversal::getEvent(object objectEnumVal) {
+    if (objectEnumVal == object::first) {
+        Poi2D poi2D = objFIterator->operator->();
+        return poi2D;
+    } else if (objectEnumVal == object::second) {
+        Poi2D poi2D = objGIterator->operator->();
+        return poi2D;
+    }
+}
 
 ObjectIterator * ParallelObjectTraversal::getObjIterator(object objectparam)
 {
