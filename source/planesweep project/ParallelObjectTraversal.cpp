@@ -143,7 +143,10 @@ void ParallelObjectTraversal::selectFirst() {
     }
 }
 
-AttrHalfSeg2D getNextMin() {
+//TODO - see if the return type should be AttrHalfSeg2D or check what it should be
+AttrHalfSeg2D ParallelObjectTraversal::getNextMin() {
+    //Line2D::ConstSegIterator *valF = dynamic_cast<Line2D::ConstSegIterator *>(objFIterator);
+
 	obj11 = objFIterator->getCurrent();
 	obj21 = objGIterator->getCurrent();
 	obj12 = objFIterator->getNext();
@@ -154,7 +157,7 @@ AttrHalfSeg2D getNextMin() {
 		return (obj11<obj22? obj11: obj22);
 	if(object_value == both)
 		return (obj12<obj22? obj12: obj22);
-	return NULL;
+	return nullptr;
 
 }
 

@@ -84,7 +84,7 @@ public:
     SegmentClass getPredSegmentClass(Seg2D);
     bool getPredInsideAbove(Seg2D);
 
-    Seg2D &predOfP(Poi2D &);
+    Seg2D predOfP(Poi2D &);
 
     bool lookAhead(HalfSeg2D &, Line2D &);
 
@@ -164,8 +164,8 @@ private:
     /*
      * Functions for getting predecessor and getting successor
      */
-    Seg2D& getPredecessor(Seg2D&);
-    Seg2D& getSuccessor(Seg2D&);
+    Seg2D getPredecessor(Seg2D&);
+    Seg2D getSuccessor(Seg2D&);
 
     /*
      * Function for checking if a relation exists between two segments
