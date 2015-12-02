@@ -355,7 +355,7 @@
   
   // Predicate that checks whether the inputted Point2D object is an
   // empty Point2D object.
-  bool Point2D::isEmptyPoint2D()
+  bool Point2D::isEmptyPoint2D() const
   {
 	  return points->vecPoints.empty();
   }

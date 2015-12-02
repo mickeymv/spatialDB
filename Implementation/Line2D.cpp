@@ -510,7 +510,8 @@
 
     // Predicate that checks whether a Line2D object is an empty Line2D
     // object. 
-    bool Line2D::isEmptyLine2D(){
+    bool Line2D::isEmptyLine2D() const
+    {
 		if((handle->segments.size() == 0)||(handle->segments.size() == 2))
 	        return true;
 		return false;
