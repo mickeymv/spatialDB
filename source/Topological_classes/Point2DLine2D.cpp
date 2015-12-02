@@ -48,11 +48,11 @@ void Point2DLine2D::Explore() {
             Poi2D p = S.getPoiEvent(ParallelObjectTraversal::first);
             if(S.poiInSeg(p))
             {
-                vF[poi_on_interior]= true;
+                vF[vFPoint2DLine2DPredicates::poi_on_interior]= true;
             }
             else
             {
-                vF[poi_disjoint]=true;
+                vF[vFPoint2DLine2DPredicates::poi_disjoint]=true;
             }
         }
         else if(object_value==ParallelObjectTraversal::second)
@@ -75,7 +75,7 @@ void Point2DLine2D::Explore() {
             }
             if(!S.lookAhead(h,objG))
             {
-                vG[bound_poi_disjoint]= true;
+                vG[vGPoint2DLine2DPredicates::bound_poi_disjoint]= true;
             }
         }
         else if(object_value==ParallelObjectTraversal::both)
@@ -95,18 +95,18 @@ void Point2DLine2D::Explore() {
             last_dp=dp;
             if(S.lookAhead(h,objG))
             {
-                vF[poi_on_interior]=true;
+                vF[vFPoint2DLine2DPredicates::poi_on_interior]=true;
             }
             else
             {
-                vF[poi_on_bound]=true;
+                vF[vFPoint2DLine2DPredicates::poi_on_bound]=true;
             }
         }
         S.selectNext();
     }
     if(S.getStatus()==ParallelObjectTraversal::end_of_second)
     {
-        vF[poi_disjoint]=true;
+        vF[vFPoint2DLine2DPredicates::poi_disjoint]=true;
     }
     return; // return true if no error, else false
 }
@@ -123,20 +123,20 @@ void Point2DLine2D::Evaluate()
         }
     }
 
-    if(vF[poi_on_interior])
+    if(vF[vFPoint2DLine2DPredicates::poi_on_interior])
     {
         IMC[0][0]=1;
     }
-    if(vF[poi_on_bound])
+    if(vF[vFPoint2DLine2DPredicates::poi_on_bound])
     {
         IMC[0][1]=1;
     }
-    if(vF[poi_disjoint])
+    if(vF[vFPoint2DLine2DPredicates::poi_disjoint])
     {
         IMC[0][2]=1;
     }
     IMC[2][0]=1;
-    if(vG[bound_poi_disjoint])
+    if(vG[vGPoint2DLine2DPredicates::bound_poi_disjoint])
     {
         IMC[2][1]=1;
     }
@@ -150,24 +150,24 @@ void Point2DLine2D::Evaluate()
             {
                 if(IMC[2][1])
                 {
-                    topPredNumberPoint2DLine2D = pl_overlap_m14;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D:: pl_overlap_m14;
 
                 }
                 else
                 {
-                    topPredNumberPoint2DLine2D = pl_overlap_m13;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D:: pl_overlap_m13;
                 }
             }
             else
             {
                 if(IMC[2][1])
                 {
-                    topPredNumberPoint2DLine2D = pl_inside_m12;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D:: pl_inside_m12;
 
                 }
                 else
                 {
-                    topPredNumberPoint2DLine2D = pl_inside_m11;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_inside_m11;
                 }
 
             }
@@ -179,24 +179,24 @@ void Point2DLine2D::Evaluate()
             {
                 if(IMC[2][1])
                 {
-                    topPredNumberPoint2DLine2D = pl_overlap_m10;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_overlap_m10;
 
                 }
                 else
                 {
-                    topPredNumberPoint2DLine2D = pl_overlap_m9;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_overlap_m9;
                 }
             }
             else
             {
                 if(IMC[2][1])
                 {
-                    topPredNumberPoint2DLine2D = pl_inside_m8;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_inside_m8;
 
                 }
                 else
                 {
-                    topPredNumberPoint2DLine2D = pl_inside_m7;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_inside_m7;
                 }
 
             }
@@ -212,12 +212,12 @@ void Point2DLine2D::Evaluate()
             {
                 if(IMC[2][1])
                 {
-                    topPredNumberPoint2DLine2D = pl_meet_m6;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_meet_m6;
 
                 }
                 else
                 {
-                    topPredNumberPoint2DLine2D = pl_meet_m5;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_meet_m5;
                 }
 
             }
@@ -225,12 +225,12 @@ void Point2DLine2D::Evaluate()
             {
                 if(IMC[2][1])
                 {
-                    topPredNumberPoint2DLine2D = pl_meet_m4;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_meet_m4;
 
                 }
                 else
                 {
-                    topPredNumberPoint2DLine2D = pl_meet_m3;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_meet_m3;
                 }
 
             }
@@ -239,12 +239,12 @@ void Point2DLine2D::Evaluate()
         {
             if(IMC[2][1])
             {
-                topPredNumberPoint2DLine2D = pl_disjoint_m2;
+                topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_disjoint_m2;
 
             }
             else
             {
-                topPredNumberPoint2DLine2D = pl_disjoint_m1;
+                topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_disjoint_m1;
             }
         }
     }
@@ -261,19 +261,6 @@ TopPredNumberPoint2DLine2D Point2DLine2D::getTopologicalRelationship()
     return topPredNumberPoint2DLine2D;
 }
 
-bool Point2DLine2D::isTopologicalRelationship(TopPredNumberPoint2DLine2D predicate) {
-    if (topPredNumberPoint2DLine2D == nullptr)
-    {
-        Explore();
-        Evaluate();
-    }
-    if (topPredNumberPoint2DLine2D == predicate)
-    {
-        return true;
-    }
-    return false;
-}
-
 bool Point2DLine2D::overlap()
 {
     if (topPredNumberPoint2DLine2D == nullptr)
@@ -281,7 +268,7 @@ bool Point2DLine2D::overlap()
         Explore();
         Evaluate();
     }
-    if( topPredNumberPoint2DLine2D ==pl_overlap_m9||topPredNumberPoint2DLine2D ==pl_overlap_m10||topPredNumberPoint2DLine2D ==pl_overlap_m13||topPredNumberPoint2DLine2D ==pl_overlap_m14)
+    if( topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_overlap_m9||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_overlap_m10||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_overlap_m13||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_overlap_m14)
     {
         return true;
     }
@@ -295,7 +282,7 @@ bool Point2DLine2D::meet()
         Explore();
         Evaluate();
     }
-    if(topPredNumberPoint2DLine2D ==pl_meet_m3||topPredNumberPoint2DLine2D ==pl_meet_m4||topPredNumberPoint2DLine2D ==pl_meet_m5||topPredNumberPoint2DLine2D ==pl_meet_m6)
+    if(topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_meet_m3||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_meet_m4||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_meet_m5||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_meet_m6)
     {
         return true;
     }
@@ -309,7 +296,7 @@ bool Point2DLine2D::inside()
         Explore();
         Evaluate();
     }
-    if(topPredNumberPoint2DLine2D ==pl_inside_m7||topPredNumberPoint2DLine2D ==pl_inside_m8||topPredNumberPoint2DLine2D ==pl_inside_m11||topPredNumberPoint2DLine2D ==pl_inside_m12)
+    if(topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_inside_m7||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_inside_m8||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_inside_m11||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_inside_m12)
     {
         return true;
     }
@@ -323,7 +310,7 @@ bool Point2DLine2D::disjoint()
         Explore();
         Evaluate();
     }
-    if(topPredNumberPoint2DLine2D ==pl_disjoint_m1||topPredNumberPoint2DLine2D ==pl_disjoint_m2)
+    if(topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_disjoint_m1||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_disjoint_m2)
     {
         return true;
     }

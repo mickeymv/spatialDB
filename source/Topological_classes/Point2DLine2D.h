@@ -9,6 +9,7 @@
 #include "planesweep_project/Topic2/Implementation/Point2D.h"
 #include "planesweep_project/Topic2/Implementation/Line2D.h"
 #include "planesweep_project/PlaneSweep.h"
+#include "TopologicalRelationships.h"
 
 
 
@@ -18,18 +19,7 @@ public:
     Point2DLine2D(Point2D &F, Line2D &G);
     ~Point2DLine2D();
 
-
-    // Enum class defining names for the numbers of topological predicates
-// between a Point2D object and a Line2D object
-    typedef enum
-    {
-        pl_disjoint_m1, pl_disjoint_m2, pl_meet_m3, pl_meet_m4, pl_meet_m5,
-        pl_meet_m6, pl_inside_m7, pl_inside_m8, pl_overlap_m9, pl_overlap_m10,
-        pl_inside_m11, pl_inside_m12, pl_overlap_m13, pl_overlap_m14
-    }TopPredNumberPoint2DLine2D;
-
     TopPredNumberPoint2DLine2D getTopologicalRelationship();
-    bool isTopologicalRelationship(TopPredNumberPoint2DLine2D predicate);
 
     bool overlap();
     bool disjoint();
@@ -63,13 +53,14 @@ private:
     bool *getVG();
 
     // predicates enum
-    enum vF_Point2DLine2D_Predicates {
-        poi_disjoint,poi_on_interior,poi_on_bound
-    };
 
-    enum vG_Point2DLine2D_Predicates{
+    typedef enum {
+        poi_disjoint,poi_on_interior,poi_on_bound
+    }vFPoint2DLine2DPredicates;
+
+    typedef enum {
         bound_poi_disjoint
-    };
+    }vGPoint2DLine2DPredicates;
 
     bool vF[vF_size];
     bool vG[vG_size];

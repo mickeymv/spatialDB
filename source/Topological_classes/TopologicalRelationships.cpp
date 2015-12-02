@@ -35,42 +35,14 @@ bool isTopologicalRelationship(const Point2D& lhs, const Point2D& rhs, TopPredNu
 
 /* Topological Relationship between a point2D object and a line2D object */
 
-typedef enum {
-    poi_disjoint,poi_on_interior,poi_on_bound
-}vFPoint2DLine2DPredicates;
-
-typedef enum {
-    bound_poi_disjoint
-}vGPoint2DLine2DPredicates;
-
-void Explore(const Point2D &lhs, const Line2D &rhs, bool *vF, bool *vG);
-
-void Evaluate(const Point2D& lhs, const Line2D& rhs, bool* vF, bool* vG, TopPredNumberPoint2DLine2D* predicate);
-
 TopPredNumberPoint2DLine2D exploreTopologicalRelationship(const Point2D& lhs, const Line2D& rhs){
 
     //Define predicate as an integer/matrix number
-    TopPredNumberPoint2DLine2D* predicate;
-
-    static const int vF_size=3;
-    static const int vG_size=1;
-    bool vF[vF_size];
-    bool vG[vG_size];
-
-    // initialize vF and vG with false
-    for (int i = 0; i<vF_size; i++) {
-        vF[i] = false;
-    }
-
-    for (int i=0; i<vG_size; i++)
-    {
-        vG[i] = false;
-    }
-
-    Explore(lhs, rhs, vF, vG);
-    Evaluate(lhs, rhs, vF, vG, predicate);
-
-    return *predicate;
+    TopPredNumberPoint2DLine2D predicate;
+    Point2DLine2D pl(lhs,rhs);
+    predicate = pl.getTopologicalRelationship();
+    delete pl;
+    return predicate;
 
 }
 
@@ -78,32 +50,15 @@ bool isTopologicalRelationship(const Point2D& lhs, const Line2D& rhs, TopPredNum
 
     //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
     bool isPredicate= false;
-
     //Define predicate as an integer/matrix number
-    TopPredNumberPoint2DLine2D* predicateTest;
-
-    static const int vF_size=3;
-    static const int vG_size=1;
-    bool vF[vF_size];
-    bool vG[vG_size];
-
-    // initialize vF and vG with false
-    for (int i = 0; i<vF_size; i++) {
-        vF[i] = false;
-    }
-
-    for (int i=0; i<vG_size; i++)
-    {
-        vG[i] = false;
-    }
-
-    Explore(lhs, rhs, vF, vG);
-    Evaluate(lhs, rhs, vF, vG, predicateTest);
-
-    if(*predicateTest==predicate)
+    TopPredNumberPoint2DLine2D predicateTest;
+    Point2DLine2D pl(lhs,rhs);
+    predicateTest = pl.getTopologicalRelationship();
+    if(predicateTest==predicate)
     {
         isPredicate=true;
     }
+    delete pl;
     return isPredicate;
 
 }
@@ -300,33 +255,9 @@ bool overlap(const Point2D& lhs, const Line2D& rhs)
 {
     //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
     bool isPredicate = false;
-
-    //Define predicate as an integer/matrix number
-    TopPredNumberPoint2DLine2D* predicate;
-
-    static const int vF_size=3;
-    static const int vG_size=1;
-    bool vF[vF_size];
-    bool vG[vG_size];
-
-    // initialize vF and vG with false
-    for (int i = 0; i<vF_size; i++) {
-        vF[i] = false;
-    }
-
-    for (int i=0; i<vG_size; i++)
-    {
-        vG[i] = false;
-    }
-
-    Explore(lhs, rhs, vF, vG);
-    Evaluate(lhs, rhs, vF, vG, predicate);
-
-    if( *predicate ==TopPredNumberPoint2DLine2D:: pl_overlap_m9||*predicate ==TopPredNumberPoint2DLine2D:: pl_overlap_m10||*predicate ==TopPredNumberPoint2DLine2D:: pl_overlap_m13||*predicate ==TopPredNumberPoint2DLine2D:: pl_overlap_m14)
-    {
-        isPredicate = true;
-    }
-
+    Point2DLine2D pl(lhs,rhs);
+    isPredicate=pl.overlap();
+    delete pl;
     return isPredicate;
 
 }
@@ -335,33 +266,9 @@ bool disjoint(const Point2D& lhs, const Line2D& rhs)
 {
     //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
     bool isPredicate = false;
-
-    //Define predicate as an integer/matrix number
-    TopPredNumberPoint2DLine2D* predicate;
-
-    static const int vF_size=3;
-    static const int vG_size=1;
-    bool vF[vF_size];
-    bool vG[vG_size];
-
-    // initialize vF and vG with false
-    for (int i = 0; i<vF_size; i++) {
-        vF[i] = false;
-    }
-
-    for (int i=0; i<vG_size; i++)
-    {
-        vG[i] = false;
-    }
-
-    Explore(lhs, rhs, vF, vG);
-    Evaluate(lhs, rhs, vF, vG, predicate);
-
-    if(*predicate == TopPredNumberPoint2DLine2D:: pl_disjoint_m1||*predicate == TopPredNumberPoint2DLine2D:: pl_disjoint_m2)
-    {
-        isPredicate = true;
-    }
-
+    Point2DLine2D pl(lhs,rhs);
+    isPredicate=pl.disjoint();
+    delete pl;
     return isPredicate;
 
 }
@@ -370,33 +277,9 @@ bool touch(const Point2D& lhs, const Line2D& rhs)
 {
     //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
     bool isPredicate = false;
-
-    //Define predicate as an integer/matrix number
-    TopPredNumberPoint2DLine2D* predicate;
-
-    static const int vF_size=3;
-    static const int vG_size=1;
-    bool vF[vF_size];
-    bool vG[vG_size];
-
-    // initialize vF and vG with false
-    for (int i = 0; i<vF_size; i++) {
-        vF[i] = false;
-    }
-
-    for (int i=0; i<vG_size; i++)
-    {
-        vG[i] = false;
-    }
-
-    Explore(lhs, rhs, vF, vG);
-    Evaluate(lhs, rhs, vF, vG, predicate);
-
-    if(*predicate ==TopPredNumberPoint2DLine2D:: pl_meet_m3||*predicate ==TopPredNumberPoint2DLine2D:: pl_meet_m4||*predicate ==TopPredNumberPoint2DLine2D:: pl_meet_m5||*predicate ==TopPredNumberPoint2DLine2D:: pl_meet_m6)
-    {
-        isPredicate = true;
-    }
-
+    Point2DLine2D pl(lhs,rhs);
+    isPredicate=pl.meet();
+    delete pl;
     return isPredicate;
 
 }
@@ -404,10 +287,10 @@ bool touch(const Point2D& lhs, const Line2D& rhs)
 bool equal(const Point2D& lhs, const Line2D& rhs)
 {
     //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
-    bool isPredicate;
-
-    //Implementation
-
+    bool isPredicate=false;
+    Point2DLine2D pl(lhs,rhs);
+    isPredicate=pl.equal();
+    delete pl;
     return isPredicate;
 
 }
@@ -415,10 +298,10 @@ bool equal(const Point2D& lhs, const Line2D& rhs)
 bool contains(const Point2D& lhs, const Line2D& rhs)
 {
     //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
-    bool isPredicate;
-
-    //Implementation
-
+    bool isPredicate= false;
+    Point2DLine2D pl(lhs,rhs);
+    isPredicate=pl.contains();
+    delete pl;
     return isPredicate;
 
 }
@@ -426,10 +309,10 @@ bool contains(const Point2D& lhs, const Line2D& rhs)
 bool covers(const Point2D& lhs, const Line2D& rhs)
 {
     //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
-    bool isPredicate;
-
-    //Implementation
-
+    bool isPredicate= false;
+    Point2DLine2D pl(lhs,rhs);
+    isPredicate=pl.covers();
+    delete pl;
     return isPredicate;
 
 }
@@ -437,10 +320,10 @@ bool covers(const Point2D& lhs, const Line2D& rhs)
 bool coveredBy(const Point2D& lhs, const Line2D& rhs)
 {
     //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
-    bool isPredicate;
-
-    //Implementation
-
+    bool isPredicate= false;
+    Point2DLine2D pl(lhs,rhs);
+    isPredicate=pl.coveredBy();
+    delete pl;
     return isPredicate;
 
 }
@@ -449,33 +332,9 @@ bool inside(const Point2D& lhs, const Line2D& rhs)
 {
     //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
     bool isPredicate = false;
-
-    //Define predicate as an integer/matrix number
-    TopPredNumberPoint2DLine2D* predicate;
-
-    static const int vF_size=3;
-    static const int vG_size=1;
-    bool vF[vF_size];
-    bool vG[vG_size];
-
-    // initialize vF and vG with false
-    for (int i = 0; i<vF_size; i++) {
-        vF[i] = false;
-    }
-
-    for (int i=0; i<vG_size; i++)
-    {
-        vG[i] = false;
-    }
-
-    Explore(lhs, rhs, vF, vG);
-    Evaluate(lhs, rhs, vF, vG, predicate);
-
-    if(*predicate == TopPredNumberPoint2DLine2D:: pl_inside_m7||*predicate == TopPredNumberPoint2DLine2D:: pl_inside_m8||*predicate == TopPredNumberPoint2DLine2D:: pl_inside_m11||*predicate == TopPredNumberPoint2DLine2D:: pl_inside_m12)
-    {
-        isPredicate = true;
-    }
-
+    Point2DLine2D pl(lhs,rhs);
+    isPredicate=pl.inside();
+    delete pl;
     return isPredicate;
 
 }
@@ -835,4 +694,6 @@ bool inside(const Region2D& lhs, const Region2D& rhs)
     return isPredicate;
 
 }
+
+
 

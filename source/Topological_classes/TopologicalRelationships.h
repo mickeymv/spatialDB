@@ -21,6 +21,7 @@
 #include "planesweep_project/Topic2/Implementation/Point2D.h"
 #include "planesweep_project/Topic2/Implementation/Line2D.h"
 #include "planesweep_project/PlaneSweep.h"
+#include "Point2DLine2D.h"
 #include "Region2D.h"
 
 // Enum class defining names for the numbers of topological predicates
