@@ -31,13 +31,23 @@ public:
     TopPredNumberPoint2DLine2D getTopologicalRelationship();
     bool isTopologicalRelationship(TopPredNumberPoint2DLine2D predicate);
 
+    bool overlap();
+    bool disjoint();
+    bool meet();
+    bool equal();
+    bool contains();
+    bool covers();
+    bool coveredBy();
+    bool inside();
+
+
 
 private:
     Point2D objF;
     Line2D objG;
     static const int vF_size=3;
     static const int vG_size=1;
-    TopPredNumberPoint2DLine2D topPredNumberPoint2DLine2D;
+    TopPredNumberPoint2DLine2D topPredNumberPoint2DLine2D = nullptr;
 
     //Exploration function
     void Explore();

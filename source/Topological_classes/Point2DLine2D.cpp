@@ -253,18 +253,99 @@ void Point2DLine2D::Evaluate()
 
 TopPredNumberPoint2DLine2D Point2DLine2D::getTopologicalRelationship()
 {
-    Explore();
-    Evaluate();
+    if(topPredNumberPoint2DLine2D== nullptr)
+    {
+        Explore();
+        Evaluate();
+    }
     return topPredNumberPoint2DLine2D;
 }
 
-bool Point2DLine2D::isTopologicalRelationship(TopPredNumberPoint2DLine2D predicate)
-{
-    Explore();
-    Evaluate();
-    if(topPredNumberPoint2DLine2D==predicate)
+bool Point2DLine2D::isTopologicalRelationship(TopPredNumberPoint2DLine2D predicate) {
+    if (topPredNumberPoint2DLine2D == nullptr)
+    {
+        Explore();
+        Evaluate();
+    }
+    if (topPredNumberPoint2DLine2D == predicate)
     {
         return true;
     }
+    return false;
+}
+
+bool Point2DLine2D::overlap()
+{
+    if (topPredNumberPoint2DLine2D == nullptr)
+    {
+        Explore();
+        Evaluate();
+    }
+    if( topPredNumberPoint2DLine2D ==pl_overlap_m9||topPredNumberPoint2DLine2D ==pl_overlap_m10||topPredNumberPoint2DLine2D ==pl_overlap_m13||topPredNumberPoint2DLine2D ==pl_overlap_m14)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Point2DLine2D::meet()
+{
+    if (topPredNumberPoint2DLine2D == nullptr)
+    {
+        Explore();
+        Evaluate();
+    }
+    if(topPredNumberPoint2DLine2D ==pl_meet_m3||topPredNumberPoint2DLine2D ==pl_meet_m4||topPredNumberPoint2DLine2D ==pl_meet_m5||topPredNumberPoint2DLine2D ==pl_meet_m6)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Point2DLine2D::inside()
+{
+    if (topPredNumberPoint2DLine2D == nullptr)
+    {
+        Explore();
+        Evaluate();
+    }
+    if(topPredNumberPoint2DLine2D ==pl_inside_m7||topPredNumberPoint2DLine2D ==pl_inside_m8||topPredNumberPoint2DLine2D ==pl_inside_m11||topPredNumberPoint2DLine2D ==pl_inside_m12)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Point2DLine2D::disjoint()
+{
+    if (topPredNumberPoint2DLine2D == nullptr)
+    {
+        Explore();
+        Evaluate();
+    }
+    if(topPredNumberPoint2DLine2D ==pl_disjoint_m1||topPredNumberPoint2DLine2D ==pl_disjoint_m2)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Point2DLine2D::contains()
+{
+    return false;
+}
+
+bool Point2DLine2D::coveredBy()
+{
+    return false;
+}
+
+bool Point2DLine2D::covers()
+{
+    return false;
+}
+
+bool Point2DLine2D::equal()
+{
     return false;
 }
