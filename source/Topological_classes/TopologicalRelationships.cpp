@@ -35,13 +35,13 @@ bool isTopologicalRelationship(const Point2D& lhs, const Point2D& rhs, TopPredNu
 
 /* Topological Relationship between a point2D object and a line2D object */
 
-enum vF_Point2DLine2D_Predicates {
+typedef enum {
     poi_disjoint,poi_on_interior,poi_on_bound
-};
+}vFPoint2DLine2DPredicates;
 
-enum vG_Point2DLine2D_Predicates{
+typedef enum {
     bound_poi_disjoint
-};
+}vGPoint2DLine2DPredicates;
 
 void Explore(const Point2D &lhs, const Line2D &rhs, bool *vF, bool *vG);
 
@@ -853,11 +853,11 @@ void Explore(const Point2D &lhs, const Line2D &rhs, bool vF[], bool vG[])
             Poi2D p = S.getPoiEvent(ParallelObjectTraversal::first);
             if(S.poiInSeg(p))
             {
-                vF[poi_on_interior]= true;
+                vF[vFPoint2DLine2DPredicates::poi_on_interior]= true;
             }
             else
             {
-                vF[poi_disjoint]=true;
+                vF[vFPoint2DLine2DPredicates::poi_disjoint]=true;
             }
         }
         else if(object_value==ParallelObjectTraversal::second)
@@ -880,7 +880,7 @@ void Explore(const Point2D &lhs, const Line2D &rhs, bool vF[], bool vG[])
             }
             if(!S.lookAhead(h,rhs))
             {
-                vG[bound_poi_disjoint]= true;
+                vG[vGPoint2DLine2DPredicates::bound_poi_disjoint]= true;
             }
         }
         else if(object_value==ParallelObjectTraversal::both)
@@ -900,18 +900,18 @@ void Explore(const Point2D &lhs, const Line2D &rhs, bool vF[], bool vG[])
             last_dp=dp;
             if(S.lookAhead(h,rhs))
             {
-                vF[poi_on_interior]=true;
+                vF[vFPoint2DLine2DPredicates::poi_on_interior]=true;
             }
             else
             {
-                vF[poi_on_bound]=true;
+                vF[vFPoint2DLine2DPredicates::poi_on_bound]=true;
             }
         }
         S.selectNext();
     }
     if(S.getStatus()==ParallelObjectTraversal::end_of_second)
     {
-        vF[poi_disjoint]=true;
+        vF[vFPoint2DLine2DPredicates::poi_disjoint]=true;
     }
     return; // return true if no error, else false
 }
@@ -928,20 +928,20 @@ void Evaluate(const Point2D& lhs, const Line2D& rhs, bool* vF, bool* vG, TopPred
         }
     }
 
-    if(vF[poi_on_interior])
+    if(vF[vFPoint2DLine2DPredicates::poi_on_interior])
     {
         IMC[0][0]=1;
     }
-    if(vF[poi_on_bound])
+    if(vF[vFPoint2DLine2DPredicates::poi_on_bound])
     {
         IMC[0][1]=1;
     }
-    if(vF[poi_disjoint])
+    if(vF[vFPoint2DLine2DPredicates::poi_disjoint])
     {
         IMC[0][2]=1;
     }
     IMC[2][0]=1;
-    if(vG[bound_poi_disjoint])
+    if(vG[vGPoint2DLine2DPredicates::bound_poi_disjoint])
     {
         IMC[2][1]=1;
     }
