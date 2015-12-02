@@ -16,6 +16,8 @@
       <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Region2D.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Region2DRegion2D.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Region2DRegion2D.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/TopologicalRelationships.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/TopologicalRelationships.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/AVLTree.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/AVLTreeImp.cpp" isTestSource="false" />
