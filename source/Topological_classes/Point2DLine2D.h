@@ -5,7 +5,7 @@
 #ifndef PLANESWEEP_PROJECT_POINT2DLINE2D_H
 #define PLANESWEEP_PROJECT_POINT2DLINE2D_H
 
-#include "Object2D.h"
+#include "planesweep_project/Object2D.h"
 #include "planesweep_project/Topic2/Implementation/Point2D.h"
 #include "planesweep_project/Topic2/Implementation/Line2D.h"
 #include "planesweep_project/PlaneSweep.h"
@@ -15,7 +15,7 @@
 class Point2DLine2D{
 
 public:
-    Point2DLine2D(Object2D &F, Object2D &G);
+    Point2DLine2D(Point2D &F, Line2D &G);
     ~Point2DLine2D();
 
 

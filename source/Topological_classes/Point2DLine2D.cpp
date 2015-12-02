@@ -5,10 +5,10 @@
 #include "Point2DLine2D.h"
 
 
-Point2DLine2D::Point2DLine2D(Object2D &F, Object2D &G) {
+Point2DLine2D::Point2DLine2D(Point2D &F, Line2D &G) {
     // set obj1 and obj2
-    F.set(objF);
-    G.set(objG);
+   objF=F;
+    objG=G;
 
     // initialize vF and vG with false
     for (int i = 0; i<vF_size; i++) {
@@ -35,12 +35,15 @@ bool *Point2DLine2D::getVG() {
 
 void Point2DLine2D::Explore() {
 
-    PlaneSweep S(F,G);
+    //TODO Object should be derived by each of the types
+    PlaneSweep S(objF,objG);
     S.newSweep();
-    Poi2D* last_dp = nullptr;
-    while((ParallelObjectTraversal::getStatus()!=ParallelObjectTraversal::end_of_second)&&(ParallelObjectTraversal::getStatus()!=ParallelObjectTraversal::end_of_both)&&(!(vF[poi_disjoint]&&vF[poi_on_interior]&&vF[poi_on_bound]&&vG[bound_poi_disjoint])))
+    Poi2D last_dp;
+
+    while((S.getStatus()!=ParallelObjectTraversal::end_of_second)&&(S.getStatus()!=ParallelObjectTraversal::end_of_both)&&(!(vF[poi_disjoint]&&vF[poi_on_interior]&&vF[poi_on_bound]&&vG[bound_poi_disjoint])))
     {
-        if(ParallelObjectTraversal::object==ParallelObjectTraversal::first)
+        ParallelObjectTraversal::object object_value = S.getObject();
+        if(object_value==ParallelObjectTraversal::first)
         {
             Poi2D p = S.getPoiEvent(ParallelObjectTraversal::first);
             if(S.poiInSeg(p))
@@ -52,7 +55,7 @@ void Point2DLine2D::Explore() {
                 vF[poi_disjoint]=true;
             }
         }
-        else if(ParallelObjectTraversal::object==ParallelObjectTraversal::second)
+        else if(object_value==ParallelObjectTraversal::second)
         {
             HalfSeg2D h = S.getHalfSegEvent(ParallelObjectTraversal::second);
             Poi2D dp;
@@ -66,16 +69,16 @@ void Point2DLine2D::Explore() {
                 S.delRight(h.seg);
                 dp=h.seg.p2;
             }
-            if(dp.operator!=(*last_dp))
+            if(dp!=last_dp)
             {
-                last_dp->operator=(dp);
+                last_dp=dp;
             }
             if(!S.lookAhead(h,objG))
             {
                 vG[bound_poi_disjoint]= true;
             }
         }
-        else if(ParallelObjectTraversal::object==ParallelObjectTraversal::both)
+        else if(object_value==ParallelObjectTraversal::both)
         {
             HalfSeg2D h = S.getHalfSegEvent(ParallelObjectTraversal::second);
             Poi2D dp;
@@ -89,7 +92,7 @@ void Point2DLine2D::Explore() {
                 S.delRight(h.seg);
                 dp=h.seg.p2;
             }
-            last_dp->operator=(dp);
+            last_dp=dp;
             if(S.lookAhead(h,objG))
             {
                 vF[poi_on_interior]=true;
@@ -101,7 +104,7 @@ void Point2DLine2D::Explore() {
         }
         S.selectNext();
     }
-    if(ParallelObjectTraversal::status==ParallelObjectTraversal::end_of_second)
+    if(S.getStatus()==ParallelObjectTraversal::end_of_second)
     {
         vF[poi_disjoint]=true;
     }
