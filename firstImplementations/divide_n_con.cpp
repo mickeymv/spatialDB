@@ -45,98 +45,87 @@ void printVec(vector<poi2D> & vec){
 	}
 }
 
-//combining a left and right hull by determining the bottom and top tangents (eliminating unneccesary points)
+//combinines left and right hull using bottom and top tangents to form a bridge between the hulls
 vector<poi2D> combineHulls(vector<poi2D> &part1, vector<poi2D> &part2){
-	//find rightmost point of left and leftmost point of right
-	vector<poi2D>::iterator left = max_element(part1.begin(), part1.end(), compareX);
-	vector<poi2D>::iterator right = min_element(part2.begin(), part2.end(), compareX);
-	vector<poi2D>::iterator tangentTopLeft = left, tangentTopRight = right, tangentBottomLeft = left, tangentBottomRight = right;
-	vector<poi2D>::iterator temp;
+	vector<poi2D>::iterator left_point = max_element(part1.begin(), part1.end(), compareX); //rightmost point in left hull
+	vector<poi2D>::iterator right_point = min_element(part2.begin(), part2.end(), compareX); //leftmost point in right hull
+	vector<poi2D>::iterator upper_left_point = left_point, upper_right_point = right_point, lower_left_point = left_point, lower_right_point = right_point;
+	vector<poi2D>::iterator previous_point; //holds the previous point during CW/CCW iteration
 
-	//finds the top tangent
-	while(true){
+	bool upper_changed = false;
+	do // walk up the left and right points (CW & CCW) until tangent is reached
+	{
 		while(true){
-			temp = tangentTopLeft;
-			//moves iterator backward looping if neccesary
-			if(tangentTopLeft == part1.begin()) {tangentTopLeft = part1.end()-1;} else {tangentTopLeft--;}
-			if(slopeIncreased(*tangentTopRight, *temp, *tangentTopLeft)){
-				tangentTopLeft = temp;
+			previous_point = upper_left_point;
+			if(upper_left_point == part1.begin()) {upper_left_point = part1.end()-1;} else {upper_left_point--;} //moves iterator backward looping if neccesary
+			if(slopeIncreased(*upper_right_point, *previous_point, *upper_left_point)) //break if tangent is no longer decreasing in slope
+			{
+				upper_left_point = previous_point;
 				break;
 			}
-			if(tangentTopLeft == left)
-				break;
+			if(upper_left_point == left_point) break;
 		}
-		bool changed = false;
+		upper_changed = false;
 		while(true){
-			temp = tangentTopRight;
-			//moves iterator forward looping if neccesary
-			if(tangentTopRight == part2.end()-1) {tangentTopRight = part2.begin();} else {tangentTopRight++;}
-			if(!slopeIncreased(*tangentTopLeft, *temp, *tangentTopRight)){
-				tangentTopRight = temp;
+			previous_point = upper_right_point;
+			if(upper_right_point == part2.end()-1) {upper_right_point = part2.begin();} else {upper_right_point++;} //moves iterator forward looping if neccesary
+			if(!slopeIncreased(*upper_left_point, *previous_point, *upper_right_point)) //break if tangent is no longer increasing in slope
+			{
+				upper_right_point = previous_point;
 				break;
-			} else {
-				changed = true;
-			}
-			if(tangentTopRight == right){
-				changed = false;
+			} else upper_changed = true;
+			if(upper_right_point == right_point){
+				upper_changed = false;
 				break;
 			}
 		}
-		if(!changed)
-			break;
-	}
+	} while(upper_changed);
 
-	//finds the bottom tangent
-	while(true){
-		//moves iterator backward looping if neccesary
+	bool lower_changed;
+	do // walk down the left and right points (CCW & CW) until tangent is reached
+	{
 		while(true){
-			temp = tangentBottomLeft;
-			//moves iterator backward looping if neccesary
-			if(tangentBottomLeft == part1.end()-1) {tangentBottomLeft = part1.begin();} else {tangentBottomLeft++;}
-			if(!slopeIncreased(*tangentBottomRight, *temp, *tangentBottomLeft)){
-				tangentBottomLeft = temp;
+			previous_point = lower_left_point;
+			if(lower_left_point == part1.end()-1) {lower_left_point = part1.begin();} else {lower_left_point++;} //moves iterator backward looping if neccesary
+			if(!slopeIncreased(*lower_right_point, *previous_point, *lower_left_point)) //break if tangent is no longer decreasing in slope
+			{
+				lower_left_point = previous_point;
 				break;
-			} else {
 			}
-			if(tangentBottomLeft == left) break;
+			if(lower_left_point == left_point) break;
 		}
-		bool changed = false;
-		//moves iterator forward looping if neccesary
+		lower_changed = false;
 		while(true){
-			temp = tangentBottomRight;
-			//moves iterator forward looping if neccesary
-			if(tangentBottomRight == part2.begin()) {tangentBottomRight = part2.end()-1;} else {tangentBottomRight--;}
-			if(slopeIncreased(*tangentBottomLeft, *temp, *tangentBottomRight)){
-				tangentBottomRight = temp;
+			previous_point = lower_right_point;
+			if(lower_right_point == part2.begin()) {lower_right_point = part2.end()-1;} else {lower_right_point--;} //moves iterator forward looping if neccesary
+			if(slopeIncreased(*lower_left_point, *previous_point, *lower_right_point))  //break if tangent is no longer decreasing in slope
+			{
+				lower_right_point = previous_point;
 				break;
-			} else {
-				changed = true;
 			}
-			if(tangentBottomRight == right){
-				changed = false;
+			else lower_changed = true;
+			if(lower_right_point == right_point){
+				lower_changed = false;
 				break;
 			}
 		}
-		if(!changed)
-			break;
-	}
+	} while(lower_changed);
 
 	//combining the left and right keeping clockwise ordering
 	vector<poi2D> finalHull;
-	if(tangentBottomLeft > tangentTopLeft){
-		finalHull.insert(finalHull.end(), tangentBottomLeft, part1.end());
-		finalHull.insert(finalHull.end(), part1.begin(), tangentTopLeft+1);
+	if(lower_left_point > upper_left_point){
+		finalHull.insert(finalHull.end(), lower_left_point, part1.end());
+		finalHull.insert(finalHull.end(), part1.begin(), upper_left_point+1);
 	} else {
-		finalHull.insert(finalHull.end(), tangentBottomLeft, tangentTopLeft+1);
+		finalHull.insert(finalHull.end(), lower_left_point, upper_left_point+1);
 	}
-	if(tangentTopRight > tangentBottomRight){
-		finalHull.insert(finalHull.end(), tangentTopRight, part2.end());
-		finalHull.insert(finalHull.end(), part2.begin(), tangentBottomRight+1);
+	if(upper_right_point > lower_right_point){
+		finalHull.insert(finalHull.end(), upper_right_point, part2.end());
+		finalHull.insert(finalHull.end(), part2.begin(), lower_right_point+1);
 	} else {
-		finalHull.insert(finalHull.end(), tangentTopRight, tangentBottomRight+1);
+		finalHull.insert(finalHull.end(), upper_right_point, lower_right_point+1);
 	}
 	return finalHull;
-
 }
 
 
@@ -168,7 +157,7 @@ int main(){
 	  input.push_back(fileRead);
 	}
 
-	// infile.close();
+	infile.close();
 	// poi2D fileRead;
 	// fileRead.y = 3.0;
 	// for (int i = 0; i < 15; ++i)
@@ -180,7 +169,9 @@ int main(){
 	
 	clock_t begin = clock();
 
-	divideAndConquer(input);
+	input = divideAndConquer(input);
+
+	printVec(input);
 
 	clock_t end = clock();
 	double elapsed_secs = double(end - begin);
