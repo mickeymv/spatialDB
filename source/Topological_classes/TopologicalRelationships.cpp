@@ -3,31 +3,37 @@
 //
 
 #include "TopologicalRelationships.h"
-
+#include "Point2DPoint2D.h"
 
 
 //Topological Relationship between a point2D object and a point2D object
-
-
-TopPredNumberPoint2DPoint2D getTopologicalRelationship(const Point2D& lhs, const Point2D& rhs){
+TopPredNumberPoint2DPoint2D getTopologicalRelationship(const Point2D &lhs, const Point2D &rhs) {
 
     //Define predicate as an integer/matrix number
     TopPredNumberPoint2DPoint2D predicate;
-    predicate = TopPredNumberPoint2DPoint2D::pp_disjoint_m1;
-    //::pp_disjointCluster_m1;
 
     //Implementation
+    Point2DPoint2D *pp = new Point2DPoint2D(lhs, rhs);
+
+    predicate = pp->getTopologicalRelationship();
+
+    delete pp;
 
     return predicate;
-
 }
 
-bool isTopologicalRelationship(const Point2D& lhs, const Point2D& rhs, TopPredNumberPoint2DPoint2D predicate){
+bool isTopologicalRelationship(const Point2D &lhs, const Point2D &rhs, TopPredNumberPoint2DPoint2D predicate) {
 
     //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
     bool isPredicate;
 
     //Implementation
+    Point2DPoint2D *pp = new Point2DPoint2D(lhs, rhs);
+
+    isPredicate = pp->isTopologicalRelationship(predicate);
+
+    delete pp;
+
 
     return isPredicate;
 

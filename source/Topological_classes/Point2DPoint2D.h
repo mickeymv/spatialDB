@@ -5,8 +5,8 @@
 #ifndef POINT2DPONT2D_POINT2DPOINT2D_H
 #define POINT2DPONT2D_POINT2DPOINT2D_H
 
-//#include "Object2D.h"
-#include "planesweep_project/Topic2/Implementation/Point2D.h"
+
+#include "Point2D.h"
 #include "TopologicalRelationships.h"
 
 
@@ -17,6 +17,16 @@ public:
 
     bool isTopologicalRelationship(TopPredNumberPoint2DPoint2D predicate);
     TopPredNumberPoint2DPoint2D getTopologicalRelationship();
+
+
+//    bool overlap();
+//    bool disjoint();
+//    bool meet();
+//    bool equal();
+//    bool contains();
+//    bool covers();
+//    bool coveredBy();
+//    bool inside();
 
 
 private:
@@ -36,45 +46,35 @@ private:
     static const int vF_size = 2;
     static const int vG_size = 1;
 
+//    bool predicateSet = false;
+    TopPredNumberPoint2DPoint2D  topPredNumberPoint2DPoint2D;
+
     bool vF[vF_size];
     bool vG[vG_size];
 
-    /* getter functions */
-
-    // get vector array vF
+    // getter functions
     bool *getVF();
-
-    // get vector array vG
     bool *getVG();
 
 
     // setter functions
-    void setObjF(const Point2D &objF);
-    void setObjG(const Point2D &objG);
+    void setObjF(const Point2D &objF) {
+        Point2DPoint2D::objF = objF;
+    }
+
+    void setObjG(const Point2D &objG) {
+        Point2DPoint2D::objG = objG;
+    }
 
 
-    // Exploration function
-    static void exploreTopoPred();
+    //Exploration function
+    void exploreTopoPred();
 
-    // Evaluation functions
-    static bool evaluateVerificationTopoPred();
-    static TopPredNumberPoint2DPoint2D evaluateDeterminationTopoPred();
+    //Evaluation function
+    void evaluateTopoPred();
 
-
-    // Since I don't know yet what the 9IMC, MT and MCDT nethods should return,
-    // I am putting them as a TODO for now.
-
-    // TODO: declare 9IMC method here:
-    // ...
-
-    // TODO: declare Matrix Thinning method here:
-    // ...
-
-    // TODO: declare MCDT method here:
-    // ...
 
 };
 
 
 #endif //POINT2DPONT2D_POINT2DPOINT2D_H
-
