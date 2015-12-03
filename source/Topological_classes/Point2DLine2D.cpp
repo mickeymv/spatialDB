@@ -150,13 +150,13 @@ void Point2DLine2D::evaluateTopoPred()
             {
                 if(IMC[2][1])
                 {
-                    *topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D:: pl_overlap_m14;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D:: pl_overlap_m14;
                     isPredSet=true;
 
                 }
                 else
                 {
-                    *topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D:: pl_overlap_m13;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D:: pl_overlap_m13;
                     isPredSet=true;
                 }
             }
@@ -164,13 +164,13 @@ void Point2DLine2D::evaluateTopoPred()
             {
                 if(IMC[2][1])
                 {
-                    *topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D:: pl_inside_m12;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D:: pl_inside_m12;
                     isPredSet=true;
 
                 }
                 else
                 {
-                    *topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_inside_m11;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_inside_m11;
                     isPredSet=true;
                 }
 
@@ -183,12 +183,12 @@ void Point2DLine2D::evaluateTopoPred()
             {
                 if(IMC[2][1])
                 {
-                    *topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_overlap_m10;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_overlap_m10;
                     isPredSet=true;
                 }
                 else
                 {
-                    *topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_overlap_m9;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_overlap_m9;
                     isPredSet=true;
                 }
             }
@@ -196,13 +196,13 @@ void Point2DLine2D::evaluateTopoPred()
             {
                 if(IMC[2][1])
                 {
-                    *topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_inside_m8;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_inside_m8;
                     isPredSet=true;
 
                 }
                 else
                 {
-                    *topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_inside_m7;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_inside_m7;
                     isPredSet=true;
                 }
 
@@ -219,13 +219,13 @@ void Point2DLine2D::evaluateTopoPred()
             {
                 if(IMC[2][1])
                 {
-                    *topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_meet_m6;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_meet_m6;
                     isPredSet=true;
 
                 }
                 else
                 {
-                    *topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_meet_m5;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_meet_m5;
                     isPredSet=true;
                 }
 
@@ -234,13 +234,13 @@ void Point2DLine2D::evaluateTopoPred()
             {
                 if(IMC[2][1])
                 {
-                    *topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_meet_m4;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_meet_m4;
                     isPredSet=true;
 
                 }
                 else
                 {
-                    *topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_meet_m3;
+                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_meet_m3;
                     isPredSet=true;
                 }
 
@@ -250,13 +250,13 @@ void Point2DLine2D::evaluateTopoPred()
         {
             if(IMC[2][1])
             {
-                *topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_disjoint_m2;
+                topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_disjoint_m2;
                 isPredSet=true;
 
             }
             else
             {
-                *topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_disjoint_m1;
+                topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_disjoint_m1;
                 isPredSet=true;
             }
         }
@@ -271,7 +271,7 @@ TopPredNumberPoint2DLine2D Point2DLine2D::getTopologicalRelationship()
         exploreTopoPred();
         evaluateTopoPred();
     }
-    return *topPredNumberPoint2DLine2D;
+    return topPredNumberPoint2DLine2D;
 }
 
 bool Point2DLine2D::isTopologicalRelationship(TopPredNumberPoint2DLine2D predicate)
@@ -281,7 +281,7 @@ bool Point2DLine2D::isTopologicalRelationship(TopPredNumberPoint2DLine2D predica
         exploreTopoPred();
         evaluateTopoPred();
     }
-    if(*topPredNumberPoint2DLine2D==predicate)
+    if(topPredNumberPoint2DLine2D==predicate)
     {
         return true;
     }
@@ -295,7 +295,7 @@ bool Point2DLine2D::overlap()
         exploreTopoPred();
         evaluateTopoPred();
     }
-    if( *topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_overlap_m9||*topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_overlap_m10||*topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_overlap_m13||*topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_overlap_m14)
+    if( topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_overlap_m9||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_overlap_m10||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_overlap_m13||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_overlap_m14)
     {
         return true;
     }
@@ -309,7 +309,7 @@ bool Point2DLine2D::meet()
         exploreTopoPred();
         evaluateTopoPred();
     }
-    if(*topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_meet_m3||*topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_meet_m4||*topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_meet_m5||*topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_meet_m6)
+    if(topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_meet_m3||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_meet_m4||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_meet_m5||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_meet_m6)
     {
         return true;
     }
@@ -323,7 +323,7 @@ bool Point2DLine2D::inside()
         exploreTopoPred();
         evaluateTopoPred();
     }
-    if(*topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_inside_m7||*topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_inside_m8||*topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_inside_m11||*topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_inside_m12)
+    if(topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_inside_m7||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_inside_m8||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_inside_m11||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_inside_m12)
     {
         return true;
     }
@@ -337,7 +337,7 @@ bool Point2DLine2D::disjoint()
         exploreTopoPred();
         evaluateTopoPred();
     }
-    if(*topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_disjoint_m1||*topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_disjoint_m2)
+    if(topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_disjoint_m1||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_disjoint_m2)
     {
         return true;
     }
