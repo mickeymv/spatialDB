@@ -105,7 +105,7 @@ public:
 *Attributed Half Segment Class
 */
 struct AttHalfSegVariable;
-class AttrHalfSeg2D
+class AttrHalfSeg2D 
 {
 public:
 	/*Member variables */
@@ -160,8 +160,10 @@ public:
 class SimplePolygon2D
 {
 public:
+	std::vector<Poi2D> vertices;
+
 	SimplePolygon2D();
-	SimplePolygon2D(std::vector<Seg2D> initializationSegments);
+	SimplePolygon2D(std::vector<Poi2D> vertices);
 	SimplePolygon2D(const SimplePolygon2D& obj);
 	SimplePolygon2D(SimplePolygon2D&& obj);
 	~SimplePolygon2D();
@@ -175,12 +177,9 @@ public:
 	bool operator != (const SimplePolygon2D& operand);
 
 	/* I/O Operators*/
-	friend std::ostream&operator << (std::ostream& os, const SimplePolygon2D& output);
-	friend std::istream&operator >> (std::istream& is, const SimplePolygon2D& input);
+	friend std::ostream&operator << (std::ostream& os,  SimplePolygon2D& output);
+	friend std::istream&operator >> (std::istream& is,  SimplePolygon2D& input);
 
-private:
-	struct SimplePolygon2DImplementation;
-	SimplePolygon2DImplementation *handle;
 };
 
 
@@ -223,7 +222,7 @@ bool SegmentIsParallelAndAbove(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsParallelAndBelow(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsParallelAndLiesLeft(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsParallelAndLiesRight(Seg2D& seg, Seg2D& seg1);
-bool Intersects(Seg2D& seg, Seg2D& seg1);
+bool Intersects(Seg2D& seg, Seg2D& seg1); 
 int orientation(Poi2D p, Poi2D q, Poi2D r);
 bool SegmentIsLesserThanSegment(Seg2D& seg1, Seg2D& seg2);
 Poi2D IntersectionPoint(Seg2D& seg, Seg2D& seg1);
@@ -232,14 +231,15 @@ Poi2D MeetingPoint(Seg2D& seg, Seg2D& seg1);
 bool Touch(Seg2D& seg, Seg2D& seg1);
 Poi2D TouchingPoint(Seg2D& seg, Seg2D& seg1);
 Poi2D MidPoint(Seg2D& seg1);
+bool BasicPointInBoundingBox(Poi2D& poi, SimplePolygon2D& polygon);
 
 //Determines whether a point is located on theboundary of a simple polygon.
-bool simplePointInsideSimplePolygon(const Poi2D& poi, const SimplePolygon2D& simplepolygon);
-//Determines whether the point is located in the interior or on the boundary of the simple polygon
+bool simplePointInsideSimplePolygon(Poi2D& poi, SimplePolygon2D& simplepolygon);
+//Determines whether the point is located in the interior or on the boundary of the simple polygon 
 bool simplePointOnBoundaryOfSimplePoly(const Poi2D& poi, const SimplePolygon2D& simplepolygon);
-//Determines whether the segment is located in the interior of the simple polygon
+//Determines whether the segment is located in the interior of the simple polygon 
 bool segInsideSimplePolygon(const Seg2D& seg, const SimplePolygon2D& simplepolygon);
-//Determines whether the segment is located on the boundary of the simple polygon
+//Determines whether the segment is located on the boundary of the simple polygon 
 bool segOnBoundaryOfSimplePolygon(const Seg2D& seg, const SimplePolygon2D& simplepolygon);
 //Determines whether the segment is located in the interior and/or on the boundary of the simple polygon
 bool segOnSimplePolygon(const Seg2D& seg, const SimplePolygon2D& simplepolygon);
@@ -247,9 +247,10 @@ bool segOnSimplePolygon(const Seg2D& seg, const SimplePolygon2D& simplepolygon);
 //Returns a minimum bounding rectangle for a segment
 Rect2D computeRect2D(const Seg2D& seg);
 //Returns a minimum bounding rectangle for a polygon
-Rect2D computeRect2D(const SimplePolygon2D& simplepolygon);
+Rect2D computeRect2D(SimplePolygon2D& simplepolygon);
 //Returns whether Rect2D computation is possible
 bool isRect2DPossible();
 
 #endif
+
 
