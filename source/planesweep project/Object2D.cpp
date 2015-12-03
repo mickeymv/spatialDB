@@ -3,6 +3,7 @@
 //
 
 #include "Object2D.h"
+#include "Topic2/Interfaces/Region2D.h"
 
 // Equal operator that checks if the Object2D object and the operand Object2D are the same
 bool Object2D::operator == (Object2D& operand){
