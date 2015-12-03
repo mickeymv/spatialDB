@@ -105,42 +105,42 @@ enum class TopPredNumberRegion2DRegion2D
 // Exploration function and validation predicate for the topological
 // relationships between two Point2D objects
 TopPredNumberPoint2DPoint2D
-exploreTopologicalRelationship(const Point2D& lhs, const Point2D& rhs);
+getTopologicalRelationship(const Point2D& lhs, const Point2D& rhs);
 bool isTopologicalRelationship(const Point2D& lhs, const Point2D& rhs,
                                TopPredNumberPoint2DPoint2D predicate);
 
 // Exploration function and validation predicate for the topological
 // relationships between a Point2D object and a Line2D object
 TopPredNumberPoint2DLine2D
-exploreTopologicalRelationship(const Point2D& lhs, const Line2D& rhs);
+getTopologicalRelationship(const Point2D& lhs, const Line2D& rhs);
 bool isTopologicalRelationship(const Point2D& lhs, const Line2D& rhs,
                                TopPredNumberPoint2DLine2D predicate);
 
 // Exploration function and validation predicate for the topological
 // relationships between a Point2D object and a Region2D object
 TopPredNumberPoint2DRegion2D
-exploreTopologicalRelationship(const Point2D& lhs, const Region2D& rhs);
+getTopologicalRelationship(const Point2D& lhs, const Region2D& rhs);
 bool isTopologicalRelationship(const Point2D& lhs, const Region2D& rhs,
                                TopPredNumberPoint2DRegion2D predicate);
 
 // Exploration function and validation predicate for the topological
 // relationships between two Line2D objects
 TopPredNumberLine2DLine2D
-exploreTopologicalRelationship(const Line2D& lhs, const Line2D& rhs);
+getTopologicalRelationship(const Line2D& lhs, const Line2D& rhs);
 bool isTopologicalRelationship(const Line2D& lhs, const Line2D& rhs,
                                TopPredNumberLine2DLine2D predicate);
 
 // Exploration function and validation predicate for the topological
 // relationships between a Line2D object and a Region2D object
 TopPredNumberLine2DRegion2D
-exploreTopologicalRelationship(const Line2D& lhs, const Region2D& rhs);
+getTopologicalRelationship(const Line2D& lhs, const Region2D& rhs);
 bool isTopologicalRelationship(const Line2D& lhs, const Region2D& rhs,
                                TopPredNumberLine2DRegion2D predicate);
 
 // Exploration function and validation predicate for the topological
 // relationships between two Region2D objects
 TopPredNumberRegion2DRegion2D
-exploreTopologicalRelationship(const Region2D& lhs, const Region2D& rhs);
+getTopologicalRelationship(const Region2D& lhs, const Region2D& rhs);
 bool isTopologicalRelationship(const Region2D& lhs, const Region2D& rhs,
                                TopPredNumberRegion2DRegion2D predicate);
 

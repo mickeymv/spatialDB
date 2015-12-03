@@ -33,7 +33,7 @@ bool *Point2DLine2D::getVG() {
     return vG;
 }
 
-void Point2DLine2D::Explore() {
+void Point2DLine2D::exploreTopoPred() {
 
     //TODO Object should be derived by each of the types
     PlaneSweep S(objF,objG);
@@ -111,7 +111,7 @@ void Point2DLine2D::Explore() {
     return; // return true if no error, else false
 }
 
-void Point2DLine2D::Evaluate()
+void Point2DLine2D::evaluateTopoPred()
 {
     int IMC[3][3];
 
@@ -255,18 +255,32 @@ TopPredNumberPoint2DLine2D Point2DLine2D::getTopologicalRelationship()
 {
     if(topPredNumberPoint2DLine2D== nullptr)
     {
-        Explore();
-        Evaluate();
+        exploreTopoPred();
+        evaluateTopoPred();
     }
     return topPredNumberPoint2DLine2D;
+}
+
+bool Point2DLine2D::isTopologicalRelationship(TopPredNumberPoint2DLine2D predicate)
+{
+    if(topPredNumberPoint2DLine2D== nullptr)
+    {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    if(topPredNumberPoint2DLine2D==predicate)
+    {
+        return true;
+    }
+    return false;
 }
 
 bool Point2DLine2D::overlap()
 {
     if (topPredNumberPoint2DLine2D == nullptr)
     {
-        Explore();
-        Evaluate();
+        exploreTopoPred();
+        evaluateTopoPred();
     }
     if( topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_overlap_m9||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_overlap_m10||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_overlap_m13||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_overlap_m14)
     {
@@ -279,8 +293,8 @@ bool Point2DLine2D::meet()
 {
     if (topPredNumberPoint2DLine2D == nullptr)
     {
-        Explore();
-        Evaluate();
+        exploreTopoPred();
+        evaluateTopoPred();
     }
     if(topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_meet_m3||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_meet_m4||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_meet_m5||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D::pl_meet_m6)
     {
@@ -293,8 +307,8 @@ bool Point2DLine2D::inside()
 {
     if (topPredNumberPoint2DLine2D == nullptr)
     {
-        Explore();
-        Evaluate();
+        exploreTopoPred();
+        evaluateTopoPred();
     }
     if(topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_inside_m7||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_inside_m8||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_inside_m11||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_inside_m12)
     {
@@ -307,8 +321,8 @@ bool Point2DLine2D::disjoint()
 {
     if (topPredNumberPoint2DLine2D == nullptr)
     {
-        Explore();
-        Evaluate();
+        exploreTopoPred();
+        evaluateTopoPred();
     }
     if(topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_disjoint_m1||topPredNumberPoint2DLine2D ==TopPredNumberPoint2DLine2D:: pl_disjoint_m2)
     {

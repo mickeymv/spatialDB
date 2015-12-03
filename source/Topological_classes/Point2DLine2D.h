@@ -19,6 +19,7 @@ public:
     Point2DLine2D(Point2D &F, Line2D &G);
     ~Point2DLine2D();
 
+    bool isTopologicalRelationship(TopPredNumberPoint2DLine2D predicate);
     TopPredNumberPoint2DLine2D getTopologicalRelationship();
 
     bool overlap();
@@ -33,24 +34,6 @@ public:
 
 
 private:
-    Point2D objF;
-    Line2D objG;
-    static const int vF_size=3;
-    static const int vG_size=1;
-    TopPredNumberPoint2DLine2D topPredNumberPoint2DLine2D = nullptr;
-
-    //Exploration function
-    void Explore();
-
-    //Evaluation function
-    void Evaluate();
-
-
-    // get vector array vF
-    bool *getVF();
-
-    // get vector array vG
-    bool *getVG();
 
     // predicates enum
 
@@ -62,8 +45,28 @@ private:
         bound_poi_disjoint
     }vGPoint2DLine2DPredicates;
 
+    Point2D objF;
+    Line2D objG;
+    static const int vF_size=3;
+    static const int vG_size=1;
+    TopPredNumberPoint2DLine2D topPredNumberPoint2DLine2D = nullptr;
+
     bool vF[vF_size];
     bool vG[vG_size];
+
+    // get vector array vF
+    bool *getVF();
+
+    // get vector array vG
+    bool *getVG();
+
+
+    //Exploration function
+    void exploreTopoPred();
+
+    //Evaluation function
+    void evaluateTopoPred();
+
 
 };
 

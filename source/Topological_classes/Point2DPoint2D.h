@@ -1,18 +1,45 @@
 //
-// Created by Natasha on 11/12/2015.
+// Created by Djundi on 12/2/15.
 //
 
-#ifndef PLANESWEEP_PROJECT_POINT2DPOINT2D_H
-#define PLANESWEEP_PROJECT_POINT2DPOINT2D_H
+#ifndef POINT2DPONT2D_POINT2DPOINT2D_H
+#define POINT2DPONT2D_POINT2DPOINT2D_H
 
-#include "Topic2/Implementation/Point2D.h"
-#include "Object2D.h"
+//#include "Object2D.h"
+#include "planesweep_project/Topic2/Implementation/Point2D.h"
+#include "TopologicalRelationships.h"
 
-class Point2DPoint2D
-{
-  public:
-    Point2DPoint2D(Object2D &F, Object2D &G);
+
+class Point2DPoint2D {
+public:
+    Point2DPoint2D(const Point2D &F, const Point2D &G);
     ~Point2DPoint2D();
+
+    bool isTopologicalRelationship(TopPredNumberPoint2DPoint2D predicate);
+    TopPredNumberPoint2DPoint2D getTopologicalRelationship();
+
+
+private:
+
+    // predicates enum
+    enum class vF_Point2DPoint2D_Predicates {
+        poi_shared, poi_disjoint
+    };
+
+    enum class vG_Point2DPoint2D_Predicates {
+        poi_disjoint
+    };
+
+
+
+    Point2D objF, objG;
+    static const int vF_size = 2;
+    static const int vG_size = 1;
+
+    bool vF[vF_size];
+    bool vG[vG_size];
+
+    /* getter functions */
 
     // get vector array vF
     bool *getVF();
@@ -20,27 +47,34 @@ class Point2DPoint2D
     // get vector array vG
     bool *getVG();
 
-    //Exploration function
-    bool Explore();
 
-    // predicates enum
-    enum class vF_Point2DPoint2D_Predicates {
-        poi_shared,poi_disjoint
-    };
+    // setter functions
+    void setObjF(const Point2D &objF);
+    void setObjG(const Point2D &objG);
 
-    enum class vG_Point2DPoint2D_Predicates{
-        poi_disjoint
-    };
 
-private:
+    // Exploration function
+    static void exploreTopoPred();
 
-    Point2D objF,objG;
-    static const int vF_size=2;
-    static const int vG_size=1;
+    // Evaluation functions
+    static bool evaluateVerificationTopoPred();
+    static TopPredNumberPoint2DPoint2D evaluateDeterminationTopoPred();
 
-    bool vF[vF_size];
-    bool vG[vG_size];
+
+    // Since I don't know yet what the 9IMC, MT and MCDT nethods should return,
+    // I am putting them as a TODO for now.
+
+    // TODO: declare 9IMC method here:
+    // ...
+
+    // TODO: declare Matrix Thinning method here:
+    // ...
+
+    // TODO: declare MCDT method here:
+    // ...
 
 };
 
-#endif //PLANESWEEP_PROJECT_POINT2DPOINT2D_H
+
+#endif //POINT2DPONT2D_POINT2DPOINT2D_H
+
