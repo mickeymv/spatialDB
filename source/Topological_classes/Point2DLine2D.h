@@ -49,7 +49,8 @@ private:
     Line2D objG;
     static const int vF_size=3;
     static const int vG_size=1;
-    TopPredNumberPoint2DLine2D topPredNumberPoint2DLine2D = nullptr;
+    TopPredNumberPoint2DLine2D *topPredNumberPoint2DLine2D = nullptr;
+    bool isPredSet=false;
 
     bool vF[vF_size];
     bool vG[vG_size];
