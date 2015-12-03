@@ -16,11 +16,14 @@
 #define POINT2D_H_
 
 #include <vector>
-#include "RobustGeometricPrimitives2D.h"
+#include "../../Topic1/RobustGeometricPrimitives2D.h"
+#include "Number.h"
+#include "../../Object2D.h"
+
 using namespace std;
 
 
-class Point2D
+class Point2D : public Object2D
 {
   public:
 
@@ -124,7 +127,7 @@ class Point2D
       // Constant poi iterator type that allows to navigate through the points of
       // a Point2D object in forward and reverse direction. A change of the
       // points is not possible.
-      class ConstPoiIterator
+      class ConstPoiIterator : public ObjectIterator
       {
         friend class Point2D;
 

@@ -19,9 +19,9 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include "RobustGeometricPrimitives2D.h"
+#include "../../Object2D.h"
 
-class Region2D 
+class Region2D : public Object2D
 {
   public:
 
@@ -335,7 +335,7 @@ class Region2D
     // Constant segment iterator type that allows to navigate through the segments of
     // a Region2D object in forward and reverse direction. A change of the
     // segments is not possible. 
-    class ConstSegmentIterator
+    class ConstSegmentIterator : public ObjectIterator
     {
     friend class Region2D;
 
