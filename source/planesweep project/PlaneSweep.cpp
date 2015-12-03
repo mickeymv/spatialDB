@@ -124,13 +124,14 @@ void PlaneSweep::delRight(Seg2D &seg2D) {
 //TODO change type of getElements() from AVLtree
 bool PlaneSweep::coincident(Seg2D &givenSeg) {
     int itr = 0;
-    int treeSize = sweepLineStatus->sizeOfAVL();
+    int const treeSize = sweepLineStatus->sizeOfAVL();
 
-    PlaneSweepLineStatusObject *segArray[] = sweepLineStatus->getElements();
+    PlaneSweepLineStatusObject **segArray = (PlaneSweepLineStatusObject **) malloc(treeSize);
+    sweepLineStatus->getElements(segArray);
 
     for (itr = 0; itr < treeSize; itr++) {
-
-        if (Intersects(segArray(itr), givenSeg))
+        Seg2D seg2D = segArray[itr]->getSegment2D();
+        if (Intersects(seg2D, givenSeg))
             return true;
     }
     return false;
@@ -141,18 +142,28 @@ Seg2D PlaneSweep::predOfP(Poi2D &p) {
     int itr = 0;
     int treeSize = sweepLineStatus->sizeOfAVL();
 
-    PlaneSweepLineStatusObject *segArray[] = sweepLineStatus->getElements();
+    PlaneSweepLineStatusObject **segArray = (PlaneSweepLineStatusObject **) malloc(treeSize);
+    sweepLineStatus->getElements(segArray);
+
     for (itr = 0; itr < treeSize; itr++) {
-        Poi2D *Ipoint = IntersectionPoint(segArray(itr), sweepLineStatus->getPred());
+
+        PlaneSweepLineStatusObject planeSweepLineStatusObject = *segArray[itr];
+        Seg2D seg2D = segArray[itr]->getSegment2D();
+
+        PlaneSweepLineStatusObject planeSweepLineStatusObject1 = sweepLineStatus->getPred(
+                planeSweepLineStatusObject)->key;
+        Seg2D seg2D1 = planeSweepLineStatusObject1.getSegment2D();
+
+        Poi2D Ipoint = IntersectionPoint(seg2D, seg2D1);
         if (Ipoint.y < p.y)
-            return segArray(itr);
+            return seg2D;
     }
 
 }
 
 bool PlaneSweep::predExists(Seg2D &seg2D) {
     PlaneSweepLineStatusObject sweepLineStatusObject(seg2D);
-    AVLnode<PlaneSweepLineStatusObject> *nodeInSweepLineStatus = sweepLineStatus->FindKey(sweepLineStatusObject);
+    AVLnode *nodeInSweepLineStatus = sweepLineStatus->FindKey(sweepLineStatusObject);
     if (nodeInSweepLineStatus != NULL && nodeInSweepLineStatus->left != NULL) {
         return true;
     }
@@ -160,13 +171,13 @@ bool PlaneSweep::predExists(Seg2D &seg2D) {
 }
 
 SegmentClass PlaneSweep::getPredSegmentClass(Seg2D seg2D) {
-    AVLnode<PlaneSweepLineStatusObject> *pred = sweepLineStatus->getPred(seg2D);
+    AVLnode *pred = sweepLineStatus->getPred(seg2D);
     PlaneSweepLineStatusObject predObject = pred->key;
     return predObject.getSegmentClass();
 }
 
 bool PlaneSweep::getPredInsideAbove(Seg2D seg2D) {
-    AVLnode<PlaneSweepLineStatusObject> *pred = sweepLineStatus->getPred(seg2D);
+    AVLnode *pred = sweepLineStatus->getPred(seg2D);
     PlaneSweepLineStatusObject predObject = pred->key;
     return predObject.getInsideAbove();
 }
