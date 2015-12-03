@@ -6,10 +6,8 @@
 
 #include "ParallelObjectTraversal.h"
 
-// *** begin test temp
 using namespace std;
 #include <iostream>
-// *** end test temp
 
 
 

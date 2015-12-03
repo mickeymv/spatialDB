@@ -24,11 +24,12 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "RobustGeometricPrimitives2D.h"
+#include "../../Object2D.h"
+
 using namespace std;
 
 
-class Line2D
+class Line2D : public Object2D
 {
 public:
     //++++++++++++++++++++++++++++
