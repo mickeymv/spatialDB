@@ -1,4 +1,8 @@
 #include "RobustGeometricPrimitives2D.h"
+#include <string>
+#include <vector>
+#include <iterator>
+#include <algorithm>
 
 /*Poi2D*/
 
@@ -652,26 +656,16 @@ std::istream&operator >> (std::istream& is, const Rect2D& input)
 
 /* Simple Polygon2D */
 
-struct SimplePolygon2DImplementation
-{
-	std::vector<Seg2D> initializationSegments;
-};
 SimplePolygon2D::SimplePolygon2D()
 {
 }
-SimplePolygon2D::SimplePolygon2D(std::vector<Seg2D> InitializationSegments)
+SimplePolygon2D::SimplePolygon2D(std::vector<Poi2D> vertices)
 {
-	/*
-	std::vector<Seg2D>::size_type size = InitializationSegments.size();
-	SimplePolygon2DImplementation polygon;
-	
-	for (int i = 0; i < size; i++)
+	int polygon_size = vertices.size();
+	for (int i = 0; i < polygon_size; i++)
 	{
-		
-		
+		this->vertices.push_back(vertices[i]);
 	}
-	this->handle
-	*/
 }
 SimplePolygon2D::SimplePolygon2D(const SimplePolygon2D& obj)
 {
@@ -715,13 +709,17 @@ bool SimplePolygon2D::operator != (const SimplePolygon2D& operand)
 	return true;
 }
 
-/*std::ostream&operator << (std::ostream& os, const SimplePolygon2D& output)
+std::ostream&operator << (std::ostream& os, SimplePolygon2D& output)
 {
+	for (int i = 0; i < output.vertices.size(); i++)
+		std::cout << "Point:" << i << output.vertices[i];
+	return os;
 }
+/*
 std::istream&operator >> (std::istream& is, const SimplePolygon2D& input)
 {
-}*/
-
+}
+*/
 
 
 /* 
@@ -729,25 +727,78 @@ Geometric Primitives
 Functions between Segment and Point.
 */
 
-// Returns true if poi lies on the segment.
-bool PointLiesOnSegment(Poi2D& poi, Seg2D& seg)
-{
-	Number segslope = (seg.p2.y - seg.p1.y) / (seg.p2.x - seg.p1.x);
-	Number segyintercept = (seg.p1.y) - ((segslope)*seg.p1.x);
-	if (poi.y == ((segslope*poi.x) + segyintercept))
-		return true;
-	else
-		return false;
-}
-bool PointLiesOnSegmentAndNotEndpoints(Poi2D& poi, Seg2D& seg)
-{
-	Number segslope = (seg.p2.y - seg.p1.y) / (seg.p2.x - seg.p1.x);
-	Number segyintercept = (seg.p1.y) - ((segslope)*seg.p1.x);
+//Returns true if poi lies on the segment.
+bool PointLiesOnSegment(Poi2D& q, Seg2D& seg)
+{	
+	Number minp1p2x;
+	Number maxp1p2x;
+	Number minp1p2y;
+	Number maxp1p2y;
 
-	if ((poi.y == ((segslope*poi.x) + segyintercept)) && ((poi != seg.p1) && (poi != seg.p2)))
-		return true;
+	if(seg.p1.x>seg.p2.x)
+	{
+		minp1p2x=seg.p2.x;
+		maxp1p2x=seg.p1.x;
+	}
 	else
+	{
+		minp1p2x=seg.p1.x;
+		maxp1p2x=seg.p2.x;
+	}
+
+	if(seg.p1.y>seg.p2.y)
+	{
+		minp1p2y=seg.p2.y;
+		maxp1p2y=seg.p1.y;
+	}
+	else
+	{
+		minp1p2y=seg.p1.y;
+		maxp1p2y=seg.p2.y;
+	}
+	if (minp1p2x <= q.x && q.x <= maxp1p2x
+    && minp1p2y <= q.y && q.y <= maxp1p2y)
+    return true;
+  else
+    return false;
+}
+//Returns the point that lies on the segment and not on the endpoints.
+bool PointLiesOnSegmentAndNotEndpoints(Poi2D& q, Seg2D& seg)
+{
+	Number minp1p2x;
+	Number maxp1p2x;
+	Number minp1p2y;
+	Number maxp1p2y;
+
+	if(seg.p1.x>seg.p2.x)
+	{
+		minp1p2x=seg.p2.x;
+		maxp1p2x=seg.p1.x;
+	}
+	else
+	{
+		minp1p2x=seg.p1.x;
+		maxp1p2x=seg.p2.x;
+	}
+
+	if(seg.p1.y>seg.p2.y)
+	{
+		minp1p2y=seg.p2.y;
+		maxp1p2y=seg.p1.y;
+	}
+	else
+	{
+		minp1p2y=seg.p1.y;
+		maxp1p2y=seg.p2.y;
+	}
+	std::cout<< "minp1p2x" << minp1p2x << "maxp1p2x" << maxp1p2x << "minp1p2y" <<minp1p2y << "maxp1p2y" <<maxp1p2y;
+	if (minp1p2x <= q.x && q.x <= maxp1p2x && minp1p2y <= q.y && q.y <= maxp1p2y && q != seg.p1 && q != seg.p2){
+		std::cout<<"yes"<<std::endl;
+		return true;
+	}else{
+		std::cout<<"no"<<std::endl;
 		return false;
+	}
 }
 //Returns the point that lies on the segment
 Poi2D getPointLiesOnSegmentAndNotEndpoints(Poi2D& poi1, Poi2D& poi2, Seg2D& seg)
@@ -757,7 +808,7 @@ Poi2D getPointLiesOnSegmentAndNotEndpoints(Poi2D& poi1, Poi2D& poi2, Seg2D& seg)
 		
 	if (PointLiesOnSegmentAndNotEndpoints(poi1,seg)) 
 		return poi1;
-	else if (PointLiesOnSegmentAndNotEndpoints(poi2,seg))
+	if (PointLiesOnSegmentAndNotEndpoints(poi2,seg))
 		return poi2;
 	
 }
@@ -769,7 +820,6 @@ bool PointLiesAboveSegment(Poi2D& poi, Seg2D& seg)
 	
 	if (isAntiClockWise >= Number("0"))
 		return true;
-	
 	else
 		return false;	
 }
@@ -785,8 +835,15 @@ bool PointLiesBelowSegment(Poi2D& poi, Seg2D& seg)
 	else
 		return false;	
 }
-
-// Returns true if poi PointLies on or above the segment.
+//Return true if both points passed to it are either to the left of the segment or to the right of the segment.
+bool PointLiesOnSameSideOfSegment(Poi2D& poi1,Poi2D& poi2, Seg2D& seg)
+{
+	if (PointLiesAboveSegment(poi1, seg) && PointLiesAboveSegment(poi2, seg))
+		return true;
+	else
+		return false;
+}
+//Returns true if poi PointLies on or above the segment.
 bool PointLiesAboveOrOnSegment(Poi2D& poi, Seg2D& seg)
 {
 	if (PointLiesAboveSegment(poi, seg) || PointLiesOnSegment(poi, seg))
@@ -803,7 +860,6 @@ bool PointLiesBelowOrOnSegment(Poi2D& poi, Seg2D& seg)
 		return true;
 	else
 		return false;
-
 }
 
 // Returns true if poi PointLies on the left end point of the segment.
@@ -1029,6 +1085,13 @@ bool SegmentIsParallelAndLiesRight(Seg2D& seg1, Seg2D& seg2)
 	else
 		return false;
 }
+int poly_orientation(Poi2D& p1, Poi2D& p2, Poi2D& q1) {
+	Number val = (p2.y - p1.y) * (q1.x - p2.x) - (q1.y - p2.y) * (p2.x - p1.x);
+	if (val == Number("0"))
+		return 0;
+	else
+		return (val < Number("0")) ? -1 : 1;
+}
 //Returns true if seg1 intersects seg2.
 
 	int orientation(Poi2D p, Poi2D q, Poi2D r)
@@ -1042,11 +1105,14 @@ bool SegmentIsParallelAndLiesRight(Seg2D& seg1, Seg2D& seg2)
 		return (val > zero) ? 1 : 2; // clock or counterclock wise
 	}
 
+	
+
 	// The main function that returns true if line segment 'p1q1'
 	// and 'p2q2' intersect.
 	bool Intersects(Seg2D& seg1, Seg2D& seg2)
 	{
 		// Find the four orientations needed for general and special cases
+
 		int o1 = orientation(seg1.p1, seg1.p2, seg2.p1);
 		int o2 = orientation(seg1.p1, seg1.p2, seg2.p2);
 		int o3 = orientation(seg2.p1, seg2.p2, seg1.p1);
@@ -1079,18 +1145,93 @@ bool SegmentIsParallelAndLiesRight(Seg2D& seg1, Seg2D& seg2)
 		 return false;
 	
 }
+
+bool Poly_intersects(Seg2D& seg1, Seg2D& seg2)
+	{
+		// Find the four orientations needed for general and special cases
+
+		int o1 = poly_orientation(seg1.p1, seg1.p2, seg2.p1);
+		std::cout<<"jjj"<<std::endl;
+		int o2 = poly_orientation(seg1.p1, seg1.p2, seg2.p2);
+		int o3 = poly_orientation(seg2.p1, seg2.p2, seg1.p1);
+		int o4 = poly_orientation(seg2.p1, seg2.p2, seg1.p2);
+	
+	
+		if (o1 != o2 && o3 != o4)
+			return true;
+
+		if (PointLiesOnSegment(seg1.p1, seg2) || PointLiesOnSegment(seg1.p2, seg2) || PointLiesOnSegment(seg2.p1, seg1) || PointLiesOnSegment(seg2.p2, seg1))
+			return true;
+		// Special Cases
+	
+		if (o1 == 0 && PointLiesOnSegment(seg2.p1, seg1))
+			return true;
+
+		// seg1.p1, seg1.p2 and seg2.p1 are collinear and seg2.p2 lies on segment seg1
+		if (o2 == 0 && PointLiesOnSegment(seg2.p2, seg1))
+			return true;
+
+		// p2, q2 and p1 are collinear and p1 lies on segment p2q2
+		if (o3 == 0 && PointLiesOnSegment(seg1.p1, seg2) )
+			return true;
+
+
+		// p2, q2 and q1 are collinear and q1 lies on segment p2q2
+		 if (o4 == 0 && PointLiesOnSegment( seg1.p2, seg2) )
+			return true;
+
+		 return false;
+	
+}
+
+
 //Returns the first point of intersection between seg1 and seg2.
 Poi2D IntersectionPoint(Seg2D& seg1, Seg2D& seg2)
 {
-	Number seg1slope = (seg1.p2.y - seg1.p1.y) / (seg1.p2.x - seg1.p1.x);
-	Number seg2slope = (seg2.p2.y - seg2.p1.y) / (seg2.p2.x - seg2.p1.x);
-	Number seg1yintercept = (seg1.p1.y) - ((seg1slope)*seg1.p1.x);
-	Number seg2yintercept = (seg2.p1.y) - ((seg2slope)*seg2.p1.x);
-
-	Number intersectionxcoord = (seg2yintercept - seg1yintercept) / (seg1slope - seg2slope) ;
-	Number intersectionycoord = (seg2slope*intersectionxcoord) + seg2yintercept;
-	
-	return Poi2D(intersectionxcoord, intersectionycoord);
+	Number segSlope;
+	Number segYintercept;
+	Number yCord;
+	Number xCord;
+	//Number max
+	if(seg1.p1.y == seg1.p2.y && seg2.p1.x == seg2.p2.x){
+		return Poi2D(seg2.p1.x,seg1.p1.y);
+	}else if(seg2.p1.y == seg2.p2.y && seg1.p1.x == seg1.p2.x){
+		return Poi2D(seg1.p1.x,seg2.p1.y);
+	}else if(seg1.p1.x == seg1.p2.x && seg2.p1.x != seg2.p2.x){
+		segSlope = (seg2.p2.y - seg2.p1.y) / (seg2.p2.x - seg2.p1.x);
+		segYintercept = (seg2.p1.y) - ((segSlope)*seg2.p1.x);
+		xCord = seg1.p1.x;
+		yCord = segSlope * xCord + segYintercept;
+	}else if(seg2.p1.x == seg2.p2.x && seg2.p1.x != seg2.p2.x){
+		segSlope = (seg1.p2.y - seg1.p1.y) / (seg1.p2.x - seg1.p1.x);
+		segYintercept = (seg1.p1.y) - ((segSlope)*seg1.p1.x);
+		xCord = seg2.p1.x;
+		yCord = segSlope * xCord + segYintercept;
+	}else if(seg1.p1.y == seg1.p2.y && seg2.p1.x != seg2.p2.x){
+		yCord = seg1.p1.y;
+		segSlope = (seg2.p2.y - seg2.p1.y) / (seg2.p2.x - seg2.p1.x);
+		segYintercept = (seg2.p1.y) - ((segSlope)*seg2.p1.x);
+		xCord = (yCord - segYintercept) / segSlope;
+	}else if(seg2.p1.y == seg2.p2.y && seg1.p1.x != seg1.p2.x){
+		yCord = seg2.p1.y;
+		segSlope = (seg1.p2.y - seg1.p1.y) / (seg1.p2.x - seg1.p1.x);
+		segYintercept = (seg1.p1.y) - ((segSlope)*seg1.p1.x);
+		xCord = (yCord - segYintercept) / segSlope;
+	}else if(seg1.p1.x == seg1.p2.x && seg1.p2.x == seg2.p1.x && seg2.p1.x == seg2.p2.x){
+		xCord = seg1.p1.x;
+		yCord = seg1.p2.y;
+	}else if(seg1.p1.y == seg1.p2.y && seg1.p2.y == seg2.p1.y && seg2.p1.y == seg2.p2.y){
+		yCord = seg1.p1.y;
+		xCord = seg1.p2.x;
+	}else{
+		Number seg1slope = (seg1.p2.y - seg1.p1.y) / (seg1.p2.x - seg1.p1.x);
+		Number seg2slope = (seg2.p2.y - seg2.p1.y) / (seg2.p2.x - seg2.p1.x);
+		Number seg1yintercept = (seg1.p1.y) - ((seg1slope)*seg1.p1.x);
+		Number seg2yintercept = (seg2.p1.y) - ((seg2slope)*seg2.p1.x);
+		xCord = (seg2yintercept - seg1yintercept) / (seg1slope - seg2slope) ;
+		yCord = (seg2slope*xCord) + seg2yintercept;
+	}
+	return Poi2D(xCord, yCord);
 }
 //Returns true if the two segments have a common endpoint.
 bool Meet(Seg2D& seg1, Seg2D& seg2)
@@ -1107,7 +1248,7 @@ Poi2D MeetingPoint(Seg2D& seg1,Seg2D& seg2)
 	if (seg1.p1 == seg2.p1 )
 		return Poi2D(seg1.p1);
 	
-	if (seg1.p1 == seg2.p2);
+	if (seg1.p1 == seg2.p2)
 		return Poi2D(seg1.p1);
 	
 	if (seg1.p2 == seg2.p1)  
@@ -1138,18 +1279,156 @@ bool Touch(Seg2D& seg1, Seg2D& seg2)
 // Returns the point where the segment touches another segment. Use this function only after confirming that two segments touch.
 Poi2D TouchingPoint(Seg2D& seg1, Seg2D& seg2)
 {
-	if (Touch(seg1, seg2))
-	{
+	if (Touch(seg1, seg2)){
 		return getPointLiesOnSegmentAndNotEndpoints(seg1.p1,seg1.p2, seg2);
 	}
 	
 }
+//Basic polygon in bouding box test.
+bool BasicPointInBoundingBox(Poi2D& poi,SimplePolygon2D& polygon)
+{
 
+	Number minx = polygon.vertices[0].x;
+	Number miny = polygon.vertices[0].y;
+	Number maxx = polygon.vertices[0].x;
+	Number maxy = polygon.vertices[0].y;
+	for (int i = 0; i < polygon.vertices.size(); i++)
+	{
+		if (polygon.vertices[i].x < minx)
+			minx = polygon.vertices[i].x;
+		if (polygon.vertices[i].x > maxx)
+			maxx = polygon.vertices[i].x;
+		if (polygon.vertices[i].y < miny)
+			miny = polygon.vertices[i].x;
+		if (polygon.vertices[i].y > maxy)
+			maxy = polygon.vertices[i].x;
+	}
+	if (poi.x < minx || poi.y < miny || poi.x > maxx  ||poi.y > maxy)
+		return false;
+	else
+		return true;
+}
 
 //Determines whether a point is located on theboundary of a simple polygon.
-bool simplePointInsideSimplePolygon(const Poi2D& poi, const SimplePolygon2D& simplepolygon)
+bool simplePointInsideSimplePolygon(Poi2D& poi,SimplePolygon2D& polygon)
 {
-	return true;
+
+	
+	Poi2D PtoInfinity(poi.x, Number("100.0"));
+	//Poi2D PtoInfinity = { INF, poi.y };
+	//Check if the point is inside the polygon by simple check!
+	int j = 0;
+	int i;
+	int k;
+	bool simpleCheck = BasicPointInBoundingBox(poi,polygon);
+	std::cout<<"simpleCheck"<<simpleCheck<<std::endl;
+	int numbeOfIntersection = 0;
+	int forI = 0;
+	bool pointCheck = false;
+	if(simpleCheck == false){
+		return false;
+	}else{
+		Seg2D segC(poi, PtoInfinity);
+		std::cout<<"segC : "<<segC<<std::endl;
+		int totalNumberOfVertices = polygon.vertices.size();
+		std::cout<< "totalNumberOfVertices" << totalNumberOfVertices << std::endl;
+		for(i=0;i<totalNumberOfVertices;i++){
+			if(forI==1 && i==(totalNumberOfVertices - 1)){
+				//do nothing , skip this loop
+				continue;
+			}
+			else{
+				if(i==0){
+					j = totalNumberOfVertices - 1 ;
+
+				}else{
+					j = i;
+				}
+				if(i== totalNumberOfVertices - 1){
+					k = 0 ;
+
+				}else{
+					k = i+1;
+				}
+				std::cout<< "j:i" << j <<i<<std::endl;
+				Seg2D segI(polygon.vertices[i], polygon.vertices[k]);
+				std::cout<< "segI : " << segI << std::endl;
+				//check if they intersect with segC
+				bool intersects = Poly_intersects(segI,segC);
+				std::cout << "value of intersects" << intersects << std::endl;
+				if(intersects){
+					bool isCollinear = PointIsCollinearToSegment(poi,segI);
+					std::cout << "isCollinear" << isCollinear << std::endl;
+					// Poi2D pointOfIntersection = IntersectionPoint(segI,segC);
+					// std::cout << "pointOfIntersection" << pointOfIntersection << std::endl;
+					// if(pointOfIntersection == polygon.vertices[i] || pointOfIntersection == polygon.vertices[k]){
+					// 	i++;
+					// 	pointCheck = true;
+					// 	std::cout << "pointCheck" << pointCheck << std::endl;
+					// 	if(pointOfIntersection == polygon.vertices[0]){
+					// 	forI = 1;
+					// 	}
+					// }
+
+
+					Poi2D pointOfIntersection;
+					//std::cout << "pointOfIntersection" << pointOfIntersection << std::endl;
+					if(PointLiesOnSegmentAndNotEndpoints(polygon.vertices[i],segC) || PointLiesOnSegmentAndNotEndpoints(polygon.vertices[k],segC)){
+						
+						pointCheck = true;
+						if(PointLiesOnSegmentAndNotEndpoints(polygon.vertices[i],segC)){
+							pointOfIntersection = polygon.vertices[i];
+							std::cout << "pointCheckoth" << pointCheck << std::endl;
+						}else{
+							pointOfIntersection = polygon.vertices[k];
+						}
+						std::cout << "pointCheck1st" << pointCheck << std::endl;
+						if(pointOfIntersection == polygon.vertices[0]){
+						forI = 1;
+						}else{
+						i = i+1;
+						}
+					}
+
+					if(pointCheck){
+						Seg2D segR(poi,pointOfIntersection);
+						bool pointsOntheSameSideOfSeg = PointLiesOnSameSideOfSegment(polygon.vertices[j],polygon.vertices[i+1],segR);
+							std::cout << "pointsOntheSameSideOfSeg -" << pointsOntheSameSideOfSeg << std::endl;
+							if(!pointsOntheSameSideOfSeg){
+								numbeOfIntersection++;
+							}
+
+					} 
+					else if(isCollinear){
+						bool pointOnSeg = PointLiesOnSegmentAndNotEndpoints(poi,segI);
+						if(pointOnSeg){
+							return true;
+						}else{
+							bool pointsOntheSameSideOfSeg = PointLiesOnSameSideOfSegment(polygon.vertices[j],polygon.vertices[j+2],segI);
+							std::cout << "pointsOntheSameSideOfSeg -" << pointsOntheSameSideOfSeg << std::endl;
+							if(!pointsOntheSameSideOfSeg){
+								numbeOfIntersection++;
+							}
+						}
+
+					} else {
+						numbeOfIntersection++;
+					}
+
+				}
+			}	
+
+
+		}
+
+		if((numbeOfIntersection == 0) || (numbeOfIntersection % 2 != 0)){
+			return true;
+		}else{
+			return false;
+		}
+		
+
+	}
 }
 //Determines whether the point is located in the interior or on the boundary of the simple polygon 
 bool simplePointOnBoundaryOfSimplePoly(const Poi2D& poi, const SimplePolygon2D& simplepolygon)
@@ -1173,17 +1452,42 @@ bool segOnSimplePolygon(const Seg2D& seg, const SimplePolygon2D& simplepolygon)
 }
 
 //Returns a minimum bounding rectangle for a segment
-Rect2D computeRect2D(const Seg2D& seg1)
+/*Rect2D computeRect2D(const Seg2D& seg1)
 {
 	return Rect2D();
 }
+*/
 //Returns a minimum bounding rectangle for a polygon
-Rect2D computeRect2D(const SimplePolygon2D& simplepolygon)
+Rect2D computeRect2D(SimplePolygon2D& polygon)
 {
-	return Rect2D();
+	Number minx = polygon.vertices[0].x; 
+	Number miny = polygon.vertices[0].y;
+	Number maxx = polygon.vertices[0].x;
+	Number maxy = polygon.vertices[0].y;
+	//std::cout << "initial topleft and bottomright:" << topLeft << " and" << bottomRight<<"\n";
+	//std::cout << "vertices size:" << polygon.vertices.size();
+	for (int i = 0; i < polygon.vertices.size(); i++)
+	{
+		if (polygon.vertices[i].x < minx)
+			minx = polygon.vertices[i].x;
+		if (polygon.vertices[i].x > maxx)
+			maxx = polygon.vertices[i].x;
+		if (polygon.vertices[i].y < miny)
+			miny = polygon.vertices[i].x;
+		if (polygon.vertices[i].y > maxy)
+			maxy = polygon.vertices[i].x;
+	}
+	Poi2D topLeft = Poi2D(minx,maxy);
+	Poi2D bottomRight = Poi2D(maxx,miny);
+	Rect2D rect = Rect2D(topLeft, bottomRight);
+	return rect;
 }
+
 //Returns whether Rect2D computation is possible
-bool isRect2DPossible();
+bool isRect2DPossible()
+{
+	return true;
+}
 bool SegmentIsLesserThanSegment(Seg2D& seg1, Seg2D& seg2)
 {
 	Poi2D p1 = seg1.p1;
