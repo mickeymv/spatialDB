@@ -75,7 +75,7 @@ class Region2DImpl: public Region2D        //inherits Region2D
     // Constant attributed half segment iterator type that allows to navigate through the attributed half segments of
     // a Region2D object in forward and reverse direction. A change of the
     // attributed half segment is not possible. 
-    class ConstAttributedHalfSegmentIterator
+    class ConstAttributedHalfSegmentIterator : public ObjectIterator
     {
       friend class Region2DImpl;
 
