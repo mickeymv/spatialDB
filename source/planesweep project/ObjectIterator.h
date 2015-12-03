@@ -11,6 +11,7 @@
 */
 #include "Topic2/Implementation/Point2D.h"
 #include "Topic2/Implementation/Line2D.h"
+#include "Object2D.h"
 
 class ObjectIterator {
 
@@ -40,12 +41,13 @@ public:
     // Predicate that tests whether a constant iterator is empty.
     virtual bool isEmpty() const = 0;
 
+    /*
     // Dereferencing operators that return the value at the constant object
     // iterator position. Dereferencing is only allowed if the iterator
     // points to a point. The dereferenced value cannot be changed.
     virtual const Object2D& operator *() const =0;
     virtual const Object2D* operator ->() const =0;
-
+*/
 
     // Increment/decrement operators '++', '--'
     virtual ObjectIterator &operator++() = 0;   // prefix

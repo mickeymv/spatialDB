@@ -18,6 +18,11 @@
 // since we do not have any base (super) class for the spatial objects, we use this template
 // class Object2D is the base template class for the F and G objects
 
+/**This is a pure virtual class/ abstract base class/Interface class which will have no objects of its own.
+* It's upto the derived classes; Poi, Line and Region2D to have definitions for
+* the methods in this class.
+*/
+
 class Object2D {
 
 public:
