@@ -10,7 +10,7 @@
 #include "Topic2/Implementation/Point2D.h"
 #include "Topic2/Implementation/Line2D.h"
 #include "Topic1/RobustGeometricPrimitives2D.h"
-#include "Region2D.h"
+#include "Topic2/Interfaces/Region2D.h"
 
 #include "Object2D.h"
 #include "ObjectIterator.h"
