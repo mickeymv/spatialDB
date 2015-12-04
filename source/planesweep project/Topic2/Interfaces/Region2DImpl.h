@@ -112,8 +112,8 @@ class Region2DImpl: public Region2D        //inherits Region2D
         // Dereferencing operators that return the value at the constant AttributedHalfSegment
         // iterator position. Dereferencing is only allowed if the iterator
         // points to a AttributedHalfSegment. The dereferenced value cannot be changed.
-        const Region2DImpl& operator *() const;
-        const Region2DImpl* operator ->() const;
+        const AttrHalfSeg2D& operator *() const;
+        const AttrHalfSeg2D* operator ->() const;
 
         // Comparison operators that compare a constant AttributedHalfSegment iterator position
         // with another const AttributedHalfSegment iterator position "rhs"
