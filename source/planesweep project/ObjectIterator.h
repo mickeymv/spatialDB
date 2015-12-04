@@ -11,34 +11,16 @@
 */
 #include "Topic2/Implementation/Point2D.h"
 #include "Topic2/Implementation/Line2D.h"
+#include "Object2D.h"
 
 class ObjectIterator {
 
 public:
 
-    // Default constructor that creates an empty constant Object iterator.
-    virtual ObjectIterator()=0;
-
-    // Copy constructor that constructs a constant Object iterator from a
-    // given constant Object iterator "source".
-    virtual ObjectIterator(const ObjectIterator& source)=0;
-
-    // Move constructor that moves a given constant Object iterator "source"
-    // to a constant Object iterator. The constant poi iterator "source"
-    // gets the empty constant poi iterator as its value.
-    virtual ObjectIterator(const ObjectIterator&& source)=0;
-
-    // Destructor that frees the main memory space allocated for a constant
-    // poi iterator.
-    virtual ~ObjectIterator()=0;
-
-    // Assignment operator that assigns another constant poi iterator
-    // "rhs" to the constant poi iterator.
-    virtual ObjectIterator& operator = (const ObjectIterator& rhs) =0;
-
-
     // Predicate that tests whether a constant iterator is empty.
-    virtual bool isEmpty() const = 0;
+    bool isEmpty() const;
+    //TODO: this function is defined with different names in Line and point and region. Need to handle for that.
+
 
     // Dereferencing operators that return the value at the constant object
     // iterator position. Dereferencing is only allowed if the iterator
@@ -49,9 +31,10 @@ public:
 
     // Increment/decrement operators '++', '--'
     virtual ObjectIterator &operator++() = 0;   // prefix
-    virtual ObjectIterator operator++(int postfix) = 0; // postfix
+    //virtual ObjectIterator operator++(int postfix) = 0; // postfix //TODO: errors out in the Derived classes. Need to figure out why.
     virtual ObjectIterator &operator--() = 0;   // prefix
-    virtual ObjectIterator operator--(int postfix) = 0; // postfix
+    //virtual ObjectIterator operator--(int postfix) = 0; // postfix //TODO: errors out in the Derived classes. Need to figure out why.
+
 
     // Comparison operators that compares a constant poi iterator position
     // with another const poi iterator position "rhs"
@@ -66,6 +49,23 @@ public:
     virtual bool operator>(const ObjectIterator &rhs) const = 0;
 
     virtual bool operator>=(const ObjectIterator &rhs) const = 0;
+
+    // Method that returns a constant  iterator to the first element of an
+    //  object.
+    ObjectIterator cbegin() const;
+
+    // Method that returns a constant  iterator to the last element of an object.
+    ObjectIterator cend() const;
+
+    // Method that returns a constant iterator to the position before the
+    // first face of an object. Note that dereferencing this iterator
+    // yields the empty constant iterator.
+    ObjectIterator chead() const;
+
+    // Method that returns a constant iterator to the position after the
+    // last face of an object. Note that dereferencing this iterator
+    // yields the empty constant iterator.
+    ObjectIterator ctail() const;
 
 };
 

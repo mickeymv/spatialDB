@@ -24,11 +24,12 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "RobustGeometricPrimitives2D.h"
+#include "../../Object2D.h"
+
 using namespace std;
 
 
-class Line2D
+class Line2D : public Object2D
 {
 public:
     //++++++++++++++++++++++++++++
@@ -145,7 +146,7 @@ public:
 
     // Predicate that checks whether a Line2D object is an empty Line2D
     // object. 
-    bool isEmptyLine2D();
+    bool isEmptyLine2D() const;
 
     // Method that yields the number of segments of Line2D object
     // If the Line2D object is an empty Line2D object, the value

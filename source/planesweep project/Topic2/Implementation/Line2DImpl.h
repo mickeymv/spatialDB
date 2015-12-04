@@ -73,7 +73,7 @@ public:
     // Constant segment iterator type that allows to navigate through the segments of
     // a Line2D object in forward and reverse direction. A change of the
     // segments is not possible.
-    class ConstSegIterator
+    class ConstSegIterator : public ObjectIterator
     {
         friend class Line2DImpl;
 

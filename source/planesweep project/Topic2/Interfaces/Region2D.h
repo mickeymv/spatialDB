@@ -19,9 +19,9 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include "RobustGeometricPrimitives2D.h"
+#include "../../Object2D.h"
 
-class Region2D 
+class Region2D : public Object2D
 {
   public:
 
@@ -335,7 +335,7 @@ class Region2D
     // Constant segment iterator type that allows to navigate through the segments of
     // a Region2D object in forward and reverse direction. A change of the
     // segments is not possible. 
-    class ConstSegmentIterator
+    class ConstSegmentIterator : public ObjectIterator
     {
     friend class Region2D;
 
@@ -372,9 +372,9 @@ class Region2D
       // Dereferencing operators that return the value at the constant Segment
       // iterator position. Dereferencing is only allowed if the iterator
       // points to a Segment. The dereferenced value cannot be changed.
-      const Region2D& operator *() const;
-      const Region2D* operator ->() const;
-
+      const Seg2D* operator ->() const;
+        const Seg2D& operator *() const;
+        
       // Comparison operators that compare a constant Segment iterator position
       // with another const Segment iterator position "rhs"
       bool operator == (const ConstSegmentIterator& rhs) const;

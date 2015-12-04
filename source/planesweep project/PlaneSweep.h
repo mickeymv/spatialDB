@@ -10,7 +10,7 @@
 #include "Topic2/Implementation/Line2D.h"
 #include "Topic1/RobustGeometricPrimitives2D.h"
 #include "Topic2/Implementation/Number.h"
-#include "Region2D.h"
+#include "Topic2/Interfaces/Region2D.h"
 
 #include "Object2D.h"
 #include "ParallelObjectTraversal.h"
@@ -107,7 +107,7 @@ private:
      * being swept at the current sweep line position is recorded in vertical order
      * in a data structure called sweep line status.
      */
-    AVLTree<PlaneSweepLineStatusObject &> *sweepLineStatus;
+    AVLTree<PlaneSweepLineStatusObject> *sweepLineStatus;
 
     /* A vertical sweep line traversing the plane from left to right stops at special
      * event points which are stored in a queue called event point schedule. The event
