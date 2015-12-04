@@ -372,9 +372,9 @@ class Region2D : public Object2D
       // Dereferencing operators that return the value at the constant Segment
       // iterator position. Dereferencing is only allowed if the iterator
       // points to a Segment. The dereferenced value cannot be changed.
-      const Region2D& operator *() const;
-      const Region2D* operator ->() const;
-
+      const Seg2D* operator ->() const;
+        const Seg2D& operator *() const;
+        
       // Comparison operators that compare a constant Segment iterator position
       // with another const Segment iterator position "rhs"
       bool operator == (const ConstSegmentIterator& rhs) const;

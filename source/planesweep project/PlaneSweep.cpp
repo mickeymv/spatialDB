@@ -679,7 +679,7 @@ AttrHalfSeg2D PlaneSweep::getAttrHalfSegEvent(ParallelObjectTraversal::object ob
 //Get static HalfSeg2D
     ObjectIterator *pos = getPot()->getObjIterator(objectValue);
     Region2DImpl::ConstAttributedHalfSegmentIterator *val = dynamic_cast<Region2DImpl::ConstAttributedHalfSegmentIterator *>(pos);
-    attrHalfSeg2DStatic = *(*val); //TODO: Group2 need to correct the return type from RegionImpl to AttrHalfSeg2D
+    attrHalfSeg2DStatic = *(*val);
 
 
     //Get Dynamic point
