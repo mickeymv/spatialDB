@@ -36,8 +36,8 @@ public:
     bool isObjectF(Object2D);
     bool isObjectG(Object2D);
 
-    ObjectIterator *getNextObjIterator(HalfSeg2D,object);
-    ObjectIterator *getNextObjIterator(AttrHalfSeg2D,object);
+    ObjectIterator* getNextObjIterator(HalfSeg2D,object);
+    ObjectIterator* getNextObjIterator(AttrHalfSeg2D,object);
 
     /*Checks whether the given segments are within an object
    */
@@ -53,7 +53,9 @@ public:
         end_of_first, end_of_second, end_of_both
     } status;
 
-    Poi2D getEvent(object objectEnumVal);
+    Poi2D getPoiEvent(object objectEnumVal);
+    HalfSeg2D getHalfSegEvent(object objectEnumVal);
+    AttrHalfSeg2D getAttrHalfSegEvent(object objectEnumVal);
 
 private:
     //SelectFirst should be called in the POT constructor.

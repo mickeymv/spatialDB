@@ -25,8 +25,8 @@ public:
     // Dereferencing operators that return the value at the constant object
     // iterator position. Dereferencing is only allowed if the iterator
     // points to a point. The dereferenced value cannot be changed.
-    virtual const Object2D& operator *() const =0;
-    virtual const Object2D* operator ->() const =0;
+//    virtual const Object2D & operator *() const =0;
+//    virtual const Object2D * operator ->() const =0;
 
 
     // Increment/decrement operators '++', '--'

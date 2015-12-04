@@ -613,8 +613,8 @@ Poi2D PlaneSweep::getPoiEvent(ParallelObjectTraversal::object objectValue) {
     HalfSeg2D halfSeg2D;
 //Get static point
     ObjectIterator *pos = getPot()->getObjIterator(objectValue);
-    Point2D::ConstPoiIterator *val = dynamic_cast<Point2D::ConstPoiIterator *>(pos);
-    poi2DStatic = *(*val);
+    Point2D::ConstPoiIterator val = dynamic_cast<Point2D::ConstPoiIterator >(*pos);
+    poi2DStatic = *(val);
 
 
     //Get Dynamic point
@@ -650,8 +650,8 @@ HalfSeg2D PlaneSweep::getHalfSegEvent(ParallelObjectTraversal::object objectValu
     AttrHalfSeg2D attrHalfSegDynamic;
 //Get static HalfSeg2D
     ObjectIterator *pos = getPot()->getObjIterator(objectValue);
-    Line2DImpl::ConstSegIterator *val = dynamic_cast<Line2DImpl::ConstSegIterator *>(pos);
-    halfSeg2DStatic = *(*val);
+    Line2DImpl::ConstSegIterator val = dynamic_cast<Line2DImpl::ConstSegIterator >(*pos);
+    halfSeg2DStatic = *(val);
 
 
     //Get Dynamic halfSeg
@@ -677,8 +677,8 @@ AttrHalfSeg2D PlaneSweep::getAttrHalfSegEvent(ParallelObjectTraversal::object ob
     AttrHalfSeg2D attrHalfSeg2D, attrHalfSeg2DStatic, attrHalfSeg2DDynamic;
 //Get static HalfSeg2D
     ObjectIterator *pos = getPot()->getObjIterator(objectValue);
-    Region2DImpl::ConstAttributedHalfSegmentIterator *val = dynamic_cast<Region2DImpl::ConstAttributedHalfSegmentIterator *>(pos);
-    attrHalfSeg2DStatic = *(*val);
+    Region2DImpl::ConstAttributedHalfSegmentIterator val = dynamic_cast<Region2DImpl::ConstAttributedHalfSegmentIterator>(*pos);
+    attrHalfSeg2DStatic = *(val); //TODO: Group2 need to correct the return type from RegionImpl to AttrHalfSeg2D
 
 
     //Get Dynamic point
@@ -706,10 +706,10 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
         //Static
         ParallelObjectTraversal::object objf = ParallelObjectTraversal::first;
         ObjectIterator *obji = pot->getNextObjIterator(halfseg2D, objf);
-        Line2DImpl::ConstSegIterator *val = dynamic_cast<Line2DImpl::ConstSegIterator *>(obji);
-        HalfSeg2D halfsegStaticSucc;
+        Line2DImpl::ConstSegIterator val = dynamic_cast<Line2DImpl::ConstSegIterator >(*obji);
+        HalfSeg2D *halfsegStaticSucc;
         if (obji != nullptr) {
-            halfsegStaticSucc = *(*val);
+            *halfsegStaticSucc = *(val);
         }
         else {
             halfsegStaticSucc = nullptr;
@@ -724,15 +724,16 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
 
         AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
         AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjF.GetNext(attrhalfsegReinsert);
-        HalfSeg2D halfsegDynSucc = attrhalfsegDynSucc.hseg; //change later
+        HalfSeg2D *halfsegDynSucc; //change later
+        *halfsegDynSucc = attrhalfsegDynSucc.hseg;
 
         if (halfsegStaticSucc == nullptr && halfsegDynSucc == nullptr) {
             return false;
         }
 
-        if ((halfsegStaticSucc != nullptr && halfsegDynSucc == nullptr) || (halfsegStaticSucc < halfsegDynSucc)) {
+        if ((halfsegStaticSucc != nullptr && halfsegDynSucc == nullptr) || (*halfsegStaticSucc < *halfsegDynSucc)) {
             bool isDirGiven = halfseg2D.isLeft;
-            bool isDirSucc = halfsegStaticSucc.isLeft;
+            bool isDirSucc = (*halfsegStaticSucc).isLeft;
             Poi2D dpGiven, dpSucc;
 
             if (isDirGiven) {
@@ -742,10 +743,10 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
                 dpGiven = halfseg2D.seg.p2;
             }
             if (isDirSucc) {
-                dpSucc = halfsegStaticSucc.seg.p1;
+                dpSucc = (*halfsegStaticSucc).seg.p1;
             }
             else {
-                dpSucc = halfsegStaticSucc.seg.p2;
+                dpSucc = (*halfsegStaticSucc).seg.p2;
             }
 
             if (dpGiven == (dpSucc)) {
@@ -755,9 +756,9 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
                 return false;
             }
         }
-        else if ((halfsegStaticSucc == nullptr && halfsegDynSucc != nullptr) || (halfsegDynSucc > halfsegStaticSucc)) {
+        else if ((halfsegStaticSucc == nullptr && halfsegDynSucc != nullptr) || (*halfsegDynSucc > *halfsegStaticSucc)) {
             bool isDirGiven = halfseg2D.isLeft;
-            bool isDirSucc = halfsegDynSucc.isLeft;
+            bool isDirSucc = (*halfsegDynSucc).isLeft;
             Poi2D dpGiven, dpSucc;
 
             if (isDirGiven) {
@@ -767,10 +768,10 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
                 dpGiven = halfseg2D.seg.p2;
             }
             if (isDirSucc) {
-                dpSucc = halfsegDynSucc.seg.p1;
+                dpSucc = (*halfsegDynSucc).seg.p1;
             }
             else {
-                dpSucc = halfsegDynSucc.seg.p2;
+                dpSucc = (*halfsegDynSucc).seg.p2;
             }
             if (dpGiven == (dpSucc)) {
                 return true;
@@ -786,10 +787,10 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
         //Static
         ParallelObjectTraversal::object objg = ParallelObjectTraversal::second;
         ObjectIterator *obji = pot->getNextObjIterator(halfseg2D, objg);
-        Line2DImpl::ConstSegIterator *val = dynamic_cast<Line2DImpl::ConstSegIterator *>(obji);
-        HalfSeg2D halfsegStaticSucc;
+        Line2DImpl::ConstSegIterator val = dynamic_cast<Line2DImpl::ConstSegIterator >(*obji);
+        HalfSeg2D *halfsegStaticSucc;
         if (obji != nullptr) {
-            halfsegStaticSucc = *(*val);
+            *halfsegStaticSucc = *(val);
         }
         else {
             halfsegStaticSucc = nullptr;
@@ -804,15 +805,16 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
 
         AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
         AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjG.GetNext(attrhalfsegReinsert);
-        HalfSeg2D halfsegDynSucc = attrhalfsegDynSucc.hseg; //change later
+        HalfSeg2D *halfsegDynSucc; //change later
+        *halfsegDynSucc = attrhalfsegDynSucc.hseg;
 
         if (halfsegStaticSucc == nullptr && halfsegDynSucc == nullptr) {
             return false;
         }
 
-        if ((halfsegStaticSucc != nullptr && halfsegDynSucc == nullptr) || (halfsegStaticSucc <= (halfsegDynSucc))) {
+        if ((halfsegStaticSucc != nullptr && halfsegDynSucc == nullptr) || (*halfsegStaticSucc <= (*halfsegDynSucc))) {
             bool isDirGiven = halfseg2D.isLeft;
-            bool isDirSucc = halfsegStaticSucc.isLeft;
+            bool isDirSucc = (*halfsegStaticSucc).isLeft;
             Poi2D dpGiven, dpSucc;
 
             if (isDirGiven) {
@@ -822,10 +824,10 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
                 dpGiven = halfseg2D.seg.p2;
             }
             if (isDirSucc) {
-                dpSucc = halfsegStaticSucc.seg.p1;
+                dpSucc = (*halfsegStaticSucc).seg.p1;
             }
             else {
-                dpSucc = halfsegStaticSucc.seg.p2;
+                dpSucc = (*halfsegStaticSucc).seg.p2;
             }
 
             if (dpGiven == (dpSucc)) {
@@ -836,9 +838,9 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
             }
         }
         else if ((halfsegStaticSucc == nullptr && halfsegDynSucc != nullptr) ||
-                 (halfsegDynSucc > (halfsegStaticSucc))) {
+                 (*halfsegDynSucc > (*halfsegStaticSucc))) {
             bool isDirGiven = halfseg2D.isLeft;
-            bool isDirSucc = halfsegDynSucc.isLeft;
+            bool isDirSucc = (*halfsegDynSucc).isLeft;
             Poi2D dpGiven, dpSucc;
 
             if (isDirGiven) {
@@ -848,10 +850,10 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
                 dpGiven = halfseg2D.seg.p2;
             }
             if (isDirSucc) {
-                dpSucc = halfsegDynSucc.seg.p1;
+                dpSucc = (*halfsegDynSucc).seg.p1;
             }
             else {
-                dpSucc = halfsegDynSucc.seg.p2;
+                dpSucc = (*halfsegDynSucc).seg.p2;
             }
 
             if (dpGiven == (dpSucc)) {
@@ -875,10 +877,10 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D &attrhalfseg2D, Region2D &region2D) {
         //Static
         ParallelObjectTraversal::object objf = ParallelObjectTraversal::first;
         ObjectIterator *obji = pot->getNextObjIterator(attrhalfseg2D, objf);
-        Line2DImpl::ConstSegIterator *val = dynamic_cast<Line2DImpl::ConstSegIterator *>(obji);
-        AttrHalfSeg2D attrhalfsegStaticSucc;
+        Region2DImpl::ConstAttributedHalfSegmentIterator val = dynamic_cast<Region2DImpl::ConstAttributedHalfSegmentIterator>(*obji);
+        AttrHalfSeg2D *attrhalfsegStaticSucc;
         if (obji != nullptr) {
-            attrhalfsegStaticSucc = *(*val);
+            *attrhalfsegStaticSucc = *(val);
 
         }
         else {
@@ -891,16 +893,17 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D &attrhalfseg2D, Region2D &region2D) {
 //        //AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
 //        dynamicEPSObjF.Insert(attrhalfseg2D);
         //AttrHalfSeg2D attrhalfsegDynSucc = attrhalfsegDynSucc.halfsegment //change later
-        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjF.GetNext(attrhalfseg2D);
+        AttrHalfSeg2D *attrhalfsegDynSucc;
+        *attrhalfsegDynSucc= dynamicEPSObjF.GetNext(attrhalfseg2D);
 
         if (attrhalfsegStaticSucc == nullptr && attrhalfsegDynSucc == nullptr) {
             return false;
         }
 
         if ((attrhalfsegStaticSucc != nullptr && attrhalfsegDynSucc == nullptr) ||
-            (attrhalfsegStaticSucc <= (attrhalfsegDynSucc))) {
+            (*attrhalfsegStaticSucc <= (*attrhalfsegDynSucc))) {
             bool isDirGiven = attrhalfseg2D.hseg.isLeft;
-            bool isDirSucc = attrhalfsegStaticSucc.hseg.isLeft;
+            bool isDirSucc = (*attrhalfsegStaticSucc).hseg.isLeft;
             Poi2D dpGiven, dpSucc;
 
             if (isDirGiven) {
@@ -910,10 +913,10 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D &attrhalfseg2D, Region2D &region2D) {
                 dpGiven = attrhalfseg2D.hseg.seg.p2;
             }
             if (isDirSucc) {
-                dpSucc = attrhalfsegStaticSucc.hseg.seg.p1;
+                dpSucc = (*attrhalfsegStaticSucc).hseg.seg.p1;
             }
             else {
-                dpSucc = attrhalfsegStaticSucc.hseg.seg.p2;
+                dpSucc = (*attrhalfsegStaticSucc).hseg.seg.p2;
             }
 
             if (dpGiven == (dpSucc)) {
@@ -924,9 +927,9 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D &attrhalfseg2D, Region2D &region2D) {
             }
         }
         else if ((attrhalfsegStaticSucc == nullptr && attrhalfsegDynSucc != nullptr) ||
-                 (attrhalfsegDynSucc > (attrhalfsegStaticSucc))) {
+                 (*attrhalfsegDynSucc > (*attrhalfsegStaticSucc))) {
             bool isDirGiven = attrhalfseg2D.hseg.isLeft;
-            bool isDirSucc = attrhalfsegDynSucc.hseg.isLeft;
+            bool isDirSucc = (*attrhalfsegDynSucc).hseg.isLeft;
             Poi2D dpGiven, dpSucc;
 
             if (isDirGiven) {
@@ -936,10 +939,10 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D &attrhalfseg2D, Region2D &region2D) {
                 dpGiven = attrhalfseg2D.hseg.seg.p2;
             }
             if (isDirSucc) {
-                dpSucc = attrhalfsegDynSucc.hseg.seg.p1;
+                dpSucc = (*attrhalfsegDynSucc).hseg.seg.p1;
             }
             else {
-                dpSucc = attrhalfsegDynSucc.hseg.seg.p2;
+                dpSucc = (*attrhalfsegDynSucc).hseg.seg.p2;
             }
             if (dpGiven == (dpSucc)) {
                 return true;
@@ -955,10 +958,10 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D &attrhalfseg2D, Region2D &region2D) {
         //Static
         ParallelObjectTraversal::object objg = ParallelObjectTraversal::second;
         ObjectIterator *obji = pot->getNextObjIterator(attrhalfseg2D, objg);
-        Line2DImpl::ConstSegIterator *val = dynamic_cast<Line2DImpl::ConstSegIterator *>(obji);
-        AttrHalfSeg2D attrhalfsegStaticSucc;
+        Line2DImpl::ConstSegIterator val = dynamic_cast<Line2DImpl::ConstSegIterator>(*obji);
+        AttrHalfSeg2D *attrhalfsegStaticSucc;
         if (obji != nullptr) {
-            attrhalfsegStaticSucc = *(*val);
+            *attrhalfsegStaticSucc = *(val);
         }
         else {
             attrhalfsegStaticSucc = nullptr;
@@ -970,16 +973,17 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D &attrhalfseg2D, Region2D &region2D) {
 //        //AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
 //        dynamicEPSObjG.Insert(attrhalfseg2D);
         //AttrHalfSeg2D attrhalfsegDynSucc = attrhalfsegDynSucc.halfsegment //change later
-        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjG.GetNext(attrhalfseg2D);
+        AttrHalfSeg2D *attrhalfsegDynSucc;
+        *attrhalfsegDynSucc = dynamicEPSObjG.GetNext(attrhalfseg2D);
 
         if (attrhalfsegStaticSucc == nullptr && attrhalfsegDynSucc == nullptr) {
             return false;
         }
 
         if ((attrhalfsegStaticSucc != nullptr && attrhalfsegDynSucc == nullptr) ||
-            (attrhalfsegStaticSucc <= (attrhalfsegDynSucc))) {
+            (*attrhalfsegStaticSucc <= (*attrhalfsegDynSucc))) {
             bool isDirGiven = attrhalfseg2D.hseg.isLeft;
-            bool isDirSucc = attrhalfsegStaticSucc.hseg.isLeft;
+            bool isDirSucc = (*attrhalfsegStaticSucc).hseg.isLeft;
             Poi2D dpGiven, dpSucc;
 
             if (isDirGiven) {
@@ -989,10 +993,10 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D &attrhalfseg2D, Region2D &region2D) {
                 dpGiven = attrhalfseg2D.hseg.seg.p2;
             }
             if (isDirSucc) {
-                dpSucc = attrhalfsegStaticSucc.hseg.seg.p1;
+                dpSucc = (*attrhalfsegStaticSucc).hseg.seg.p1;
             }
             else {
-                dpSucc = attrhalfsegStaticSucc.hseg.seg.p2;
+                dpSucc = (*attrhalfsegStaticSucc).hseg.seg.p2;
             }
 
             if (dpGiven == (dpSucc)) {
@@ -1003,9 +1007,9 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D &attrhalfseg2D, Region2D &region2D) {
             }
         }
         else if ((attrhalfsegStaticSucc == nullptr && attrhalfsegDynSucc != nullptr) ||
-                 (attrhalfsegDynSucc > (attrhalfsegStaticSucc))) {
+                 (*attrhalfsegDynSucc > (*attrhalfsegStaticSucc))) {
             bool isDirGiven = attrhalfseg2D.hseg.isLeft;
-            bool isDirSucc = attrhalfsegDynSucc.hseg.isLeft;
+            bool isDirSucc = (*attrhalfsegDynSucc).hseg.isLeft;
             Poi2D dpGiven, dpSucc;
 
             if (isDirGiven) {
@@ -1015,10 +1019,10 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D &attrhalfseg2D, Region2D &region2D) {
                 dpGiven = attrhalfseg2D.hseg.seg.p2;
             }
             if (isDirSucc) {
-                dpSucc = attrhalfsegDynSucc.hseg.seg.p1;
+                dpSucc = (*attrhalfsegDynSucc).hseg.seg.p1;
             }
             else {
-                dpSucc = attrhalfsegDynSucc.hseg.seg.p2;
+                dpSucc = (*attrhalfsegDynSucc).hseg.seg.p2;
             }
 
             if (dpGiven == (dpSucc)) {
