@@ -9,7 +9,7 @@
 #include "planesweep_project/Topic2/Implementation/Point2D.h"
 #include "planesweep_project/Topic2/Implementation/Line2D.h"
 #include "planesweep_project/PlaneSweep.h"
-#include "TopologicalRelationships.h"
+
 
 
 
@@ -36,6 +36,13 @@ public:
 private:
 
     // predicates enum
+
+    enum class TopPredNumberPoint2DLine2D
+    {
+        pl_disjoint_m1, pl_disjoint_m2, pl_meet_m3, pl_meet_m4, pl_meet_m5,
+        pl_meet_m6, pl_inside_m7, pl_inside_m8, pl_overlap_m9, pl_overlap_m10,
+        pl_inside_m11, pl_inside_m12, pl_overlap_m13, pl_overlap_m14
+    };
 
     typedef enum {
         poi_disjoint,poi_on_interior,poi_on_bound
