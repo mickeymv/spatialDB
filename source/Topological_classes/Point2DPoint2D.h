@@ -6,8 +6,9 @@
 #define POINT2DPONT2D_POINT2DPOINT2D_H
 
 
-#include "Point2D.h"
-#include "TopologicalRelationships.h"
+#include "planesweep_project/Topic2/Implementation/Point2D.h"
+//#include "TopologicalRelationships.h"
+#include "TopPredNumberEnums.h"
 
 
 class Point2DPoint2D {
@@ -17,9 +18,8 @@ public:
 
     bool isTopologicalRelationship(TopPredNumberPoint2DPoint2D predicate);
     TopPredNumberPoint2DPoint2D getTopologicalRelationship();
-
-
-//    bool overlap();
+    
+    //    bool overlap();
 //    bool disjoint();
 //    bool meet();
 //    bool equal();
@@ -27,7 +27,6 @@ public:
 //    bool covers();
 //    bool coveredBy();
 //    bool inside();
-
 
 private:
 
@@ -73,7 +72,7 @@ private:
     //Evaluation function
     void evaluateTopoPred();
 
-
+    
 };
 
 
