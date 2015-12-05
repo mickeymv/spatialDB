@@ -16,8 +16,6 @@
       <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Region2D.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Region2DRegion2D.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Region2DRegion2D.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/TopologicalRelationships.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/TopologicalRelationships.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/AVLTree.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/AVLTreeImp.cpp" isTestSource="false" />
@@ -69,20 +67,22 @@
     <orderEntry type="module-library">
       <library name="Header Search Paths">
         <CLASSES>
-          <root url="file://C:/Dev-Cpp/MinGW64/include" />
-          <root url="file://C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.6.1/include" />
-          <root url="file://C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.6.1/include-fixed" />
-          <root url="file://C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.6.1/include/c++" />
-          <root url="file://C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.6.1/include/ssp" />
-          <root url="file://C:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" />
+          <root url="file://C:/MinGW/include" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.8.1/include" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.8.1/include-fixed" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.8.1/include/c++" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.8.1/include/objc" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.8.1/include/ssp" />
+          <root url="file://C:/MinGW/mingw32/include" />
         </CLASSES>
         <SOURCES>
-          <root url="file://C:/Dev-Cpp/MinGW64/include" />
-          <root url="file://C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.6.1/include" />
-          <root url="file://C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.6.1/include-fixed" />
-          <root url="file://C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.6.1/include/c++" />
-          <root url="file://C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.6.1/include/ssp" />
-          <root url="file://C:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" />
+          <root url="file://C:/MinGW/include" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.8.1/include" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.8.1/include-fixed" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.8.1/include/c++" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.8.1/include/objc" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.8.1/include/ssp" />
+          <root url="file://C:/MinGW/mingw32/include" />
         </SOURCES>
       </library>
     </orderEntry>

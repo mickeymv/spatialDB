@@ -4,6 +4,7 @@
 
 #include "TopologicalRelationships.h"
 #include "Point2DPoint2D.h"
+#include "Point2DRegion2D.h"
 
 
 //Topological Relationship between a point2D object and a point2D object
@@ -70,7 +71,12 @@ TopPredNumberPoint2DRegion2D getTopologicalRelationship(const Point2D &lhs, cons
 
     //Define predicate as an integer/matrix number
     TopPredNumberPoint2DRegion2D predicate;
+    //Define predicate as an integer/matrix number
 
+    Point2DRegion2D *pr = new pr(lhs, rhs);
+    predicate = pr->getTopologicalRelationship();
+    delete pr;
+    return predicate;
     //Implementation
 
     return predicate;
@@ -80,9 +86,12 @@ TopPredNumberPoint2DRegion2D getTopologicalRelationship(const Point2D &lhs, cons
 bool isTopologicalRelationship(const Point2D &lhs, const Region2D &rhs, TopPredNumberPoint2DRegion2D predicate) {
 
     //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
-    bool isPredicate;
+    bool isPredicate = false;
 
-    //Implementation
+    //Define predicate as an integer/matrix number
+    Point2DRegion2D *pr = new pr(lhs, rhs);
+    isPredicate = pr->isTopologicalRelationship(predicate);
+    delete pr;
 
     return isPredicate;
 
