@@ -116,6 +116,8 @@ status ParallelObjectTraversal::getStatus() {
     return status_value;
 }
 
+//TODO selectFirst() and selectNext() should use the next min element based on setNextMin().Right now it is comparing just ObjectIterators. Where are we getting the nextMin value based on setMin()?
+
 void ParallelObjectTraversal::selectFirst() {
     if (!(objFIterator->isEmpty())) {
         *objFIterator = objF->cbegin();
@@ -136,12 +138,12 @@ void ParallelObjectTraversal::selectFirst() {
         else
             object_value = both;
 
-        if (objFIterator->getCurrent() == objFIterator->cend()
-            && objGIterator->getCurrent() == objGIterator->cend())
+        if (objFIterator->getCurrent() == objF->cend()
+            && objGIterator->getCurrent() == objG->cend())
             status_value = end_of_both;
-        else if (objFIterator->getCurrent() == objFIterator->cend())
+        else if (objFIterator->getCurrent() == objF->cend())
             status_value = end_of_first;
-        else if (objGIterator->getCurrent() == objGIterator->cend())
+        else if (objGIterator->getCurrent() == objG->cend())
             status_value = end_of_second;
         else
             status_value = end_of_none;
@@ -149,20 +151,117 @@ void ParallelObjectTraversal::selectFirst() {
 }
 
 //TODO - see if the return type should be AttrHalfSeg2D or check what it should be
-AttrHalfSeg2D ParallelObjectTraversal::getNextMin() {
+void ParallelObjectTraversal::setNextMin() {
     //Line2D::ConstSegIterator *valF = dynamic_cast<Line2D::ConstSegIterator *>(objFIterator);
 
-    obj11 = objFIterator->getCurrent();
-    obj21 = objGIterator->getCurrent();
-    obj12 = objFIterator->getNext();
-    obj22 = objGIterator->getNext();
-    if (object_value == first)
-        return (obj12 < obj21 ? obj12 : obj21);
-    if (object_value == second)
-        return (obj11 < obj22 ? obj11 : obj22);
-    if (object_value == both)
-        return (obj12 < obj22 ? obj12 : obj22);
-    return nullptr;
+    if(objF->isPoint2D())
+    {
+        Poi2D obj11 = static_cast<Poi2D>(objFIterator->getCurrent());
+        Poi2D obj12 = static_cast<Poi2D>(objFIterator->getNext());
+        minPoi2DF=new Poi2D();
+        if(objG->isPoint2D())
+        {
+            Poi2D obj21 = static_cast<Poi2D>(objGIterator->getCurrent());
+            Poi2D obj22 = static_cast<Poi2D>(objGIterator->getNext());
+            minPoi2DG= new Poi2D();
+            if (object_value == first)
+                (obj12 < obj21 ? *minPoi2DF=obj12 : *minPoi2DG=obj21);
+            if (object_value == second)
+                (obj11 < obj22 ? *minPoi2DF=obj11 : *minPoi2DG=obj22);
+            if (object_value == both)
+                (obj12 < obj22 ? *minPoi2DF=obj12 : *minPoi2DG=obj22);
+            return;
+        }
+        if(objG->isLine2D())
+        {
+            minHalfSeg2DG = new HalfSeg2D();
+            HalfSeg2D obj21 = static_cast<HalfSeg2D>(objGIterator->getCurrent());
+            HalfSeg2D obj22 = static_cast<HalfSeg2D>(objGIterator->getNext());
+            if (object_value == first)
+                (obj12 < obj21 ? *minPoi2DF=obj12 : *minHalfSeg2DG=obj21);
+            if (object_value == second)
+                (obj11 < obj22 ? *minPoi2DF=obj11 : *minHalfSeg2DG=obj22);
+            if (object_value == both)
+                (obj12 < obj22 ? *minPoi2DF=obj12 : *minHalfSeg2DG=obj22);
+            return;
+        }
+        if(objG->isRegion2D())
+        {
+            AttrHalfSeg2D obj21 = static_cast<AttrHalfSeg2D>(objGIterator->getCurrent());
+            AttrHalfSeg2D obj22 = static_cast<AttrHalfSeg2D>(objGIterator->getNext());
+            minAttrHalfSeg2DG = new AttrHalfSeg2D();
+            if (object_value == first)
+                (obj12 < obj21 ? *minPoi2DF=obj12 : *minAttrHalfSeg2DG=obj21);
+            if (object_value == second)
+                (obj11 < obj22 ? *minPoi2DF=obj11 : *minAttrHalfSeg2DG=obj22);
+            if (object_value == both)
+                (obj12 < obj22 ? *minPoi2DF=obj12 : *minAttrHalfSeg2DG=obj22);
+            return;
+        }
+    }
+    if(objF->isLine2D())
+    {
+        HalfSeg2D obj11 = static_cast<HalfSeg2D>(objFIterator->getCurrent());
+        HalfSeg2D obj12 = static_cast<HalfSeg2D>(objFIterator->getNext());
+        minHalfSeg2DF = new HalfSeg2D();
+        if(objG->isLine2D())
+        {
+            HalfSeg2D obj21 = static_cast<HalfSeg2D>(objGIterator->getCurrent());
+            HalfSeg2D obj22 = static_cast<HalfSeg2D>(objGIterator->getNext());
+            minHalfSeg2DG = new HalfSeg2D();
+            if (object_value == first)
+                (obj12 < obj21 ? *minHalfSeg2DF=obj12 : *minHalfSeg2DG=obj21);
+            if (object_value == second)
+                (obj11 < obj22 ? *minHalfSeg2DF=obj11 : *minHalfSeg2DG=obj22);
+            if (object_value == both)
+                (obj12 < obj22 ? *minHalfSeg2DF=obj12 : *minHalfSeg2DG=obj22);
+            return;
+        }
+        if(objG->isRegion2D())
+        {
+            AttrHalfSeg2D obj21 = static_cast<AttrHalfSeg2D>(objGIterator->getCurrent());
+            AttrHalfSeg2D obj22 = static_cast<AttrHalfSeg2D>(objGIterator->getNext());
+            minAttrHalfSeg2DG = new AttrHalfSeg2D();
+            if (object_value == first)
+                (obj12 < obj21 ? *minHalfSeg2DF=obj12 : *minAttrHalfSeg2DG=obj21);
+            if (object_value == second)
+                (obj11 < obj22 ? *minHalfSeg2DF=obj11 : *minAttrHalfSeg2DG=obj22);
+            if (object_value == both)
+                (obj12 < obj22 ? *minHalfSeg2DF=obj12 : *minAttrHalfSeg2DG=obj22);
+            return;
+        }
+    }
+    if(objF->isRegion2D())
+    {
+        AttrHalfSeg2D obj11 = static_cast<AttrHalfSeg2D>(objFIterator->getCurrent());
+        AttrHalfSeg2D obj12 = static_cast<AttrHalfSeg2D>(objFIterator->getNext());
+        minAttrHalfSeg2DF = new AttrHalfSeg2D();
+        if(objG->isRegion2D())
+        {
+            AttrHalfSeg2D obj21 = static_cast<AttrHalfSeg2D>(objGIterator->getCurrent());
+            AttrHalfSeg2D obj22 = static_cast<AttrHalfSeg2D>(objGIterator->getNext());
+            minAttrHalfSeg2DG = new AttrHalfSeg2D();
+            if (object_value == first)
+                (obj12 < obj21 ? *minAttrHalfSeg2DF=obj12 : *minAttrHalfSeg2DG=obj21);
+            if (object_value == second)
+                (obj11 < obj22 ? *minAttrHalfSeg2DF=obj11 : *minAttrHalfSeg2DG=obj22);
+            if (object_value == both)
+                (obj12 < obj22 ? *minAttrHalfSeg2DF=obj12 : *minAttrHalfSeg2DG=obj22);
+            return;
+        }
+    }
+
+//    obj11 = objFIterator->getCurrent();
+//    obj21 = objGIterator->getCurrent();
+//    obj12 = objFIterator->getNext();
+//    obj22 = objGIterator->getNext();
+//    if (object_value == first)
+//        return (obj12 < obj21 ? obj12 : obj21);
+//    if (object_value == second)
+//        return (obj11 < obj22 ? obj11 : obj22);
+//    if (object_value == both)
+//        return (obj12 < obj22 ? obj12 : obj22);
+//    return nullptr;
 
 }
 
@@ -183,7 +282,7 @@ void ParallelObjectTraversal::selectNext() {
         return;
     }
 
-
+//TODO define getCurrent() and getNext() for ObjectIterators
     if (objFIterator->getCurrent() == objF->cend()) {
         if (objGIterator->getCurrent() == objG->cend()) {
             status_value = end_of_both;
@@ -198,7 +297,7 @@ void ParallelObjectTraversal::selectNext() {
     }
 
 
-    if (objFIterator->.getCurrent() == objF->ctail() && objGIterator->getCurrent() == objG->ctail()) {
+    if (objFIterator->getCurrent() == objF->ctail() && objGIterator->getCurrent() == objG->ctail()) {
         object_value = none;
     } else if (objFIterator->getCurrent() == objGIterator->getCurrent()) {
         object_value = both;
@@ -207,6 +306,45 @@ void ParallelObjectTraversal::selectNext() {
     } else if (objFIterator->getCurrent() > objGIterator->getCurrent()) {
         object_value = second;
     }
+}
+
+Poi2D* ParallelObjectTraversal::getNextPoi2DMin()
+{
+    if(minPoi2DF!= nullptr)
+    {
+        return minPoi2DF;
+    }
+    else if(minPoi2DG!= nullptr)
+    {
+        return minPoi2DG;
+    }
+    return nullptr;
+}
+
+HalfSeg2D* ParallelObjectTraversal::getNextHalfSeg2DMin()
+{
+    if(minHalfSeg2DF!= nullptr)
+    {
+        return minHalfSeg2DF;
+    }
+    else if(minHalfSeg2DG!= nullptr)
+    {
+        return minHalfSeg2DG;
+    }
+    return nullptr;
+}
+
+AttrHalfSeg2D* ParallelObjectTraversal::getNextAttrHalfSeg2DMin()
+{
+    if(minHalfSeg2DF!= nullptr)
+    {
+        return minAttrHalfSeg2DF;
+    }
+    else if(minHalfSeg2DG!= nullptr)
+    {
+        return minAttrHalfSeg2DG;
+    }
+    return nullptr;
 }
 
 Poi2D ParallelObjectTraversal::getPoiEvent(object objectEnumVal) {
@@ -397,6 +535,16 @@ bool ParallelObjectTraversal::isObjectG(Object2D object2D) {
     else {
         return false;
     }
+}
+
+Object2D ParallelObjectTraversal::getObjF()
+{
+    return *objF;
+}
+
+Object2D ParallelObjectTraversal::getObjG()
+{
+    return *objG;
 }
 
 

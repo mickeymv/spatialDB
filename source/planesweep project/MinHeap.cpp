@@ -128,3 +128,15 @@ AttrHalfSeg2D MinHeap::GetNext(AttrHalfSeg2D attrHalfSeg2D)
     }
     return next;
 }
+
+bool MinHeap::isEmpty()
+{
+    if(_vector.size()==0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}

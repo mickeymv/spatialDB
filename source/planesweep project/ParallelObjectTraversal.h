@@ -31,10 +31,13 @@ public:
 
     ObjectIterator *getObjIterator(object);
 	// need to finalise the return type
-	AttrHalfSeg2D getNextMin();
+	void setNextMin();
 
     bool isObjectF(Object2D);
     bool isObjectG(Object2D);
+
+    Object2D getObjF();
+    Object2D getObjG();
 
     ObjectIterator* getNextObjIterator(HalfSeg2D,object);
     ObjectIterator* getNextObjIterator(AttrHalfSeg2D,object);
@@ -57,6 +60,10 @@ public:
     HalfSeg2D getHalfSegEvent(object objectEnumVal);
     AttrHalfSeg2D getAttrHalfSegEvent(object objectEnumVal);
 
+    Poi2D* getNextPoi2DMin();
+    HalfSeg2D* getNextHalfSeg2DMin();
+    AttrHalfSeg2D* getNextAttrHalfSeg2DMin();
+
 private:
     //SelectFirst should be called in the POT constructor.
     void selectFirst();
@@ -66,6 +73,9 @@ private:
     status status_value;
     Object2D *objF, *objG;
     ObjectIterator *objFIterator, *objGIterator;
+    Poi2D *minPoi2DF = nullptr,*minPoi2DG = nullptr;
+    HalfSeg2D *minHalfSeg2DF = nullptr, *minHalfSeg2DG= nullptr;
+    AttrHalfSeg2D *minAttrHalfSeg2DF= nullptr, *minAttrHalfSeg2DG= nullptr;
 
 };
 

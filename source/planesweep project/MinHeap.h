@@ -23,6 +23,7 @@ public:
     MinHeap(const vector<AttrHalfSeg2D>& vector);
     MinHeap();
 
+    bool isEmpty();
     void Insert(AttrHalfSeg2D newValue);
     AttrHalfSeg2D GetMin();
     void DeleteMin();

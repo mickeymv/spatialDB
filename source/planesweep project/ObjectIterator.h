@@ -9,9 +9,7 @@
 * It's upto the derived classes; Poi, Line and RegionIterators to have definitions for
 * the methods in this class.
 */
-#include "Topic2/Implementation/Point2D.h"
-#include "Topic2/Implementation/Line2D.h"
-#include "Object2D.h"
+
 
 class ObjectIterator {
 
@@ -50,22 +48,26 @@ public:
 
     virtual bool operator>=(const ObjectIterator &rhs) const = 0;
 
-    // Method that returns a constant  iterator to the first element of an
-    //  object.
-    ObjectIterator cbegin() const;
+////     Method that returns a constant  iterator to the first element of an
+////      object.
+//    ObjectIterator cbegin() const;
+//
+//    // Method that returns a constant  iterator to the last element of an object.
+//    ObjectIterator cend() const;
+//
+//    // Method that returns a constant iterator to the position before the
+//    // first face of an object. Note that dereferencing this iterator
+//    // yields the empty constant iterator.
+//    ObjectIterator chead() const;
+//
+//    // Method that returns a constant iterator to the position after the
+//    // last face of an object. Note that dereferencing this iterator
+//    // yields the empty constant iterator.
+//    ObjectIterator ctail() const;
 
-    // Method that returns a constant  iterator to the last element of an object.
-    ObjectIterator cend() const;
-
-    // Method that returns a constant iterator to the position before the
-    // first face of an object. Note that dereferencing this iterator
-    // yields the empty constant iterator.
-    ObjectIterator chead() const;
-
-    // Method that returns a constant iterator to the position after the
-    // last face of an object. Note that dereferencing this iterator
-    // yields the empty constant iterator.
-    ObjectIterator ctail() const;
+    //TODO tell group 2 to have functions for getCurrent() and getNext() which gives the iterator
+    virtual ObjectIterator getCurrent() = 0;
+    virtual ObjectIterator getNext() = 0;
 
 };
 

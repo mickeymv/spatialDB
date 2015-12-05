@@ -55,16 +55,298 @@ bool PlaneSweep::getInsideAbove(Seg2D seg) {
     return ia;
 }
 
+//TODO try to store halfsegments in Minheap
 int PlaneSweep::findLeast() {
-    AttrHalfSeg2D objS, objD1, objD2, objD;
-    objS = getPot()->getNextMin();
-    objD1 = dynamicEPSObjF.GetMin();
-    objD2 = dynamicEPSObjG.GetMin();
-    objD = (objD1 < objD2) ? (objD1) : (objD2);
+    //AttrHalfSeg2D objS, objD1, objD2, objD;
+    getPot()->setNextMin();
 
-    if (objS < objD)
-        return 1;
-    return 2;
+        Poi2D* objSP = nullptr;
+        objSP = getPot()->getNextPoi2DMin();
+
+        HalfSeg2D* objHS = nullptr;
+        objHS = getPot()->getNextHalfSeg2DMin();
+
+        AttrHalfSeg2D* objAHS = nullptr;
+        objAHS = getPot()->getNextAttrHalfSeg2DMin();
+
+        if(objSP!= nullptr)
+        {
+            if(getPot()->getObjF().isPoint2D())
+            {
+                if(getPot()->getObjG().isPoint2D())
+                {
+                    return 1;
+                }
+                else if(getPot()->getObjG().isLine2D())
+                {
+                    if(dynamicEPSObjG.isEmpty())
+                    {
+                        return 1;
+                    }
+                    HalfSeg2D objD2 = dynamicEPSObjG.GetMin();
+
+                    if (*objSP < objD2)
+                        return 1;
+                    return 2;
+                }
+                else if(getPot()->getObjG().isRegion2D())
+                {
+                    if(dynamicEPSObjG.isEmpty())
+                    {
+                        return 1;
+                    }
+                    AttrHalfSeg2D objD2 = dynamicEPSObjG.GetMin();
+                    if (*objSP < objD2)
+                        return 1;
+                    return 2;
+                }
+            }
+            else if(getPot()->getObjG().isPoint2D())
+            {
+                    return 1;
+            }
+        }
+        else if(objHS!= nullptr)
+        {
+
+            if(getPot()->getObjF().isLine2D()) {
+                HalfSeg2D objD1;
+                if(!dynamicEPSObjF.isEmpty())
+                {
+                    objD1 = dynamicEPSObjF.GetMin();
+                }
+                if (getPot()->getObjG().isLine2D()) {
+                    if((!dynamicEPSObjF.isEmpty())&&(!dynamicEPSObjG.isEmpty()))
+                    {
+                        HalfSeg2D objD2 = dynamicEPSObjG.GetMin();
+                        if(objD1 < objD2)
+                        {
+                            HalfSeg2D objD = objD1;
+                            if (*objHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                        else
+                        {
+                            HalfSeg2D objD = objD2;
+                            if (*objHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                    }
+                    else if(dynamicEPSObjF.isEmpty()&&dynamicEPSObjG.isEmpty())
+                    {
+                        return 1;
+                    }
+
+
+                }
+                else if (getPot()->getObjG().isRegion2D()) {
+                    if((!dynamicEPSObjF.isEmpty())&&(!dynamicEPSObjG.isEmpty()))
+                    {
+                        AttrHalfSeg2D objD2 = dynamicEPSObjG.GetMin();
+                        if(objD1 < objD2)
+                        {
+                            HalfSeg2D objD = objD1;
+                            if (*objHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                        else
+                        {
+                            AttrHalfSeg2D objD = objD2;
+                            if (*objHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                    }
+                    else if(dynamicEPSObjF.isEmpty()&&dynamicEPSObjG.isEmpty())
+                    {
+                        return 1;
+                    }
+                }
+            }
+            if(getPot()->getObjG().isLine2D()) {
+                HalfSeg2D objD1;
+                if(!dynamicEPSObjG.isEmpty())
+                {
+                    objD1 = dynamicEPSObjG.GetMin();
+                }
+                if (getPot()->getObjF().isLine2D()) {
+                    if((!dynamicEPSObjF.isEmpty())&&(!dynamicEPSObjG.isEmpty()))
+                    {
+                        HalfSeg2D objD2 = dynamicEPSObjF.GetMin();
+                        if(objD1 < objD2)
+                        {
+                            HalfSeg2D objD = objD1;
+                            if (*objHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                        else
+                        {
+                            HalfSeg2D objD = objD2;
+                            if (*objHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                    }
+                    else if(dynamicEPSObjF.isEmpty()&&dynamicEPSObjG.isEmpty())
+                    {
+                        return 1;
+                    }
+
+
+                }
+                else if (getPot()->getObjF().isRegion2D()) {
+                    if((!dynamicEPSObjF.isEmpty())&&(!dynamicEPSObjG.isEmpty()))
+                    {
+                        AttrHalfSeg2D objD2 = dynamicEPSObjF.GetMin();
+                        if(objD1 < objD2)
+                        {
+                            HalfSeg2D objD = objD1;
+                            if (*objHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                        else
+                        {
+                            AttrHalfSeg2D objD = objD2;
+                            if (*objHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                    }
+                    else if(dynamicEPSObjF.isEmpty()&&dynamicEPSObjG.isEmpty())
+                    {
+                        return 1;
+                    }
+                }
+                else if(getPot()->getObjF().isPoint2D())
+                {
+                    if(dynamicEPSObjG.isEmpty())
+                    {
+                        return 1;
+                    }
+                    else {
+                        if (*objHS < objD1)
+                            return 1;
+                        return 2;
+                    }
+                }
+
+            }
+        }
+        else if(objAHS!= nullptr)
+        {
+            if(getPot()->getObjF().isRegion2D())
+            {
+                AttrHalfSeg2D objD1;
+                if(!dynamicEPSObjF.isEmpty())
+                {
+                    objD1 = dynamicEPSObjF.GetMin();
+                }
+                if (getPot()->getObjF().isRegion2D()) {
+                    if ((!dynamicEPSObjF.isEmpty()) && (!dynamicEPSObjG.isEmpty())) {
+                        AttrHalfSeg2D objD2 = dynamicEPSObjF.GetMin();
+                        if (objD1 < objD2) {
+                            AttrHalfSeg2D objD = objD1;
+                            if (*objAHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                        else {
+                            AttrHalfSeg2D objD = objD2;
+                            if (*objAHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                    }
+                    else if (dynamicEPSObjF.isEmpty() && dynamicEPSObjG.isEmpty()) {
+                        return 1;
+                    }
+                }
+            }
+            else if(getPot()->getObjG().isRegion2D())
+            {
+                AttrHalfSeg2D objD1;
+                if(!dynamicEPSObjG.isEmpty())
+                {
+                    objD1 = dynamicEPSObjG.GetMin();
+                }
+                if (getPot()->getObjF().isLine2D()) {
+                    if((!dynamicEPSObjF.isEmpty())&&(!dynamicEPSObjG.isEmpty()))
+                    {
+                        HalfSeg2D objD2 = dynamicEPSObjF.GetMin();
+                        if(objD1 < objD2)
+                        {
+                            AttrHalfSeg2D objD = objD1;
+                            if (*objAHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                        else
+                        {
+                            HalfSeg2D objD = objD2;
+                            if (*objAHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                    }
+                    else if(dynamicEPSObjF.isEmpty()&&dynamicEPSObjG.isEmpty())
+                    {
+                        return 1;
+                    }
+
+
+                }
+                else if (getPot()->getObjF().isRegion2D()) {
+                    if((!dynamicEPSObjF.isEmpty())&&(!dynamicEPSObjG.isEmpty()))
+                    {
+                        AttrHalfSeg2D objD2 = dynamicEPSObjF.GetMin();
+                        if(objD1 < objD2)
+                        {
+                            AttrHalfSeg2D objD = objD1;
+                            if (*objAHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                        else
+                        {
+                            AttrHalfSeg2D objD = objD2;
+                            if (*objAHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                    }
+                    else if(dynamicEPSObjF.isEmpty()&&dynamicEPSObjG.isEmpty())
+                    {
+                        return 1;
+                    }
+                }
+                else if(getPot()->getObjF().isPoint2D())
+                {
+                    if(dynamicEPSObjG.isEmpty())
+                    {
+                        return 1;
+                    }
+                    else {
+                        if (*objAHS < objD1)
+                            return 1;
+                        return 2;
+                    }
+                }
+
+            }
+        }
+
+//        objD1 = dynamicEPSObjF.GetMin();
+//        objD2 = dynamicEPSObjG.GetMin();
+//        objD = (objD1 < objD2) ? (objD1) : (objD2);
+//
+//        if (objS < objD)
+//            return 1;
+//        return 2;
 
 }
 
