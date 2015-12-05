@@ -20,6 +20,7 @@ MinHeap::MinHeap(const vector<AttrHalfSeg2D>& vector) : _vector(vector)
     Heapify();
 }
 
+//TODO might need to remove this since the default constructor is overloaded and nothing will happen
 MinHeap::MinHeap()
 {
 }
