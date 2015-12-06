@@ -19,23 +19,38 @@ int main()
 	// cout << "Big Rational varaiable multiplication:" << a * b << endl;
 	// cout << "Big Rational varaiable division:" << a / b << endl;
 
-	// Poi2D p1(Number("2.0"), Number("2.0"));
-	// Poi2D p2(Number("5.0"), Number("5.0"));
-	// Poi2D p3(Number("3.0"), Number("0.0"));
-	// Poi2D p4(Number("4.0"), Number("4.0"));
-	// Poi2D p5(Number("2.0"), Number("5.0"));
-	// cout << "Point p1:" << p1 << endl;
-	// cout << "Point p2:" << p2 << endl;
-	// cout << "Point p3:" << p3 << endl;
-	// cout << "Point p4:" << p4 << endl;
-	// cout << "Point p5:" << p5 << endl;
+	Poi2D p1(Number("2.0"), Number("2.0"));
+	 Poi2D p2(Number("5.0"), Number("5.0"));
+	 Poi2D p3(Number("3.0"), Number("0.0"));
+	 Poi2D p4(Number("4.0"), Number("4.0"));
+	 Poi2D p5(Number("3.0"), Number("5.0"));
+	 cout << "Point p1:" << p1 << endl;
+	 cout << "Point p2:" << p2 << endl;
+	 cout << "Point p3:" << p3 << endl;
+	 cout << "Point p4:" << p4 << endl;
+	 cout << "Point p5:" << p5 << endl;
 	
-	// Seg2D s1(p1, p2);
-	// Seg2D s2(p3, p4);
+	Seg2D s1(p1, p2);
+	Seg2D s2(p3, p4);
 
 	// Seg2D s3(p3,p5);
-	// HalfSeg2D leftHalfS1(s1, true);
-	// HalfSeg2D rightHalfS1(s1, false);
+	HalfSeg2D leftHalfS1(s1, true);
+	HalfSeg2D rightHalfS1(s2, false);
+	AttrHalfSeg2D aseg1(true,true,s1);
+	AttrHalfSeg2D aseg2(true, true, s2);
+	bool result1 = p5<leftHalfS1;
+	bool result2 = leftHalfS1 <  p5;
+	bool result3 = aseg1 < rightHalfS1;
+	bool result4 = aseg1 < p2;
+	bool result5 = aseg2 > leftHalfS1;
+
+	cout<< "is p5 less than lefthalfs1:"<<result1<<endl;
+	cout << "is lefthalfs1 less than p5  :" << result2 <<endl;
+	cout << "is aseg1 less than rightHalfseg1" << result3 <<endl;
+	cout << "is aseg1 less than p2 :" << result4 <<endl;
+	cout << "is aseg2 greater than lefthalfs1  :" << result5 <<endl;
+	//AttrHalfSeg2D aseg = (leftHalfS1, true);
+	// 
 
 	// HalfSeg2D leftHalfS2(s2, true);
 	// HalfSeg2D rightHalfS2(s2, false);
@@ -97,17 +112,17 @@ int main()
 	//vector<Poi2D> points = { Poi2D(Number("0.0"), Number("0.0")), Poi2D(Number("0.0"), Number("4.0")), Poi2D(Number("2.0"), Number("4.0")), Poi2D(Number("2.0"), Number("2.0")), Poi2D(Number("4.0"), Number("2.0")), Poi2D(Number("4.0"), Number("0.0"))};
 	
 	//vector<Poi2D> points = { Poi2D(Number("0.0"), Number("0.0")), Poi2D(Number("0.0"), Number("4.0")), Poi2D(Number("2.0"), Number("6.0")), Poi2D(Number("4.0"), Number("4.0")), Poi2D(Number("4.0"), Number("0.0"))};
-	vector<Poi2D> points = { Poi2D(Number("2.0"), Number("6.0")), Poi2D(Number("4.0"), Number("4.0")), Poi2D(Number("4.0"), Number("0.0")),Poi2D(Number("0.0"), Number("0.0")), Poi2D(Number("0.0"), Number("4.0"))};
+	//vector<Poi2D> points = { Poi2D(Number("2.0"), Number("6.0")), Poi2D(Number("4.0"), Number("4.0")), Poi2D(Number("4.0"), Number("0.0")),Poi2D(Number("0.0"), Number("0.0")), Poi2D(Number("0.0"), Number("4.0"))};
 	
 
-	vector<Poi2D> points2 = { Poi2D(Number("0.0"), Number("0.0")), Poi2D(Number("3.0"), Number("3.0")) };
-	SimplePolygon2D testpolygon(points);
+	//vector<Poi2D> points2 = { Poi2D(Number("0.0"), Number("0.0")), Poi2D(Number("3.0"), Number("3.0")) };
+	//SimplePolygon2D testpolygon(points);
 	
-	Poi2D pi1 = Poi2D(Number("2.0"), Number("2.0"));
-	Poi2D pi = Poi2D(Number("1.0"), Number("1.0"));
-	Poi2D po = Poi2D(Number("3.0"), Number("0.0"));
-	Poi2D p10 = Poi2D(Number("11.0"), Number("12.0"));
-	cout <<"polygon inside or not test: ::::"<<simplePointInsideSimplePolygon(pi1, testpolygon)<<"hhh"<<endl;
+	//Poi2D pi1 = Poi2D(Number("2.0"), Number("2.0"));
+	//Poi2D pi = Poi2D(Number("1.0"), Number("1.0"));
+	//Poi2D po = Poi2D(Number("3.0"), Number("0.0"));
+	//Poi2D p10 = Poi2D(Number("11.0"), Number("12.0"));
+	//cout <<"polygon inside or not test: ::::"<<simplePointInsideSimplePolygon(pi1, testpolygon)<<"hhh"<<endl;
 	//cout <<"polygon inside or not test:pi"<<simplePointInsideSimplePolygon(pi, testpolygon)<<endl;
 	//cout <<"polygon inside or not test:po"<<simplePointInsideSimplePolygon(po, testpolygon)<<endl;
 	//cout << testpolygon;
