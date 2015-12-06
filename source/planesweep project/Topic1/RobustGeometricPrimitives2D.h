@@ -10,6 +10,8 @@
 *Point Class
 */
 
+class AttrHalfSeg2D;
+class HalfSeg2D;
 class Poi2D
 {
 public:
@@ -27,6 +29,10 @@ public:
 
 	/* Logical Operations. */
 	bool operator <(const Poi2D& operand);
+	bool operator < (HalfSeg2D& operand);
+	bool operator > (HalfSeg2D& operand);
+	bool operator <(AttrHalfSeg2D& operand);
+	bool operator >(AttrHalfSeg2D& operand);
 	bool operator >(const Poi2D& operand);
 	bool operator <=(const Poi2D& operand);
 	bool operator >=(const Poi2D& operand);
@@ -91,11 +97,16 @@ public:
 
 	/* logical operations. */
 	bool operator <(const HalfSeg2D& operand);
+	bool operator <(Poi2D& operand);
+	bool operator >(Poi2D& operand);
+	bool operator <( AttrHalfSeg2D& operand);
+	bool operator >(AttrHalfSeg2D& operand);
 	bool operator >(const HalfSeg2D& operand);
 	bool operator <=(const HalfSeg2D& operand);
 	bool operator >=(const HalfSeg2D& operand);
 	bool operator ==(const HalfSeg2D& operand);
 	bool operator !=(const HalfSeg2D& operand);
+	Poi2D dominatingPoint();
 	friend std::ostream&operator <<(std::ostream& os, const HalfSeg2D& output);
 	friend std::istream&operator >>(std::istream& is, const HalfSeg2D& input);
 
@@ -123,6 +134,10 @@ public:
 	/*logical operators*/
 	bool operator <(const AttrHalfSeg2D& operand);
 	bool operator >(const AttrHalfSeg2D& operand);
+	bool operator <(Poi2D& operand);
+	bool operator >(Poi2D& operand);
+	bool operator <(HalfSeg2D& operand);
+	bool operator >(HalfSeg2D& operand);
 	bool operator <=(const AttrHalfSeg2D& operand);
 	bool operator >=(const AttrHalfSeg2D& operand);
 	bool operator ==(const AttrHalfSeg2D& operand);
