@@ -118,7 +118,38 @@ bool Poi2D::operator != (const Poi2D& operand)
 	else
 		return false;
 }
+bool Poi2D:: operator < (HalfSeg2D& operand)
+{
 
+	if (*(this) < operand.dominatingPoint())
+		return true;
+	else
+		return false;
+}
+bool Poi2D:: operator > (HalfSeg2D& operand)
+{
+
+	if (*(this) > operand.dominatingPoint())
+		return true;
+	else
+		return false;
+}
+bool Poi2D:: operator < (AttrHalfSeg2D& operand)
+{
+
+	if (*(this) < operand.hseg.dominatingPoint())
+		return true;
+	else
+		return false;
+}
+bool Poi2D:: operator > (AttrHalfSeg2D& operand)
+{
+
+	if (*(this) > operand.hseg.dominatingPoint())
+		return true;
+	else
+		return false;
+}
 std::ostream&operator << (std::ostream& os, const Poi2D& output)
 {
 	os << "(" << output.x << ", " << output.y << ")";
@@ -351,10 +382,10 @@ bool HalfSeg2D::operator < ( const HalfSeg2D& operand)
 		nonDominatingPointOfSeg2 = seg2.p1;
 	}
 
-	std::cout << "dominatingPointOfSeg1" << dominatingPointOfSeg1;
-	std::cout << "dominatingPointOfSeg2" << dominatingPointOfSeg2;
-	std::cout << "nonDominatingPointOfSeg1" << nonDominatingPointOfSeg1;
-	std::cout << "nonDominatingPointOfSeg2" << nonDominatingPointOfSeg2;
+	//std::cout << "dominatingPointOfSeg1" << dominatingPointOfSeg1;
+	//std::cout << "dominatingPointOfSeg2" << dominatingPointOfSeg2;
+	//std::cout << "nonDominatingPointOfSeg1" << nonDominatingPointOfSeg1;
+	//std::cout << "nonDominatingPointOfSeg2" << nonDominatingPointOfSeg2;
 
 	if (dominatingPointOfSeg1 < dominatingPointOfSeg2
 		|| (dominatingPointOfSeg1 == dominatingPointOfSeg2 && (!this->isLeft && operand.isLeft))
@@ -435,6 +466,13 @@ bool HalfSeg2D::operator <= (const HalfSeg2D& operand)
 
 
 }
+Poi2D HalfSeg2D :: dominatingPoint()
+{
+	if (isLeft == true)
+		return seg.p1;
+	else
+		return seg.p2;
+}
 
 bool HalfSeg2D::operator >= (const HalfSeg2D& operand)
 {
@@ -463,7 +501,35 @@ bool HalfSeg2D::operator != (const HalfSeg2D& operand)
 		return false;
 	}
 }
+bool HalfSeg2D :: operator < (Poi2D& operand)
+{
+	if (this->dominatingPoint() < operand)
+		return true;
+	else
+		return false;
+}
+bool HalfSeg2D :: operator > (Poi2D& operand)
+{
+	if (this->dominatingPoint() > operand)
+		return true;
+	else
+		return false;
+}
+bool HalfSeg2D :: operator <(AttrHalfSeg2D& operand)
+{
+	if (*(this) < operand.hseg)
+		return true;
+	else
+		return false;
+}
+bool HalfSeg2D ::operator >(AttrHalfSeg2D& operand)
+{
 
+	if (*(this) > operand.hseg)
+		return true;
+	else
+		return false;
+}
 std::ostream&operator << (std::ostream& os, const HalfSeg2D& output)
 {
 	os << "Segment" << output.seg << "\nIs Left: " << output.isLeft;
@@ -590,7 +656,34 @@ bool AttrHalfSeg2D::operator != (const AttrHalfSeg2D& operand)
 	else
 		return false;
 }
-
+bool AttrHalfSeg2D::operator <(Poi2D& operand)
+{
+	if (this->hseg.dominatingPoint() < operand)
+		return true;
+	else
+		return false;
+}
+bool AttrHalfSeg2D:: operator >(Poi2D& operand)
+{
+	if (this->hseg.dominatingPoint() > operand)
+		return true;
+	else
+		return false;
+}
+bool AttrHalfSeg2D::operator <(HalfSeg2D& operand)
+{
+	if (this->hseg < operand)
+		return true;
+	else
+		return false;
+}
+bool AttrHalfSeg2D::operator >(HalfSeg2D& operand)
+{
+	if (this->hseg > operand)
+		return true;
+	else
+		return false;
+}
 /*Minimum Bounding Rectangle*/
 Rect2D::Rect2D()
 {
