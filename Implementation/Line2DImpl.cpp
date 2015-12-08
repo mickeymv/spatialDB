@@ -19,7 +19,11 @@
 
 #include "Line2DImpl.h"
     
-    struct Line2DImpl::ConstSegIterator::ConstSegIteratorImplementation{
+    struct Line2DImpl::ConstHalfSegIterator::ConstHalfSegIteratorImplementation{
+      int iteratorIndex=-1;
+      Line2D::Line2DSImpl* current=NULL;     //pointer to the full structure
+    };
+    struct Line2D::ConstSegIterator::ConstSegIteratorImplementation{
       int iteratorIndex=-1;
       Line2D::Line2DSImpl* current=NULL;     //pointer to the full structure
     };
@@ -109,18 +113,18 @@
     // segments is not possible.
         
      // Default constructor that creates an empty constant segment iterator.
-        Line2DImpl::ConstSegIterator::ConstSegIterator()
+        Line2DImpl::ConstHalfSegIterator::ConstHalfSegIterator()
         {
-		  handlei = new ConstSegIteratorImplementation;
+		  handlei = new ConstHalfSegIteratorImplementation;
 		  handlei->iteratorIndex = -1;
 		  handlei->current = NULL;
         }
 
         // Copy constructor that constructs a constant segment iterator from a
         // given constant segment iterator "source".
-        Line2DImpl::ConstSegIterator::ConstSegIterator(const ConstSegIterator& source)
+        Line2DImpl::ConstHalfSegIterator::ConstHalfSegIterator(const ConstHalfSegIterator& source)
         {
-		  handlei = new ConstSegIteratorImplementation;
+		  handlei = new ConstHalfSegIteratorImplementation;
           handlei->iteratorIndex = source.handlei->iteratorIndex;
 		  handlei->current = source.handlei->current;
         }
@@ -128,54 +132,54 @@
         // Move constructor that moves a given constant segment iterator "source"
         // to a constant segment iterator. The constant segment iterator "source"
         // gets the empty constant segment iterator as its value.
-        Line2DImpl::ConstSegIterator::ConstSegIterator(const ConstSegIterator&& source)
+        Line2DImpl::ConstHalfSegIterator::ConstHalfSegIterator(const ConstHalfSegIterator&& source)
         {	
-			handlei = new ConstSegIteratorImplementation;
+			handlei = new ConstHalfSegIteratorImplementation;
             handlei->iteratorIndex = std::move(source.handlei->iteratorIndex);
 			handlei->current = std::move(source.handlei->current);
         }
 
         // Destructor that frees the main memory space allocated for a constant
         // segment iterator.
-        Line2DImpl::ConstSegIterator::~ConstSegIterator()
+        Line2DImpl::ConstHalfSegIterator::~ConstHalfSegIterator()
         {
 			delete handlei;
         }
 
         // Assignment operator that assigns another constant segment iterator
         // "rhs" to the constant segment iterator.
-        Line2DImpl::ConstSegIterator& Line2DImpl::ConstSegIterator::operator = (const ConstSegIterator& rhs)
+        Line2DImpl::ConstHalfSegIterator& Line2DImpl::ConstHalfSegIterator::operator = (const ConstHalfSegIterator& rhs)
         {
 			handlei->iteratorIndex = rhs.handlei->iteratorIndex; 
 			handlei->current = rhs.handlei->current; 
         }
 
         // Predicate that tests whether a constant segment iterator is empty.
-        bool Line2DImpl::ConstSegIterator::isEmpty() const
+        bool Line2DImpl::ConstHalfSegIterator::isEmpty() const
         {
 			return (handlei->current == NULL);
         }
 
         // Increment/decrement operators '++', '--'
-        Line2DImpl::ConstSegIterator& Line2DImpl::ConstSegIterator::operator ++ ()
+        Line2DImpl::ConstHalfSegIterator& Line2DImpl::ConstHalfSegIterator::operator ++ ()
         {
 			 handlei->iteratorIndex++;
 			 return(*this);
         }   // prefix
-        Line2DImpl::ConstSegIterator Line2DImpl::ConstSegIterator::operator ++ (int)
+        Line2DImpl::ConstHalfSegIterator Line2DImpl::ConstHalfSegIterator::operator ++ (int)
         {
-			ConstSegIterator tmp(*this);
+			ConstHalfSegIterator tmp(*this);
     			handlei->iteratorIndex++;
     			return(tmp);
         } // postfix
-        Line2DImpl::ConstSegIterator& Line2DImpl::ConstSegIterator::operator -- ()
+        Line2DImpl::ConstHalfSegIterator& Line2DImpl::ConstHalfSegIterator::operator -- ()
         {
 			 handlei->iteratorIndex--;
 			 return(*this);
         }   // prefix
-        Line2DImpl::ConstSegIterator Line2DImpl::ConstSegIterator::operator -- (int)
+        Line2DImpl::ConstHalfSegIterator Line2DImpl::ConstHalfSegIterator::operator -- (int)
         {
-			ConstSegIterator tmp(*this);
+			ConstHalfSegIterator tmp(*this);
     		handlei->iteratorIndex--;
     		return(tmp);
         } // postfix
@@ -183,37 +187,37 @@
         // Dereferencing operators that return the value at the constant segment
         // iterator position. Dereferencing is only allowed if the iterator
         // points to a segment. The dereferenced value cannot be changed.
-        const HalfSeg2D& Line2DImpl::ConstSegIterator::operator *() const
+        const HalfSeg2D& Line2DImpl::ConstHalfSegIterator::operator *() const
         {
             return(this->handlei->current->segments.at(this->handlei->iteratorIndex));   
         }
-        const HalfSeg2D* Line2DImpl::ConstSegIterator::operator ->() const
+        const HalfSeg2D* Line2DImpl::ConstHalfSegIterator::operator ->() const
         {
             return(&this->handlei->current->segments.at(this->handlei->iteratorIndex));  
         }
 
         // Comparison operators that compare a constant segment iterator position
         // with another const segment iterator position "rhs"
-        bool Line2DImpl::ConstSegIterator::operator == (const ConstSegIterator& rhs) const{	
+        bool Line2DImpl::ConstHalfSegIterator::operator == (const ConstHalfSegIterator& rhs) const{	
 			return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex == rhs.handlei->iteratorIndex));
         }
-        bool Line2DImpl::ConstSegIterator::operator != (const ConstSegIterator& rhs) const{	
+        bool Line2DImpl::ConstHalfSegIterator::operator != (const ConstHalfSegIterator& rhs) const{	
 			return ((this->handlei->current != rhs.handlei->current)||(this->handlei->iteratorIndex != rhs.handlei->iteratorIndex));
         }
-        bool Line2DImpl::ConstSegIterator::operator <  (const ConstSegIterator& rhs) const{
+        bool Line2DImpl::ConstHalfSegIterator::operator <  (const ConstHalfSegIterator& rhs) const{
 			return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex < rhs.handlei->iteratorIndex));
         }
-        bool Line2DImpl::ConstSegIterator::operator <= (const ConstSegIterator& rhs) const{
+        bool Line2DImpl::ConstHalfSegIterator::operator <= (const ConstHalfSegIterator& rhs) const{
 			return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex <= rhs.handlei->iteratorIndex));
         }
-        bool Line2DImpl::ConstSegIterator::operator >  (const ConstSegIterator& rhs) const{
+        bool Line2DImpl::ConstHalfSegIterator::operator >  (const ConstHalfSegIterator& rhs) const{
 			return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex > rhs.handlei->iteratorIndex));
         }
-        bool Line2DImpl::ConstSegIterator::operator >= (const ConstSegIterator& rhs) const{
+        bool Line2DImpl::ConstHalfSegIterator::operator >= (const ConstHalfSegIterator& rhs) const{
 			return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex > rhs.handlei->iteratorIndex));
         }
 
-	  std::ostream&operator<<(std::ostream& os, const Line2DImpl::ConstSegIterator& output)
+	  std::ostream&operator<<(std::ostream& os, const Line2DImpl::ConstHalfSegIterator& output)
 	  {
 		os << "index Value:" << output.handlei->iteratorIndex<<" ";
 		os << "point Value:" << output.handlei->current->segments.at(output.handlei->iteratorIndex)<<" ";
@@ -223,9 +227,9 @@
 
     // Method that returns a constant segment iterator to the first segment of a
     // Line2D object.
-    Line2DImpl::ConstSegIterator Line2DImpl::cbegin() const
+    Line2DImpl::ConstHalfSegIterator Line2DImpl::hBegin() const
     {
-		ConstSegIterator begin;
+		ConstHalfSegIterator begin;
 		begin.handlei->iteratorIndex = 1;
 		begin.handlei->current = handle;
 		return begin;
@@ -233,9 +237,9 @@
 
     // Method that returns a constant segment iterator to the last segment of a
     // Line2D object.
-    Line2DImpl::ConstSegIterator Line2DImpl::cend() const
+    Line2DImpl::ConstHalfSegIterator Line2DImpl::hEnd() const
     {
-	   ConstSegIterator last;
+	   ConstHalfSegIterator last;
 	   last.handlei->iteratorIndex = handle->segments.size()-2;
 	   last.handlei->current = handle;
   	   return last;
@@ -245,9 +249,9 @@
     // first segment of a Line2D object. Note that dereferencing this iterator
     // yields the empty constant segment iterator.
     // Currently gives default value instead of empty iterator
-    Line2DImpl::ConstSegIterator Line2DImpl::chead() const
+    Line2DImpl::ConstHalfSegIterator Line2DImpl::hHead() const
     {
-     ConstSegIterator h;
+     ConstHalfSegIterator h;
      h.handlei->iteratorIndex = 0;
      h.handlei->current = handle;
      return h;
@@ -257,9 +261,9 @@
     // last segment of a Line2D object. Note that dereferencing this iterator
     // yields the empty constant segment iterator.
     //Currently gives default values instead of empty iterator
-    Line2DImpl::ConstSegIterator Line2DImpl::ctail() const
+    Line2DImpl::ConstHalfSegIterator Line2DImpl::hTail() const
     {
-     ConstSegIterator t;
+     ConstHalfSegIterator t;
      t.handlei->iteratorIndex = handle->segments.size()-1;
      t.handlei->current = handle;
      return t;
