@@ -1206,10 +1206,11 @@ int poly_orientation(Poi2D& p1, Poi2D& p2, Poi2D& q1) {
 	{
 		// Find the four orientations needed for general and special cases
 
-		int o1 = orientation(seg1.p1, seg1.p2, seg2.p1);
-		int o2 = orientation(seg1.p1, seg1.p2, seg2.p2);
-		int o3 = orientation(seg2.p1, seg2.p2, seg1.p1);
-		int o4 = orientation(seg2.p1, seg2.p2, seg1.p2);
+		int o1 = poly_orientation(seg1.p1, seg1.p2, seg2.p1);
+		std::cout<<"jjj"<<std::endl;
+		int o2 = poly_orientation(seg1.p1, seg1.p2, seg2.p2);
+		int o3 = poly_orientation(seg2.p1, seg2.p2, seg1.p1);
+		int o4 = poly_orientation(seg2.p1, seg2.p2, seg1.p2);
 	
 	
 		if (o1 != o2 && o3 != o4)
