@@ -146,7 +146,7 @@ public:
 
     // Predicate that checks whether a Line2D object is an empty Line2D
     // object. 
-    bool isEmptyLine2D() const;
+    bool isEmptyLine2D();
 
     // Method that yields the number of segments of Line2D object
     // If the Line2D object is an empty Line2D object, the value
@@ -231,21 +231,108 @@ public:
 
     // Method that returns a constant block iterator to the first block of a
     // Line2D object.
-    ConstBlockIterator cbegin() const;
+    ConstBlockIterator bBegin() const;
 
     // Method that returns a constant block iterator to the last block of a
     // Line2D object.
-    ConstBlockIterator cend() const;
+    ConstBlockIterator bEnd() const;
 
     // Method that returns a constant block iterator to the position before the
     // first block of a Line2D object. Note that dereferencing this iterator
     // yields the empty constant block iterator.
-    ConstBlockIterator chead() const;
+    ConstBlockIterator bHead() const;
 
     // Method that returns a constant block iterator to the position after the
     // last block of a Line2D object. Note that dereferencing this iterator
     // yields the empty constant block iterator.
-    ConstBlockIterator ctail() const;
+    ConstBlockIterator bTail() const;
+    
+    
+    
+    // Constant segment iterator type that allows to navigate through the segments of
+    // a Line2D object in forward and reverse direction. A change of the
+    // segments is not possible.
+    class ConstSegIterator
+    {
+      friend class Line2D;
+
+      public:
+        // Default constructor that creates an empty constant segment iterator.
+        ConstSegIterator();
+
+        // Copy constructor that constructs a constant segment iterator from a
+        // given constant segment iterator "source".
+        ConstSegIterator(const ConstSegIterator& source);
+
+        // Move constructor that moves a given constant segment iterator "source"
+        // to a constant segment iterator. The constant segment iterator "source"
+        // gets the empty constant segment iterator as its value.
+        ConstSegIterator(const ConstSegIterator&& source);
+
+        // Destructor that frees the main memory space allocated for a constant
+        // segment iterator.
+        ~ConstSegIterator();
+
+        // Assignment operator that assigns another constant segment iterator
+        // "rhs" to the constant segment iterator.
+        ConstSegIterator& operator = (const ConstSegIterator& rhs);
+
+        // Predicate that tests whether a constant segment iterator is empty.
+        bool isEmpty() const;
+
+        // Increment/decrement operators '++', '--'
+        ConstSegIterator& operator ++ ();   // prefix
+        ConstSegIterator operator ++ (int postfix); // postfix
+        ConstSegIterator& operator -- ();   // prefix
+        ConstSegIterator operator -- (int postfix); // postfix
+
+        // Dereferencing operators that return the value at the constant segment
+        // iterator position. Dereferencing is only allowed if the iterator
+        // points to a segment. The dereferenced value cannot be changed.
+        const Seg2D& operator *() const;
+        const Seg2D* operator ->() const;
+
+        // Comparison operators that compare a constant segment iterator position
+        // with another const segment iterator position "rhs"
+        bool operator == (const ConstSegIterator& rhs) const;
+        bool operator != (const ConstSegIterator& rhs) const;
+        bool operator <  (const ConstSegIterator& rhs) const;
+        bool operator <= (const ConstSegIterator& rhs) const;
+        bool operator >  (const ConstSegIterator& rhs) const;
+        bool operator >= (const ConstSegIterator& rhs) const;
+        
+        friend std::ostream&operator<<(std::ostream&, const ConstSegIterator&);
+
+      protected:
+        // Forward struct declaration for the hidden implementation of a
+        // constant segment iterator
+        struct ConstSegIteratorImplementation;
+
+        // Declaration of an opaque pointer
+        ConstSegIteratorImplementation* handlei;
+    }; // class ConstSegIterator
+
+    // Method that returns a constant segment iterator to the first segment of a
+    // Line2D object.
+    ConstSegIterator sBegin() const;
+
+    // Method that returns a constant segment iterator to the last segment of a
+    // Line2D object.
+    ConstSegIterator sEnd() const;
+
+    // Method that returns a constant segment iterator to the position before the
+    // first segment of a Line2D object. Note that dereferencing this iterator
+    // yields the empty constant segment iterator.
+    ConstSegIterator sHead() const;
+
+    // Method that returns a constant segment iterator to the position after the
+    // last segment of a Line2D object. Note that dereferencing this iterator
+    // yields the empty constant segment iterator.
+    ConstSegIterator sTail() const;
+    
+    
+    
+    
 
 protected:
     // Forward struct declaration for the hidden implementation of class
