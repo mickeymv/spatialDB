@@ -28,6 +28,10 @@
 #include "Line2D.h"
 
 
+  struct Line2D::ConstSegIterator::ConstSegIteratorImplementation{
+      int iteratorIndex=-1;
+      Line2D::Line2DSImpl* current=NULL;     //pointer to the full structure
+  };
   struct Line2D::ConstBlockIterator::ConstBlockIteratorImplementation{
       int iteratorIndex = -1;
       Line2D::Line2DSImpl* current = NULL;     //pointer to the full structure
@@ -92,22 +96,18 @@
 			}
 		}
 		
-		/*for(int i=0;i<halfsegments.size();i++){
+		/*
+		for(int i=0;i<halfsegments.size();i++){
 		     for(int j=0;j<halfsegments.size();j++){
 			  if(i!=j){
-				  Seg2D seg1 = halfsegments.at(i).seg;
-				  Seg2D seg2 = halfsegments.at(j).seg;
-				  if(Intersects(seg1,seg2)){
-					cout<<"incorrect segments provided"<<endl; 
-					return;
-				  }
-		          if(!Meet(seg1,seg2)||!Touch(seg1,seg2)||seg1 == seg2){
+				  if(Intersects(halfsegments.at(i).seg,halfsegments.at(j).seg)){
 					cout<<"incorrect segments provided"<<endl; 
 					return;
 				  }
 			  }
 		     }
 		}*/
+		
         HalfSeg2D he;
         handle->segments.push_back(he); //empty segment for head
 	    for (int i = 0 ; i < halfsegments.size(); i++){
@@ -117,8 +117,7 @@
 	    }
         handle->segments.push_back(he); //empty segment for tail
         
-        
-		int size = handle->segments.size();
+        int size = handle->segments.size();
 		std::vector<HalfSeg2D *> currentVector;
 		std::vector<HalfSeg2D *> tempVector;
 		int mbc = 0;
@@ -130,9 +129,10 @@
 				currentVector.clear();
 				currentVector.push_back(&handle->segments.at(k));
 				flags[k]=1;
+				for (int m = 1; m<size-1; m++){
 				for (int i = 1; i<size-1; i++){
 					if (flags[i] == 0){//unflaged segment.
-						for (int j = 0; j<currentVector.size(); j++){       
+						for (int j = 0; j<currentVector.size(); j++){     
 							if (Meet(currentVector.at(j)->seg, handle->segments.at(i).seg)){
 								tempVector.push_back(&handle->segments.at(i));
 								flags[i] = 1;
@@ -144,6 +144,7 @@
 						tempVector.clear();
 					}
 				}//inner for
+			    }
 			 handle->mapHseg[mbc++] = currentVector;
 			}
 		}//outer for
@@ -236,22 +237,19 @@
 			}
 		}
 		
-		/*for(int i=0;i<halfsegments.size();i++){
+		
+		/*
+		for(int i=0;i<halfsegments.size();i++){
 		     for(int j=0;j<halfsegments.size();j++){
 			  if(i!=j){
-				  Seg2D seg1 = halfsegments.at(i).seg;
-				  Seg2D seg2 = halfsegments.at(j).seg;
-				  if(Intersects(seg1,seg2)){
-					cout<<"incorrect segments provided"<<endl; 
-					return;
-				  }
-		          if(!Meet(seg1,seg2)||!Touch(seg1,seg2)||seg1 == seg2){
+				  if(Intersects(halfsegments.at(i).seg,halfsegments.at(j).seg)){
 					cout<<"incorrect segments provided"<<endl; 
 					return;
 				  }
 			  }
 		     }
 		}*/
+		
         HalfSeg2D he;
         handle->segments.push_back(he); //empty segment for head
 	    for (int i = 0 ; i < halfsegments.size(); i++){
@@ -261,9 +259,7 @@
 	    }
         handle->segments.push_back(he); //empty segment for tail
         
-        
-        
-		int size = handle->segments.size();
+        int size = handle->segments.size();
 		std::vector<HalfSeg2D *> currentVector;
 		std::vector<HalfSeg2D *> tempVector;
 		int mbc = 0;
@@ -275,9 +271,10 @@
 				currentVector.clear();
 				currentVector.push_back(&handle->segments.at(k));
 				flags[k]=1;
+				for (int m = 1; m<size-1; m++){
 				for (int i = 1; i<size-1; i++){
 					if (flags[i] == 0){//unflaged segment.
-						for (int j = 0; j<currentVector.size(); j++){       
+						for (int j = 0; j<currentVector.size(); j++){     
 							if (Meet(currentVector.at(j)->seg, handle->segments.at(i).seg)){
 								tempVector.push_back(&handle->segments.at(i));
 								flags[i] = 1;
@@ -289,6 +286,7 @@
 						tempVector.clear();
 					}
 				}//inner for
+			    }
 			 handle->mapHseg[mbc++] = currentVector;
 			}
 		}//outer for
@@ -510,8 +508,7 @@
 
     // Predicate that checks whether a Line2D object is an empty Line2D
     // object. 
-    bool Line2D::isEmptyLine2D() const
-    {
+    bool Line2D::isEmptyLine2D(){
 		if((handle->segments.size() == 0)||(handle->segments.size() == 2))
 	        return true;
 		return false;
@@ -675,7 +672,7 @@
 
     // Method that returns a constant block iterator to the first block of a
     // Line2D object.
-    Line2D::ConstBlockIterator Line2D::cbegin() const
+    Line2D::ConstBlockIterator Line2D::bBegin() const
     {
 		ConstBlockIterator begin;
 		begin.handlei->iteratorIndex = 1;
@@ -685,7 +682,7 @@
 
     // Method that returns a constant block iterator to the last block of a
     // Line2D object.
-    Line2D::ConstBlockIterator Line2D::cend() const
+    Line2D::ConstBlockIterator Line2D::bEnd() const
     {
 	   ConstBlockIterator last;
 	   last.handlei->iteratorIndex = handle->mapHseg.size()-2;
@@ -696,7 +693,7 @@
     // Method that returns a constant block iterator to the position before the
     // first block of a Line2D object. Note that dereferencing this iterator
     // yields the empty constant block iterator.
-    Line2D::ConstBlockIterator Line2D::chead() const
+    Line2D::ConstBlockIterator Line2D::bHead() const
     {
 		ConstBlockIterator begin;
 		begin.handlei->iteratorIndex = 0;
@@ -707,10 +704,172 @@
     // Method that returns a constant block iterator to the position after the
     // last block of a Line2D object. Note that dereferencing this iterator
     // yields the empty constant block iterator.
-    Line2D::ConstBlockIterator Line2D::ctail() const
+    Line2D::ConstBlockIterator Line2D::bTail() const
     {
 		ConstBlockIterator begin;
 		begin.handlei->iteratorIndex = handle->mapHseg.size()-1;
 		begin.handlei->current = handle;
 		return begin;
     }
+    
+        // Constant segment iterator type that allows to navigate through the segments of
+    // a Line2D object in forward and reverse direction. A change of the
+    // segments is not possible.
+        
+     // Default constructor that creates an empty constant segment iterator.
+        Line2D::ConstSegIterator::ConstSegIterator()
+        {
+		  handlei = new ConstSegIteratorImplementation;
+		  handlei->iteratorIndex = -1;
+		  handlei->current = NULL;
+        }
+
+        // Copy constructor that constructs a constant segment iterator from a
+        // given constant segment iterator "source".
+        Line2D::ConstSegIterator::ConstSegIterator(const ConstSegIterator& source)
+        {
+		  handlei = new ConstSegIteratorImplementation;
+          handlei->iteratorIndex = source.handlei->iteratorIndex;
+		  handlei->current = source.handlei->current;
+        }
+
+        // Move constructor that moves a given constant segment iterator "source"
+        // to a constant segment iterator. The constant segment iterator "source"
+        // gets the empty constant segment iterator as its value.
+        Line2D::ConstSegIterator::ConstSegIterator(const ConstSegIterator&& source)
+        {	
+			handlei = new ConstSegIteratorImplementation;
+            handlei->iteratorIndex = std::move(source.handlei->iteratorIndex);
+			handlei->current = std::move(source.handlei->current);
+        }
+
+        // Destructor that frees the main memory space allocated for a constant
+        // segment iterator.
+        Line2D::ConstSegIterator::~ConstSegIterator()
+        {
+			delete handlei;
+        }
+
+        // Assignment operator that assigns another constant segment iterator
+        // "rhs" to the constant segment iterator.
+        Line2D::ConstSegIterator& Line2D::ConstSegIterator::operator = (const ConstSegIterator& rhs)
+        {
+			handlei->iteratorIndex = rhs.handlei->iteratorIndex; 
+			handlei->current = rhs.handlei->current; 
+        }
+
+        // Predicate that tests whether a constant segment iterator is empty.
+        bool Line2D::ConstSegIterator::isEmpty() const
+        {
+			return (handlei->current == NULL);
+        }
+
+        // Increment/decrement operators '++', '--'
+        Line2D::ConstSegIterator& Line2D::ConstSegIterator::operator ++ ()
+        {
+			 handlei->iteratorIndex++;
+			 return(*this);
+        }   // prefix
+        Line2D::ConstSegIterator Line2D::ConstSegIterator::operator ++ (int)
+        {
+			ConstSegIterator tmp(*this);
+    			handlei->iteratorIndex++;
+    			return(tmp);
+        } // postfix
+        Line2D::ConstSegIterator& Line2D::ConstSegIterator::operator -- ()
+        {
+			 handlei->iteratorIndex--;
+			 return(*this);
+        }   // prefix
+        Line2D::ConstSegIterator Line2D::ConstSegIterator::operator -- (int)
+        {
+			ConstSegIterator tmp(*this);
+    		handlei->iteratorIndex--;
+    		return(tmp);
+        } // postfix
+
+        // Dereferencing operators that return the value at the constant segment
+        // iterator position. Dereferencing is only allowed if the iterator
+        // points to a segment. The dereferenced value cannot be changed.
+        const Seg2D& Line2D::ConstSegIterator::operator *() const
+        {
+            return(this->handlei->current->segments.at(this->handlei->iteratorIndex).seg);   
+        }
+        const Seg2D* Line2D::ConstSegIterator::operator ->() const
+        {
+            return(&this->handlei->current->segments.at(this->handlei->iteratorIndex).seg);  
+        }
+
+        // Comparison operators that compare a constant segment iterator position
+        // with another const segment iterator position "rhs"
+        bool Line2D::ConstSegIterator::operator == (const ConstSegIterator& rhs) const{	
+			return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex == rhs.handlei->iteratorIndex));
+        }
+        bool Line2D::ConstSegIterator::operator != (const ConstSegIterator& rhs) const{	
+			return ((this->handlei->current != rhs.handlei->current)||(this->handlei->iteratorIndex != rhs.handlei->iteratorIndex));
+        }
+        bool Line2D::ConstSegIterator::operator <  (const ConstSegIterator& rhs) const{
+			return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex < rhs.handlei->iteratorIndex));
+        }
+        bool Line2D::ConstSegIterator::operator <= (const ConstSegIterator& rhs) const{
+			return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex <= rhs.handlei->iteratorIndex));
+        }
+        bool Line2D::ConstSegIterator::operator >  (const ConstSegIterator& rhs) const{
+			return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex > rhs.handlei->iteratorIndex));
+        }
+        bool Line2D::ConstSegIterator::operator >= (const ConstSegIterator& rhs) const{
+			return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex > rhs.handlei->iteratorIndex));
+        }
+
+	  std::ostream&operator<<(std::ostream& os, const Line2D::ConstSegIterator& output)
+	  {
+		os << "index Value:" << output.handlei->iteratorIndex<<" ";
+		os << "Segment Value:" << output.handlei->current->segments.at(output.handlei->iteratorIndex).seg<<" ";
+		return os;
+	  }
+
+
+    // Method that returns a constant segment iterator to the first segment of a
+    // Line2D object.
+    Line2D::ConstSegIterator Line2D::sBegin() const
+    {
+		ConstSegIterator begin;
+		begin.handlei->iteratorIndex = 1;
+		begin.handlei->current = handle;
+		return begin;
+    }
+
+    // Method that returns a constant segment iterator to the last segment of a
+    // Line2D object.
+    Line2D::ConstSegIterator Line2D::sEnd() const
+    {
+	   ConstSegIterator last;
+	   last.handlei->iteratorIndex = handle->segments.size()-2;
+	   last.handlei->current = handle;
+  	   return last;
+    }
+
+    // Method that returns a constant segment iterator to the position before the
+    // first segment of a Line2D object. Note that dereferencing this iterator
+    // yields the empty constant segment iterator.
+    // Currently gives default value instead of empty iterator
+    Line2D::ConstSegIterator Line2D::sHead() const
+    {
+     ConstSegIterator h;
+     h.handlei->iteratorIndex = 0;
+     h.handlei->current = handle;
+     return h;
+    }
+
+    // Method that returns a constant segment iterator to the position after the
+    // last segment of a Line2D object. Note that dereferencing this iterator
+    // yields the empty constant segment iterator.
+    //Currently gives default values instead of empty iterator
+    Line2D::ConstSegIterator Line2D::sTail() const
+    {
+     ConstSegIterator t;
+     t.handlei->iteratorIndex = handle->segments.size()-1;
+     t.handlei->current = handle;
+     return t;
+    }
+
