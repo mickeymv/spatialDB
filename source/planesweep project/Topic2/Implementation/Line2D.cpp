@@ -95,18 +95,20 @@
 			  }
 			}
 		}
-		
 		/*
 		for(int i=0;i<halfsegments.size();i++){
 		     for(int j=0;j<halfsegments.size();j++){
 			  if(i!=j){
 				  if(Intersects(halfsegments.at(i).seg,halfsegments.at(j).seg)){
+					cout<<halfsegments.at(i).seg<<endl;
+					cout<<halfsegments.at(j).seg<<endl;
 					cout<<"incorrect segments provided"<<endl; 
 					return;
 				  }
 			  }
 		     }
-		}*/
+		}
+		* */
 		
         HalfSeg2D he;
         handle->segments.push_back(he); //empty segment for head
@@ -236,7 +238,6 @@
 			  }
 			}
 		}
-		
 		
 		/*
 		for(int i=0;i<halfsegments.size();i++){
@@ -414,9 +415,9 @@
 		return false;
 	  int x = (handle->segments.size() < operand.handle->segments.size()) ? handle->segments.size() : operand.handle->segments.size();
       for (unsigned i=1; i < x-1; i++) {
-	    if (handle->segments.at(i) < operand.handle->segments.at(i))
+	    if (handle->segments.at(i).seg < operand.handle->segments.at(i).seg)
 	      return true;
-	    else if (handle->segments.at(i) > operand.handle->segments.at(i))
+	    else if (handle->segments.at(i).seg > operand.handle->segments.at(i).seg)
 	      return false;
 	    else
 	      continue;
@@ -437,11 +438,11 @@
 		return false;
 	  int x = (handle->segments.size() < operand.handle->segments.size()) ? handle->segments.size() : operand.handle->segments.size();
       for (unsigned i=1; i < x-1; i++) {
-	    if (handle->segments.at(i) == operand.handle->segments.at(i))
+	    if (handle->segments.at(i).seg == operand.handle->segments.at(i).seg)
 	      return true;
-	    if (handle->segments.at(i) < operand.handle->segments.at(i))
+	    if (handle->segments.at(i).seg < operand.handle->segments.at(i).seg)
 	      return true;
-	    else if (handle->segments.at(i) > operand.handle->segments.at(i))
+	    else if (handle->segments.at(i).seg > operand.handle->segments.at(i).seg)
 	      return false;
 	    else
 	      continue;
@@ -463,9 +464,9 @@
 		return false;
 	  int x = (handle->segments.size() < operand.handle->segments.size()) ? handle->segments.size() : operand.handle->segments.size();
       for (unsigned i=1; i < x-1; i++) {
-	    if (operand.handle->segments.at(i) > handle->segments.at(i))
+	    if (operand.handle->segments.at(i).seg > handle->segments.at(i).seg)
 	      return true;
-	    else if (operand.handle->segments.at(i) < handle->segments.at(i))
+	    else if (operand.handle->segments.at(i).seg < handle->segments.at(i).seg)
 	      return false;
 	    else
 	      continue;
@@ -487,11 +488,11 @@
 		return false;
 	  int x = (handle->segments.size() < operand.handle->segments.size()) ? handle->segments.size() : operand.handle->segments.size();
       for (unsigned i=1; i < x-1; i++) {
-	    if (handle->segments.at(i) == operand.handle->segments.at(i))
+	    if (handle->segments.at(i).seg == operand.handle->segments.at(i).seg)
 	      return true;
-	    if (operand.handle->segments.at(i) >= handle->segments.at(i))
+	    if (operand.handle->segments.at(i).seg >= handle->segments.at(i).seg)
 	      return true;
-	    else if (operand.handle->segments.at(i) < handle->segments.at(i))
+	    else if (operand.handle->segments.at(i).seg < handle->segments.at(i).seg)
 	      return false;
 	    else
 	      continue;
@@ -517,7 +518,7 @@
     // Method that yields the number of segments of Line2D object
     // If the Line2D object is an empty Line2D object, the value
     // 0 is returned.
-    Number Line2D::getNumberOfSegments(){
+    Number Line2D::getNumberOfSegments(){   
 		if((handle->segments.size() == 0)||(handle->segments.size() == 2))
 	        return Number(std::to_string(0));
 		return Number(std::to_string(handle->segments.size()-2));
