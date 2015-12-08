@@ -35,6 +35,7 @@
 ******************************************************************************/
 
 #include "planesweep project/ParallelObjectTraversal.h"
+#include "planesweep project/PlaneSweep.h"
 
 Point2D spatialIntersection(const Point2D &pointLhs, const Point2D &pointRhs) {
     Point2D emptyPointObject;
@@ -48,7 +49,7 @@ Point2D spatialIntersection(const Point2D &pointLhs, const Point2D &pointRhs) {
     //pot.selectFirst would be called implicitly in the pot constructor.
     while (parallelObjectTraversal.getObject() != ParallelObjectTraversal::none &&
            parallelObjectTraversal.getStatus() == ParallelObjectTraversal::end_of_none) {
-        if (parallelObjectTraversal.getObject() != ParallelObjectTraversal::both) {
+        if (parallelObjectTraversal.getObject() == ParallelObjectTraversal::both) {
             intersectionPointsVector.push_back(parallelObjectTraversal.getEvent(ParallelObjectTraversal::first));
             //The argument could be ParallelObjectTraversal::second as well since they're the same.
         }
@@ -125,21 +126,117 @@ Point2D spatialDifference(const Point2D &pointLhs, const Point2D &pointRhs) {
 * Returns    : Line2D
 ******************************************************************************/
 Line2D spatialIntersection(const Line2D &lineLhs, const Line2D &lineRhs) {
-    Line2D line;
-    //implementation
-    return line;
+    Line2D emptyLineObject;
+    if (lineLhs == NULL || lineRhs == NULL || lineLhs.isEmptyLine2D() || lineRhs.isEmptyLine2D()) {
+        return emptyLineObject;
+    }
+
+    vector<Seg2D> intersectionLinesVector;
+    PlaneSweep planeSweep(lineLhs, lineRhs);
+
+    //To decide whether the segment's previous point belonged to the intersection.
+    ParallelObjectTraversal::object previousObjectHistory = planeSweep.getObject();
+
+    //planesweep.selectFirst would be called implicitly in the planesweep constructor.
+    while (planeSweep.getObject() != ParallelObjectTraversal::none &&
+           planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
+        if (planeSweep.getObject() == ParallelObjectTraversal::both &&
+            previousObjectHistory == ParallelObjectTraversal::both) {
+            HalfSeg2D halfSeg2D = planeSweep.getHalfSegEvent(ParallelObjectTraversal::first);
+            Seg2D seg2D = halfSeg2D.seg;
+            intersectionLinesVector.push_back(seg2D);
+//The argument could be ParallelObjectTraversal::second as well since they're the same.
+        } else if (planeSweep.getObject() == ParallelObjectTraversal::both) {
+            //update previous event's object with this event
+            HalfSeg2D firstHalfSeg2D = planeSweep.getHalfSegEvent(ParallelObjectTraversal::first);
+            HalfSeg2D secondHalfSeg2D = planeSweep.getHalfSegEvent(ParallelObjectTraversal::second);
+            if (firstHalfSeg2D.isLeft == secondHalfSeg2D.isLeft) {
+                previousObjectHistory = ParallelObjectTraversal::both;
+            }
+        } else if (planeSweep.getObject() != ParallelObjectTraversal::both) {
+            previousObjectHistory = ParallelObjectTraversal::none;
+        }
+        planeSweep.selectNext();
+    }
+
+    Line2D intersectionLineObject(intersectionLinesVector);
+    return intersectionLineObject;
 }
 
 Line2D spatialUnion(const Line2D &lineLhs, const Line2D &lineRhs) {
-    Line2D line;
-    //implementation
-    return line;
+    Line2D emptyLineObject;
+    if (lineLhs == NULL || lineRhs == NULL || lineLhs.isEmptyLine2D() || lineRhs.isEmptyLine2D()) {
+        return emptyLineObject;
+    }
+
+    vector<Seg2D> unionLinesVector;
+    PlaneSweep planeSweep(lineLhs, lineRhs);
+
+    //planesweep.selectFirst would be called implicitly in the planesweep constructor.
+    while (planeSweep.getObject() != ParallelObjectTraversal::none &&
+           planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
+        ParallelObjectTraversal::object objectValue = planeSweep.getObject();
+        if (objectValue == ParallelObjectTraversal::both) {
+            objectValue = ParallelObjectTraversal::first;
+        }
+        HalfSeg2D halfSeg2D = planeSweep.getHalfSegEvent(objectValue);
+        if (halfSeg2D.isLeft == false) {
+            //TODO: Should test whether we need to add the segment when sweepLine status encounters it or after it is done with it.
+            Seg2D seg2D = halfSeg2D.seg;
+            unionLinesVector.push_back(seg2D);
+        }
+
+        planeSweep.selectNext();
+    }
+
+    Line2D unionLineObject(unionLinesVector);
+    return
+            unionLineObject;
 }
 
 Line2D spatialDifference(const Line2D &lineLhs, const Line2D &lineRhs) {
-    Line2D line;
-    //implementation
-    return line;
+    Line2D emptyLineObject;
+    if (lineLhs == NULL || lineRhs == NULL || lineLhs.isEmptyLine2D() || lineRhs.isEmptyLine2D()) {
+        return emptyLineObject;
+    }
+
+    vector<Seg2D> differenceLinesVector;
+    PlaneSweep planeSweep(lineLhs, lineRhs);
+
+    //To decide whether the segment's previous point belonged to the intersection.
+    ParallelObjectTraversal::object previousObjectHistory = planeSweep.getObject();
+
+    //planesweep.selectFirst would be called implicitly in the planesweep constructor.
+    while (planeSweep.getObject() != ParallelObjectTraversal::none &&
+           planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
+        if (
+                ((planeSweep.getObject() == ParallelObjectTraversal::first ||
+                  planeSweep.getObject() == ParallelObjectTraversal::both) &&
+                 previousObjectHistory == ParallelObjectTraversal::first)
+                ||
+                (planeSweep.getObject() == ParallelObjectTraversal::first &&
+                 (previousObjectHistory == ParallelObjectTraversal::first ||
+                  previousObjectHistory == ParallelObjectTraversal::both))
+                ) {
+            HalfSeg2D halfSeg2D = planeSweep.getHalfSegEvent(ParallelObjectTraversal::first);
+            Seg2D seg2D = halfSeg2D.seg;
+            differenceLinesVector.push_back(seg2D);
+//The argument could be ParallelObjectTraversal::second as well since they're the same.
+        } else if (planeSweep.getObject() == ParallelObjectTraversal::first ||
+                   planeSweep.getObject() == ParallelObjectTraversal::both) {
+//update previous event's object with this event
+            previousObjectHistory = ParallelObjectTraversal::first;
+
+        } else if (planeSweep.getObject() != ParallelObjectTraversal::second ||
+                   planeSweep.getObject() != ParallelObjectTraversal::none) {
+            previousObjectHistory = ParallelObjectTraversal::none;
+        }
+        planeSweep.selectNext();
+    }
+
+    Line2D differenceLineObject(differenceLinesVector);
+    return
+            differenceLineObject;
 }
 
 /******************************************************************************
