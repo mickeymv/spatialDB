@@ -98,15 +98,15 @@ int main()
 	// }else{
 	// 	cout << "They don't meet -----";
 	// }
-	// if (Intersects(s1, s2))
-	// {
-	// 	cout << "they intersect";
-	// 	cout << "point of intersection:" << IntersectionPoint(s1, s2);
-	// }
-	// else
-	// {
-	// 	cout << "dont intersect";
-	// }
+	if (Intersects(s1, s2))
+	{
+		cout << "they intersect";
+		cout << "point of intersection:" << IntersectionPoint(s1, s2);
+	}
+	else
+	{
+		cout << "dont intersect";
+	}
 	//vector<Poi2D> points = { Poi2D(Number("0.0"), Number("0.0")), Poi2D(Number("0.0"), Number("4.0")), Poi2D(Number("4.0"), Number("4.0")), Poi2D(Number("4.0"), Number("0.0"))};
 	//vector<Poi2D> points = { Poi2D(Number("0.0"), Number("0.0")), Poi2D(Number("0.0"), Number("4.0")), Poi2D(Number("4.0"), Number("4.0")), Poi2D(Number("4.0"), Number("0.0"))};
 	//vector<Poi2D> points = { Poi2D(Number("0.0"), Number("0.0")), Poi2D(Number("0.0"), Number("4.0")), Poi2D(Number("2.0"), Number("4.0")), Poi2D(Number("2.0"), Number("2.0")), Poi2D(Number("4.0"), Number("2.0")), Poi2D(Number("4.0"), Number("0.0"))};
