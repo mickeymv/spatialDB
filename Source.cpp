@@ -19,11 +19,11 @@ int main()
 	// cout << "Big Rational varaiable multiplication:" << a * b << endl;
 	// cout << "Big Rational varaiable division:" << a / b << endl;
 
-	Poi2D p1(Number("2.0"), Number("2.0"));
-	 Poi2D p2(Number("5.0"), Number("5.0"));
-	 Poi2D p3(Number("3.0"), Number("0.0"));
-	 Poi2D p4(Number("4.0"), Number("4.0"));
-	 Poi2D p5(Number("3.0"), Number("5.0"));
+	 Poi2D p1(Number("5"), Number("-999.0"));
+	 Poi2D p2(Number("5"), Number("999.0"));
+	 Poi2D p3(Number("5.0"), Number("2.0"));
+	 Poi2D p4(Number("6.0"),Number("4.0"));
+	 Poi2D p5(Number("4.0"), Number("1.0"));
 	 cout << "Point p1:" << p1 << endl;
 	 cout << "Point p2:" << p2 << endl;
 	 cout << "Point p3:" << p3 << endl;
@@ -33,6 +33,7 @@ int main()
 	Seg2D s1(p1, p2);
 	Seg2D s2(p3, p4);
 
+	cout << "Segment Intersects and not collinear and not endpoints:" << IntersectsAndNotCollinearAndNotEndpoints(s1, s2);
 	// Seg2D s3(p3,p5);
 	HalfSeg2D leftHalfS1(s1, true);
 	HalfSeg2D rightHalfS1(s2, false);
@@ -44,11 +45,11 @@ int main()
 	bool result4 = aseg1 < p2;
 	bool result5 = aseg2 > leftHalfS1;
 
-	cout<< "is p5 less than lefthalfs1:"<<result1<<endl;
-	cout << "is lefthalfs1 less than p5  :" << result2 <<endl;
-	cout << "is aseg1 less than rightHalfseg1" << result3 <<endl;
-	cout << "is aseg1 less than p2 :" << result4 <<endl;
-	cout << "is aseg2 greater than lefthalfs1  :" << result5 <<endl;
+	//cout<< "is p5 less than lefthalfs1:"<<result1<<endl;
+	//cout << "is lefthalfs1 less than p5  :" << result2 <<endl;
+	//cout << "is aseg1 less than rightHalfseg1" << result3 <<endl;
+	//cout << "is aseg1 less than p2 :" << result4 <<endl;
+	//cout << "is aseg2 greater than lefthalfs1  :" << result5 <<endl;
 	//AttrHalfSeg2D aseg = (leftHalfS1, true);
 	// 
 
@@ -98,15 +99,15 @@ int main()
 	// }else{
 	// 	cout << "They don't meet -----";
 	// }
-	if (Intersects(s1, s2))
-	{
-		cout << "they intersect";
-		cout << "point of intersection:" << IntersectionPoint(s1, s2);
-	}
-	else
-	{
-		cout << "dont intersect";
-	}
+	// if (Intersects(s1, s2))
+	// {
+	// 	cout << "they intersect";
+	// 	cout << "point of intersection:" << IntersectionPoint(s1, s2);
+	// }
+	// else
+	// {
+	// 	cout << "don't intersect";
+	// }
 	//vector<Poi2D> points = { Poi2D(Number("0.0"), Number("0.0")), Poi2D(Number("0.0"), Number("4.0")), Poi2D(Number("4.0"), Number("4.0")), Poi2D(Number("4.0"), Number("0.0"))};
 	//vector<Poi2D> points = { Poi2D(Number("0.0"), Number("0.0")), Poi2D(Number("0.0"), Number("4.0")), Poi2D(Number("4.0"), Number("4.0")), Poi2D(Number("4.0"), Number("0.0"))};
 	//vector<Poi2D> points = { Poi2D(Number("0.0"), Number("0.0")), Poi2D(Number("0.0"), Number("4.0")), Poi2D(Number("2.0"), Number("4.0")), Poi2D(Number("2.0"), Number("2.0")), Poi2D(Number("4.0"), Number("2.0")), Poi2D(Number("4.0"), Number("0.0"))};
@@ -115,14 +116,21 @@ int main()
 	//vector<Poi2D> points = { Poi2D(Number("2.0"), Number("6.0")), Poi2D(Number("4.0"), Number("4.0")), Poi2D(Number("4.0"), Number("0.0")),Poi2D(Number("0.0"), Number("0.0")), Poi2D(Number("0.0"), Number("4.0"))};
 	
 
-	//vector<Poi2D> points2 = { Poi2D(Number("0.0"), Number("0.0")), Poi2D(Number("3.0"), Number("3.0")) };
-	//SimplePolygon2D testpolygon(points);
+	//vector<Poi2D> points2 = { Poi2D(Number("5.0"), Number("10.0")),Poi2D(Number("8.0"), Number("7.0")), Poi2D(Number("8.0"), Number("1.0")),Poi2D(Number("2.0"), Number("1.0")),Poi2D(Number("5.0"), Number("3.0")),Poi2D(Number("5.0"), Number("5.0")),Poi2D(Number("2.0"), Number("7.0"))};
+	vector<Poi2D> points2 = { Poi2D(Number("2.0"), Number("10.0")),Poi2D(Number("4.0"), Number("12.0")), Poi2D(Number("4.0"), Number("14.0")),Poi2D(Number("8.0"), Number("14.0")),Poi2D(Number("8.0"), Number("1.0")),Poi2D(Number("1.0"), Number("1.0")),Poi2D(Number("1.0"), Number("3.0")),Poi2D(Number("6.0"), Number("3.0")) ,Poi2D(Number("6.0"), Number("4.0")),Poi2D(Number("2.0"), Number("4.0")),Poi2D(Number("2.0"), Number("6.0")),Poi2D(Number("6.0"), Number("8.0"))};
 	
-	//Poi2D pi1 = Poi2D(Number("2.0"), Number("2.0"));
+	SimplePolygon2D testpolygon(points2);
+	
+	//Poi2D pi1 = Poi2D(Number("5.0"), Number("2.0"));
+
+	//Poi2D pi1 = Poi2D(Number("4.0"), Number("1.5"));
+
+	Poi2D pi1 = Poi2D(Number("2.0"), Number("2.0"));
+
 	//Poi2D pi = Poi2D(Number("1.0"), Number("1.0"));
 	//Poi2D po = Poi2D(Number("3.0"), Number("0.0"));
 	//Poi2D p10 = Poi2D(Number("11.0"), Number("12.0"));
-	//cout <<"polygon inside or not test: ::::"<<simplePointInsideSimplePolygon(pi1, testpolygon)<<"hhh"<<endl;
+	cout <<"polygon inside or not test: ::::"<<simplePointInsideSimplePolygon(pi1, testpolygon)<<"hhh"<<endl;
 	//cout <<"polygon inside or not test:pi"<<simplePointInsideSimplePolygon(pi, testpolygon)<<endl;
 	//cout <<"polygon inside or not test:po"<<simplePointInsideSimplePolygon(po, testpolygon)<<endl;
 	//cout << testpolygon;
@@ -178,13 +186,24 @@ int main()
 	// 	cout << "the segments are parallel";
 	// else
 	// 	cout << "not parallel";
+
+	// Number num("0");
+	// Number num1("1");
+	// Number n("422223423531234");
+	// Number n1("2111");
+	// cout << n << " & " << n1 << endl;
+	// //cout << n1 << endl;
+	// cout << "\nmultiply: " << n*n1 << endl;
+	// cout << "\nadd: " << n+n1 << endl;
+	// cout << "\nsubtract: " << n1-n << endl;
+	// cout << "\ndivide: " << n/n1 << endl;
+
+	// cout << endl;
+	// cout << "divide 1 and 3: " << Number("1") / Number("3")<<endl;
+	// cout << "\ndivide 355 and 113 (pi approximation): " << Number("355") / Number("113") << endl;
+	// cout << "\ndivide 22 and 7 (pi approximation): " << Number("22") / Number("7") << endl;
 	
 	getchar();
 	return 0;
 
-	
-	
-	/*unsigned int a = 4333234234234 * 22450000000000;
-	cout << UINT_MAX<< endl << a << endl;
-	return 0;*/
 }
