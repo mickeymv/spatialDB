@@ -86,23 +86,23 @@ int main()
     Seg2.push_back(s19);
     Seg2.push_back(s20);
 
-    Region2D Region1(Seg2);
+    //Region2D Region1(Seg2);
     
-    cout<<"Region 1 is:"<<Region1;
+    //cout<<"Region 1 is:"<<Region1;
 
     vector<Seg2D> Seg3;
   
-  //  Seg3.push_back(s7);
-  //  Seg3.push_back(s8);
-  //  Seg3.push_back(s9);
+    Seg3.push_back(s7);
+    Seg3.push_back(s8);
+    Seg3.push_back(s9);
 
-    Region2D Region2("(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))");
-    //Region2D Region2(Seg3);
+    //Region2D Region2("(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))");
+    Region2D Region2(Seg3);
     cout<<"Region 2 is:"<<Region2;
-    
+    /*
     Region2D Region3(Region2);
     cout<<"\nTest result of region copy constructor:\n "<<Region3<<endl;
-
+    
     cout<<"---Testing Unary predicates and operations"<<endl;
     
     if(Region1.isEmptyRegion2D()) 
@@ -150,6 +150,7 @@ int main()
     Region2D::ConstCycleIterator C1;
     C1 = Region1.cHbegin();
     cout<<"itr Value: C1" <<C1<<endl;
+    cout<<"itr Value: C1 checking decrement" <<--C1<<endl;
     cout<<"itr Value: C1" <<C1++<<endl;
     cout<<"itr Value: C1" <<C1<<endl;
     cout<<"itr Value: C1 dereferencing cycle" <<*C1<<endl;
@@ -158,6 +159,7 @@ int main()
     Region2D::ConstCycleIterator C2;
     C2 = Region2.cHbegin();
     cout<<"itr Value: C2" <<C2<<endl;
+    cout<<"itr Value: C2" <<--C2<<endl;
     cout<<"itr Value: C2" <<++C2<<endl;
     cout<<"itr Value: C2" <<C2<<endl;
     
@@ -183,7 +185,7 @@ int main()
     cout<<"itr Value: " <<itr2y++<<endl;
     cout<<"itr Value: " <<itr2y<<endl;
     cout<<"-----------------------------------"<<endl;    
-
+    */
     return 0;
 }
 

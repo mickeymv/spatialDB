@@ -374,6 +374,67 @@ using namespace std;
     } 
 		
    */
+
+       cout << " End of constructor ............. \n";
+    
+    //To set AttrHalfSeg flags.
+    //loop over face
+    for( int i=1; i < handle->faces.size()-1 ; i++)
+    {
+     cout << " Inside outer for " ;
+     std::vector<AttrHalfSeg2D *> OuterCycleSegs = handle->faces[i][0];    //outer cycle of every face 
+     for (int j =0 ; j < OuterCycleSegs.size() ; j++)
+      {  cout << " Inside first segments for " ;
+         Number midx = (handle->faces[i][0][j]->hseg.seg.p1.x + handle->faces[i][0][j]->hseg.seg.p2.x)/Number(std::to_string(2)) ;
+         Number midy = (handle->faces[i][0][j]->hseg.seg.p1.y + handle->faces[i][0][j]->hseg.seg.p2.y)/Number(std::to_string(2)) ;  
+         Poi2D P1(midx, Number(std::to_string(99999)));
+         Poi2D P2(midx, Number(std::to_string(-99999)));
+         Seg2D refLine(P1,P2);
+            
+         //std::vector<Seg2D > midIntersects;
+         std::vector<Number> midPoints;
+         int countless = 0;
+         int countmore = 0;
+         for(int k = 0; k < OuterCycleSegs.size() ; k++)
+         { cout << " Inside second segments for ";
+           if(j != k )
+           {
+             Seg2D S = handle->faces[i][0][k]->hseg.seg;
+             
+             if(Intersects(refLine, S))
+             {             
+              //midIntersects.push_back(S);
+                midPoints.push_back((S.p1.y + S.p2.y)/Number(std::to_string(2)));
+                cout << "mid points collecting .....";
+             } 
+           }
+         }
+         //make groups to filter 
+         cout << " Make groups .....\n";
+         for ( int l = 0; l < midPoints.size() ; l++ )
+         { 
+           cout << " Before if of filtering groups and counting .. \n";
+           if( midy < midPoints[l]  )
+             countmore++;
+           else if ( midy > midPoints[l] )
+             countless++;
+         }
+         
+         cout << " Count of more" << countmore << endl;
+         cout << " Count less " << countless << endl ;  
+         if ( countmore % 2 != 0)
+           { 
+             cout << "Region is above mid...set flag to true ";
+             handle->faces[i][0][j]->insideAbove = true;
+           }
+         else if ( countless % 2 != 0 )
+           { 
+             cout << "Region is below mid...set flag to false ";
+             handle->faces[i][0][j]->insideAbove = false;
+           }
+      }   
+  
+    }
   }
 
     // Constructor for complex region structure. It takes as input a string name that can represent either :
@@ -382,7 +443,7 @@ using namespace std;
     //
     // The grammar for representing a segment vector in both cases 1 and 2 are structured as follows:
     // Expression := '(' Segment+ ')'
-    // Segment:= '(' Point ',' Point ')'
+   // Segment:= '(' Point ',' Point ')'
     // Point:= '(' Number ',' Number ')'
     // Number := Sign ((DigitWithoutZero Digit* '.' Digit+) | ('0' '.' Digit+ ))
     // Sign := ['+' | '-']
@@ -728,7 +789,7 @@ using namespace std;
 		 }
 	}
     
-   handle->faces[faceCount++] = fe;
+   handle->faces[faceCount++] = fe;  
    
    }
 
@@ -1141,28 +1202,41 @@ using namespace std;
   // Increment/decrement operators '++', '--'
   Region2D::ConstFaceIterator& Region2D::ConstFaceIterator::operator ++ () //prefix
   {
-   handlei->iteratorIndex++;
-   return(*this);
+   if(handlei->iteratorIndex < handlei->current->faces.size()-1)
+    {  handlei->iteratorIndex++;
+       return(*this);
+    }
+    //else cannot increment as it goes beyond ctail
   }
 
   Region2D::ConstFaceIterator Region2D::ConstFaceIterator::operator ++ (int postfix) //postfix
   {
-   ConstFaceIterator tmp(*this);
-   handlei->iteratorIndex++;
-   return(tmp);
+   if(handlei->iteratorIndex < handlei->current->faces.size()-1)
+   {
+     ConstFaceIterator tmp(*this);
+     handlei->iteratorIndex++;
+     return(tmp);
+   }
+
   }
 
   Region2D::ConstFaceIterator& Region2D::ConstFaceIterator::operator -- ()   // prefix
   {
-   handlei->iteratorIndex--;
-   return(*this);
+   if(handlei->iteratorIndex > 0)
+   {
+     handlei->iteratorIndex--;
+     return(*this);
+   }
   }
 
   Region2D::ConstFaceIterator Region2D::ConstFaceIterator::operator -- (int postfix) // postfix
   {
-   ConstFaceIterator tmp(*this);
-   handlei->iteratorIndex--;
-   return(tmp);
+   if(handlei->iteratorIndex > 0)
+   {
+     ConstFaceIterator tmp(*this);
+     handlei->iteratorIndex--;
+     return(tmp);
+   }
   }
 
   // Dereferencing operators that return the value at the constant face
@@ -1233,6 +1307,8 @@ using namespace std;
 
    std::ostream&operator<<(std::ostream& os, const Region2D::ConstFaceIterator& output)
    {
+     //if( output.handlei->iteratorIndex > 0 && output.handlei->iteratorIndex < output.handlei->current->faces.size()-2 )
+     //{
       os << "index Value:" << output.handlei->iteratorIndex<<" ";
       os << "number of cycles in face:" << output.handlei->current->faces.at(output.handlei->iteratorIndex).size()<<" "<<endl;
       for(int x=0;x<output.handlei->current->faces.at(output.handlei->iteratorIndex).size();x++)
@@ -1240,6 +1316,7 @@ using namespace std;
         for(int y=0;y<output.handlei->current->faces[output.handlei->iteratorIndex][x].size();y++)
 	 os << "segments" << *output.handlei->current->faces[output.handlei->iteratorIndex][x][y]<<" "<<endl;
 	}
+      //}
       return os;
    }
   // Method that returns a constant face iterator to the first face of a
@@ -1335,29 +1412,43 @@ using namespace std;
 
   // Increment/decrement operators '++', '--'
   Region2D::ConstCycleIterator& Region2D::ConstCycleIterator::operator ++ ()  // prefix
-  {
-    handlei->iteratorIndex++;
-    return(*this);
+  { 
+
+    //if(handlei->iteratorIndex < handlei->current->cycles.size()-2)
+    //{ 
+      handlei->iteratorIndex++;
+      return(*this);
+    //}
   }
 
   Region2D::ConstCycleIterator Region2D::ConstCycleIterator::operator ++ (int postfix) // postfix
   {
-    ConstCycleIterator tmp(*this);
-    handlei->iteratorIndex++;
-    return(tmp);
+    
+    //if(handlei->iteratorIndex < handlei->current->cycles.size()-2)
+    //{
+      ConstCycleIterator tmp(*this);
+      handlei->iteratorIndex++;
+      return(tmp);
+    //}
   }
 
   Region2D::ConstCycleIterator& Region2D::ConstCycleIterator::operator -- ()   // prefix
   {
-    handlei->iteratorIndex--;
-    return(*this);
+    //if(handlei->iteratorIndex > 1)
+    //{
+      handlei->iteratorIndex--;
+      return(*this);
+    //}
   }
 
   Region2D::ConstCycleIterator Region2D::ConstCycleIterator::operator -- (int postfix) // postfix
-  {
-    ConstCycleIterator tmp(*this);
-    handlei->iteratorIndex--;
-    return(tmp);
+  { 
+    //if(handlei->iteratorIndex > 1)
+    //{ 
+     ConstCycleIterator tmp(*this);
+     handlei->iteratorIndex--;
+     return(tmp);
+    //}
   }
 
   // Dereferencing operators that return the value at the constant HoleCycle
@@ -1424,14 +1515,16 @@ using namespace std;
   }
 
   std::ostream&operator<<(std::ostream& os, const Region2D::ConstCycleIterator& output)
-   {
-      os << "index Value:" << output.handlei->iteratorIndex<<" ";
-      os << "number of segments in cycle:" << output.handlei->current->cycles.at(output.handlei->iteratorIndex).size()<<" "<<endl;
-      for(int x=0;x<output.handlei->current->cycles.at(output.handlei->iteratorIndex).size();x++)
+   { 
+     
+       os << "index Value:" << output.handlei->iteratorIndex<<" ";
+       os << "number of segments in cycle:" << output.handlei->current->cycles.at(output.handlei->iteratorIndex).size()<<" "<<endl;
+       for(int x=0;x<output.handlei->current->cycles.at(output.handlei->iteratorIndex).size();x++)
         { 
 	 os << "segments" << *output.handlei->current->cycles[output.handlei->iteratorIndex][x]<<" "<<endl;
 	}
-      return os;
+       
+     return os;
    }
 
   // Method that returns a constant HoleCycle iterator to the first HoleCycle of a
