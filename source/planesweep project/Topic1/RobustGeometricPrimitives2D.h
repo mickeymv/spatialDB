@@ -1,4 +1,19 @@
-#ifndef ROBUSTGEOMETRICPRIMITIVES2D_H_
+
+/*---------------------------------------------------------------------------------
+* File: RobustGeometricPrimitives2D.h
+-----------------------------------------------------------------------------------
+- Description:
+- 
+- This file contains the definitions of the Spatial datatypes Poi2D,Seg2D,
+- HalfSeg2D,AttrHalfSeg2D,Rect2D and SimplePolygon2D and additional helper
+- functions.
+- 
+- Created by:
+- Prerna Mandal, Sivasubramanian Kandaswami, Umar Majeed, Jyotsana Walia
+------------------------------------------------------------------------------------*/
+
+
+#ifndef ROBUSTGEOMETRICPRIMITIVES2D_H_ 
 #define ROBUSTGEOMETRICPRIMITIVES2D_H_
 
 #include <iostream>
@@ -39,7 +54,7 @@ public:
 	bool operator ==(const Poi2D& operand);
 	bool operator !=(const Poi2D& operand);
 	friend std::ostream&operator<<(std::ostream& os, const Poi2D& output);
-	friend std::istream&operator>>(std::istream& is, const Poi2D& input);
+	friend std::istream&operator>>(std::istream& is, Poi2D& input);
 
 };
 
@@ -73,7 +88,7 @@ public:
 	bool operator ==(const Seg2D& operand);
 	bool operator !=(const Seg2D& operand);
 	friend std::ostream&operator<<(std::ostream& os, const Seg2D& output);
-	friend std::istream&operator>>(std::istream& is, const Seg2D& input);
+	friend std::istream&operator>>(std::istream& is, Seg2D& input);
 };
 
 /*
@@ -99,7 +114,7 @@ public:
 	bool operator <(const HalfSeg2D& operand);
 	bool operator <(Poi2D& operand);
 	bool operator >(Poi2D& operand);
-	bool operator <( AttrHalfSeg2D& operand);
+	bool operator <(AttrHalfSeg2D& operand);
 	bool operator >(AttrHalfSeg2D& operand);
 	bool operator >(const HalfSeg2D& operand);
 	bool operator <=(const HalfSeg2D& operand);
@@ -108,7 +123,7 @@ public:
 	bool operator !=(const HalfSeg2D& operand);
 	Poi2D dominatingPoint();
 	friend std::ostream&operator <<(std::ostream& os, const HalfSeg2D& output);
-	friend std::istream&operator >>(std::istream& is, const HalfSeg2D& input);
+	friend std::istream&operator >>(std::istream& is, HalfSeg2D& input);
 
 };
 
@@ -116,7 +131,7 @@ public:
 *Attributed Half Segment Class
 */
 struct AttHalfSegVariable;
-class AttrHalfSeg2D 
+class AttrHalfSeg2D
 {
 public:
 	/*Member variables */
@@ -143,7 +158,7 @@ public:
 	bool operator ==(const AttrHalfSeg2D& operand);
 	bool operator !=(const AttrHalfSeg2D& operand);
 	friend std::ostream&operator<<(std::ostream& os, const AttHalfSegVariable& output);
-	friend std::istream&operator>>(std::istream& is, const AttHalfSegVariable& input);
+	friend std::istream&operator>>(std::istream& is, AttHalfSegVariable& input);
 
 };
 
@@ -167,8 +182,8 @@ public:
 	~Rect2D();
 
 
-	friend std::ostream&operator<<(std::ostream& os, const Rect2D& output);
-	friend std::istream&operator>>(std::istream& is, const Rect2D& input);
+	friend std::ostream&operator<<(std::ostream& os, Rect2D& output);
+	friend std::istream&operator>>(std::istream& is, Rect2D& input);
 
 };
 //Class Polygon2D
@@ -192,8 +207,8 @@ public:
 	bool operator != (const SimplePolygon2D& operand);
 
 	/* I/O Operators*/
-	friend std::ostream&operator << (std::ostream& os,  SimplePolygon2D& output);
-	friend std::istream&operator >> (std::istream& is,  SimplePolygon2D& input);
+	friend std::ostream&operator << (std::ostream& os, SimplePolygon2D& output);
+	friend std::istream&operator >> (std::istream& is, SimplePolygon2D& input);
 
 };
 
@@ -208,10 +223,10 @@ Poi2D getPointLiesOnSegmentAndNotEndpoints(Poi2D& poi, Seg2D& seg);
 bool PointLiesOnSegmentAndNotEndpoints(Poi2D& poi, Seg2D& seg);
 bool PointLiesAboveSegment(Poi2D& poi, Seg2D& seg);
 bool PointLiesBelowSegment(Poi2D& poi, Seg2D& seg);
-bool PointLiesAboveOrOnSegment(Poi2D& poi,Seg2D& seg);
+bool PointLiesAboveOrOnSegment(Poi2D& poi, Seg2D& seg);
 bool PointLiesBelowOrOnSegment(Poi2D& poi, Seg2D& seg);
 bool PointLiesOnLeftEndPointOfSegment(Poi2D& poi, Seg2D& seg);
-bool PointLiesOnRightEndPointOfSegment(Poi2D& poi,Seg2D& seg);
+bool PointLiesOnRightEndPointOfSegment(Poi2D& poi, Seg2D& seg);
 bool PointIsCollinearToSegment(Poi2D& poi, Seg2D& seg);
 bool PointLiesLeftOFSegmentAndIsCollinear(Poi2D& poi, Seg2D& seg);
 bool PointLiesRightOfSegmentAndIsCollinear(Poi2D& poi, Seg2D& seg);
@@ -228,7 +243,7 @@ bool SegmentIsCollinear(Seg2D& seg, Seg2D& seg1);
 bool SegmentLiesLeftOFSegmentAndIsCollinear(Seg2D& seg, Seg2D& seg1);
 bool SegmentLiesRightOfSegmentAndIsCollinear(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsCollinearAndMeetsLeftEndpoint(Seg2D& seg, Seg2D& seg1);
-bool SegmentIsCollinearAndMeetsRightEndpoint(Seg2D& seg,Seg2D& seg1);
+bool SegmentIsCollinearAndMeetsRightEndpoint(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsCollinearAndCrossesLeftEndpoint(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsCollinearAndCrossesRightEndpoint(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsCollinearAndMeetsBothEndpoint(Seg2D& seg, Seg2D& seg1);
@@ -237,10 +252,11 @@ bool SegmentIsParallelAndAbove(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsParallelAndBelow(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsParallelAndLiesLeft(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsParallelAndLiesRight(Seg2D& seg, Seg2D& seg1);
-bool Intersects(Seg2D& seg, Seg2D& seg1); 
+bool Intersects(Seg2D& seg, Seg2D& seg1);
 int orientation(Poi2D p, Poi2D q, Poi2D r);
 bool SegmentIsLesserThanSegment(Seg2D& seg1, Seg2D& seg2);
 Poi2D IntersectionPoint(Seg2D& seg, Seg2D& seg1);
+bool IntersectsAndNotCollinearAndNotEndpoints(Seg2D& seg1, Seg2D& seg2);
 bool Meet(Seg2D& seg, Seg2D& seg1);
 Poi2D MeetingPoint(Seg2D& seg, Seg2D& seg1);
 bool Touch(Seg2D& seg, Seg2D& seg1);
@@ -267,5 +283,3 @@ Rect2D computeRect2D(SimplePolygon2D& simplepolygon);
 bool isRect2DPossible();
 
 #endif
-
-
