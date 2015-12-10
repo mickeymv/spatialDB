@@ -11,7 +11,7 @@
 #include "planesweep_project/Topic2/Implementation/Line2D.h"
 #include "planesweep_project/PlaneSweep.h"
 #include "TopologicalRelationships.h"
-
+#include "TopPredNumberEnums.h"
 
 
 class Line2DRegion2D{
@@ -36,7 +36,7 @@ public:
 private:
 
     typedef enum {
-        seg_inside,seg_shared,seg_outside,poi_shared,bound_inside,bound_shared,bound_disjoint
+        seg_inside,seg_shared,seg_outside,poi_shared,bound_inside,bound_shared,bound_disjoint,bound_outside
     }vFLine2DRegion2DPredicates;
 
     typedef enum {
