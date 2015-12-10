@@ -457,10 +457,10 @@ bool HalfSeg2D::operator <= (const HalfSeg2D& operand)
 			nonDominatingPointOfSeg2 = seg2.p1;
 		}
 
-		std::cout << "dominatingPointOfSeg1" << dominatingPointOfSeg1;
-		std::cout << "dominatingPointOfSeg2" << dominatingPointOfSeg2;
-		std::cout << "nonDominatingPointOfSeg1" << nonDominatingPointOfSeg1;
-		std::cout << "nonDominatingPointOfSeg2" << nonDominatingPointOfSeg2;
+		//std::cout << "dominatingPointOfSeg1" << dominatingPointOfSeg1;
+		//std::cout << "dominatingPointOfSeg2" << dominatingPointOfSeg2;
+		//std::cout << "nonDominatingPointOfSeg1" << nonDominatingPointOfSeg1;
+		//std::cout << "nonDominatingPointOfSeg2" << nonDominatingPointOfSeg2;
 
 		if (dominatingPointOfSeg1 < dominatingPointOfSeg2
 			|| (dominatingPointOfSeg1 == dominatingPointOfSeg2 && (!this->isLeft && operand.isLeft))
@@ -950,12 +950,12 @@ bool PointLiesBelowSegment(Poi2D& poi, Seg2D& seg)
 //Return true if both points passed to it are either to the left of the segment or to the right of the segment.
 bool PointLiesOnSameSideOfSegment(Poi2D& poi1, Poi2D& poi2, Seg2D& seg)
 {
-	std::cout << "\nseg" << seg;
+	//std::cout << "\nseg" << seg;
 	if (PointIsCollinearToSegment(poi1, seg) || PointIsCollinearToSegment(poi2, seg)) //change on to collinear
 	{
 		return true;
 	}
-	std::cout << "\npoint liesabove1:" << PointLiesAboveSegment(poi1, seg) << "p2above:" << PointLiesAboveSegment(poi2, seg);
+	//std::cout << "\npoint liesabove1:" << PointLiesAboveSegment(poi1, seg) << "p2above:" << PointLiesAboveSegment(poi2, seg);
 	if (PointLiesAboveSegment(poi1, seg) == PointLiesAboveSegment(poi2, seg))
 		return true;
 	else
@@ -1358,48 +1358,48 @@ bool Poly_intersects(Seg2D& seg1, Seg2D& seg2)
 	// Find the four orientations needed for general and special cases
 
 	int o1 = poly_orientation(seg1.p1, seg1.p2, seg2.p1);
-	std::cout << "jjj" << std::endl;
+	//std::cout << "jjj" << std::endl;
 	int o2 = poly_orientation(seg1.p1, seg1.p2, seg2.p2);
 	int o3 = poly_orientation(seg2.p1, seg2.p2, seg1.p1);
 	int o4 = poly_orientation(seg2.p1, seg2.p2, seg1.p2);
 
-	std::cout << "\n o1:" << o1 << "\n o2:" << o2 << "\n o3:" << o3 << "\n o4:" << o4;
+	//std::cout << "\n o1:" << o1 << "\n o2:" << o2 << "\n o3:" << o3 << "\n o4:" << o4;
 	
 	if (o1 != o2 && o3 != o4)
 	{
-		std::cout << "weird case";
+		//std::cout << "weird case";
 		return true;
 	}
 	if (PointLiesOnSegment(seg1.p1, seg2) || PointLiesOnSegment(seg1.p2, seg2) || PointLiesOnSegment(seg2.p1, seg1) || PointLiesOnSegment(seg2.p2, seg1))
 	{
 	
-		std::cout << "case 1";
+		//std::cout << "case 1";
 		return true;
 	// Special Cases
 	}
 	if (o1 == 0 && PointLiesOnSegment(seg2.p1, seg1))
 	{
 	
-		std::cout << "case 2";
+		//std::cout << "case 2";
 		return true;
 	}
 	// seg1.p1, seg1.p2 and seg2.p1 are collinear and seg2.p2 lies on segment seg1
 	if (o2 == 0 && PointLiesOnSegment(seg2.p2, seg1))
 	{
-		std::cout << "case 3";
+		//std::cout << "case 3";
 		return true;
 	}
 	// p2, q2 and p1 are collinear and p1 lies on segment p2q2
 	if (o3 == 0 && PointLiesOnSegment(seg1.p1, seg2))
 	{
-		std::cout << "case 4";
+		//std::cout << "case 4";
 		return true;
 	}
 
 	// p2, q2 and q1 are collinear and q1 lies on segment p2q2
 	if (o4 == 0 && PointLiesOnSegment(seg1.p2, seg2))
 	{
-		std::cout << "case 5";
+		//std::cout << "case 5";
 		return true;
 	}
 	return false;
@@ -1548,6 +1548,7 @@ bool simplePointInsideSimplePolygon(Poi2D& poi, SimplePolygon2D& polygon)
 	Poi2D PtoInfinity(poi.x, Number("100.0"));
 	//Poi2D PtoInfinity = { INF, poi.y };
 	//Check if the point is inside the polygon by simple check!
+
 	int j = 0;
 	int i;
 	int k;
@@ -1555,19 +1556,22 @@ bool simplePointInsideSimplePolygon(Poi2D& poi, SimplePolygon2D& polygon)
 	int prevPoint;
 	int nextPoint;
 	bool simpleCheck = BasicPointInBoundingBox(poi, polygon);
-	std::cout << "simpleCheck" << simpleCheck << std::endl;
+	//std::cout << "simpleCheck" << simpleCheck << std::endl;
 	int numbeOfIntersection = 0;
 	int forI = 0;
-	bool pointCheck = false;
+	
 	if (simpleCheck == false){
 		return false;
 	}
 	else{
 		Seg2D segC(poi, PtoInfinity);
-		std::cout << "segC : " << segC << std::endl;
+		//std::cout << "segC : " << segC << std::endl;
 		int totalNumberOfVertices = polygon.vertices.size();
-		std::cout << "totalNumberOfVertices" << totalNumberOfVertices << std::endl;
+		//std::cout << "totalNumberOfVertices" << totalNumberOfVertices << std::endl;
 		for (i = 0; i<totalNumberOfVertices; i++){
+			//std::cout << "----------i is --------" << i;
+			bool pointCheck = false;
+			bool pointsOntheSameSideOfSeg = false;
 			if (forI == 1 && i == (totalNumberOfVertices - 1)){
 				//do nothing , skip this loop
 				continue;
@@ -1578,7 +1582,7 @@ bool simplePointInsideSimplePolygon(Poi2D& poi, SimplePolygon2D& polygon)
 					//l = totalNumberOfVertices - 1;
 				}
 				else{
-					j = i;
+					j = i - 1;
 					//l = i - 1;
 				}
 				if (i == totalNumberOfVertices - 1){
@@ -1589,17 +1593,17 @@ bool simplePointInsideSimplePolygon(Poi2D& poi, SimplePolygon2D& polygon)
 					k = i + 1;
 				}
 
-				std::cout << "j:i" << j << i << std::endl;
+				//std::cout << "j:i" << j << i << std::endl;
 				Seg2D segI(polygon.vertices[i], polygon.vertices[k]);
-				std::cout << "segI : " << segI << std::endl;
+				//std::cout << "segI : " << segI << std::endl;
 				//check if they intersect with segC
 				//std::cout << "segI" << segI;
-				std::cout << "segC" << segC;
+				//std::cout << "segC" << segC;
 				bool intersects = Poly_intersects(segI, segC);
-				std::cout << "value of intersects" << intersects << std::endl;
+				//std::cout << "value of intersects" << intersects << std::endl;
 				if (intersects){
 					bool isCollinear = PointIsCollinearToSegment(poi, segI);
-					std::cout << "isCollinear" << isCollinear << std::endl;
+					//std::cout << "isCollinear" << isCollinear << std::endl;
 					// Poi2D pointOfIntersection = IntersectionPoint(segI,segC);
 					// std::cout << "pointOfIntersection" << pointOfIntersection << std::endl;
 					// if(pointOfIntersection == polygon.vertices[i] || pointOfIntersection == polygon.vertices[k]){
@@ -1616,17 +1620,18 @@ bool simplePointInsideSimplePolygon(Poi2D& poi, SimplePolygon2D& polygon)
 					//std::cout << "pointOfIntersection" << pointOfIntersection << std::endl;
 					if (PointLiesOnSegmentAndNotEndpoints(polygon.vertices[i], segC) || PointLiesOnSegmentAndNotEndpoints(polygon.vertices[k], segC)){
 
+						
 						pointCheck = true;
 						if (PointLiesOnSegmentAndNotEndpoints(polygon.vertices[i], segC)){
 							pointOfIntersection = polygon.vertices[i];
 							l = i;
-							std::cout << "pointCheckoth" << pointCheck << std::endl;
+							//std::cout << "pointCheckoth" << pointCheck << std::endl;
 						}
 						else{
 							l = k;
 							pointOfIntersection = polygon.vertices[k];
 						}
-						std::cout << "pointCheck1st" << pointCheck << std::endl;
+						//std::cout << "pointCheck1st" << pointCheck << std::endl;
 						if (pointOfIntersection == polygon.vertices[0]){
 							forI = 1;
 						}
@@ -1635,7 +1640,23 @@ bool simplePointInsideSimplePolygon(Poi2D& poi, SimplePolygon2D& polygon)
 						}
 					}
 
-					if (pointCheck){
+
+					if (isCollinear){
+						bool pointOnSeg = PointLiesOnSegmentAndNotEndpoints(poi, segI);
+						if (pointOnSeg){
+							return true;
+						}
+						else{
+							//std::cout<<"polygon.vertices[j]" << polygon.vertices[j] << "polygon.vertices[j +3]" << polygon.vertices[j+3] << "segI" << segI;
+							pointsOntheSameSideOfSeg = PointLiesOnSameSideOfSegment(polygon.vertices[j], polygon.vertices[j + 3], segI);
+							//std::cout << "pointsOntheSameSideOfSeg -" << pointsOntheSameSideOfSeg << std::endl;
+							if (!pointsOntheSameSideOfSeg){
+								//std::cout <<"incremented here seggg";
+								numbeOfIntersection++;
+							}
+						}
+
+					}else if (pointCheck){
 						Seg2D segR(poi, pointOfIntersection);
 						if(l==0){
 							prevPoint = totalNumberOfVertices - 1;
@@ -1649,33 +1670,22 @@ bool simplePointInsideSimplePolygon(Poi2D& poi, SimplePolygon2D& polygon)
 							nextPoint = l + 1;
 						}
 
-						std::cout << "polygon.vertices[prevPoint]" << polygon.vertices[prevPoint];
-						std::cout << "polygon.vertices[nextPoint]" << polygon.vertices[nextPoint];
-						bool pointsOntheSameSideOfSeg = PointLiesOnSameSideOfSegment(polygon.vertices[prevPoint], polygon.vertices[nextPoint], segR);
-						std::cout << "pointsOntheSameSideOfSeg -" << pointsOntheSameSideOfSeg << std::endl;
+						//std::cout << "polygon.vertices[prevPoint]" << polygon.vertices[prevPoint];
+						//std::cout << "polygon.vertices[nextPoint]" << polygon.vertices[nextPoint];
+						if(PointIsCollinearToSegment(polygon.vertices[nextPoint],segC)){
+							i = i - 1;
+						}
+
+						pointsOntheSameSideOfSeg = PointLiesOnSameSideOfSegment(polygon.vertices[prevPoint], polygon.vertices[nextPoint], segR);
+						//std::cout << "pointsOntheSameSideOfSeg -" << pointsOntheSameSideOfSeg << std::endl;
 						if (!pointsOntheSameSideOfSeg){
-							std::cout <<"incremented here";
+							//std::cout <<"incremented here";
 							numbeOfIntersection++;
 						}
 
 					}
-					else if (isCollinear){
-						bool pointOnSeg = PointLiesOnSegmentAndNotEndpoints(poi, segI);
-						if (pointOnSeg){
-							return true;
-						}
-						else{
-							bool pointsOntheSameSideOfSeg = PointLiesOnSameSideOfSegment(polygon.vertices[j], polygon.vertices[j + 2], segI);
-							std::cout << "pointsOntheSameSideOfSeg -" << pointsOntheSameSideOfSeg << std::endl;
-							if (!pointsOntheSameSideOfSeg){
-								std::cout <<"incremented here seggg";
-								numbeOfIntersection++;
-							}
-						}
-
-					}
 					else {
-						std::cout <<"incremented here tooooo";
+						//std::cout <<"incremented here tooooo";
 						numbeOfIntersection++;
 					}
 
@@ -1684,7 +1694,7 @@ bool simplePointInsideSimplePolygon(Poi2D& poi, SimplePolygon2D& polygon)
 
 
 		}
-		std::cout <<"numbeOfIntersection"<< numbeOfIntersection << "------";
+		//std::cout <<"numbeOfIntersection"<< numbeOfIntersection << "------";
 		if ((numbeOfIntersection == 0) || (numbeOfIntersection % 2 != 0)){
 			return true;
 		}
