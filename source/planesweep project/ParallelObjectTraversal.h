@@ -67,6 +67,7 @@ public:
     HalfSeg2D *minHalfSeg2DF = nullptr, *minHalfSeg2DG= nullptr;
     AttrHalfSeg2D *minAttrHalfSeg2DF= nullptr, *minAttrHalfSeg2DG= nullptr;
 
+
 private:
     //SelectFirst should be called in the POT constructor.
     void selectFirst();
@@ -75,8 +76,10 @@ private:
     object object_value;
     status status_value;
     Object2D *objF, *objG;
-    ObjectIterator *objFIterator, *objGIterator;
 
+    Point2D::ConstPoiIterator * objFpoiIterator = nullptr, * objGpoiIterator = nullptr; // DTj Dec 5, 2015
+    Line2D::ConstSegIterator * objFsegIterator = nullptr, * objGsegIterator = nullptr; 
+    Region2D::ConstRegionIterator * objFregionIterator = nullptr, * objGregionIterator = nullptr; 
 
 };
 
