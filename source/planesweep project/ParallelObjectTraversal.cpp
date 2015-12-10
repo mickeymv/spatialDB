@@ -18,81 +18,133 @@ ParallelObjectTraversal::ParallelObjectTraversal(Object2D &F, Object2D &G) {
     // 11/04/2015 DT
     // note that for the symmetrical object combination, only one instance is created, but the passing of the object is swapped accordingly
     if (F.isPoint2D()) {
-        objF = static_cast<Point2D *>(F);
-        Point2D::ConstPoiIterator pointIterator;
-        pointIterator = static_cast<Point2D *>(F)->cbegin();
-        objFIterator = &pointIterator;
+        objF = dynamic_cast<Point2D *>(&F);  // to access objF use it like this:  (Point2D *) objF
+        objFpoiIterator  = new Point2D::ConstPoiIterator (((Point2D *) objF)->cbegin());
+
 
         if (G.isPoint2D()) {
-            objG = static_cast<Point2D *>(G);
-            Point2D::ConstPoiIterator pointIterator;
-            pointIterator = static_cast<Point2D *>(G)->cbegin();
-            objGIterator = &pointIterator;
+            objG = dynamic_cast<Point2D *>(&G);
 
+            // assign objG Poi Iterator
+            objGpoiIterator  = new Point2D::ConstPoiIterator (((Point2D *) objG)->cbegin());
+        }
+        
+        if (G.isPoint2D()) {
+            objG = dynamic_cast<Point2D *>(&G);
+            objGpoiIterator  = new Point2D::ConstPoiIterator (((Point2D *) objG)->cbegin());
 
         } else if (G.isLine2D()) {
-            objG = static_cast<Line2D *>(G);
-            Line2DImpl::ConstSegIterator lineIterator;
-            lineIterator = static_cast<Line2DImpl *>(G)->cbegin();
-            objGIterator = &lineIterator;
+            // to be deleted:
+            // objG = static_cast<Line2D *>(G);
+            // Line2DImpl::ConstSegIterator lineIterator;
+            // lineIterator = static_cast<Line2DImpl *>(G)->cbegin();
+            // objGIterator = &lineIterator;
+            
+            // Dtj Dec 10, 2015
+            objG = dynamic_cast<Line2D *>(&G);
+            objGsegIterator  = new PoiLine2Dnt2D::ConstSegIterator (((Line2D *) objG)->cbegin());
+            
 
         } else if (G.isRegion2D()) {
-            objG = static_cast<Region2D *>(G);
-            Region2DImpl::ConstAttributedHalfSegmentIterator regionIterator;
-            regionIterator = static_cast<Region2DImpl *>(G)->cbegin();
-            objGIterator = &regionIterator;
-
+            // to be deleted:
+            // objG = static_cast<Region2D *>(G);
+            // Region2DImpl::ConstAttributedHalfSegmentIterator regionIterator;
+            // regionIterator = static_cast<Region2DImpl *>(G)->cbegin();
+            // objGIterator = &regionIterator;
+            
+             // Dtj Dec 10, 2015
+            objG = dynamic_cast<Region2D *>(&G);
+            objGregionIterator  = new Region2D::ConstRegionIterator (((Region2D *) objG)->cbegin());
+            
         }
     } else if (F.isLine2D()) {
-        objF = static_cast<Line2D *>(F);
-        Line2DImpl::ConstSegIterator lineIterator;
-        lineIterator = static_cast<Line2DImpl *>(F)->cbegin();
-        objFIterator = &lineIterator;
+        // to be deleted:
+        // objF = static_cast<Line2D *>(F);
+        // Line2DImpl::ConstSegIterator lineIterator;
+        // lineIterator = static_cast<Line2DImpl *>(F)->cbegin();
+        // objFIterator = &lineIterator;
+        
+        // Dtj Dec 10, 2015
+        objF = dynamic_cast<Line2D *>(&F);
+        objFsegIterator  = new Line2D::ConstSegIterator (((Line2D *) objF)->cbegin());
 
         if (G.isPoint2D()) {
-            objG = static_cast<Point2D *>(G);
-            Point2D::ConstPoiIterator pointIterator;
-            pointIterator = static_cast<Point2D *>(G)->cbegin();
-            objGIterator = &pointIterator;
+            // to be deleted:
+            // objG = static_cast<Point2D *>(G);
+            // Point2D::ConstPoiIterator pointIterator;
+            // pointIterator = static_cast<Point2D *>(G)->cbegin();
+            // objGIterator = &pointIterator;
+            
+             // Dtj Dec 10, 2015
+            objG = dynamic_cast<Point2D *>(&G);
+            objGpoiIterator  = new Point2D::ConstPoiIterator (((Point2D *) objG)->cbegin());
 
         } else if (G.isLine2D()) {
-            objG = static_cast<Line2D *>(G);
-            Line2DImpl::ConstSegIterator lineIterator;
-            lineIterator = static_cast<Line2DImpl *>(G)->cbegin();
-            objGIterator = &lineIterator;
+            // to be deleted:
+            // objG = static_cast<Line2D *>(G);
+            // Line2DImpl::ConstSegIterator lineIterator;
+            // lineIterator = static_cast<Line2DImpl *>(G)->cbegin();
+            // objGIterator = &lineIterator;
 
+            // Dtj Dec 10, 2015
+            objG = dynamic_cast<Line2D *>(&G);
+            objGsegIterator  = new Line2D::ConstSegIterator (((Line2D *) objG)->cbegin());
 
         } else if (G.isRegion2D()) {
-            objG = static_cast<Region2D *>(G);
-            Region2DImpl::ConstAttributedHalfSegmentIterator regionIterator;
-            regionIterator = static_cast<Region2DImpl *>(G)->cbegin();
-            objGIterator = &regionIterator;
+            // to be deleted:
+            // objG = static_cast<Region2D *>(G);
+            // Region2DImpl::ConstAttributedHalfSegmentIterator regionIterator;
+            // regionIterator = static_cast<Region2DImpl *>(G)->cbegin();
+            // objGIterator = &regionIterator;
+            
+            // Dtj Dec 10, 2015
+            objG = dynamic_cast<Region2D *>(&G);
+            objGregionIterator  = new Region2D::ConstRegionIterator (((Region2D *) objG)->cbegin());
         }
     } else if (F.isRegion2D()) {
-        objF = static_cast<Region2D *>(F);
-        Region2DImpl::ConstAttributedHalfSegmentIterator regionIterator;
-        regionIterator = static_cast<Region2DImpl *>(F)->cbegin();
-        objGIterator = &regionIterator;
+        // to be deleted:
+        // objF = static_cast<Region2D *>(F);
+        // Region2DImpl::ConstAttributedHalfSegmentIterator regionIterator;
+        // regionIterator = static_cast<Region2DImpl *>(F)->cbegin();
+        // objGIterator = &regionIterator;
 
+        // Dtj Dec 10, 2015
+        objF = dynamic_cast<Region2D *>(&F);
+        objFregionIterator  = new Region2D::ConstRegionIterator (((Region2D *) objF)->cbegin());
 
         if (G.isPoint2D()) {
-            objG = static_cast<Point2D *>(G);
-            Point2D::ConstPoiIterator pointIterator;
-            pointIterator = static_cast<Point2D *>(G)->cbegin();
-            objGIterator = &pointIterator;
+            // to be deleted:
+            // objG = static_cast<Point2D *>(G);
+            // Point2D::ConstPoiIterator pointIterator;
+            // pointIterator = static_cast<Point2D *>(G)->cbegin();
+            // objGIterator = &pointIterator;
+            
+            // Dtj Dec 10, 2015
+            objG = dynamic_cast<Point2D *>(&G);
+            objGpoiIterator  = new Point2D::ConstPoiIterator (((Point2D *) objG)->cbegin());
 
         } else if (G.isLine2D()) {
-            objG = static_cast<Line2D *>(G);
-            Line2DImpl::ConstSegIterator lineIterator;
-            lineIterator = static_cast<Line2DImpl *>(G)->cbegin();
-            objGIterator = &lineIterator;
+            // to be deleted:
+            // objG = static_cast<Line2D *>(G);
+            // Line2DImpl::ConstSegIterator lineIterator;
+            // lineIterator = static_cast<Line2DImpl *>(G)->cbegin();
+            // objGIterator = &lineIterator;
+
+            // Dtj Dec 10, 2015
+            objG = dynamic_cast<Line2D *>(&G);
+            objGsegIterator  = new Line2D::ConstSegIterator (((Line2D *) objG)->cbegin());
 
 
         } else if (G.isRegion2D()) {
-            objG = static_cast<Region2D *>(G);
-            Region2DImpl::ConstAttributedHalfSegmentIterator regionIterator;
-            regionIterator = static_cast<Region2DImpl *>(G)->cbegin();
-            objGIterator = &regionIterator;
+            // to be deleted:
+            // objG = static_cast<Region2D *>(G);
+            // Region2DImpl::ConstAttributedHalfSegmentIterator regionIterator;
+            // regionIterator = static_cast<Region2DImpl *>(G)->cbegin();
+            // objGIterator = &regionIterator;
+            
+            // Dtj Dec 10, 2015
+            objG = dynamic_cast<Region2D *>(&G);
+            objGregionIterator  = new Region2D::ConstRegionIterator (((Region2D *) objG)->cbegin());
 
         }
     }
@@ -119,35 +171,74 @@ status ParallelObjectTraversal::getStatus() {
 //TODO selectFirst() and selectNext() should use the next min element based on setNextMin().Right now it is comparing just ObjectIterators. Where are we getting the nextMin value based on setMin()?
 
 void ParallelObjectTraversal::selectFirst() {
-    if (!(objFIterator->isEmpty())) {
-        *objFIterator = objF->cbegin();
+    // to be deleted
+    // if (!(objFIterator->isEmpty())) {
+    //     *objFIterator = objF->cbegin();
+    // }
+    // if (!(objGIterator->isEmpty())) {
+    //     *objGIterator = objG->cbegin();
+    // }
+
+
+    // Dtj Dec 10, 2015
+    if (objF->isPoint2D()) {
+	if (!objFpoiIterator)
+    		objFpoiIterator  = new Point2D::ConstPoiIterator (((Point2D *) objF)->cbegin());
     }
-    if (!(objGIterator->isEmpty())) {
-        *objGIterator = objG->cbegin();
+    if (objG->isPoint2D()) {
+        if (!objGpoiIterator)
+            objGpoiIterator  = new Point2D::ConstPoiIterator (((Point2D *) objG)->cbegin());
     }
 
-    if (objFIterator->isEmpty() && objGIterator->isEmpty()) {
-        object_value = none;
-        status_value = end_of_both;
+    if (objF->isLine2D()) {
+	if (!objFsegIterator)
+    		objFsegIterator  = new Line2D::ConstSegIterator (((Line2D *) objF)->cbegin());
     }
-    else {
-        if (objGIterator->isEmpty())
-            object_value = first;
-        else if (objFIterator->isEmpty())
-            object_value = second;
-        else
-            object_value = both;
+    if (objG->isLine2D()) {
+        if (!objGsegIterator)
+            objGsegIterator  = new Line2D::ConstSegIterator (((Line2D *) objG)->cbegin());
+    }
+    
+    if (objF->isRegion2D()) {
+	if (!objFregionIterator)
+    		objFregionIterator  = new Region2D::ConstRegionIterator (((Region2D *) objF)->cbegin());
+    }
+    if (objG->isRegion2D()) {
+        if (!objGregionIterator)
+           objGregionIterator  = new Region2D::ConstRegionIterator (((Region2D *) objG)->cbegin());
+    }
 
-        if (objFIterator->getCurrent() == objF->cend()
-            && objGIterator->getCurrent() == objG->cend())
-            status_value = end_of_both;
-        else if (objFIterator->getCurrent() == objF->cend())
-            status_value = end_of_first;
-        else if (objGIterator->getCurrent() == objG->cend())
-            status_value = end_of_second;
-        else
-            status_value = end_of_none;
-    }
+    // Dtj Dec 10, 2015
+    // TODO:
+    // I have not changed this part yet. This oart need to be changed, 
+    // so please look at the old codes and adjust them to the new changes:
+    //
+    // if (objFIterator->isEmpty() && objGIterator->isEmpty()) {
+    //     object_value = none;
+    //     status_value = end_of_both;
+    // }
+    // else {
+    //     if (objGIterator->isEmpty())
+    //         object_value = first;
+    //     else if (objFIterator->isEmpty())
+    //         object_value = second;
+    //     else
+    //         object_value = both;
+
+    //     if (objFIterator->getCurrent() == objF->cend()
+    //         && objGIterator->getCurrent() == objG->cend())
+    //         status_value = end_of_both;
+    //     else if (objFIterator->getCurrent() == objF->cend())
+    //         status_value = end_of_first;
+    //     else if (objGIterator->getCurrent() == objG->cend())
+    //         status_value = end_of_second;
+    //     else
+    //         status_value = end_of_none;
+    // }
+    
+    
+
+    
 }
 
 //TODO - see if the return type should be AttrHalfSeg2D or check what it should be
