@@ -1293,11 +1293,9 @@ int poly_orientation(Poi2D& p1, Poi2D& p2, Poi2D& q1)
 //Returns true if line segment 'seg1' and 'seg2' intersect.
 bool IntersectsAndNotCollinearAndNotEndpoints(Seg2D& seg1, Seg2D& seg2)
 {
-	//std::cout << "seg1.p2:" << seg1.p2;
-	//std::cout << "\nlies on: of p2"<<PointLiesOnSegment(seg1.p2, seg2);
+
 	if (SegmentIsCollinear(seg1, seg2) || Meet(seg1, seg2) || PointLiesOnSegment(seg1.p1, seg2) || PointLiesOnSegment(seg1.p2, seg2) || PointLiesOnSegment(seg2.p1, seg1) || PointLiesOnSegment(seg2.p2, seg1))
 	{
-		//std::cout << "came here";
 		return false;
 	}
 	else
