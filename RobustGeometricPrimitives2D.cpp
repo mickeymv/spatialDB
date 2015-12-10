@@ -1695,11 +1695,11 @@ bool simplePointInsideSimplePolygon(Poi2D& poi, SimplePolygon2D& polygon)
 
 		}
 		//std::cout <<"numbeOfIntersection"<< numbeOfIntersection << "------";
-		if ((numbeOfIntersection == 0) || (numbeOfIntersection % 2 != 0)){
-			return true;
+		if (numbeOfIntersection % 2 == 0){
+			return false;
 		}
 		else{
-			return false;
+			return true;
 		}
 
 
