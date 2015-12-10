@@ -192,7 +192,7 @@ BigInteger BigInteger::operator + (const BigInteger& operand)
 		answer.p->value.push_back(1);
 	}
 	//b is negative
-	else if (this->p->value[sizeThis - 1] == 0 && operand.p->value[sizeOther - 1] == 1) 
+	else if (this->p->value[sizeThis - 1] == 0 && operand.p->value[sizeOther - 1] == 1)
 	{
 		if (*this >= Abs(operand))//a-b
 		{
@@ -206,7 +206,7 @@ BigInteger BigInteger::operator + (const BigInteger& operand)
 		}
 		//a is negative
 	}
-	else if (this->p->value[sizeThis - 1] == 1 && operand.p->value[sizeOther - 1] == 0) 
+	else if (this->p->value[sizeThis - 1] == 1 && operand.p->value[sizeOther - 1] == 0)
 	{
 		if (Abs(*this) <= operand)//-a+b
 		{
@@ -261,14 +261,14 @@ BigInteger BigInteger::operator - (const BigInteger& operand)
 		}
 	}
 	//b is negative
-	else if (this->p->value[sizeThis - 1] == 0 && operand.p->value[sizeOther - 1] == 1) 	
+	else if (this->p->value[sizeThis - 1] == 0 && operand.p->value[sizeOther - 1] == 1)
 	{
 		//a-(-b) = a+b
 		answer.p->value = Sum(this->p->value, operand.p->value);
 		answer.p->value.push_back(0);
 	}
 	//a is negative -a-b = -(a+b)
-	else if (this->p->value[sizeThis - 1] == 1 && operand.p->value[sizeOther - 1] == 0) 	
+	else if (this->p->value[sizeThis - 1] == 1 && operand.p->value[sizeOther - 1] == 0)
 	{
 		answer.p->value = Sum(this->p->value, operand.p->value);
 		answer.p->value.push_back(1);
@@ -306,6 +306,11 @@ BigInteger BigInteger::operator / (const BigInteger& operand)
 	BigInteger dividand(Abs(*this));
 	BigInteger divisor(Abs(operand));
 
+	if (BigInteger(0) == operand)
+	{
+		std::cout<<"not a valid division\n";
+		return BigInteger(0);
+	}
 	if (dividand < divisor)
 	{
 		return BigInteger(0);
@@ -1047,6 +1052,6 @@ std::string BigInteger::toString()
 	}
 	this->p->value[this->p->value.size() - 1] == 1 ? out += "-" : out += "";
 
-	std::reverse(out.begin(),out.end());
+	std::reverse(out.begin(), out.end());
 	return out;
 }

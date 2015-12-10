@@ -116,6 +116,8 @@ int main()
 	Number n2("436875634568075464.474223242353454364645");
 	Number n3("7487235544657569032.636332");
 	Number n4("7487235544657569032.636332");
+	Number n5("1");
+	Number n6("0");
 
 	cout << "n1 = " << n1 << endl;
 	cout << "n2 = " << n2 << endl;
@@ -125,6 +127,9 @@ int main()
 	cout << "n1 - n2 = " << n1 - n2 << endl;
 	cout << "n1 * n2 = " << n1 * n2 << endl;
 	cout << "n1 / n2 = " << n1 / n2 << endl;
+
+	//cout << "n5 / n6  = " << n5/n6 << endl;
+	
 
 	//logical operations
 	if (n1 < n2) {
@@ -275,6 +280,19 @@ int main()
 	attached is an image for testing the polygon.
 
 	*/
+
+	Poi2D cp1(Number("5.5"), Number("-999.0"));
+	Poi2D cp2(Number("5.5"), Number("999.0"));
+	Poi2D cp3(Number("4.0"), Number("3.0"));
+	Poi2D cp4(Number("6.0"), Number("4.0"));
+	Poi2D cp5(Number("4.5"), Number("-999.0"));
+	Poi2D cp6(Number("4.5"), Number("999.0"));
+
+	Seg2D cs1(cp1, cp2);
+	Seg2D cs2(cp3, cp4);
+	Seg2D cs3(cp5, cp6);
+	cout << endl <<"A:" << IntersectsAndNotCollinearAndNotEndpoints(cs1, cs2);
+	cout << endl<< "B:" << IntersectsAndNotCollinearAndNotEndpoints(cs3, cs2);
 	
 	cout << "\nRelationship Tests between Polygons , points and segment";
 	 cout << "\n---------------------------------------------------------------------------------------------------";
