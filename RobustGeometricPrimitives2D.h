@@ -1,4 +1,19 @@
-#ifndef ROBUSTGEOMETRICPRIMITIVES2D_H_
+
+/*---------------------------------------------------------------------------------
+* File: RobustGeometricPrimitives2D.h
+-----------------------------------------------------------------------------------
+- Description:
+-
+- This file contains the definitions of the Spatial datatypes Poi2D,Seg2D,
+- HalfSeg2D,AttrHalfSeg2D,Rect2D and SimplePolygon2D and additional helper
+- functions.
+-
+- Created by:
+- Prerna Mandal, Sivasubramanian Kandaswami, Umar Majeed, Jyotsana Walia
+------------------------------------------------------------------------------------*/
+
+
+#ifndef ROBUSTGEOMETRICPRIMITIVES2D_H_ 
 #define ROBUSTGEOMETRICPRIMITIVES2D_H_
 
 #include <iostream>
@@ -10,6 +25,8 @@
 *Point Class
 */
 
+class AttrHalfSeg2D;
+class HalfSeg2D;
 class Poi2D
 {
 public:
@@ -27,13 +44,17 @@ public:
 
 	/* Logical Operations. */
 	bool operator <(const Poi2D& operand);
+	bool operator < (HalfSeg2D& operand);
+	bool operator > (HalfSeg2D& operand);
+	bool operator <(AttrHalfSeg2D& operand);
+	bool operator >(AttrHalfSeg2D& operand);
 	bool operator >(const Poi2D& operand);
 	bool operator <=(const Poi2D& operand);
 	bool operator >=(const Poi2D& operand);
 	bool operator ==(const Poi2D& operand);
 	bool operator !=(const Poi2D& operand);
 	friend std::ostream&operator<<(std::ostream& os, const Poi2D& output);
-	friend std::istream&operator>>(std::istream& is, const Poi2D& input);
+	friend std::istream&operator>>(std::istream& is, Poi2D& input);
 
 };
 
@@ -67,7 +88,7 @@ public:
 	bool operator ==(const Seg2D& operand);
 	bool operator !=(const Seg2D& operand);
 	friend std::ostream&operator<<(std::ostream& os, const Seg2D& output);
-	friend std::istream&operator>>(std::istream& is, const Seg2D& input);
+	friend std::istream&operator>>(std::istream& is, Seg2D& input);
 };
 
 /*
@@ -91,24 +112,29 @@ public:
 
 	/* logical operations. */
 	bool operator <(const HalfSeg2D& operand);
+	bool operator <(Poi2D& operand);
+	bool operator >(Poi2D& operand);
+	bool operator <(AttrHalfSeg2D& operand);
+	bool operator >(AttrHalfSeg2D& operand);
 	bool operator >(const HalfSeg2D& operand);
 	bool operator <=(const HalfSeg2D& operand);
 	bool operator >=(const HalfSeg2D& operand);
 	bool operator ==(const HalfSeg2D& operand);
 	bool operator !=(const HalfSeg2D& operand);
+	Poi2D dominatingPoint();
 	friend std::ostream&operator <<(std::ostream& os, const HalfSeg2D& output);
-	friend std::istream&operator >>(std::istream& is, const HalfSeg2D& input);
+	friend std::istream&operator >>(std::istream& is, HalfSeg2D& input);
 
 };
 
 /*
 *Attributed Half Segment Class
 */
-struct AttHalfSegVariable;
-class AttrHalfSeg2D :public HalfSeg2D
+class AttrHalfSeg2D
 {
 public:
 	/*Member variables */
+	HalfSeg2D hseg;
 	bool insideAbove;
 	/*Member Functions */
 	AttrHalfSeg2D();
@@ -122,19 +148,22 @@ public:
 	/*logical operators*/
 	bool operator <(const AttrHalfSeg2D& operand);
 	bool operator >(const AttrHalfSeg2D& operand);
+	bool operator <(Poi2D& operand);
+	bool operator >(Poi2D& operand);
+	bool operator <(HalfSeg2D& operand);
+	bool operator >(HalfSeg2D& operand);
 	bool operator <=(const AttrHalfSeg2D& operand);
 	bool operator >=(const AttrHalfSeg2D& operand);
 	bool operator ==(const AttrHalfSeg2D& operand);
 	bool operator !=(const AttrHalfSeg2D& operand);
-	friend std::ostream&operator<<(std::ostream& os, const AttHalfSegVariable& output);
-	friend std::istream&operator>>(std::istream& is, const AttHalfSegVariable& input);
+	friend std::ostream&operator<<(std::ostream& os, const AttrHalfSeg2D& output);
+	friend std::istream&operator>>(std::istream& is, const AttrHalfSeg2D& input);
 
 };
 
 /*
 *Minimum Bounding Rectangle Class
 */
-struct Rect2DVariable;
 class Rect2D
 {
 public:
@@ -151,16 +180,18 @@ public:
 	~Rect2D();
 
 
-	friend std::ostream&operator<<(std::ostream& os, const Rect2D& output);
-	friend std::istream&operator>>(std::istream& is, const Rect2D& input);
+	friend std::ostream&operator<<(std::ostream& os, Rect2D& output);
+	friend std::istream&operator>>(std::istream& is, Rect2D& input);
 
 };
 //Class Polygon2D
 class SimplePolygon2D
 {
 public:
+	std::vector<Poi2D> vertices;
+
 	SimplePolygon2D();
-	SimplePolygon2D(std::vector<Seg2D> initializationSegments);
+	SimplePolygon2D(std::vector<Poi2D> vertices);
 	SimplePolygon2D(const SimplePolygon2D& obj);
 	SimplePolygon2D(SimplePolygon2D&& obj);
 	~SimplePolygon2D();
@@ -174,12 +205,9 @@ public:
 	bool operator != (const SimplePolygon2D& operand);
 
 	/* I/O Operators*/
-	friend std::ostream&operator << (std::ostream& os, const SimplePolygon2D& output);
-	friend std::istream&operator >> (std::istream& is, const SimplePolygon2D& input);
+	friend std::ostream&operator << (std::ostream& os, SimplePolygon2D& output);
+	friend std::istream&operator >> (std::istream& is, SimplePolygon2D& input);
 
-private:
-	struct SimplePolygon2DImplementation;
-	SimplePolygon2DImplementation *handle;
 };
 
 
@@ -188,63 +216,66 @@ private:
 *Relationships between point and segment
 */
 
-bool PointLiesOnSegment(const Poi2D& poi, const Seg2D& seg);
+bool PointLiesOnSegment(Poi2D& poi, Seg2D& seg);
+Poi2D getPointLiesOnSegmentAndNotEndpoints(Poi2D& poi, Seg2D& seg);
+bool PointLiesOnSegmentAndNotEndpoints(Poi2D& poi, Seg2D& seg);
 bool PointLiesAboveSegment(Poi2D& poi, Seg2D& seg);
-bool PointLiesBelowSegment(const Poi2D& poi, const Seg2D& seg);
-bool PointLiesAboveOrOnSegment(const Poi2D& poi, const Seg2D& seg);
-bool PointLiesBelowOrOnSegment(const Poi2D& poi, const Seg2D& seg);
-bool PointLiesOnLeftEndPointOfSegment(const Poi2D& poi, const Seg2D& seg);
-bool PointLiesOnRightEndPointOfSegment(const Poi2D& poi, const Seg2D& seg);
-bool PointLiesLeftOFSegmentAndIsCollinear(const Poi2D& poi, const Seg2D& seg);
-bool PointLiesRightOfSegmentAndIsCollinear(const Poi2D& poi, const Seg2D& seg);
+bool PointLiesBelowSegment(Poi2D& poi, Seg2D& seg);
+bool PointLiesAboveOrOnSegment(Poi2D& poi, Seg2D& seg);
+bool PointLiesBelowOrOnSegment(Poi2D& poi, Seg2D& seg);
+bool PointLiesOnLeftEndPointOfSegment(Poi2D& poi, Seg2D& seg);
+bool PointLiesOnRightEndPointOfSegment(Poi2D& poi, Seg2D& seg);
+bool PointIsCollinearToSegment(Poi2D& poi, Seg2D& seg);
+bool PointLiesLeftOFSegmentAndIsCollinear(Poi2D& poi, Seg2D& seg);
+bool PointLiesRightOfSegmentAndIsCollinear(Poi2D& poi, Seg2D& seg);
 
 /*
 *Relationships between Segments
 */
-bool SegmentIsLesserThanSegment(Seg2D& seg, Seg2D& seg1);
-bool SegmentLiesOn(const Seg2D& seg, const Seg2D& seg1);
-bool SegmentLiesAboveSegment(const Seg2D& seg, const Seg2D& seg1);
-bool SegmentLiesBelowSegment(const Seg2D& seg, const Seg2D& seg1);
-bool SegmentLiesLeftOFSegment(const Seg2D& seg, const Seg2D& seg1);
-bool SegmentLiesRightOfSegment(const Seg2D& seg, const Seg2D& seg1);
+bool SegmentLiesOnSegment(Seg2D& seg, Seg2D& seg1);
+bool SegmentLiesAboveSegment(Seg2D& seg, Seg2D& seg1);
+bool SegmentLiesBelowSegment(Seg2D& seg, Seg2D& seg1);
+bool SegmentLiesLeftOFSegment(Seg2D& seg, Seg2D& seg1);
+bool SegmentLiesRightOfSegment(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsCollinear(Seg2D& seg, Seg2D& seg1);
 bool SegmentLiesLeftOFSegmentAndIsCollinear(Seg2D& seg, Seg2D& seg1);
 bool SegmentLiesRightOfSegmentAndIsCollinear(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsCollinearAndMeetsLeftEndpoint(Seg2D& seg, Seg2D& seg1);
-bool SegmentIsCollinearAndMeetsRightEndpoint(Seg2D& seg,Seg2D& seg1);
+bool SegmentIsCollinearAndMeetsRightEndpoint(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsCollinearAndCrossesLeftEndpoint(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsCollinearAndCrossesRightEndpoint(Seg2D& seg, Seg2D& seg1);
 bool SegmentIsCollinearAndMeetsBothEndpoint(Seg2D& seg, Seg2D& seg1);
-bool SegmentIsParallel(const Seg2D& seg, const Seg2D& seg1);
-bool SegmentIsParallelAndAbove(const Seg2D& seg, const Seg2D& seg1);
-bool SegmentIsParallelAndBelow(const Seg2D& seg, const Seg2D& seg1);
-bool SegmentIsParallelAndLiesLeft(const Seg2D& seg, const Seg2D& seg1);
-bool SegmentIsParallelAndLiesRight(const Seg2D& seg, const Seg2D& seg1);
-bool Intersects(const Seg2D& seg, const Seg2D& seg1);
-Poi2D IntersectionPoint(const Seg2D& seg, const Seg2D& seg1);
-bool Meet(const Seg2D& seg, const Seg2D& seg1);
-Poi2D MeetingPoint(const Seg2D& seg, const Seg2D& seg1);
-bool Touch(const Seg2D& seg, const Seg2D& seg1);
-Poi2D TouchingPoint(const Seg2D& seg, const Seg2D& seg1);
-Poi2D MidPoint(const Seg2D& seg1);
+bool SegmentIsParallel(Seg2D& seg, Seg2D& seg1);
+bool SegmentIsParallelAndAbove(Seg2D& seg, Seg2D& seg1);
+bool SegmentIsParallelAndBelow(Seg2D& seg, Seg2D& seg1);
+bool SegmentIsParallelAndLiesLeft(Seg2D& seg, Seg2D& seg1);
+bool SegmentIsParallelAndLiesRight(Seg2D& seg, Seg2D& seg1);
+bool Intersects(Seg2D& seg, Seg2D& seg1);
+int orientation(Poi2D p, Poi2D q, Poi2D r);
+bool SegmentIsLesserThanSegment(Seg2D& seg1, Seg2D& seg2);
+Poi2D IntersectionPoint(Seg2D& seg, Seg2D& seg1);
+bool IntersectsAndNotCollinearAndNotEndpoints(Seg2D& seg1, Seg2D& seg2);
+bool Meet(Seg2D& seg, Seg2D& seg1);
+Poi2D MeetingPoint(Seg2D& seg, Seg2D& seg1);
+bool Touch(Seg2D& seg, Seg2D& seg1);
+Poi2D TouchingPoint(Seg2D& seg, Seg2D& seg1);
+Poi2D MidPoint(Seg2D& seg1);
+bool BasicPointInBoundingBox(Poi2D& poi, SimplePolygon2D& polygon);
 
 //Determines whether a point is located on theboundary of a simple polygon.
-bool simplePointInsideSimplePolygon(const Poi2D& poi, const SimplePolygon2D& simplepolygon);
+bool simplePointInsideSimplePolygon(Poi2D& poi, SimplePolygon2D& simplepolygon);
 //Determines whether the point is located in the interior or on the boundary of the simple polygon 
-bool simplePointOnBoundaryOfSimplePoly(const Poi2D& poi, const SimplePolygon2D& simplepolygon);
+bool simplePointOnBoundaryOfSimplePoly(Poi2D& poi, SimplePolygon2D& simplepolygon);
 //Determines whether the segment is located in the interior of the simple polygon 
-bool segInsideSimplePolygon(const Seg2D& seg, const SimplePolygon2D& simplepolygon);
+bool segInsideSimplePolygon(Seg2D& seg, SimplePolygon2D& simplepolygon);
 //Determines whether the segment is located on the boundary of the simple polygon 
-bool segOnBoundaryOfSimplePolygon(const Seg2D& seg, const SimplePolygon2D& simplepolygon);
-//Determines whether the segment is located in the interior and/or on the boundary of the simple polygon
-bool segOnSimplePolygon(const Seg2D& seg, const SimplePolygon2D& simplepolygon);
+bool segOnBoundaryOfSimplePolygon(Seg2D& seg, SimplePolygon2D& simplepolygon);
 
 //Returns a minimum bounding rectangle for a segment
-Rect2D computeRect2D(const Seg2D& seg);
+Rect2D computeRect2D(Seg2D& seg);
 //Returns a minimum bounding rectangle for a polygon
-Rect2D computeRect2D(const SimplePolygon2D& simplepolygon);
+Rect2D computeRect2D(SimplePolygon2D& simplepolygon);
 //Returns whether Rect2D computation is possible
 bool isRect2DPossible();
+
 #endif
-
-

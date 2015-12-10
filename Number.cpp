@@ -4,14 +4,20 @@
 struct Number::PrivateRec
 {
 	BigRational value;
-	//float value;
 };
+
+//the default constructor initializes the BigRational inner value as 
+//zero
 Number::Number()
 {
 	p = new PrivateRec;
 	p->value = BigRational("0", "1");
 }
 
+
+//A string is taken and the respective numeratio and denominator
+//are extracted from it. the default denominator will be one (if
+//the number has no decimal numbers)
 Number::Number(std::string value)
 {
 	int count = 0;
@@ -26,7 +32,6 @@ Number::Number(std::string value)
 				std::cout << "wrong input";
 				return;
 			}
-			//den = "1";
 		}
 		else
 		{
@@ -39,18 +44,17 @@ Number::Number(std::string value)
 	}
 	this->p = new PrivateRec;
 	this->p->value = BigRational(num, den);
-	/*float val = std::stof(value);
-	p = new PrivateRec;
-	p->value = val;*/
 
 }
 
+//copy constructor
 Number::Number(const Number& obj)
 {
 	this->p = new PrivateRec;
 	this->p->value = obj.p->value;
 }
 
+//move constructor. the source becomes zero
 Number::Number(Number&& obj)
 {
 	this->p = new PrivateRec;
@@ -58,6 +62,7 @@ Number::Number(Number&& obj)
 	obj.p->value = BigRational("0", "1");
 }
 
+//copy operator overloaded
 Number Number::operator=(const Number& obj)
 {
 	if (this != &obj)
@@ -67,6 +72,7 @@ Number Number::operator=(const Number& obj)
 	return *this;
 }
 
+//move operator overloaded
 Number Number::operator=(Number&& obj)
 {
 	if (this != &obj)
@@ -83,36 +89,45 @@ Number::~Number()
 }
 
 /*MATHEMATICAL OPERATIONS*/
-Number Number::operator+(const Number& operand)
+//the calculations just use the BigRational operators to return a result. 
+//The operations are self explanatory
+Number Number::operator + (const Number& operand)
 {
 	Number answer;
 	answer.p->value = p->value + operand.p->value;
 	return answer;
 }
 
-Number Number::operator-(const Number& operand)
+Number Number::operator - (const Number& operand)
 {
 	Number answer;
 	answer.p->value = p->value - operand.p->value;
 	return answer;
 }
 
-Number Number::operator*(const Number& operand)
+Number Number::operator * (const Number& operand)
 {
 	Number answer;
 	answer.p->value = p->value * operand.p->value;
 	return answer;
 }
 
-Number Number::operator/(const Number& operand)
+Number Number::operator / (const Number& operand)
 {
+	if (Number("0") == operand)
+	{
+		std::cout << "Not a valid division\n";
+		return Number("0");
+	}
 	Number answer;
 	answer.p->value = p->value / operand.p->value;
 	return answer;
 }
 
 /*LOGICAL OPERATIONS*/
-bool Number::operator<(const Number&operand)
+//all logical operations again use the inner BigRational 
+//operators to check for true or false. 
+bool Number::operator < (const Number&operand)
 {
 	if (p->value < operand.p->value)
 	{
@@ -125,7 +140,7 @@ bool Number::operator<(const Number&operand)
 }
 
 //>
-bool Number::operator>(const Number&operand)
+bool Number::operator > (const Number&operand)
 {
 	if (p->value > operand.p->value)
 	{
@@ -139,7 +154,7 @@ bool Number::operator>(const Number&operand)
 
 
 //<=
-bool Number::operator<=(const Number&operand)
+bool Number::operator <= (const Number&operand)
 {
 	if (p->value <= operand.p->value)
 	{
@@ -152,7 +167,7 @@ bool Number::operator<=(const Number&operand)
 }
 
 //>=
-bool Number::operator>=(const Number&operand)
+bool Number::operator >= (const Number&operand)
 {
 	if (p->value >= operand.p->value)
 	{
@@ -165,7 +180,7 @@ bool Number::operator>=(const Number&operand)
 }
 
 //==
-bool Number::operator==(const Number&operand)
+bool Number::operator == (const Number&operand)
 {
 	if (p->value == operand.p->value)
 	{
@@ -178,7 +193,7 @@ bool Number::operator==(const Number&operand)
 }
 
 //!=
-bool Number::operator!=(const Number&operand)
+bool Number::operator != (const Number&operand)
 {
 	if (p->value != operand.p->value)
 	{
@@ -190,14 +205,18 @@ bool Number::operator!=(const Number&operand)
 	}
 }
 
+//output the decimal representation of the BigRational Number.
 std::ostream& operator<<(std::ostream& os, const Number& output)
 {
-	os << output.p->value;
+	os << output.p->value.toDecimalString(10);
 	return os;
 }
 
-std::istream&operator>>(std::istream& is, const Number& input)
+//take input as a string value and return the BigRational.
+std::istream&operator>>(std::istream& is, Number& input)
 {
-	is >> input.p->value;
+	std::string in;
+	is >> in;
+	input = Number(in);
 	return is;
 }
