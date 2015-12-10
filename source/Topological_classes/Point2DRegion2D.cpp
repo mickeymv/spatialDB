@@ -125,6 +125,84 @@ void Point2DRegion2D::evaluateTopoPred() {
     IMC[2][1]=1;
 
     IMC[2][2]=1;
+
+
+
+if(IMC[0][0])
+{
+
+    if(IMC[0][1])
+    {
+
+        if(IMC[0][2])
+        {
+        //overlap
+            topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_overlap_m5;
+            isPredSet=true;
+        }
+        else
+        {
+         //inside
+            topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_inside_m6;
+            isPredSet=true;
+
+        }
+
+
+    }
+    else
+    {
+        if(IMC[0][2])
+        {
+        //overlap
+            topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_overlap_m7;
+            isPredSet=true;
+        }
+        else
+        {
+          //inside
+            topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_inside_m4;
+            isPredSet=true;
+
+        }
+    }
+}
+else
+{
+    if(IMC[0][1])
+    {
+        if(IMC[0][2])
+        {
+            topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_meet_m2;
+            isPredSet=true;
+        }
+        else
+        {
+            topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_meet_m3;
+            isPredSet=true;
+        }
+    }
+    else
+    {
+        if(IMC[0][2])
+        {
+   //disjoint
+            topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_disjoint_m1;
+            isPredSet=true;
+        }
+        else
+        {
+    //disjoint
+            topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_disjoint_m1;
+            isPredSet=true;
+        }
+    }
+
+
+}
+
+
+
 }
 
 TopPredNumberPoint2DRegion2D  Point2DRegion2D::getTopologicalRelationship()
@@ -175,6 +253,7 @@ bool Point2DRegion2D::meet()
     {
         return true;
     }
+
     return false;
 }
 
