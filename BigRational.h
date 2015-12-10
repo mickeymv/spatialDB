@@ -15,7 +15,7 @@ public:
 	BigRational operator=(BigRational&& obj);
 	~BigRational();
 	/* mathematical operations */
-	BigRational operator + (const BigRational& operand);	
+	BigRational operator + (const BigRational& operand);
 	BigRational operator - (const BigRational& operand);
 	BigRational operator * (const BigRational& operand);
 	BigRational operator / (const BigRational& operand);

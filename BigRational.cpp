@@ -134,6 +134,11 @@ BigRational BigRational::operator / (const BigRational& operand)
 	BigInteger zero(0);
 	answer.p->denominator = this->p->denominator * operand.p->numerator;
 	answer.p->numerator = this->p->numerator * operand.p->denominator;
+	if (answer.p->denominator == zero)
+	{
+		std::cout << "not a valid division\n";
+		return BigRational("0", "1");
+	}
 	if (answer.p->numerator < zero && answer.p->denominator < zero)
 	{
 		answer.p->numerator = Abs(answer.p->numerator);
@@ -143,7 +148,7 @@ BigRational BigRational::operator / (const BigRational& operand)
 	{
 		answer.p->numerator = answer.p->numerator * BigInteger(-1);
 		answer.p->denominator = Abs(answer.p->denominator);
-	}	
+	}
 	BigInteger temp = Abs(answer.p->numerator);
 	BigInteger hcf = GCD(answer.p->denominator, temp);
 	answer.p->denominator = answer.p->denominator / hcf;
@@ -299,7 +304,7 @@ std::string BigRational::toDecimalString(int numberOfDecimals)
 	bool flag = false;
 	for (int i = 0; i < numberOfDecimals; i++)
 	{
-		remainder = remainder * 10; 
+		remainder = remainder * 10;
 		rem += (remainder / den).toString();
 		remainder = remainder % den;
 		if (remainder == zero)
@@ -327,28 +332,28 @@ std::string BigRational::toDecimalString(int numberOfDecimals)
 	}
 	/*while (remainder != zero)
 	{
-		remainder = remainder * ten;
-		rem += (remainder / den).toString();
-		remainder = remainder % den;
+	remainder = remainder * ten;
+	rem += (remainder / den).toString();
+	remainder = remainder % den;
 
-		for (int i = 0; i < remaindertracker.size(); i++)
-		{
-			if (remaindertracker[i] == remainder)
-			{
-				rem.insert(i, "|");
-				flag = true;
-			}
-		}
-		if (flag == true)
-		{
-			rem += "|";
-			//the remainder is found;
-			break;
-		}
-		else
-		{
-			remaindertracker.push_back(remainder);
-		}
+	for (int i = 0; i < remaindertracker.size(); i++)
+	{
+	if (remaindertracker[i] == remainder)
+	{
+	rem.insert(i, "|");
+	flag = true;
+	}
+	}
+	if (flag == true)
+	{
+	rem += "|";
+	//the remainder is found;
+	break;
+	}
+	else
+	{
+	remaindertracker.push_back(remainder);
+	}
 	}*/
 	if (remainder != zero && flag == false)
 	{
