@@ -9,7 +9,7 @@
 
 
 class SegmentClass {
-
+ //(1/2) => (lowerOrRight/upperOrLeft)
     int lowerOrRight, upperOrLeft;
 
 public:
