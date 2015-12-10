@@ -98,6 +98,34 @@ void Point2DRegion2D::exploreTopoPred() {
     return;
 
 }
+void Point2DRegion2D::evaluateTopoPred() {
+    int IMC[3][3];
+
+    for(int i=0; i<3; i++)
+    {
+        for(int j=0; j<3; j++)
+        {
+            IMC[i][j]=0;
+        }
+    }
+    if(vF[vFPoint2DRegion2DPredicates::poi_inside])
+    {
+        IMC[0][0]=1;
+    }
+    if(vF[vFPoint2DRegion2DPredicates::poi_on_bound])
+    {
+        IMC[0][1]=1;
+    }
+    if(vF[vFPoint2DRegion2DPredicates::poi_outside])
+    {
+        IMC[0][2]=1;
+    }
+    IMC[2][0]=1;
+
+    IMC[2][1]=1;
+
+    IMC[2][2]=1;
+}
 
 TopPredNumberPoint2DRegion2D  Point2DRegion2D::getTopologicalRelationship()
 {
@@ -120,5 +148,80 @@ bool Point2DRegion2D::isTopologicalRelationship(TopPredNumberPoint2DRegion2D  pr
     {
         return true;
     }
+    return false;
+}
+bool Point2DRegion2D::overlap()
+{
+    if (!isPredSet)
+    {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    if( topPredNumberPoint2DRegion2D ==TopPredNumberPoint2DRegion2D::pr_overlap_m5||topPredNumberPoint2DRegion2D ==TopPredNumberPoint2DRegion2D::pr_overlap_m7)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Point2DRegion2D::meet()
+{
+    if (!isPredSet)
+    {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    if(topPredNumberPoint2DRegion2D ==TopPredNumberPoint2DRegion2D::pr_meet_m2||topPredNumberPoint2DRegion2D ==TopPredNumberPoint2DRegion2D::pr_meet_m3)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Point2DRegion2D::inside()
+{
+    if (!isPredSet)
+    {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    if(topPredNumberPoint2DRegion2D ==TopPredNumberPoint2DRegion2D:: pr_inside_m4||topPredNumberPoint2DRegion2D ==TopPredNumberPoint2DRegion2D:: pr_inside_m6)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Point2DRegion2D::disjoint()
+{
+    if (!isPredSet)
+    {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    if(topPredNumberPoint2DRegion2D ==TopPredNumberPoint2DRegion2D:: pr_disjoint_m1)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Point2DLine2D::contains()
+{
+    return false;
+}
+
+bool Point2DLine2D::coveredBy()
+{
+    return false;
+}
+
+bool Point2DLine2D::covers()
+{
+    return false;
+}
+
+bool Point2DLine2D::equal()
+{
     return false;
 }
