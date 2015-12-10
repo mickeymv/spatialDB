@@ -267,16 +267,14 @@ bool BasicPointInBoundingBox(Poi2D& poi, SimplePolygon2D& polygon);
 //Determines whether a point is located on theboundary of a simple polygon.
 bool simplePointInsideSimplePolygon(Poi2D& poi, SimplePolygon2D& simplepolygon);
 //Determines whether the point is located in the interior or on the boundary of the simple polygon 
-bool simplePointOnBoundaryOfSimplePoly(const Poi2D& poi, const SimplePolygon2D& simplepolygon);
+bool simplePointOnBoundaryOfSimplePoly(Poi2D& poi, SimplePolygon2D& simplepolygon);
 //Determines whether the segment is located in the interior of the simple polygon 
-bool segInsideSimplePolygon(const Seg2D& seg, const SimplePolygon2D& simplepolygon);
+bool segInsideSimplePolygon(Seg2D& seg,SimplePolygon2D& simplepolygon);
 //Determines whether the segment is located on the boundary of the simple polygon 
-bool segOnBoundaryOfSimplePolygon(const Seg2D& seg, const SimplePolygon2D& simplepolygon);
-//Determines whether the segment is located in the interior and/or on the boundary of the simple polygon
-bool segOnSimplePolygon(const Seg2D& seg, const SimplePolygon2D& simplepolygon);
+bool segOnBoundaryOfSimplePolygon(Seg2D& seg, SimplePolygon2D& simplepolygon);
 
 //Returns a minimum bounding rectangle for a segment
-Rect2D computeRect2D(const Seg2D& seg);
+Rect2D computeRect2D(Seg2D& seg);
 //Returns a minimum bounding rectangle for a polygon
 Rect2D computeRect2D(SimplePolygon2D& simplepolygon);
 //Returns whether Rect2D computation is possible
