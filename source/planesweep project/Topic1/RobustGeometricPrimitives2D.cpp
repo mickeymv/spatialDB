@@ -704,7 +704,7 @@ bool AttrHalfSeg2D::operator >(HalfSeg2D& operand)
 	else
 		return false;
 }
-std::ostream&operator << (std::ostream& os, AttrHalfSeg2D& output)
+std::ostream&operator << (std::ostream& os, const AttrHalfSeg2D& output)
 {
 	os << "\nSegment:" << output.hseg.seg << " ,Is Left: " << output.hseg.isLeft << " ,Inside above:" << output.insideAbove;
 	return os;
