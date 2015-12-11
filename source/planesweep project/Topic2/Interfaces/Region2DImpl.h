@@ -75,7 +75,7 @@ class Region2DImpl: public Region2D        //inherits Region2D
     // Constant attributed half segment iterator type that allows to navigate through the attributed half segments of
     // a Region2D object in forward and reverse direction. A change of the
     // attributed half segment is not possible. 
-    class ConstAttributedHalfSegmentIterator : public ObjectIterator
+    class ConstAttributedHalfSegmentIterator
     {
       friend class Region2DImpl;
 
@@ -112,8 +112,8 @@ class Region2DImpl: public Region2D        //inherits Region2D
         // Dereferencing operators that return the value at the constant AttributedHalfSegment
         // iterator position. Dereferencing is only allowed if the iterator
         // points to a AttributedHalfSegment. The dereferenced value cannot be changed.
-        const AttrHalfSeg2D& operator *() const;
-        const AttrHalfSeg2D* operator ->() const;
+        const Region2DImpl& operator *() const;
+        const Region2DImpl* operator ->() const;
 
         // Comparison operators that compare a constant AttributedHalfSegment iterator position
         // with another const AttributedHalfSegment iterator position "rhs"

@@ -24,15 +24,13 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include "../../Topic1/RobustGeometricPrimitives2D.h"
-#include "../../Object2D.h"
-
+#include "RobustGeometricPrimitives2D.h"
 using namespace std;
 
 //class ConstSegIterator;
 
 
-class Line2D : public Object2D
+class Line2D 
 {
   public:
     //++++++++++++++++++++++++++++
@@ -175,7 +173,7 @@ class Line2D : public Object2D
     // Constant segment iterator type that allows to navigate through the segments of
     // a Line2D object in forward and reverse direction. A change of the
     // segments is not possible.
-    class ConstSegIterator : public ObjectIterator
+    class ConstSegIterator
     {
       friend class Line2D;
 
