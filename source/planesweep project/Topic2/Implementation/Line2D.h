@@ -5,10 +5,9 @@
 *
 * Description: This file specifies interface to the class Line2D and to
 *   several nested iterator classes that enable access to components (that is,
-*   segments) of Line2D objects. The class Line2D contains
+*   segments and block) of Line2D objects. The class Line2D contains
 *   specifications of several constructors, a destructor, and several
-*   type-specific unary methods of this spatial data type. Binary spatial
-*   operations that involve Line2D objects are specified elsewhere. 
+*   type-specific unary methods of this spatial data type.  
 *
 * Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
 *
@@ -20,11 +19,11 @@
 #ifndef Line2D_H
 #define Line2D_H
 
-#include <iostream>
-#include <string>
+#include "RobustGeometricPrimitives2D.h"
 #include <vector>
 #include <map>
-#include "RobustGeometricPrimitives2D.h"
+#include <iostream>
+#include <string>
 using namespace std;
 
 
@@ -71,9 +70,6 @@ class Line2D
     // object as its value.
     Line2D(Line2D&& source);
 
-    //Computing the minimum bounding rectangle for a line object
-    Rect2D MinBoundingRect();
-
     //Destructor
     virtual ~Line2D();
 
@@ -107,35 +103,27 @@ class Line2D
     bool operator != ( Line2D& rhs);
 	
     //less than operator that compares 2 Line2D objects and checks which one is lesser 
-    //by comparing their lengths in the following way:
-    //if length(x1) < length(x2) the object is less than "source" object
-    //length(x1) < length(x2)
-    //length(y1) < length(y2)
-    //length(y1) < length(y2)
+    //by comparing their sorted half segments in lexicographic order.
+    // Eg: Line1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) < Line2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns true since 
+    // ((0,0),(1,1)) < ((5,5),(6,6))
     bool operator <  ( Line2D& rhs); 
 
-    //less than operator that compares 2 Line2D objects and checks which one is lesser 
-    //or equal by comparing their lengths in the following way:
-    //if length(x1) <= length(x2) the object is less than "source" object
-    //length(x1) <= length(x2)
-    //length(y1) <= length(y2)
-    //length(y1) <= length(y2)	
+    //less than or equal operator that compares 2 Line2D objects and checks which one is lesser 
+    //or equal by comparing their sorted half segments in lexicographic order.
+    // Eg: Line1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) <= Line2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns true since 
+    // ((0,0),(1,1)) < ((5,5),(6,6))	
     bool operator <= ( Line2D& rhs);   
 
-    //less than operator that compares 2 Line2D objects and checks which one is greater 
-    //by comparing their lengths in the following way:
-    //if length(x1) > length(x2) the object is less than "source" object
-    //length(x1) > length(x2)
-    //length(y1) > length(y2)
-    //length(y1) > length(y2)	
+    //greater than operator that compares 2 Line2D objects and checks which one is greater 
+    //by comparing their sorted half segments in lexicographic order.
+    // Eg: Line1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) > Line2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns false since 
+    // ((0,0),(1,1)) < ((5,5),(6,6))	
     bool operator >  (Line2D& rhs);  
 
-    //less than operator that compares 2 Line2D objects and checks which one is greater 
-    //or equal by comparing their lengths in the following way:
-    //if length(x1) >= length(x2) the object is less than "source" object
-    //length(x1) >= length(x2)
-    //length(y1) >= length(y2)
-    //length(y1) >= length(y2)
+    //greater than or equal to operator that compares 2 Line2D objects and checks which one is greater 
+    //or equal by comparing their sorted half segments in lexicographic order.
+    // Eg: Line1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) >= Line2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns false since 
+    // ((0,0),(1,1)) < ((5,5),(6,6))
     bool operator >= (Line2D& rhs);    
 
 
@@ -145,7 +133,7 @@ class Line2D
 
     // Predicate that checks whether a Line2D object is an empty Line2D
     // object. 
-    bool isEmptyLine2D();
+    bool isEmptyLine2D() const;;
 
     // Method that yields the number of segments of Line2D object
     // If the Line2D object is an empty Line2D object, the value
@@ -221,7 +209,7 @@ class Line2D
 
       protected:
         // Forward struct declaration for the hidden implementation of a
-        // constant block iterator
+        // constant block iterator that holds the different variables of the iterator
         struct ConstBlockIteratorImplementation;
 
         // Declaration of an opaque pointer
@@ -304,7 +292,7 @@ class Line2D
 
       protected:
         // Forward struct declaration for the hidden implementation of a
-        // constant segment iterator
+        // constant segment iterator that holds the different variables of the iterator
         struct ConstSegIteratorImplementation;
 
         // Declaration of an opaque pointer
@@ -330,9 +318,6 @@ class Line2D
     ConstSegIterator sTail() const;
     
     
-    
-    
-
   protected:
     // Forward struct declaration for the hidden implementation of class
     // "Line2D" as an abstract data type (ADT)

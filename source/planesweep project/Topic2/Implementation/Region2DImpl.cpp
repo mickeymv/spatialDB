@@ -38,8 +38,6 @@ using namespace std;
       std::vector<AttrHalfSeg2D> segments;         //ordered set of all attributed half segments regarding the full Region2D structure   
       std::map<int, std::vector<AttrHalfSeg2D *>> cycles;
       std::map<int, std::map<int, std::vector<AttrHalfSeg2D *>>> faces;
-      Region2D::ConstFaceIterator::ConstFaceIteratorImplementation firstFace;
-      Region2D::ConstFaceIterator::ConstFaceIteratorImplementation lastFace;
   };
 
   //++++++++++++++++++++++++++++
@@ -49,9 +47,7 @@ using namespace std;
   //Empty constructor. Represents the empty region object.
   Region2DImpl::Region2DImpl():Region2D()
   {
-    /*handle = new Region2DImplementation;
-    handle->segments.clear();
-    handle->faces.clear(); */
+    // inherits from Region2D 
   }
 
   //Constructor for complex Region2D object. It takes
@@ -60,46 +56,46 @@ using namespace std;
   //object can be created from the input.
   Region2DImpl::Region2DImpl(std::vector<Seg2D> segmentList):Region2D(segmentList)
   {
-
+	// inherits from Region2D 
   }
 
-  // Constructor for complex region structure. It takes as input a string name that can represent either :
-  // 1) file name which contains the vector of segments from which to construct the region object 
-  // 2) string the textually represents the input vector of segments.
-  //
-  // The grammar for representing a segment vector in both cases 1 and 2 are structured as follows:
-  // Expression := '(' Segment+ ')'
-  // Segment:= '(' Point ',' Point ')'
-  // Point:= '(' Number ',' Number ')'
-  // Number := Sign ((DigitWithoutZero Digit* '.' Digit+) | ('0' '.' Digit+ ))
-  // Sign := ['+' | '-']
-  // DigitWithoutZero := '1' | '2' |'3' | '4' | '5' | '6' | '7' | '8' | '9'
-  // Digit:= '0' | DigitWithoutZero
-  //
-  // example for pointslist of point1, point2 and point3 here is: ((x1, y1),(x2, y2),(x3, y3))
-  Region2DImpl::Region2DImpl(std::string textualRegionList)
+    // Constructor for complex region structure. It takes as input a string name that can represent:
+    //  string that textually represents the input vector of segments.
+    //
+    // The grammar for representing a segment vector is structured as follows:
+    // Expression := '(' Segment+ ')'
+    // Segment:= '(' Point ',' Point ')'
+    // Point:= '(' Number ',' Number ')'
+    // Number := Sign ((DigitWithoutZero Digit* '.' Digit+) | ('0' '.' Digit+ ))
+    // Sign := ['+' | '-']
+    // DigitWithoutZero := '1' | '2' |'3' | '4' | '5' | '6' | '7' | '8' | '9'
+    // Digit:= '0' | DigitWithoutZero
+    //
+    // example input: "(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))"
+  Region2DImpl::Region2DImpl(std::string textualRegionList):Region2D(textualRegionList)
   {
+	// inherits from Region2D 
   }
 
   //copy constructor that constructs a new Region2D object with the same 
   //properties as the inputted Region2D object.
   Region2DImpl::Region2DImpl(Region2DImpl& source):Region2D(source)
-  {
-  
+  { 
+    // inherits from Region2D 
   }
 
   // Move constructor that moves a given Region2D object "source" to a
   // Region2D object. The Region2D object "source" gets the empty Region2D
   // object as its value.
   Region2DImpl::Region2DImpl(Region2DImpl&& source):Region2D(source)
-  {
-    
+  {  
+    // inherits from Region2D   
   }
 
   //Destructor
   Region2DImpl::~Region2DImpl()
   {
-   //delete handle;
+    //inherits from Region2D
   }
 
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -235,7 +231,7 @@ using namespace std;
   std::ostream&operator<<(std::ostream& os, const Region2DImpl::ConstAttributedHalfSegmentIterator& output)
   {
       os << "index Value:" << output.handlei->iteratorIndex<<" ";
-      os << "segments" << output.handlei->current->segments.at(output.handlei->iteratorIndex)<<" "<<endl;
+      os << "segments " << output.handlei->current->segments.at(output.handlei->iteratorIndex)<<" "<<endl;
 	
       return os;
   }
