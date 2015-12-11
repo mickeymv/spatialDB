@@ -35,14 +35,13 @@ class Point2D : public Object2D
       Point2D();
 
       // Constructor for complex Point2D object. It takes
-      // inputs as a vector of poi2D objects and creates a
+      // vector of poi2D objects as input and creates a
       // Point2D object after checking if a valid Point2D
       // object can be created from the input.
       Point2D(std::vector<Poi2D> pointList);
 
-      // Constructor for complex point structure. It takes as input a string name that represents the  
+      // Constructor for complex point structure. It takes as input a string that represents the  
       // string that textually represents the input vector of points.
-      //
       // The grammar for representing a point vector in both cases 1 and 2 are structured as follows:
       // Expression       := '(' Point (',' [WhiteSpace] Point)* ')'
       // Point            := '(' Number ',' [WhiteSpace] Number ')'
@@ -51,7 +50,6 @@ class Point2D : public Object2D
       // WhiteSpace       := ' '
       // DigitWithoutZero := '1' | '2' |'3' | '4' | '5' | '6' | '7' | '8' | '9'
       // Digit            := '0' | DigitWithoutZero
-      //
       // example for pointslist of point1, point2 and point3 here is: ((0, 0),(4, 5),(10, 10))
       Point2D(std::string textualPointList);
 
@@ -155,10 +153,9 @@ class Point2D : public Object2D
             // Predicate that tests whether a constant poi iterator is empty.
             bool isEmpty() const;
             
-            
+            // Friend member function used to print out the interator information
             friend std::ostream&operator<<(std::ostream&, const ConstPoiIterator&);
             
-
             // Increment/decrement operators '++', '--'
             ConstPoiIterator& operator ++ ();   // prefix
             ConstPoiIterator operator ++ (int postfix); // postfix
@@ -181,6 +178,8 @@ class Point2D : public Object2D
             bool operator >= (const ConstPoiIterator& rhs) const;
 
             private:
+              // Forward struct declaration for the hidden implementation of a
+              // constant point iterator that holds the different variables of the iterator
               struct ConstPoiIteratorImplementation;  
               ConstPoiIteratorImplementation* handle;  // Declaration of an opaque pointer
         }; // class ConstPoiIterator
@@ -204,9 +203,8 @@ class Point2D : public Object2D
         ConstPoiIterator ctail() const;
     
   private:
-  
-    struct point2DImplementation; 
-    point2DImplementation* points;
+    struct point2DImplementation;    //Structure that holds all required information for building the Point2D structure
+    point2DImplementation* points;   //pointer for the internal structure
 };
 
 #endif /* POINT2D_H_ */

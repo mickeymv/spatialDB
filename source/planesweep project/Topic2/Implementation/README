@@ -1,0 +1,54 @@
+***************************************************************************
+****************************  README **************************************
+***************************************************************************
+ *  Created on: Dec 10, 2015
+ *  Authors: Ahmed Khaled, Revathi Kadari, Namrata Choudhury, Deepa Narain
+ *  Date: Fall Semester 2015
+***************************************************************************
+
+The zipped folder has final submission of Group2 for CIS6930(Spatial and 
+Moving Objects Databases) where we have implemented "Spatial Data Types 
+Point, Line, and Region"
+
+The folder contains 
++ .h, .cpp files for 
+  *Point2D
+  *Line2D, Line2DImpl
+  *Region2D, Region2DImpl
++ Test files for Point, Line, Region 
+  *TestPoint2D.cpp
+  *TestLine2D.cpp
+  *TestRegion2D.cpp
++ MakeFile (to execute above test files)
+
+*****Instructions to compile and run*****
+
+***To compile***
+make
+
+***To compile specific classes***
+make Point
+make Line
+make Region
+
+*****To execute test files*****
+./Point
+./Line
+./Region
+
+**To clean .o files**
+make clean
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+

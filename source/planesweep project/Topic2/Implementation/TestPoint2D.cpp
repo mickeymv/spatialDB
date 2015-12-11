@@ -7,198 +7,184 @@
 #include "Point2D.h"
 #include "Line2D.h"
 #include <regex>
+#include "Line2DImpl.h"
  
 using namespace std;
 
 
 int main() 
 {
-	
-    // running the code:
-    // g++ -std=c++0x TestPoint2D.cpp Point2D.cpp Number.cpp RobustGeometricPrimitives2D.cpp BigInteger.cpp Line2DImpl.cpp BigRational.cpp Line2D.cpp
-    // ./a.out
+    // Testing Point2D
+    //The following test cases are targetting the different constructors for Point2D classes
+    // Case1: default constructor
+    // Case2: string constructor
+    // Case3: Poi2D vector constructor
+    // Case4: Copy constructor
+    // Case5: Copy assignment operation
+    // Case6: incorrect string for constructor
     
-    /*
+    cout << "\n\n------------------POINT Testing starts here ----------------------\n" <<endl;
 
-    Seg2D s1(Poi2D(Number(std::to_string(0)),Number(std::to_string(0))),Poi2D(Number(std::to_string(1)),Number(std::to_string(1))));
-    Seg2D s2(Poi2D(Number(std::to_string(1)),Number(std::to_string(1))),Poi2D(Number(std::to_string(2)),Number(std::to_string(2))));
-    Seg2D s3(Poi2D(Number(std::to_string(2)),Number(std::to_string(2))),Poi2D(Number(std::to_string(3)),Number(std::to_string(3))));
-    Seg2D s4(Poi2D(Number(std::to_string(5)),Number(std::to_string(5))),Poi2D(Number(std::to_string(6)),Number(std::to_string(6))));
-    Seg2D s5(Poi2D(Number(std::to_string(6)),Number(std::to_string(6))),Poi2D(Number(std::to_string(7)),Number(std::to_string(7))));
-    Seg2D s6(Poi2D(Number(std::to_string(7)),Number(std::to_string(7))),Poi2D(Number(std::to_string(8)),Number(std::to_string(8))));
+    //Case1
+    Point2D Point0;                             
+    cout<<"Point0 info is: " << Point0;
+    if(Point0.isEmptyPoint2D()) 
+       cout<<"empty Point0 structure"<<endl; 
+    else 
+       cout<<"nonempty Point0 structure"<<endl;
+    cout<<"Point0 number of points is " << Point0.numPoints()<<endl;
+    cout<<endl;
     
-    Seg2D s7(Poi2D(Number(std::to_string(10)),Number(std::to_string(10))),Poi2D(Number(std::to_string(11)),Number(std::to_string(11))));
-    Seg2D s8(Poi2D(Number(std::to_string(11)),Number(std::to_string(11))),Poi2D(Number(std::to_string(12)),Number(std::to_string(12))));
+    //Case2
+    Point2D Point1("((1,1),(2,2),(3,3))");                             
+    cout<<"Point1 info is " << Point1;
+    if(Point1.isEmptyPoint2D()) 
+        cout<<"empty Point1 structure"<<endl; 
+    else 
+        cout<<"nonempty Point1 structure"<<endl;
+    cout<<"Point1 number of points is " << Point1.numPoints()<<endl;
+    cout<<endl;
     
-    vector<Seg2D> Seg1;
-    Seg1.push_back(s6);
-    Seg1.push_back(s1);
-    Seg1.push_back(s2);
-    Seg1.push_back(s5);
-    Seg1.push_back(s8);
-    Seg1.push_back(s7);
-    Seg1.push_back(s3);
-    Seg1.push_back(s4);
-    
-    
-    Line2D line1(Seg1);
-    Line2D::ConstSegIterator itr;
-    Line2D::ConstSegIterator itr2;
-    Line2D::ConstSegIterator itr3;
-    itr = line1.cbegin();
-    itr2 = line1.cend();
-    if(itr.isEmpty()){cout<<"1 is empty"<<endl;}else{cout<<"1 is not empty"<<endl;}
-    if(itr3.isEmpty()){cout<<"3 is empty"<<endl;}else{cout<<"3 is not empty"<<endl;}
-    
-    
-    cout<<"Test result of cbegin: " <<itr<<endl;
-    cout<<"Test result of cend: " <<itr2<<endl;
-    cout<<"Test result of dereference operator *: " <<*itr2<<endl;
-    cout<<"Test result of dereference operator &: " <<&itr2<<endl;
-    cout<<"Test result of cbegin: " <<itr++<<endl;
-    cout<<"Test result of cbegin: " <<itr--<<endl;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    Poi2D p1(Number(std::to_string(1)),Number(std::to_string(1)));
-    Seg2D s1(Poi2D(Number(std::to_string(1)),Number(std::to_string(1))),Poi2D(Number(std::to_string(2)),Number(std::to_string(2))));
-    Seg2D s2(Poi2D(Number(std::to_string(2)),Number(std::to_string(2))),Poi2D(Number(std::to_string(3)),Number(std::to_string(3))));
-    Seg2D s3(Poi2D(Number(std::to_string(3)),Number(std::to_string(3))),Poi2D(Number(std::to_string(4)),Number(std::to_string(4))));
-    Seg2D s4(Poi2D(Number(std::to_string(0)),Number(std::to_string(0))),Poi2D(Number(std::to_string(1)),Number(std::to_string(1))));
-    
-    //HalfSeg2D hs1(s1,false);
-    //cout<<hs1<<endl;
-    
-    vector<HalfSeg2D> halfsegments;
-    HalfSeg2D* hs;
-    hs = new HalfSeg2D(s1,false);
-    halfsegments.push_back(*hs);
-    delete hs;
-    hs = new HalfSeg2D(s1,true);
-    halfsegments.push_back(*hs);
-    delete hs;
-    
-	//halfsegments.push_back(HalfSeg2D(s1,false));
-	
-	
-    //cout<<halfsegments.at(0)<<endl;
-    //cout<<halfsegments.at(1)<<endl;
-    
-    
-    vector<Seg2D> Seg1;
-    Seg1.push_back(s1);
-    Seg1.push_back(s2);
-    Seg1.push_back(s3);
-    Seg1.push_back(s4);
-    
-    Line2D line1(Seg1);
-    cout<<line1;
-    
-    Line2D::ConstSegIterator itr;
-    Line2D::ConstSegIterator itr2;
-    Line2D::ConstSegIterator itr3;
-    itr = line1.cbegin();
-    itr2 = line1.cend();
-    if(itr.isEmpty()){cout<<"1 is empty"<<endl;}else{cout<<"1 is not empty"<<endl;}
-    if(itr3.isEmpty()){cout<<"3 is empty"<<endl;}else{cout<<"3 is not empty"<<endl;}
-    
-    
-    cout<<"Test result of cbegin: " <<itr<<endl;
-    cout<<"Test result of cend: " <<itr2<<endl;
-    cout<<"Test result of dereference operator *: " <<*itr2<<endl;
-    cout<<"Test result of dereference operator &: " <<&itr2<<endl;
-    cout<<"Test result of cbegin: " <<itr++<<endl;
-    cout<<"Test result of cbegin: " <<itr--<<endl;
-    */
-    
-    vector<Poi2D> singlepoint1, singlepoint2;
-    int randomx,randomy;
+    //Case3
+    vector<Poi2D> singlepoint1;
     for(int i=0;i<3;i++)
-    {
-       randomx= rand() % 10 + 1;
-       randomy= rand() % 10 + 1;
+	{    //random fill of poi2D vectors
+       int randomx= rand() % 10 + 1;
+       int randomy= rand() % 10 + 1;
        singlepoint1.push_back(Poi2D(Number(std::to_string(randomx)),Number(std::to_string(randomy))));
-       singlepoint2.push_back(Poi2D(Number(std::to_string(i+1)), Number(std::to_string(i+1))));
     }
+    Point2D Point2(singlepoint1);
+    cout<<"Point2 info is " << Point2;
+    if(Point2.isEmptyPoint2D()) 
+       cout<<"empty Point2 structure"<<endl; 
+    else 
+       cout<<"nonempty Point2 structure"<<endl;
+    cout<<"Point2 number of points is " << Point2.numPoints()<<endl;
+    cout<<endl;
     
-    cout<<"display vector initialized Point2D: "<<endl;
-    Point2D struct1(singlepoint1);           //testing vector of points input
-    Point2D struct2(singlepoint2);
-    cout<<struct1;
-    cout<<struct2;
+    
+    //Case4
+    Point2D testPoint1("((7,7),(3,3),(2,2))");
+    Point2D Point3(testPoint1);
+    cout<<"Point3 info is " << Point3;
+    if(Point3.isEmptyPoint2D()) 
+       cout<<"empty Point3 structure"<<endl; 
+    else 
+       cout<<"nonempty Point3 structure"<<endl;
+    cout<<"Point3 number of points is " << Point3.numPoints()<<endl;
+    cout<<endl;
+    
+    
+    //Case5
+    Point2D testPoint2("((5,6),(7,8),(9,1))");
+    Point2D Point4 = testPoint2;
+    cout<<"Point4 info is " << Point4;
+    if(Point4.isEmptyPoint2D()) 
+       cout<<"empty Point4 structure"<<endl; 
+    else 
+       cout<<"nonempty Point4 structure"<<endl;
+    cout<<"Point4 number of points is " << Point4.numPoints()<<endl;
+    cout<<endl;
+    
+    
+    //Case6
+    Point2D Pointxy("(1,1),(2,2),(3,3))");                             //empty Point2D structure
+    cout<<"Pointxy info is " << Pointxy;
+    if(Pointxy.isEmptyPoint2D()) 
+        cout<<"empty Pointxy structure"<<endl; 
+    else 
+        cout<<"nonempty Pointxy structure"<<endl;
+    cout<<"Pointxy number of points is " << Pointxy.numPoints()<<endl;
+    cout<<endl;
+    
+    
+    //The following test cases is targetting the different comparison operators between different point2d objects
+    // Case1: == operator
+    // Case2: != operator
+    // Case3: < & <= operators
+    // Case4: > & >= operators
+    
+    
+    Point2D Point5("((0,0),(1,1),(2,2),(3,3),(4,4))");
+    Point2D Point8("((0,0),(1,1),(2,2),(3,3),(4,4))");
+    Point2D Point9("((0,0),(1,1),(2,2),(3,3),(5,5),(6,6))");
+    
+    //Case1
+    if(Point5 == Point8) cout<<"Point2d 5&8 are equal"<<endl;  else cout<<"Point2D 5&8 are unequal"<<endl;  
+    if(Point5 == Point9) cout<<"Point2D 5&9 are equal"<<endl;  else cout<<"Point2D 5&9 are unequal"<<endl; 
+    
+    //Case2
+    if(Point5 != Point8) cout<<"Point2D 5&8 are unequal"<<endl;  else cout<<"Point2D 5&8 are equal"<<endl;  
+    if(Point5 != Point9) cout<<"Point2D 5&9 are unequal"<<endl;  else cout<<"Point2D 5&9 are equal"<<endl; 
+    
+    //Case3
+    if(Point5 < Point8)  cout<<"Point2D 5 is < Point2D 8"<<endl;  else cout<<"Point2D 5 is !< Point2D 8"<<endl;  
+    if(Point5 < Point9)  cout<<"Point2D 5 is < Point2D 9"<<endl;  else cout<<"Point2D 5 is !< Point2D 9"<<endl; 
+    if(Point5 <= Point8) cout<<"Point2D 5 is <= Point2D 8"<<endl;  else cout<<"Point2D 5 is !<= Point2D 8"<<endl;  
+    if(Point5 <= Point9) cout<<"Point2D 5 is <= Point2D 9"<<endl;  else cout<<"Point2D 5 is !<= Point2D 9"<<endl;  
+    
+    //Case4
+    if(Point5 > Point8)  cout<<"Point2D 5 is > Point2D 8"<<endl;  else cout<<"Point2D 5 is !> Point2D 8"<<endl;  
+    if(Point5 > Point9)  cout<<"Point2D 5 is > Point2D 9"<<endl;  else cout<<"Point2D 5 is !> Point2D 9"<<endl;  
+    if(Point5 >= Point8) cout<<"Point2D 5 is >= Point2D 8"<<endl;  else cout<<"Point2D 5 is !>= Point2D 8"<<endl;  
+    if(Point5 >= Point9) cout<<"Point2D 5 is >= Point2D 9"<<endl;  else cout<<"Point2D 5 is !>= Point2D 9"<<endl;  
+   
+    
+    
+    // The following test cases is targetting the Point iterators for Point2D classes
+    // define Point2D object with string constructor, access the internal Poi2D through iterator operators.
+    // case1: defining the ConstPoiIterator object with the different constructors.
+    // case2: dereferencing into poi2D objects and incrementing/decrementing operators
+    // case3: iterator for loop on all poi2D objects
+    // case4: comparision operators for iterators.
+    
+    //case1:
+    Point2D Point6("((0,0),(1,1),(2,2),(3,3),(4,4))");
+    Point2D::ConstPoiIterator itr,itr2,itr3;
+    itr = Point6.cbegin();    							//iterator that points to the first poi2D object
+    itr2 = Point6.cend();    							//iterator that points to the last poi2D object
+    itr3 = itr;                                                                 //iterator with assignemnt operator
+    Point2D::ConstPoiIterator itr4(itr2);  				        //copy constructor for iterator
+    cout<<"Test result of cbegin: " <<itr<<endl;  		                //display iterator information
+    cout<<"Test result of cend: " <<itr2<<endl;  		                //display iterator information
+    cout<<"equal operator for iterator: " <<itr3<<endl;                         //display iterator information
+    cout<<"equal operator for iterator: " <<itr4<<endl;                         //display iterator information
+    cout<<"Test result of dereference operator *: " <<*itr2<<endl;              //display the dereferencing * operator result
+    cout<<"Test result of dereference operator &: " <<&itr2<<endl;              //display the dereferencing & operator result
+    
+    //case2:
+    Poi2D itrv1=*itr;   						        //dereference to poi2D object
+    Poi2D itrv2=*itr2;   						        //dereference to poi2D object
+    cout<<"Value of dereference to poi2D: "<<itrv1<<endl; 		        //display the value of itrv1 poi2D
+    cout<<"Value of dereference to poi2D: "<<itrv2<<endl; 		        //display the value of itrv2 poi2d
+    cout<<"Test result of prefix ++ " <<++itr<<endl;                            //display the value of itr after incrementing
+    cout<<"Test result of prefix --: " <<--itr2<<endl;                          //display the value of itr2 after decrementing
+    
+    //case3:
+    for ( Point2D::ConstPoiIterator it = Point6.cbegin(); it < Point6.ctail(); ++it )
+        cout << " output " << it << endl; 
 
-    Point2D struct3("((1,1),(2,2),(3,3))");  //testing list of points input
-    cout<<struct3;
-                                             //testing operators
-    if(struct3 == struct2)                 
-	cout<<"Testing == result true\n";
-    else
-        cout<<"Testing == result false\n";
-
-    if(struct1 != struct3)
-	cout<<"Testing != result true\n";
-    else
-        cout<<"Testing != result false\n";
-
-
-    Point2D::ConstPoiIterator itr;
-    Point2D::ConstPoiIterator itr1;
-    Point2D::ConstPoiIterator itr2;
-    Point2D::ConstPoiIterator itr3;
-    itr = struct2.chead();
-    itr1 = struct2.cbegin();
-    itr2 = struct2.cend();
-    itr3 = struct2.ctail();
+    //case4
+    Point2D structN("((1,1),(2,2),(3,3))");
+    Point2D::ConstPoiIterator itx,ity;
+    itx = structN.cbegin();
+    ity = structN.cend();
     
-    if(itr.isEmpty()){cout<<"1 is empty"<<endl;}else{cout<<"1 is not empty"<<endl;}
-    if(itr3.isEmpty()){cout<<"3 is empty"<<endl;}else{cout<<"3 is not empty"<<endl;}
+    if(itx == ity) cout<<"itx == ity"<<endl;    else cout<<"itx != ity"<<endl;  
+    if(itx != ity) cout<<"itx != ity"<<endl;    else cout<<"itx == ity"<<endl;
+    if(itx < ity) cout<<"itx < ity"<<endl;    else cout<<"itx !< ity"<<endl;  
+    if(itx <= ity) cout<<"itx <= ity"<<endl;    else cout<<"itx !<= ity"<<endl; 
+    if(itx > ity) cout<<"itx > ity"<<endl;    else cout<<"itx !> ity"<<endl;  
+    if(itx >= ity) cout<<"itx >= ity"<<endl;    else cout<<"itx !>= ity"<<endl;  
+    ++itx;
+    --ity;
+    if(itx == ity) cout<<"itx == ity"<<endl;    else cout<<"itx != ity"<<endl;  
+    if(itx != ity) cout<<"itx != ity"<<endl;    else cout<<"itx == ity"<<endl;
+    if(itx < ity) cout<<"itx < ity"<<endl;    else cout<<"itx !< ity"<<endl;  
+    if(itx <= ity) cout<<"itx <= ity"<<endl;    else cout<<"itx !<= ity"<<endl; 
+    if(itx > ity) cout<<"itx > ity"<<endl;    else cout<<"itx !> ity"<<endl;  
+    if(itx >= ity) cout<<"itx >= ity"<<endl;    else cout<<"itx !>= ity"<<endl;    
     
-    
-    cout<<"Test result of chead: " <<itr<<endl;
-    cout<<"Test result of cbegin: " <<itr1<<endl;
-    cout<<"Test result of cend: " <<itr2<<endl;
-    cout<<"Test result of ctail:  "<<itr3<<endl;
-    cout<<"Test result of prefix ++ " <<++itr1<<endl;
-    cout<<"Test result of postfix ++ temp: " <<itr1++<<endl;
-    cout<<"Test result of object after postfix ++ :" << itr1 <<endl;
-    cout<<"Test result of prefix --: " <<--itr1<<endl;
-    cout<<"Test result of postfix --: " <<itr1--<<endl;
-    cout<<"Test result of after postfix --" <<itr1 <<endl;
-    itr2--;
-    cout<<"Test result of dereference operator *: " <<*itr2<<endl;
-    cout<<"Test result of dereference operator &: " <<&itr2<<endl;
-    
-    //cout << "itr1"<<itr1<<", itr2" << itr2 ; 
-    if (itr1 == itr1)
-	cout<<"Testing iterator == result true\n";
-    if (itr1 != itr2)
-        cout<<"Testing iterator != result true\n";
-    
-     if (itr1 < itr2)
-         cout<< "Testing iterator < result true \n";
-     else if ( itr1 > itr2 )
-         cout<< "Testing iterator > result true \n";
-     
-    //Test case to show limiting ++, -- on points objects
-    Point2D::ConstPoiIterator StrItr1,StrItr2,StrItr3,StrItr4;
-    StrItr1 = struct3.chead();
-    StrItr2 = struct3.cbegin(); 
-    StrItr3 = struct3.cend();
-    StrItr4 = struct3.ctail();
-    
-    cout << "***********Testing new functionality*********"<< endl;
-    cout<< StrItr1 << endl << StrItr2 << endl << StrItr3 << endl<< StrItr4 <<endl;    
-    
-    for ( Point2D::ConstPoiIterator it = struct3.cbegin(); it < struct3.ctail(); ++it )
-        cout << " output " << it << endl;        
-
+    cout<<"------------------END OF POINT TESTING------------------\n";
     return 0;
 }

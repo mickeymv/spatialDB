@@ -2,8 +2,8 @@
  *  File: Region2D.cpp
  /******************************************************************************
  *  Purpose:  This file implements interfaces to the class Region2D defined 
- *  in the Region2D.h file and the several nested iterator classes that enable 
- *  access to components (that is, faces, cycles, segments) of Region2D objects.
+ *  in the Region2D.h file and all the nested iterator classes that enable 
+ *  access to components (that is, faces and cycles) of Region2D objects.
 
  *  Created on: Oct 8, 2015
 
@@ -16,29 +16,24 @@
 #include "Region2D.h"
 using namespace std;
 
-  
+  //ConstFaceIterator structure
   struct Region2D::ConstFaceIterator::ConstFaceIteratorImplementation{
       int iteratorIndex = -1;
       Region2D::Region2DImplementation* current = NULL;     //pointer to the full structure
   };
   
+  //ConstCycleIterator structure
   struct Region2D::ConstCycleIterator::ConstCycleIteratorImplementation{
       int iteratorIndex = -1;
       Region2D::Region2DImplementation* current = NULL;     //pointer to the full structure
   };
-  /*
-  struct Region2D::ConstSegmentIterator::ConstSegmentIteratorImplementation{
-      int iteratorIndex = -1;
-      Region2D::Region2DImplementation* current = NULL;     //pointer to the full structure
-  }; */
 
+  //Region2DImplementation structure
   struct Region2D::Region2DImplementation
   {
       std::vector<AttrHalfSeg2D> segments;         //ordered set of all attributed half segments regarding the full Region2D structure   
       std::map<int, std::vector<AttrHalfSeg2D *>> cycles;
       std::map<int, std::map<int, std::vector<AttrHalfSeg2D *>>> faces;
-      Region2D::ConstFaceIterator::ConstFaceIteratorImplementation firstFace;
-      Region2D::ConstFaceIterator::ConstFaceIteratorImplementation lastFace;
   };
   
   //++++++++++++++++++++++++++++
@@ -71,8 +66,6 @@ using namespace std;
     {
       ahl = new AttrHalfSeg2D(false, true, segmentList.at(i));
       ahr = new AttrHalfSeg2D(false, false, segmentList.at(i));
-      //ahl = new HalfSeg2D(segmentList.at(i), true);
-      //ahr = new HalfSeg2D(segmentList.at(i), false);
       attrhalfsegments.push_back(*ahl);
       attrhalfsegments.push_back(*ahr);
       delete ahl;
@@ -93,33 +86,24 @@ using namespace std;
 	      }
       }
     }
-
-	//std::cout<<"Ordered segs:\n";
-	 for (int i = 0 ; i < attrhalfsegments.size(); i++)
-    {
-	    if(attrhalfsegments.at(i).hseg.isLeft)
-      {
-	      //std::cout<<attrhalfsegments.at(i)<<std::endl;
-	    }
-    }
     
     AttrHalfSeg2D ahe;
     handle->segments.push_back(ahe);
     for (int i = 0 ; i < attrhalfsegments.size(); i++)
     {
-	    if(attrhalfsegments.at(i).hseg.isLeft)
+	  if(attrhalfsegments.at(i).hseg.isLeft)
       {
-	      handle->segments.push_back(attrhalfsegments.at(i));
-	    }
+	    handle->segments.push_back(attrhalfsegments.at(i));
+	  }
     }
     handle->segments.push_back(ahe);
  
     
+	//Grouping all the segments into cycles
     std::vector<AttrHalfSeg2D *> ce; //empty cycle 
     
-    
     int size = handle->segments.size();
-    std::vector<AttrHalfSeg2D *> currentVector;
+    std::vector<AttrHalfSeg2D *> currentVector;  // currentVector collects all the segments that make up the next cycle
     std::vector<AttrHalfSeg2D *> tempVector;
     int mbc = 0;
     int index = 0;
@@ -128,202 +112,164 @@ using namespace std;
 
     handle->cycles[mbc++] = ce;    //empty cycle created for chead
     
+	//intializing vector of flags to 0
     for (int i = 1; i<size-1; i++)
     {
 	    flags[i] = 0;
     }	
-    for (int k = 1; k<size-1; k++)
+    
+	for (int k = 1; k<size-1; k++)
     {
-      //std::cout<<k;
-      if (flags[k] == 0)  //unflaged segment.
+      if (flags[k] == 0)  // unflaged segment.
       {
-		//std::cout<<"Im in flags check condition with k = "<<k<<std::endl;
-	      index = 0;
-	      currentVector.clear();
-	      currentVector.push_back(&handle->segments.at(k));
-		//std::cout<<handle->segments.at(k)<<" is being pushed into CURRENT VECTOR in line 114\n";
-	      flags[k]=1;
-		//std::cout<<"flags["<<k<<"] is being set to 1\n";
-	      for (int i = 1; i<size-1; i++)
+		// the Kth has not been put into any cycle
+	    index = 0;
+	    currentVector.clear();   
+	    currentVector.push_back(&handle->segments.at(k));  //segment has been allotted to a cycle
+	    flags[k]=1;   // Flag set to 1
+		
+	    for (int i = 1; i<size-1; i++)  // all segments belonging to the current cycle are collected
         {
-		//std::cout<<"i has been incremented to "<<i<<std::endl;
-	        if (flags[i] == 0)   //unflaged segment.
+	      if (flags[i] == 0)   // unflaged segment.
           {
-		//std::cout<<"index = "<<index <<" and currentVector.size()= "<<currentVector.size()<<std::endl;
-	          for ( int j = 0; j<currentVector.size(); j++)
+	        for ( int j = 0; j<currentVector.size(); j++)
             {       
-	            if (Meet(currentVector.at(j)->hseg.seg, handle->segments.at(i).hseg.seg))
+	          if (Meet(currentVector.at(j)->hseg.seg, handle->segments.at(i).hseg.seg))
               {
-			//std::cout<<handle->segments.at(i).seg<<" is being pushed into temp vector\n";
-	              tempVector.push_back(&handle->segments.at(i));
-			//std::cout<<handle->segments.at(i)<<" is being pushed into TEMP VECTOR in line 129\n";
-		            flags[i] = 1;
-			//std::cout<<"flags["<<i<<"] is being set to 1\n";
-
-	            }
-			else
-			{
-				//std::cout<<currentVector.at(j)->seg <<" and "<<handle->segments.at(i).seg<< " do not meet\n";
-			}
+	            tempVector.push_back(&handle->segments.at(i));
+		        flags[i] = 1;
 	          }
-	          index = currentVector.size();
-	          for (int c = 0; c <tempVector.size(); c++)
+	        }
+	        index = currentVector.size();
+	        for (int c = 0; c <tempVector.size(); c++)
             {
-			//std::cout<<*tempVector[c]<<" is being pushed into CURRENT VECTOR in line 141\n";
-	            currentVector.push_back(tempVector[c]);
-	          }
+	          currentVector.push_back(tempVector[c]);
+	        }
   	        tempVector.clear();
           }
-	else
-	{
-		//std::cout<<"flags["<<i<<"] is: "<<flags[i]<<std::endl;
-	}
-        }//inner for loop
+        }// inner for loop
 
-	if ((currentVector.at(currentVector.size()-1)->hseg.seg) == (currentVector.at(currentVector.size()-2)->hseg.seg))
-	{
-		//std::cout<<"last 2 segs are same, so last is being removed!\n";
-		currentVector.pop_back();
-	}
-        handle->cycles[mbc++] = currentVector;
-	
+	    if ((currentVector.at(currentVector.size()-1)->hseg.seg) == (currentVector.at(currentVector.size()-2)->hseg.seg))
+	    {
+		  currentVector.pop_back();  // last 2 segs are same, so last is being removed
+	    }
+        handle->cycles[mbc++] = currentVector;  // current cycle is being added to cycles	
       }
     }//outer for loop 
 
     handle->cycles[mbc++] = ce;    //empty cycle created for ctail
-
-      /*for (int v=0; v<handle->cycles.size(); v++){
-      for(int w = 0; w<handle->cycles[v].size(); w++){
-          std::cout<<"mb["<<v<<"]["<<w<<"]: "<<*handle->cycles[v][w]<<std::endl;
-      }
-    }*/
     
+	
+	//Checking if each cycle is a valid cycle
 	int c;
 	for (int x = 1; x<handle->cycles.size()-1; x++)
 	{
-		for (int i = 0; i<handle->cycles[x].size(); i++)
-         	{
-           		c = 0;  
-           		for (int j = 0; j<handle->cycles[x].size(); j++)
-           		{
-             			if ( i!= j)
-             			{
-                			if (Meet (handle->cycles[x][i]->hseg.seg, handle->cycles[x][j]->hseg.seg))
-					{
-						c++;
-               				}
-             			}
-           		}
-         
-         		if ( c == 2)
-         		{
-           			continue;        
-         		}
-         		else
-		 	{
-				handle->cycles.clear();  
-            			handle->faces.clear();  
-				 std::cout<<"REGION NOT VALID!!!!!\n";
-				 break;
-			 }
-	 	  } 
+	  for (int i = 0; i<handle->cycles[x].size(); i++)
+      {
+        c = 0;  
+        for (int j = 0; j<handle->cycles[x].size(); j++)
+        {
+          if ( i!= j)
+          {
+            if (Meet (handle->cycles[x][i]->hseg.seg, handle->cycles[x][j]->hseg.seg))
+			{
+			  c++;
+            }
+          }
+        } 
+        if ( c == 2)  // Checking if current segment is meeting only 2 other segments present in the cycle
+        {
+          continue;        
+        }
+        else
+		{
+		  handle->cycles.clear();  
+          handle->faces.clear();  
+	      std::cout<<"REGION NOT VALID!!!!!\n";
+		  break;
+		}
+	  } 
 	} 
-	
-
-     
-    /*
-    std::cout<<" I am at line 163 "<<std::endl;
-    std::cout<<"Printing no of cycles 1: "<<handle->cycles.size()<<std::endl; */
 
     //to get the min bounding rectangle coordinates for each cycle
     Number mbrCoordinates[ handle->cycles.size()][4];
     for (int i = 1; i<handle->cycles.size()-1; i++)
     {
-         Number minx = Number(std::to_string(999));
-	 Number(miny) = Number(std::to_string(999));
-	 Number(maxx) = Number(std::to_string(-999));
-	 Number(maxy) = Number(std::to_string(-999));
+      Number minx = Number(std::to_string(999));
+	  Number(miny) = Number(std::to_string(999));
+	  Number(maxx) = Number(std::to_string(-999));
+	  Number(maxy) = Number(std::to_string(-999));
       for (int j = 0; j<handle->cycles.at(i).size(); j++)
       {
-	//std::cout<<"handle->cycles["<<i<<"]["<<j<<"]->hseg.seg.p1.x = "<<handle->cycles[i][j]->hseg.seg.p1.x<<std::endl;
-	//std::cout<<Number(std::to_string(minx))<<std::endl;
-	//std::cout<<handle->cycles[i][j]->hseg.seg.p1.x < Number(std::to_string(minx))<<std::endl;
-	//std::cout<<"handle->cycles["<<i<<"]["<<j<<"]->hseg.seg.p1.y = "<<handle->cycles[i][j]->hseg.seg.p1.y<<std::endl;
-	//std::cout<<"handle->cycles["<<i<<"]["<<j<<"]->hseg.seg.p2.x = "<<handle->cycles[i][j]->hseg.seg.p2.x<<std::endl;
-	//std::cout<<"handle->cycles["<<i<<"]["<<j<<"]->hseg.seg.p2.y = "<<handle->cycles[i][j]->hseg.seg.p2.y<<std::endl;
-
         if (handle->cycles[i][j]->hseg.seg.p1.x < minx)
-	{
-		minx = handle->cycles[i][j]->hseg.seg.p1.x;
-	}
-	if (handle->cycles[i][j]->hseg.seg.p1.x > maxx)
-	{
-    		maxx = handle->cycles[i][j]->hseg.seg.p1.x;
-	}
-	if (handle->cycles[i][j]->hseg.seg.p1.y < miny)
-	{
-		miny = handle->cycles[i][j]->hseg.seg.p1.y;
-	}
-	if (handle->cycles[i][j]->hseg.seg.p1.y > maxy)
-	{
-    		maxy = handle->cycles[i][j]->hseg.seg.p1.y;
-	}
-	if (handle->cycles[i][j]->hseg.seg.p2.x < minx)
-	{
-		minx = handle->cycles[i][j]->hseg.seg.p2.x;
-	}
-	if (handle->cycles[i][j]->hseg.seg.p2.x > maxx)
-	{
-    		maxx = handle->cycles[i][j]->hseg.seg.p2.x;
-	}
-	if (handle->cycles[i][j]->hseg.seg.p2.y < miny)
-	{
-		miny = handle->cycles[i][j]->hseg.seg.p2.y;
-	}
-	if (handle->cycles[i][j]->hseg.seg.p2.y > maxy)
-	{
-    		maxy = handle->cycles[i][j]->hseg.seg.p2.y;
-	}
+	    {
+		  minx = handle->cycles[i][j]->hseg.seg.p1.x;
+	    }
+	    if (handle->cycles[i][j]->hseg.seg.p1.x > maxx)
+	    {
+    	  maxx = handle->cycles[i][j]->hseg.seg.p1.x;
+	    }
+	    if (handle->cycles[i][j]->hseg.seg.p1.y < miny)
+	    {
+		  miny = handle->cycles[i][j]->hseg.seg.p1.y;
+	    }
+	    if (handle->cycles[i][j]->hseg.seg.p1.y > maxy)
+	    {
+    	  maxy = handle->cycles[i][j]->hseg.seg.p1.y;
+	    }
+	    if (handle->cycles[i][j]->hseg.seg.p2.x < minx)
+	    {
+		  minx = handle->cycles[i][j]->hseg.seg.p2.x;
+	    }
+	    if (handle->cycles[i][j]->hseg.seg.p2.x > maxx)
+	    {
+    	  maxx = handle->cycles[i][j]->hseg.seg.p2.x;
+	    }
+	    if (handle->cycles[i][j]->hseg.seg.p2.y < miny)
+	    {
+		  miny = handle->cycles[i][j]->hseg.seg.p2.y;
+	    }
+	    if (handle->cycles[i][j]->hseg.seg.p2.y > maxy)
+	    {
+    	  maxy = handle->cycles[i][j]->hseg.seg.p2.y;
+	    }
       }
       mbrCoordinates[i][0] = minx;
       mbrCoordinates[i][1] = miny;
       mbrCoordinates[i][2] = maxx;
       mbrCoordinates[i][3] = maxy;
-
-	//std::cout<<"mbrCoordinates["<<i<<"][0] = "<<mbrCoordinates[i][0]<<std::endl;
-	//std::cout<<"mbrCoordinates["<<i<<"][1] = "<<mbrCoordinates[i][1]<<std::endl;
-	//std::cout<<"mbrCoordinates["<<i<<"][2] = "<<mbrCoordinates[i][2]<<std::endl;
-	//std::cout<<"mbrCoordinates["<<i<<"][3] = "<<mbrCoordinates[i][3]<<std::endl;
-
     }
     
+	
+	// Grouping all cycles into faces
     std::map<int, std::vector<AttrHalfSeg2D *>> fe;
-    //make the faces
+    
     size = handle->cycles.size();
     int checked[size];
 	int flagy = 0;
-    //std::cout<<"Number of cycles: "<<size<<std::endl;
     int faceCount = 0;
     int cycleCount = 0;
 
     handle->faces[faceCount++] = fe;
+	
+	// intializing vector of flags to 0
     for (int i = 1; i<size-1; i++)
     {
       checked[i] = 0;
     }
-    for (int i = 1; i<size-1; i++)
+	
+    for (int i = 1; i<size-1; i++)  // Checking if any other cycles lie inside this cycle
     {
-      if (checked[i] == 0)
+      if (checked[i] == 0)  // If cycle hasn't already been placed in a face
       {
         for (int j = 1; j<size-1; j++)
         {
           if (i!=j)
 	      {
-            //if (Inside(handle->cycles[i], handle->cycles[j]))
+            // if current cycle is inside cycle being compared with
             if ((mbrCoordinates[j][0] > mbrCoordinates[i][0]) && (mbrCoordinates[j][2] < mbrCoordinates[i][2]) && 
                 (mbrCoordinates[j][1] > mbrCoordinates[i][1]) && (mbrCoordinates[j][3] < mbrCoordinates[i][3]))
             {
-			//	std::cout<<j<<" is inside "<<i<<std::endl;
               if (checked[i] == 0)
               {
                 checked[i] = 1;
@@ -337,161 +283,257 @@ using namespace std;
         } // inner for loop
 		if (flagy ==1)
 		{
-			faceCount++;
-			cycleCount = 0;
-			flagy = 0;
+		  faceCount++;
+		  cycleCount = 0;
+		  flagy = 0;
 		}
       }   
     } // outer for loop  
 
-    for (int i = 1; i<size-1; i++)
+	// All remaining unchecked cycles are simple faces without holes. Create seperate faces for all
+    for (int i = 1; i<size-1; i++)  
 	{
-		 if (checked[i] == 0)
-		 {
-			checked[i] = 1;
-            handle->faces[faceCount++][0] = handle->cycles[i]; 
-		 }
+	  if (checked[i] == 0)
+	  {
+		checked[i] = 1;
+        handle->faces[faceCount++][0] = handle->cycles[i]; 
+	  }
 	}
     
    handle->faces[faceCount++] = fe;
-
-    /*
-    int numberOfFaces = handle->faces.size();
-
-	std::cout<<"numberOfFaces is: "<<numberOfFaces<<std::endl;
-	
-    for(int i = 0; i < numberOfFaces; i++)
-    { 
-      std::cout<<" Printing number of cycles in face "<<i<<":"<<std::endl;
-	  std::cout<<handle->faces[i].size()<<std::endl;
-	  for (int j = 0; j<handle->faces[i].size(); j++)
-	  {
-		  for (int k = 0; k<handle->faces[i][j].size(); k++)
-		  {
-			  std::cout<<*handle->faces[i][j][k]<<std::endl;
-		  }
-	  }
-    } 
-		
-   */
-
-       cout << " End of constructor ............. \n";
     
+	
     //To set AttrHalfSeg flags.
     //loop over face
     for( int i=1; i < handle->faces.size()-1 ; i++)
     {
-     cout << " Inside outer for " ;
-     std::vector<AttrHalfSeg2D *> OuterCycleSegs = handle->faces[i][0];    //outer cycle of every face 
-     for (int j =0 ; j < OuterCycleSegs.size() ; j++)
-      {  cout << " Inside first segments for " ;
-         Number midx = (handle->faces[i][0][j]->hseg.seg.p1.x + handle->faces[i][0][j]->hseg.seg.p2.x)/Number(std::to_string(2)) ;
-         Number midy = (handle->faces[i][0][j]->hseg.seg.p1.y + handle->faces[i][0][j]->hseg.seg.p2.y)/Number(std::to_string(2)) ;  
-         Poi2D P1(midx, Number(std::to_string(99999)));
-         Poi2D P2(midx, Number(std::to_string(-99999)));
-         Seg2D refLine(P1,P2);
-            
-         //std::vector<Seg2D > midIntersects;
-         std::vector<Number> midPoints;
-         int countless = 0;
-         int countmore = 0;
-         for(int k = 0; k < OuterCycleSegs.size() ; k++)
-         { cout << " Inside second segments for ";
-           if(j != k )
-           {
-             Seg2D S = handle->faces[i][0][k]->hseg.seg;
+    for ( int a = 0; a < handle->faces[i].size() ; a++)
+    {  
+      std::vector<AttrHalfSeg2D *> CycleSegs = handle->faces[i][a];    //every cycle of every face
+ 
+      for (int j =0 ; j < CycleSegs.size() ; j++)
+      {  
+        if( handle->faces[i][a][j]->hseg.seg.p1.x != handle->faces[i][a][j]->hseg.seg.p2.x)
+        {
+		  // calculate midx and midy of the segment
+          Number midx = (handle->faces[i][a][j]->hseg.seg.p1.x + handle->faces[i][a][j]->hseg.seg.p2.x)/Number(std::to_string(2)) ;
+          Number midy = (handle->faces[i][a][j]->hseg.seg.p1.y + handle->faces[i][a][j]->hseg.seg.p2.y)/Number(std::to_string(2)) ;  
+     
+	      // create the reference line for the segment
+          Poi2D P1(midx, Number(std::to_string(999)));
+          Poi2D P2(midx, Number(std::to_string(-999)));         
+          Seg2D refLine(P1,P2);
+   
+          std::vector<Number> midPoints;
+          std::vector<int> meetflag;
+          double countless = 0;
+          double countmore = 0;
+          for(int k = 0; k < CycleSegs.size() ; k++)
+          { 
+            if(j != k )
+            {
+              Seg2D S = handle->faces[i][a][k]->hseg.seg;
              
-             if(Intersects(refLine, S))
-             {             
-              //midIntersects.push_back(S);
+              //checking if S and the reference line are intersecting
+              if(IntersectsAndNotCollinearAndNotEndpoints(refLine, S))
+              {             
                 midPoints.push_back((S.p1.y + S.p2.y)/Number(std::to_string(2)));
-                cout << "mid points collecting .....";
-             } 
-           }
-         }
-         //make groups to filter 
-         cout << " Make groups .....\n";
-         for ( int l = 0; l < midPoints.size() ; l++ )
-         { 
-           cout << " Before if of filtering groups and counting .. \n";
-           if( midy < midPoints[l]  )
-             countmore++;
-           else if ( midy > midPoints[l] )
-             countless++;
-         }
+                meetflag.push_back(0);
+              } 
+			  //checking if S and the reference line are touching
+              else if(Touch(S, refLine))
+              {   
+                midPoints.push_back((S.p1.y + S.p2.y)/Number(std::to_string(2)));
+                meetflag.push_back(1);
+              } 
+            }
+          }
+        //make groups to filter. 
+        for ( int l = 0; l < midPoints.size() ; l++ )
+        { 
+          // Before filtering groups and counting 
+          if( midy < midPoints[l] && meetflag[l] == 0  )  
+            countmore++;
+           
+          if ( midy > midPoints[l] && meetflag[l] == 0 )
+            countless++;
+            
+          if ( midy < midPoints[l] && meetflag[l] == 1  )
+            countmore = countmore + 0.5;  // increment by 0.5 if meet condition is true since 2 segments meet the refLine
+           
+          if ( midy > midPoints[l] && meetflag[l] == 1 )
+            countless = countless + 0.5;
+        } 
          
-         cout << " Count of more" << countmore << endl;
-         cout << " Count less " << countless << endl ;  
-         if ( countmore % 2 != 0)
-           { 
-             cout << "Region is above mid...set flag to true ";
-             handle->faces[i][0][j]->insideAbove = true;
-           }
-         else if ( countless % 2 != 0 )
-           { 
-             cout << "Region is below mid...set flag to false ";
-             handle->faces[i][0][j]->insideAbove = false;
-           }
-      }   
-  
+        if( a == 0 ) // outer cycle logic
+        {         
+          if ( (int)countmore % 2 != 0)
+          { 
+            //Region is above mid so set flag to true 
+            handle->faces[i][a][j]->insideAbove = true;
+          }
+          else if ( (int)countless % 2 != 0 )
+          { 
+            //Region is below mid so set flag to false 
+            handle->faces[i][a][j]->insideAbove = false;
+          }
+        }
+        else  // inner hole logic
+        {   
+          if ( (int)countmore % 2 != 0)
+          { 
+            //Region is below mid for hole so set flag to false 
+            handle->faces[i][a][j]->insideAbove = false;
+          }
+          else if ( (int)countless % 2 != 0 )
+          { 
+            //Region is above mid for hole so set flag to true 
+            handle->faces[i][a][j]->insideAbove = true;
+          }
+        }
+      }
+	  
+      else // Handles vertical segments condition
+      {   
+	    // calculate midx and midy of the segment
+        Number midx = (handle->faces[i][a][j]->hseg.seg.p1.x + handle->faces[i][a][j]->hseg.seg.p2.x)/Number(std::to_string(2)) ;
+        Number midy = (handle->faces[i][a][j]->hseg.seg.p1.y + handle->faces[i][a][j]->hseg.seg.p2.y)/Number(std::to_string(2)) ;  
+     
+	    // creates the reference line for the segment
+        Poi2D P1(Number(std::to_string(999)), midy);
+        Poi2D P2(Number(std::to_string(-999)), midy);
+        Seg2D refLine(P1,P2);
+   
+        std::vector<Number> midPoints;
+        std::vector<int> meetflag;
+        double countless = 0;
+        double countmore = 0;
+        for(int k = 0; k < CycleSegs.size() ; k++)
+        { 
+          if(j != k )
+          {
+            Seg2D S = handle->faces[i][a][k]->hseg.seg;
+             
+			//checking if S and the reference line are intersecting
+            if(IntersectsAndNotCollinearAndNotEndpoints(refLine, S))
+            {             
+               midPoints.push_back((S.p1.x + S.p2.x)/Number(std::to_string(2)));
+               meetflag.push_back(0);
+            } 
+			//checking if S and the reference line are intersecting
+            else if(Touch(S, refLine))
+            {  
+              midPoints.push_back((S.p1.x + S.p2.x)/Number(std::to_string(2)));
+              meetflag.push_back(1);
+            }
+          }
+        }
+
+		//make groups to filter 
+        for ( int l = 0; l < midPoints.size() ; l++ )
+        { 
+          if( midx < midPoints[l] && meetflag[l] == 0  )
+            countmore++;
+           
+          if ( midx > midPoints[l] && meetflag[l] == 0 )
+            countless++;
+            
+          if ( midx < midPoints[l] && meetflag[l] == 1  )
+            countmore = countmore + 0.5;   // increment by 0.5 if meet condition is true since 2 segments meet the refLine
+           
+          if ( midx > midPoints[l] && meetflag[l] == 1 )
+          {
+			countless = countless + 0.5; 
+          }
+        }
+ 
+        if(a == 0)
+        {
+          if ( (int)countmore % 2 != 0)
+          { 
+            // Region is to the right so set flag to false 
+            handle->faces[i][a][j]->insideAbove = false;
+          }
+          else if ( (int)countless % 2 != 0 )
+          { 
+            // Region is to the left so set flag to true 
+            handle->faces[i][a][j]->insideAbove = true;
+          }
+        }
+        else
+        {
+          if ( (int)countmore % 2 != 0)
+          { 
+            // Region is to the left so set flag to true 
+            handle->faces[i][a][j]->insideAbove = true;
+          }
+          else if ( (int)countless % 2 != 0 )
+          { 
+            // Region is to the right so set flag to false 
+            handle->faces[i][a][j]->insideAbove = false;
+          }
+        }
+      }
+      }
+    }
     }
   }
+  
 
-    // Constructor for complex region structure. It takes as input a string name that can represent either :
-    // 1) file name which contains the vector of segments from which to construct the region object 
-    // 2) string the textually represents the input vector of segments.
+    // Constructor for complex region structure. It takes as input a string name that represents:
+    // string that textually represents the input vector of segments.
     //
     // The grammar for representing a segment vector in both cases 1 and 2 are structured as follows:
     // Expression := '(' Segment+ ')'
-   // Segment:= '(' Point ',' Point ')'
+    // Segment:= '(' Point ',' Point ')'
     // Point:= '(' Number ',' Number ')'
     // Number := Sign ((DigitWithoutZero Digit* '.' Digit+) | ('0' '.' Digit+ ))
     // Sign := ['+' | '-']
     // DigitWithoutZero := '1' | '2' |'3' | '4' | '5' | '6' | '7' | '8' | '9'
     // Digit:= '0' | DigitWithoutZero
     //
-    // example for segment list of seg1 and seg2 here is: (((1,2),(3,4)),((5,6),(7,8)))
+    // example input: "(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))"
 
   Region2D::Region2D(std::string textualRegionList)
-   {  
-     	handle = new Region2DImplementation;
+  {  
+    handle = new Region2DImplementation;
 	handle->segments.clear();
 	handle->cycles.clear();
-        handle->faces.clear();
+    handle->faces.clear();
 	textualRegionList.erase(std::remove(textualRegionList.begin(), textualRegionList.end(), ')'), textualRegionList.end());
 	textualRegionList.erase(std::remove(textualRegionList.begin(), textualRegionList.end(), '('), textualRegionList.end());
 	std::istringstream ss(textualRegionList);
 	    
-        vector<Seg2D> segmentList;
+    vector<Seg2D> segmentList;
 	std::string token;
 	Number N1,N2,N3;
 	int count=0;
 	while(std::getline(ss, token, ','))
-        {
-	     if(count==0)
-               {
-	         count=1;
-	            N1= Number(token.c_str());
-	       }
-              else if(count==1)
-               {
-	         count=2;
-	         N2= Number(token.c_str());
-	       }
-              else if(count==2)
-              {
-	         count=3;
-	         N3= Number(token.c_str());
-	      }
-              else if(count==3)
-              {
-	        count=0; 
-	        segmentList.push_back(Seg2D(Poi2D(N1,N2),Poi2D(N3,Number(token.c_str()))));
-	      }
+    {
+	  if(count==0)
+      {
+	    count=1;
+	    N1= Number(token.c_str());
+	  }
+      else if(count==1)
+      {
+	    count=2;
+	    N2= Number(token.c_str());
+	  }
+      else if(count==2)
+      {
+	    count=3;
+	    N3= Number(token.c_str());
+	  }
+      else if(count==3)
+      {
+	    count=0; 
+	    segmentList.push_back(Seg2D(Poi2D(N1,N2),Poi2D(N3,Number(token.c_str()))));
+	  }
 	 }
 	           
 	 if(segmentList.empty())
-         {
+     {
 	   return;
 	 }
          
@@ -507,8 +549,6 @@ using namespace std;
     {
       ahl = new AttrHalfSeg2D(false, true, segmentList.at(i));
       ahr = new AttrHalfSeg2D(false, false, segmentList.at(i));
-      //ahl = new HalfSeg2D(segmentList.at(i), true);
-      //ahr = new HalfSeg2D(segmentList.at(i), false);
       attrhalfsegments.push_back(*ahl);
       attrhalfsegments.push_back(*ahr);
       delete ahl;
@@ -529,33 +569,24 @@ using namespace std;
 	      }
       }
     }
-
-	//std::cout<<"Ordered segs:\n";
-	 for (int i = 0 ; i < attrhalfsegments.size(); i++)
-    {
-	    if(attrhalfsegments.at(i).hseg.isLeft)
-      {
-	      //std::cout<<attrhalfsegments.at(i)<<std::endl;
-	    }
-    }
     
     AttrHalfSeg2D ahe;
     handle->segments.push_back(ahe);
     for (int i = 0 ; i < attrhalfsegments.size(); i++)
     {
-	    if(attrhalfsegments.at(i).hseg.isLeft)
+	  if(attrhalfsegments.at(i).hseg.isLeft)
       {
-	      handle->segments.push_back(attrhalfsegments.at(i));
-	    }
+	    handle->segments.push_back(attrhalfsegments.at(i));
+	  }
     }
     handle->segments.push_back(ahe);
  
     
+	//Grouping all the segments into cycles
     std::vector<AttrHalfSeg2D *> ce; //empty cycle 
     
-    
     int size = handle->segments.size();
-    std::vector<AttrHalfSeg2D *> currentVector;
+    std::vector<AttrHalfSeg2D *> currentVector;  // currentVector collects all the segments that make up the next cycle
     std::vector<AttrHalfSeg2D *> tempVector;
     int mbc = 0;
     int index = 0;
@@ -564,202 +595,164 @@ using namespace std;
 
     handle->cycles[mbc++] = ce;    //empty cycle created for chead
     
+	//intializing vector of flags to 0
     for (int i = 1; i<size-1; i++)
     {
 	    flags[i] = 0;
     }	
-    for (int k = 1; k<size-1; k++)
+    
+	for (int k = 1; k<size-1; k++)
     {
-      //std::cout<<k;
-      if (flags[k] == 0)  //unflaged segment.
+      if (flags[k] == 0)  // unflaged segment.
       {
-		//std::cout<<"Im in flags check condition with k = "<<k<<std::endl;
-	      index = 0;
-	      currentVector.clear();
-	      currentVector.push_back(&handle->segments.at(k));
-		//std::cout<<handle->segments.at(k)<<" is being pushed into CURRENT VECTOR in line 114\n";
-	      flags[k]=1;
-		//std::cout<<"flags["<<k<<"] is being set to 1\n";
-	      for (int i = 1; i<size-1; i++)
+		// the Kth has not been put into any cycle
+	    index = 0;
+	    currentVector.clear();   
+	    currentVector.push_back(&handle->segments.at(k));  //segment has been allotted to a cycle
+	    flags[k]=1;   // Flag set to 1
+		
+	    for (int i = 1; i<size-1; i++)  // all segments belonging to the current cycle are collected
         {
-		//std::cout<<"i has been incremented to "<<i<<std::endl;
-	        if (flags[i] == 0)   //unflaged segment.
+	      if (flags[i] == 0)   // unflaged segment.
           {
-		//std::cout<<"index = "<<index <<" and currentVector.size()= "<<currentVector.size()<<std::endl;
-	          for ( int j = 0; j<currentVector.size(); j++)
+	        for ( int j = 0; j<currentVector.size(); j++)
             {       
-	            if (Meet(currentVector.at(j)->hseg.seg, handle->segments.at(i).hseg.seg))
+	          if (Meet(currentVector.at(j)->hseg.seg, handle->segments.at(i).hseg.seg))
               {
-			//std::cout<<handle->segments.at(i).seg<<" is being pushed into temp vector\n";
-	              tempVector.push_back(&handle->segments.at(i));
-			//std::cout<<handle->segments.at(i)<<" is being pushed into TEMP VECTOR in line 129\n";
-		            flags[i] = 1;
-			//std::cout<<"flags["<<i<<"] is being set to 1\n";
-
-	            }
-			else
-			{
-				//std::cout<<currentVector.at(j)->seg <<" and "<<handle->segments.at(i).seg<< " do not meet\n";
-			}
+	            tempVector.push_back(&handle->segments.at(i));
+		        flags[i] = 1;
 	          }
-	          index = currentVector.size();
-	          for (int c = 0; c <tempVector.size(); c++)
+	        }
+	        index = currentVector.size();
+	        for (int c = 0; c <tempVector.size(); c++)
             {
-			//std::cout<<*tempVector[c]<<" is being pushed into CURRENT VECTOR in line 141\n";
-	            currentVector.push_back(tempVector[c]);
-	          }
+	          currentVector.push_back(tempVector[c]);
+	        }
   	        tempVector.clear();
           }
-	else
-	{
-		//std::cout<<"flags["<<i<<"] is: "<<flags[i]<<std::endl;
-	}
-        }//inner for loop
+        }// inner for loop
 
-	if ((currentVector.at(currentVector.size()-1)->hseg.seg) == (currentVector.at(currentVector.size()-2)->hseg.seg))
-	{
-		//std::cout<<"last 2 segs are same, so last is being removed!\n";
-		currentVector.pop_back();
-	}
-        handle->cycles[mbc++] = currentVector;
-	
+	    if ((currentVector.at(currentVector.size()-1)->hseg.seg) == (currentVector.at(currentVector.size()-2)->hseg.seg))
+	    {
+		  currentVector.pop_back();  // last 2 segs are same, so last is being removed
+	    }
+        handle->cycles[mbc++] = currentVector;  // current cycle is being added to cycles	
       }
     }//outer for loop 
 
     handle->cycles[mbc++] = ce;    //empty cycle created for ctail
-
-      /*for (int v=0; v<handle->cycles.size(); v++){
-      for(int w = 0; w<handle->cycles[v].size(); w++){
-          std::cout<<"mb["<<v<<"]["<<w<<"]: "<<*handle->cycles[v][w]<<std::endl;
-      }
-    }*/
     
+	
+	//Checking if each cycle is a valid cycle
 	int c;
 	for (int x = 1; x<handle->cycles.size()-1; x++)
 	{
-		for (int i = 0; i<handle->cycles[x].size(); i++)
-         	{
-           		c = 0;  
-           		for (int j = 0; j<handle->cycles[x].size(); j++)
-           		{
-             			if ( i!= j)
-             			{
-                			if (Meet (handle->cycles[x][i]->hseg.seg, handle->cycles[x][j]->hseg.seg))
-					{
-						c++;
-               				}
-             			}
-           		}
-         
-         		if ( c == 2)
-         		{
-           			continue;        
-         		}
-         		else
-		 	{
-				handle->cycles.clear();  
-            			handle->faces.clear();  
-				 std::cout<<"REGION NOT VALID!!!!!\n";
-				 break;
-			 }
-	 	  } 
+	  for (int i = 0; i<handle->cycles[x].size(); i++)
+      {
+        c = 0;  
+        for (int j = 0; j<handle->cycles[x].size(); j++)
+        {
+          if ( i!= j)
+          {
+            if (Meet (handle->cycles[x][i]->hseg.seg, handle->cycles[x][j]->hseg.seg))
+			{
+			  c++;
+            }
+          }
+        } 
+        if ( c == 2)  // Checking if current segment is meeting only 2 other segments present in the cycle
+        {
+          continue;        
+        }
+        else
+		{
+		  handle->cycles.clear();  
+          handle->faces.clear();  
+	      std::cout<<"REGION NOT VALID!!!!!\n";
+		  break;
+		}
+	  } 
 	} 
-	
-
-     
-    /*
-    std::cout<<" I am at line 163 "<<std::endl;
-    std::cout<<"Printing no of cycles 1: "<<handle->cycles.size()<<std::endl; */
 
     //to get the min bounding rectangle coordinates for each cycle
     Number mbrCoordinates[ handle->cycles.size()][4];
     for (int i = 1; i<handle->cycles.size()-1; i++)
     {
-         Number minx = Number(std::to_string(999));
-	 Number(miny) = Number(std::to_string(999));
-	 Number(maxx) = Number(std::to_string(-999));
-	 Number(maxy) = Number(std::to_string(-999));
+      Number minx = Number(std::to_string(999));
+	  Number(miny) = Number(std::to_string(999));
+	  Number(maxx) = Number(std::to_string(-999));
+	  Number(maxy) = Number(std::to_string(-999));
       for (int j = 0; j<handle->cycles.at(i).size(); j++)
       {
-	//std::cout<<"handle->cycles["<<i<<"]["<<j<<"]->hseg.seg.p1.x = "<<handle->cycles[i][j]->hseg.seg.p1.x<<std::endl;
-	//std::cout<<Number(std::to_string(minx))<<std::endl;
-	//std::cout<<handle->cycles[i][j]->hseg.seg.p1.x < Number(std::to_string(minx))<<std::endl;
-	//std::cout<<"handle->cycles["<<i<<"]["<<j<<"]->hseg.seg.p1.y = "<<handle->cycles[i][j]->hseg.seg.p1.y<<std::endl;
-	//std::cout<<"handle->cycles["<<i<<"]["<<j<<"]->hseg.seg.p2.x = "<<handle->cycles[i][j]->hseg.seg.p2.x<<std::endl;
-	//std::cout<<"handle->cycles["<<i<<"]["<<j<<"]->hseg.seg.p2.y = "<<handle->cycles[i][j]->hseg.seg.p2.y<<std::endl;
-
         if (handle->cycles[i][j]->hseg.seg.p1.x < minx)
-	{
-		minx = handle->cycles[i][j]->hseg.seg.p1.x;
-	}
-	if (handle->cycles[i][j]->hseg.seg.p1.x > maxx)
-	{
-    		maxx = handle->cycles[i][j]->hseg.seg.p1.x;
-	}
-	if (handle->cycles[i][j]->hseg.seg.p1.y < miny)
-	{
-		miny = handle->cycles[i][j]->hseg.seg.p1.y;
-	}
-	if (handle->cycles[i][j]->hseg.seg.p1.y > maxy)
-	{
-    		maxy = handle->cycles[i][j]->hseg.seg.p1.y;
-	}
-	if (handle->cycles[i][j]->hseg.seg.p2.x < minx)
-	{
-		minx = handle->cycles[i][j]->hseg.seg.p2.x;
-	}
-	if (handle->cycles[i][j]->hseg.seg.p2.x > maxx)
-	{
-    		maxx = handle->cycles[i][j]->hseg.seg.p2.x;
-	}
-	if (handle->cycles[i][j]->hseg.seg.p2.y < miny)
-	{
-		miny = handle->cycles[i][j]->hseg.seg.p2.y;
-	}
-	if (handle->cycles[i][j]->hseg.seg.p2.y > maxy)
-	{
-    		maxy = handle->cycles[i][j]->hseg.seg.p2.y;
-	}
+	    {
+		  minx = handle->cycles[i][j]->hseg.seg.p1.x;
+	    }
+	    if (handle->cycles[i][j]->hseg.seg.p1.x > maxx)
+	    {
+    	  maxx = handle->cycles[i][j]->hseg.seg.p1.x;
+	    }
+	    if (handle->cycles[i][j]->hseg.seg.p1.y < miny)
+	    {
+		  miny = handle->cycles[i][j]->hseg.seg.p1.y;
+	    }
+	    if (handle->cycles[i][j]->hseg.seg.p1.y > maxy)
+	    {
+    	  maxy = handle->cycles[i][j]->hseg.seg.p1.y;
+	    }
+	    if (handle->cycles[i][j]->hseg.seg.p2.x < minx)
+	    {
+		  minx = handle->cycles[i][j]->hseg.seg.p2.x;
+	    }
+	    if (handle->cycles[i][j]->hseg.seg.p2.x > maxx)
+	    {
+    	  maxx = handle->cycles[i][j]->hseg.seg.p2.x;
+	    }
+	    if (handle->cycles[i][j]->hseg.seg.p2.y < miny)
+	    {
+		  miny = handle->cycles[i][j]->hseg.seg.p2.y;
+	    }
+	    if (handle->cycles[i][j]->hseg.seg.p2.y > maxy)
+	    {
+    	  maxy = handle->cycles[i][j]->hseg.seg.p2.y;
+	    }
       }
       mbrCoordinates[i][0] = minx;
       mbrCoordinates[i][1] = miny;
       mbrCoordinates[i][2] = maxx;
       mbrCoordinates[i][3] = maxy;
-
-	//std::cout<<"mbrCoordinates["<<i<<"][0] = "<<mbrCoordinates[i][0]<<std::endl;
-	//std::cout<<"mbrCoordinates["<<i<<"][1] = "<<mbrCoordinates[i][1]<<std::endl;
-	//std::cout<<"mbrCoordinates["<<i<<"][2] = "<<mbrCoordinates[i][2]<<std::endl;
-	//std::cout<<"mbrCoordinates["<<i<<"][3] = "<<mbrCoordinates[i][3]<<std::endl;
-
     }
     
+	
+	// Grouping all cycles into faces
     std::map<int, std::vector<AttrHalfSeg2D *>> fe;
-    //make the faces
+    
     size = handle->cycles.size();
     int checked[size];
 	int flagy = 0;
-    //std::cout<<"Number of cycles: "<<size<<std::endl;
     int faceCount = 0;
     int cycleCount = 0;
 
     handle->faces[faceCount++] = fe;
+	
+	// intializing vector of flags to 0
     for (int i = 1; i<size-1; i++)
     {
       checked[i] = 0;
     }
-    for (int i = 1; i<size-1; i++)
+	
+    for (int i = 1; i<size-1; i++)  // Checking if any other cycles lie inside this cycle
     {
-      if (checked[i] == 0)
+      if (checked[i] == 0)  // If cycle hasn't already been placed in a face
       {
         for (int j = 1; j<size-1; j++)
         {
           if (i!=j)
 	      {
-            //if (Inside(handle->cycles[i], handle->cycles[j]))
+            // if current cycle is inside cycle being compared with
             if ((mbrCoordinates[j][0] > mbrCoordinates[i][0]) && (mbrCoordinates[j][2] < mbrCoordinates[i][2]) && 
                 (mbrCoordinates[j][1] > mbrCoordinates[i][1]) && (mbrCoordinates[j][3] < mbrCoordinates[i][3]))
             {
-			//	std::cout<<j<<" is inside "<<i<<std::endl;
               if (checked[i] == 0)
               {
                 checked[i] = 1;
@@ -773,24 +766,200 @@ using namespace std;
         } // inner for loop
 		if (flagy ==1)
 		{
-			faceCount++;
-			cycleCount = 0;
-			flagy = 0;
+		  faceCount++;
+		  cycleCount = 0;
+		  flagy = 0;
 		}
       }   
     } // outer for loop  
 
-    for (int i = 1; i<size-1; i++)
+	// All remaining unchecked cycles are simple faces without holes. Create seperate faces for all
+    for (int i = 1; i<size-1; i++)  
 	{
-		 if (checked[i] == 0)
-		 {
-			checked[i] = 1;
-            handle->faces[faceCount++][0] = handle->cycles[i]; 
-		 }
+	  if (checked[i] == 0)
+	  {
+		checked[i] = 1;
+        handle->faces[faceCount++][0] = handle->cycles[i]; 
+	  }
 	}
     
-   handle->faces[faceCount++] = fe;  
+   handle->faces[faceCount++] = fe;
+    
+	
+    //To set AttrHalfSeg flags.
+    //loop over face
+    for( int i=1; i < handle->faces.size()-1 ; i++)
+    {
+    for ( int a = 0; a < handle->faces[i].size() ; a++)
+    {  
+      std::vector<AttrHalfSeg2D *> CycleSegs = handle->faces[i][a];    //every cycle of every face
+ 
+      for (int j =0 ; j < CycleSegs.size() ; j++)
+      {  
+        if( handle->faces[i][a][j]->hseg.seg.p1.x != handle->faces[i][a][j]->hseg.seg.p2.x)
+        {
+		  // calculate midx and midy of the segment
+          Number midx = (handle->faces[i][a][j]->hseg.seg.p1.x + handle->faces[i][a][j]->hseg.seg.p2.x)/Number(std::to_string(2)) ;
+          Number midy = (handle->faces[i][a][j]->hseg.seg.p1.y + handle->faces[i][a][j]->hseg.seg.p2.y)/Number(std::to_string(2)) ;  
+     
+	      // create the reference line for the segment
+          Poi2D P1(midx, Number(std::to_string(999)));
+          Poi2D P2(midx, Number(std::to_string(-999)));         
+          Seg2D refLine(P1,P2);
    
+          std::vector<Number> midPoints;
+          std::vector<int> meetflag;
+          double countless = 0;
+          double countmore = 0;
+          for(int k = 0; k < CycleSegs.size() ; k++)
+          { 
+            if(j != k )
+            {
+              Seg2D S = handle->faces[i][a][k]->hseg.seg;
+             
+              //checking if S and the reference line are intersecting
+              if(IntersectsAndNotCollinearAndNotEndpoints(refLine, S))
+              {             
+                midPoints.push_back((S.p1.y + S.p2.y)/Number(std::to_string(2)));
+                meetflag.push_back(0);
+              } 
+			  //checking if S and the reference line are touching
+              else if(Touch(S, refLine))
+              {   
+                midPoints.push_back((S.p1.y + S.p2.y)/Number(std::to_string(2)));
+                meetflag.push_back(1);
+              } 
+            }
+          }
+        //make groups to filter. 
+        for ( int l = 0; l < midPoints.size() ; l++ )
+        { 
+          // Before filtering groups and counting 
+          if( midy < midPoints[l] && meetflag[l] == 0  )  
+            countmore++;
+           
+          if ( midy > midPoints[l] && meetflag[l] == 0 )
+            countless++;
+            
+          if ( midy < midPoints[l] && meetflag[l] == 1  )
+            countmore = countmore + 0.5;  // increment by 0.5 if meet condition is true since 2 segments meet the refLine
+           
+          if ( midy > midPoints[l] && meetflag[l] == 1 )
+            countless = countless + 0.5;
+        } 
+         
+        if( a == 0 ) // outer cycle logic
+        {         
+          if ( (int)countmore % 2 != 0)
+          { 
+            //Region is above mid so set flag to true 
+            handle->faces[i][a][j]->insideAbove = true;
+          }
+          else if ( (int)countless % 2 != 0 )
+          { 
+            //Region is below mid so set flag to false 
+            handle->faces[i][a][j]->insideAbove = false;
+          }
+        }
+        else  // inner hole logic
+        {   
+          if ( (int)countmore % 2 != 0)
+          { 
+            //Region is below mid for hole so set flag to false 
+            handle->faces[i][a][j]->insideAbove = false;
+          }
+          else if ( (int)countless % 2 != 0 )
+          { 
+            //Region is above mid for hole so set flag to true 
+            handle->faces[i][a][j]->insideAbove = true;
+          }
+        }
+      }
+	  
+      else // Handles vertical segments condition
+      {   
+	    // calculate midx and midy of the segment
+        Number midx = (handle->faces[i][a][j]->hseg.seg.p1.x + handle->faces[i][a][j]->hseg.seg.p2.x)/Number(std::to_string(2)) ;
+        Number midy = (handle->faces[i][a][j]->hseg.seg.p1.y + handle->faces[i][a][j]->hseg.seg.p2.y)/Number(std::to_string(2)) ;  
+     
+	    // creates the reference line for the segment
+        Poi2D P1(Number(std::to_string(999)), midy);
+        Poi2D P2(Number(std::to_string(-999)), midy);
+        Seg2D refLine(P1,P2);
+   
+        std::vector<Number> midPoints;
+        std::vector<int> meetflag;
+        double countless = 0;
+        double countmore = 0;
+        for(int k = 0; k < CycleSegs.size() ; k++)
+        { 
+          if(j != k )
+          {
+            Seg2D S = handle->faces[i][a][k]->hseg.seg;
+             
+			//checking if S and the reference line are intersecting
+            if(IntersectsAndNotCollinearAndNotEndpoints(refLine, S))
+            {             
+               midPoints.push_back((S.p1.x + S.p2.x)/Number(std::to_string(2)));
+               meetflag.push_back(0);
+            } 
+			//checking if S and the reference line are intersecting
+            else if(Touch(S, refLine))
+            {  
+              midPoints.push_back((S.p1.x + S.p2.x)/Number(std::to_string(2)));
+              meetflag.push_back(1);
+            }
+          }
+        }
+
+		//make groups to filter 
+        for ( int l = 0; l < midPoints.size() ; l++ )
+        { 
+          if( midx < midPoints[l] && meetflag[l] == 0  )
+            countmore++;
+           
+          if ( midx > midPoints[l] && meetflag[l] == 0 )
+            countless++;
+            
+          if ( midx < midPoints[l] && meetflag[l] == 1  )
+            countmore = countmore + 0.5;   // increment by 0.5 if meet condition is true since 2 segments meet the refLine
+           
+          if ( midx > midPoints[l] && meetflag[l] == 1 )
+          {
+			countless = countless + 0.5; 
+          }
+        }
+ 
+        if(a == 0)
+        {
+          if ( (int)countmore % 2 != 0)
+          { 
+            // Region is to the right so set flag to false 
+            handle->faces[i][a][j]->insideAbove = false;
+          }
+          else if ( (int)countless % 2 != 0 )
+          { 
+            // Region is to the left so set flag to true 
+            handle->faces[i][a][j]->insideAbove = true;
+          }
+        }
+        else
+        {
+          if ( (int)countmore % 2 != 0)
+          { 
+            // Region is to the left so set flag to true 
+            handle->faces[i][a][j]->insideAbove = true;
+          }
+          else if ( (int)countless % 2 != 0 )
+          { 
+            // Region is to the right so set flag to false 
+            handle->faces[i][a][j]->insideAbove = false;
+          }
+        }
+      }
+      }
+    }
+    }
    }
 
   //copy constructor that constructs a new Region2D object with the same 
@@ -801,10 +970,6 @@ using namespace std;
     handle = new Region2DImplementation;
     handle->segments.clear();
     handle->faces.clear();
-    //handle->firstFace.iteratorIndex = source.handle->firstFace.iteratorIndex;
-    //handle->lastFace.iteratorIndex = source.handle->lastFace.iteratorIndex;
-    //handle->firstFace.current = source.handle;
-    //handle->lastFace.current = source.handle;
     std::copy(source.handle->segments.begin(), source.handle->segments.end(),std::back_inserter(handle->segments));
     std::copy(source.handle->cycles.begin(), source.handle->cycles.end(), std::inserter(handle->cycles,handle->cycles.end()) );
     std::copy(source.handle->faces.begin(), source.handle->faces.end(), std::inserter(handle->faces,handle->faces.end()) );
@@ -820,10 +985,6 @@ using namespace std;
     handle = new Region2DImplementation;
     handle->segments.clear();
     handle->faces.clear();
-    handle->firstFace.iteratorIndex = source.handle->firstFace.iteratorIndex;
-    handle->lastFace.iteratorIndex = source.handle->lastFace.iteratorIndex;
-    handle->firstFace.current = source.handle;
-    handle->lastFace.current = source.handle;
     std::move(source.handle->segments.begin(), source.handle->segments.end(),std::back_inserter(handle->segments));
     std::move(source.handle->cycles.begin(), source.handle->cycles.end(), std::inserter(handle->cycles,handle->cycles.end()) );
     std::move(source.handle->faces.begin(), source.handle->faces.end(), std::inserter(handle->faces,handle->faces.end()) );
@@ -848,10 +1009,6 @@ using namespace std;
     handle = new Region2DImplementation;
     handle->segments.clear();
     handle->faces.clear();
-    handle->firstFace.iteratorIndex = source.handle->firstFace.iteratorIndex;
-    handle->lastFace.iteratorIndex = source.handle->lastFace.iteratorIndex;
-    handle->firstFace.current = source.handle;
-    handle->lastFace.current = source.handle;
     std::copy(source.handle->segments.begin(), source.handle->segments.end(),std::back_inserter(handle->segments));
     std::copy(source.handle->cycles.begin(), source.handle->cycles.end(), std::inserter(handle->cycles,handle->cycles.end()) );
     std::copy(source.handle->faces.begin(), source.handle->faces.end(), std::inserter(handle->faces,handle->faces.end()) );
@@ -866,10 +1023,6 @@ using namespace std;
     handle = new Region2DImplementation;
     handle->segments.clear();
     handle->faces.clear();
-    handle->firstFace.iteratorIndex = source.handle->firstFace.iteratorIndex;
-    handle->lastFace.iteratorIndex = source.handle->lastFace.iteratorIndex;
-    handle->firstFace.current = source.handle;
-    handle->lastFace.current = source.handle;
     std::move(source.handle->segments.begin(), source.handle->segments.end(),std::back_inserter(handle->segments));
     std::move(source.handle->cycles.begin(), source.handle->cycles.end(), std::inserter(handle->cycles,handle->cycles.end()) );
     std::move(source.handle->faces.begin(), source.handle->faces.end(), std::inserter(handle->faces,handle->faces.end()) );
@@ -907,12 +1060,9 @@ using namespace std;
 		return false;
   }
 
-  //less than operator that compares 2 Region2D objects and checks which one is lesser 
-  //by comparing their minimum bounding rectangles in the following way:
-  //if min(x1) < min(x2) the object is less than "source" object
-  //else if max (x1) < max (x2) the object is less than "source" object
-  //else if min(y1) < min(y2) the object is less than "source" object
-  //else if max(y1) < max(y2) the object is less than "source" object
+  // less than operator that compares 2 Region2D objects through comparing their sorted attributed half segments in lexicographic order.
+  // Eg: Region1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) < Region2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns true since 
+  // ((0,0),(1,1)) < ((5,5),(6,6))
   bool Region2D::operator < (Region2D& operand)
   {
    if(isEmptyRegion2D() || operand.isEmptyRegion2D()) 
@@ -926,81 +1076,73 @@ using namespace std;
 	    else
 	      continue;
 	  }
-	  if (operand.handle->segments.size() > handle->segments.size())   
+	  if (handle->segments.size() < operand.handle->segments.size())   
 	    return true;
 	  return false;
   }
     
-  //less than or equal operator that compares 2 Region2D objects and checks which one is lesser 
-  //or equal by comparing their minimum bounding rectangles in the following way:
-  //if min(x1) <= min(x2) the object is less than or equal to "source" object
-  //else if max (x1) <= max (x2) the object is less than or equal to "source" object
-  //min(y1) <= min(y2) the object is less than or equal to "source" object
-  //max(y1) <= max(y2) the object is less than or equal to "source" object
+  // less than or equal operator that compares 2 Region2D objects through comparing their sorted attributed half segments in lexicographic 
+  //order. Eg: Region1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) <= Region2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns true since 
+  // ((0,0),(1,1)) <= ((5,5),(6,6))
   bool Region2D::operator <= (Region2D& operand)
   {
     if(isEmptyRegion2D() || operand.isEmptyRegion2D()) 
 		return false;
 	  int x = (handle->segments.size() < operand.handle->segments.size()) ? handle->segments.size() : operand.handle->segments.size();
       for (unsigned i=1; i < x; i++) {
-	    if (handle->segments.at(i) <= operand.handle->segments.at(i))
+	    if (handle->segments.at(i) < operand.handle->segments.at(i) || handle->segments.at(i) == operand.handle->segments.at(i))
 	      return true;
 	    else if (handle->segments.at(i) > operand.handle->segments.at(i))
 	      return false;
 	    else
 	      continue;
 	  }
-	  if (operand.handle->segments.size() > handle->segments.size())   
+	  if (handle->segments.size() <= operand.handle->segments.size())   
 	    return true;
 	  return false;
   
   }
     
-  //greater than operator that compares 2 Region2D objects and checks which one is greater 
-  //by comparing their minimum bounding rectangles in the following way:
-  //if min(x1) > min(x2) the object is greater than "source" object
-  //else if max (x1) > max (x2)  the object is greater than "source" object
-  //else if min(y1) > min(y2) the object is greater than "source" object
-  //else if max(y1) > max(y2)  the object is greater than "source" object
+  // greater than operator that compares 2 Region2D objects through comparing their sorted attributed half segments in lexicographic order.
+  // Eg: Region1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) > Region2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns false since 
+  // ((0,0),(1,1)) < ((5,5),(6,6)).
   bool Region2D::operator > (Region2D& operand)
-  {
+  { 
     if(isEmptyRegion2D() || operand.isEmptyRegion2D()) 
 		return false;
-	  int x = (handle->segments.size() < operand.handle->segments.size()) ? handle->segments.size() : operand.handle->segments.size();
+	  int x = (handle->segments.size()  < operand.handle->segments.size()) ? handle->segments.size() : operand.handle->segments.size();
       for (unsigned i=1; i < x; i++) {
-	    if (operand.handle->segments.at(i) > handle->segments.at(i))
+	    if (handle->segments.at(i) > operand.handle->segments.at(i))
 	      return true;
-	    else if (operand.handle->segments.at(i) < handle->segments.at(i))
+	    else if (handle->segments.at(i) < operand.handle->segments.at(i))
 	      return false;
 	    else
 	      continue;
 	  }
-	  if (operand.handle->segments.size() < handle->segments.size())   
+	  if (handle->segments.size() > operand.handle->segments.size())   
 	    return true;
 	  return false;
   
   }
     
-  //greater than or equal operator that compares 2 Region2D objects and checks which one is greater 
-  //or equal by comparing their minimum bounding rectangles in the following way:
-  //if min(x1) >= min(x2)  the object is greater than or equal to "source" object
-  //else if max (x1) >= max (x2) the object is greater than or equal to "source" object
-  //else if min(y1) >= min(y2) the object is greater than or equal to "source" object
-  //else if max(y1) >= max(y2) the object is greater than or equal to "source" object
+  // greater than or equal operator that compares 2 Region2D objects through comparing their sorted attributed half segments in lexicographic 
+  //order. Eg: Region1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) >= Region2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns false since 
+  // ((0,0),(1,1)) <= ((5,5),(6,6))
   bool Region2D::operator >= (Region2D& operand)
-  {
+  {   
       if(isEmptyRegion2D() || operand.isEmptyRegion2D()) 
-       return false;
-	  int x = (handle->segments.size() < operand.handle->segments.size()) ? handle->segments.size() : operand.handle->segments.size();
+		return false;
+	  int x = (handle->segments.size()  < operand.handle->segments.size()) ? handle->segments.size() : operand.handle->segments.size();
       for (unsigned i=1; i < x; i++) {
-	    if (operand.handle->segments.at(i) >= handle->segments.at(i))
+            
+	    if (handle->segments.at(i) > operand.handle->segments.at(i) || handle->segments.at(i) == operand.handle->segments.at(i) )
 	      return true;
-	    else if (operand.handle->segments.at(i) < handle->segments.at(i))
+	    else if (handle->segments.at(i) < operand.handle->segments.at(i))
 	      return false;
 	    else
 	      continue;
 	  }
-	  if (operand.handle->segments.size() < handle->segments.size())   
+	  if (handle->segments.size() >= operand.handle->segments.size())   
 	    return true;
 	  return false;
   }
@@ -1016,7 +1158,6 @@ using namespace std;
     if((handle->segments.size() == 0)||(handle->segments.size() == 2))
 	        return true;
 		return false;       
-    //if testing fails, use faces.size()
   }
 
   // Predicate that checks whether the inputted Region2D object is a simple Region2D
@@ -1122,18 +1263,18 @@ using namespace std;
   // Textual output of segments of a Region2D object
   std::ostream& operator << (std::ostream& os, const Region2D& output)
   {
-    for (unsigned i=1; i<output.handle->segments.size()-1; i++) {
-      os << output.handle->segments.at(i)<<" ";
-      os <<std::endl;
-    }
-
     int numberOfFaces = output.handle->faces.size();
-
-	std::cout<<"numberOfFaces is: "<<numberOfFaces-2<<std::endl;
+    
+    if (numberOfFaces == 0 )
+    { 
+       cout << " Region is Empty! \n " ;
+       return os;
+    }
+    std::cout<<"numberOfFaces is: "<<numberOfFaces-2<<std::endl;
 	
     for(int i = 1; i < numberOfFaces-1; i++)
     { 
-      std::cout<<" Printing number of cycles in face ---------->"<<i<<":"<<std::endl;
+      std::cout<<"Printing number of cycles in face "<<i<<":";
 	  std::cout<<output.handle->faces[i].size()<<std::endl;
 	  for (int j = 0; j<output.handle->faces[i].size(); j++)
 	  {
@@ -1202,41 +1343,28 @@ using namespace std;
   // Increment/decrement operators '++', '--'
   Region2D::ConstFaceIterator& Region2D::ConstFaceIterator::operator ++ () //prefix
   {
-   if(handlei->iteratorIndex < handlei->current->faces.size()-1)
-    {  handlei->iteratorIndex++;
-       return(*this);
-    }
-    //else cannot increment as it goes beyond ctail
+   handlei->iteratorIndex++;
+   return(*this);
   }
 
   Region2D::ConstFaceIterator Region2D::ConstFaceIterator::operator ++ (int postfix) //postfix
   {
-   if(handlei->iteratorIndex < handlei->current->faces.size()-1)
-   {
-     ConstFaceIterator tmp(*this);
-     handlei->iteratorIndex++;
-     return(tmp);
-   }
-
+   ConstFaceIterator tmp(*this);
+   handlei->iteratorIndex++;
+   return(tmp);
   }
 
   Region2D::ConstFaceIterator& Region2D::ConstFaceIterator::operator -- ()   // prefix
   {
-   if(handlei->iteratorIndex > 0)
-   {
-     handlei->iteratorIndex--;
-     return(*this);
-   }
+   handlei->iteratorIndex--;
+   return(*this);
   }
 
   Region2D::ConstFaceIterator Region2D::ConstFaceIterator::operator -- (int postfix) // postfix
   {
-   if(handlei->iteratorIndex > 0)
-   {
-     ConstFaceIterator tmp(*this);
-     handlei->iteratorIndex--;
-     return(tmp);
-   }
+   ConstFaceIterator tmp(*this);
+   handlei->iteratorIndex--;
+   return(tmp);
   }
 
   // Dereferencing operators that return the value at the constant face
@@ -1245,7 +1373,6 @@ using namespace std;
   const Region2D Region2D::ConstFaceIterator::operator *() const
   { 
    int i = this->handlei->iteratorIndex;
-   //std::vector<AttrHalfSeg2D> newAttrSegs = *(this->handlei->current->cycles[i]);
    std::vector<Seg2D> Segs1;
    
    for( int k = 0; k < this->handlei->current->faces[i].size(); k++)
@@ -1260,7 +1387,6 @@ using namespace std;
   const Region2D Region2D::ConstFaceIterator::operator ->() const
   {  
     int i = this->handlei->iteratorIndex;
-   //std::vector<AttrHalfSeg2D> newAttrSegs = *(this->handlei->current->cycles[i]);
    std::vector<Seg2D> Segs2;
    
    for( int k = 0; k < this->handlei->current->faces[i].size(); k++)
@@ -1307,8 +1433,6 @@ using namespace std;
 
    std::ostream&operator<<(std::ostream& os, const Region2D::ConstFaceIterator& output)
    {
-     //if( output.handlei->iteratorIndex > 0 && output.handlei->iteratorIndex < output.handlei->current->faces.size()-2 )
-     //{
       os << "index Value:" << output.handlei->iteratorIndex<<" ";
       os << "number of cycles in face:" << output.handlei->current->faces.at(output.handlei->iteratorIndex).size()<<" "<<endl;
       for(int x=0;x<output.handlei->current->faces.at(output.handlei->iteratorIndex).size();x++)
@@ -1316,7 +1440,6 @@ using namespace std;
         for(int y=0;y<output.handlei->current->faces[output.handlei->iteratorIndex][x].size();y++)
 	 os << "segments" << *output.handlei->current->faces[output.handlei->iteratorIndex][x][y]<<" "<<endl;
 	}
-      //}
       return os;
    }
   // Method that returns a constant face iterator to the first face of a
@@ -1362,7 +1485,7 @@ using namespace std;
   }
 
 
-  // Default constructor that creates an empty constant hole cycle iterator.
+  // Default constructor that creates an empty constant cycle iterator.
   Region2D::ConstCycleIterator::ConstCycleIterator()
   {
    handlei = new ConstCycleIteratorImplementation;
@@ -1370,8 +1493,8 @@ using namespace std;
    handlei->current = NULL;
   }
 
-  // Copy constructor that constructs a constant hole cycle iterator from a
-  // given constant hole cycle iterator "source".
+  // Copy constructor that constructs a constant cycle iterator from a
+  // given constant cycle iterator "source".
   Region2D::ConstCycleIterator::ConstCycleIterator(const ConstCycleIterator& source)
   {
    handlei = new ConstCycleIteratorImplementation;
@@ -1379,9 +1502,9 @@ using namespace std;
    handlei->current = source.handlei->current;
   }
 
-  // Move constructor that moves a given constant hole cycle iterator "source"
-  // to a constant hole cycle iterator. The constant hole cycle iterator "source"
-  // gets the empty constant hole cycle iterator as its value.
+  // Move constructor that moves a given constant cycle iterator "source"
+  // to a constant  cycle iterator. The constant  cycle iterator "source"
+  // gets the empty constant cycle iterator as its value.
   Region2D::ConstCycleIterator::ConstCycleIterator(const ConstCycleIterator&& source)
   {
    handlei = new ConstCycleIteratorImplementation;
@@ -1390,13 +1513,13 @@ using namespace std;
   }
 
   // Destructor that frees the main memory space allocated for a constant
-  // hole cycle iterator.
+  // cycle iterator.
   Region2D::ConstCycleIterator::~ConstCycleIterator()
   {
    delete handlei;
   }
 
-  // Assignment operator that assigns another constant hole cycle iterator
+  // Assignment operator that assigns another constant cycle iterator
   // "rhs" to the constant face iterator.
   Region2D::ConstCycleIterator& Region2D::ConstCycleIterator::operator = (const ConstCycleIterator& rhs)
   {
@@ -1404,7 +1527,7 @@ using namespace std;
     handlei->current = rhs.handlei->current; 
   }
 
-  // Predicate that tests whether a constant HoleCycle iterator is empty.
+  // Predicate that tests whether a constant Cycle iterator is empty.
   bool Region2D::ConstCycleIterator::isEmpty() const
   {
    return (handlei->current == NULL);   
@@ -1412,53 +1535,38 @@ using namespace std;
 
   // Increment/decrement operators '++', '--'
   Region2D::ConstCycleIterator& Region2D::ConstCycleIterator::operator ++ ()  // prefix
-  { 
-
-    //if(handlei->iteratorIndex < handlei->current->cycles.size()-2)
-    //{ 
-      handlei->iteratorIndex++;
-      return(*this);
-    //}
+  {
+    handlei->iteratorIndex++;
+    return(*this);
   }
 
   Region2D::ConstCycleIterator Region2D::ConstCycleIterator::operator ++ (int postfix) // postfix
   {
-    
-    //if(handlei->iteratorIndex < handlei->current->cycles.size()-2)
-    //{
-      ConstCycleIterator tmp(*this);
-      handlei->iteratorIndex++;
-      return(tmp);
-    //}
+    ConstCycleIterator tmp(*this);
+    handlei->iteratorIndex++;
+    return(tmp);
   }
 
   Region2D::ConstCycleIterator& Region2D::ConstCycleIterator::operator -- ()   // prefix
   {
-    //if(handlei->iteratorIndex > 1)
-    //{
-      handlei->iteratorIndex--;
-      return(*this);
-    //}
+    handlei->iteratorIndex--;
+    return(*this);
   }
 
   Region2D::ConstCycleIterator Region2D::ConstCycleIterator::operator -- (int postfix) // postfix
-  { 
-    //if(handlei->iteratorIndex > 1)
-    //{ 
-     ConstCycleIterator tmp(*this);
-     handlei->iteratorIndex--;
-     return(tmp);
-    //}
+  {
+    ConstCycleIterator tmp(*this);
+    handlei->iteratorIndex--;
+    return(tmp);
   }
 
-  // Dereferencing operators that return the value at the constant HoleCycle
+  // Dereferencing operators that return the value at the constant Cycle
   // iterator position. Dereferencing is only allowed if the iterator
-  // points to a hole cycle. The dereferenced value cannot be changed.
+  // points to a cycle. The dereferenced value cannot be changed.
   const Region2D Region2D::ConstCycleIterator::operator *() const
   {
    
    int i = this->handlei->iteratorIndex;
-   //std::vector<AttrHalfSeg2D> newAttrSegs = *(this->handlei->current->cycles[i]);
    std::vector<Seg2D> newSegs1;
    for ( int j = 0; j < this->handlei->current->cycles[i].size(); j++)
    {
@@ -1472,7 +1580,6 @@ using namespace std;
   const Region2D Region2D::ConstCycleIterator::operator ->() const
   { 
    int i = this->handlei->iteratorIndex;
-   //std::vector<AttrHalfSeg2D> newAttrSegs = *(this->handlei->current->cycles[i]);
    std::vector<Seg2D> newSegs2;
    for ( int j = 0; j < this->handlei->current->cycles[i].size(); j++)
    {
@@ -1482,8 +1589,8 @@ using namespace std;
     
    }
 
-  // Comparison operators that compare a constant HoleCycle iterator position
-  // with another const HoleCycle iterator position "rhs"
+  // Comparison operators that compare a constant Cycle iterator position
+  // with another const Cycle iterator position "rhs"
   bool Region2D::ConstCycleIterator::operator == (const ConstCycleIterator& rhs) const
   {
    return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex == rhs.handlei->iteratorIndex));
@@ -1491,7 +1598,7 @@ using namespace std;
 
   bool Region2D::ConstCycleIterator::operator != (const ConstCycleIterator& rhs) const
   {
-   return ((this->handlei->current != rhs.handlei->current)&&(this->handlei->iteratorIndex != rhs.handlei->iteratorIndex));
+   return ((this->handlei->current != rhs.handlei->current)||(this->handlei->iteratorIndex != rhs.handlei->iteratorIndex));
   }
 
   bool Region2D::ConstCycleIterator::operator <  (const ConstCycleIterator& rhs) const
@@ -1515,19 +1622,17 @@ using namespace std;
   }
 
   std::ostream&operator<<(std::ostream& os, const Region2D::ConstCycleIterator& output)
-   { 
-     
-       os << "index Value:" << output.handlei->iteratorIndex<<" ";
-       os << "number of segments in cycle:" << output.handlei->current->cycles.at(output.handlei->iteratorIndex).size()<<" "<<endl;
-       for(int x=0;x<output.handlei->current->cycles.at(output.handlei->iteratorIndex).size();x++)
+   {
+      os << "index Value:" << output.handlei->iteratorIndex<<" ";
+      os << "number of segments in cycle:" << output.handlei->current->cycles.at(output.handlei->iteratorIndex).size()<<" "<<endl;
+      for(int x=0;x<output.handlei->current->cycles.at(output.handlei->iteratorIndex).size();x++)
         { 
 	 os << "segments" << *output.handlei->current->cycles[output.handlei->iteratorIndex][x]<<" "<<endl;
 	}
-       
-     return os;
+      return os;
    }
 
-  // Method that returns a constant HoleCycle iterator to the first HoleCycle of a
+  // Method that returns a constant Cycle iterator to the first Cycle of a
   // Region2D object.
   Region2D::ConstCycleIterator Region2D::cHbegin() const
   {
@@ -1537,7 +1642,7 @@ using namespace std;
     return begin;
   }
 
-  // Method that returns a constant HoleCycle iterator to the last HoleCycle of a
+  // Method that returns a constant Cycle iterator to the last Cycle of a
   // Region2D object.
   Region2D::ConstCycleIterator Region2D::cHend() const
   {
@@ -1548,9 +1653,9 @@ using namespace std;
   }
 
 
-  // Method that returns a constant HoleCycle iterator to the position before the
-  // first HoleCycle of a Region2D object. Note that dereferencing this iterator
-  // yields the empty constant HoleCycle iterator.
+  // Method that returns a constant Cycle iterator to the position before the
+  // first Cycle of a Region2D object. Note that dereferencing this iterator
+  // yields the empty constant Cycle iterator.
   Region2D::ConstCycleIterator Region2D::cHhead() const
   {
      ConstCycleIterator h;
@@ -1559,9 +1664,9 @@ using namespace std;
      return h;
   }
 
-  // Method that returns a constant HoleCycle iterator to the position after the
-  // last HoleCycle of a Region2D object. Note that dereferencing this iterator
-  // yields the empty constant HoleCycle iterator.
+  // Method that returns a constant Cycle iterator to the position after the
+  // last Cycle of a Region2D object. Note that dereferencing this iterator
+  // yields the empty constant Cycle iterator.
   Region2D::ConstCycleIterator Region2D::cHtail() const
   {
      ConstCycleIterator t;
@@ -1570,169 +1675,3 @@ using namespace std;
      return t;
   }
 
-
-
-/*
-  // Default constructor that creates an empty constant Segment iterator.
-  Region2D::ConstSegmentIterator::ConstSegmentIterator()
-  {
-   handlei = new ConstSegmentIteratorImplementation;
-   handlei->iteratorIndex = -1;
-   handlei->current = NULL;
-  }
-
-  // Copy constructor that constructs a constant Segment iterator from a
-  // given constant Segment iterator "source".
-  Region2D::ConstSegmentIterator::ConstSegmentIterator(const ConstSegmentIterator& source)
-  {
-   handlei = new ConstSegmentIteratorImplementation;
-   handlei->iteratorIndex = source.handlei->iteratorIndex;
-   handlei->current = source.handlei->current;
-  }
-
-  // Move constructor that moves a given constant Segment iterator "source"
-  // to a constant Segment iterator. The constant Segment iterator "source"
-  // gets the empty constant Segment iterator as its value.
-  Region2D::ConstSegmentIterator::ConstSegmentIterator(const ConstSegmentIterator&& source)
-  {
-   handlei = new ConstSegmentIteratorImplementation;
-   handlei->iteratorIndex = std::move(source.handlei->iteratorIndex);
-   handlei->current = std::move(source.handlei->current);
-  }
-
-  // Destructor that frees the main memory space allocated for a constant
-  // Segment iterator.
-  Region2D::ConstSegmentIterator::~ConstSegmentIterator()
-  {
-    delete handlei;
-  }
-
-  // Assignment operator that assigns another constant Segment iterator
-  // "rhs" to the constant Segment iterator.
-  Region2D::ConstSegmentIterator& Region2D::ConstSegmentIterator::operator = (const ConstSegmentIterator& rhs)
-  {
-    handlei->iteratorIndex = rhs.handlei->iteratorIndex; 
-    handlei->current = rhs.handlei->current; 
-  }
-
-  // Predicate that tests whether a constant Segment iterator is empty.
-  bool Region2D::ConstSegmentIterator::isEmpty() const
-  {
-    return (handlei->current == NULL);
-  }
-
-  // Increment/decrement operators '++', '--'
-  Region2D::ConstSegmentIterator& Region2D::ConstSegmentIterator::operator ++ ()   // prefix
-  {
-    handlei->iteratorIndex++;
-    return(*this);
-  }
-
-  Region2D::ConstSegmentIterator Region2D::ConstSegmentIterator::operator ++ (int postfix) // postfix
-  {
-    ConstSegmentIterator tmp(*this);
-    handlei->iteratorIndex++;
-    return(tmp);
-  }
-
-  Region2D::ConstSegmentIterator& Region2D::ConstSegmentIterator::operator -- ()   // prefix
-  {
-    handlei->iteratorIndex--;
-    return(*this);
-  }
-
-  Region2D::ConstSegmentIterator Region2D::ConstSegmentIterator::operator -- (int postfix) // postfix
-  {
-    ConstSegmentIterator tmp(*this);
-    handlei->iteratorIndex--;
-    return(tmp);
-  }
-
-  // Dereferencing operators that return the value at the constant Segment
-  // iterator position. Dereferencing is only allowed if the iterator
-  // points to a Segment. The dereferenced value cannot be changed.
-  const HalfSeg2D& Region2D::ConstSegmentIterator::operator *() const
-  {
-   return(this->handlei->current->segments.at(this->handlei->iteratorIndex));
-  }
-
-  const HalfSeg2D* Region2D::ConstSegmentIterator::operator ->() const
-  {
-   return(&this->handlei->current->segments.at(this->handlei->iteratorIndex)); 
-  }
-
-  // Comparison operators that compare a constant Segment iterator position
-  // with another const Segment iterator position "rhs"
-  bool Region2D::ConstSegmentIterator::operator == (const ConstSegmentIterator& rhs) const
-  {
-   return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex == rhs.handlei->iteratorIndex));
-  }
-
-  bool Region2D::ConstSegmentIterator::operator != (const ConstSegmentIterator& rhs) const
-  {
-   return ((this->handlei->current != rhs.handlei->current)&&(this->handlei->iteratorIndex != rhs.handlei->iteratorIndex));
-  }
-
-  bool Region2D::ConstSegmentIterator::operator <  (const ConstSegmentIterator& rhs) const
-  {
-   return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex < rhs.handlei->iteratorIndex));
-  }
-
-  bool Region2D::ConstSegmentIterator::operator <= (const ConstSegmentIterator& rhs) const
-  {
-   return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex <= rhs.handlei->iteratorIndex));
-  }
-
-  bool Region2D::ConstSegmentIterator::operator >  (const ConstSegmentIterator& rhs) const
-  {
-   return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex > rhs.handlei->iteratorIndex));
-  }
-
-  bool Region2D::ConstSegmentIterator::operator >= (const ConstSegmentIterator& rhs) const
-  {
-    return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex >= rhs.handlei->iteratorIndex));
-  }
-
-
-  // Method that returns a constant Segment iterator to the first Segment of a
-  // Region2D object.
-  Region2D::ConstSegmentIterator Region2D::cSbegin() const
-  {
-   ConstSegmentIterator begin;
-   begin.handlei->iteratorIndex = 1;
-   begin.handlei->current = handle;
-   return begin;
-  }
-
-  // Method that returns a constant Segment iterator to the last Segment of a
-  // Region2D object.
-  Region2D::ConstSegmentIterator Region2D::cSend() const
-  {
-   ConstSegmentIterator last;
-   last.handlei->iteratorIndex = handle->segments.size()-2;
-   last.handlei->current = handle;
-   return last;
-  }
-
-  // Method that returns a constant Segment iterator to the position before the
-  // first Segment of a Region2D object. Note that dereferencing this iterator
-  // yields the empty constant Segment iterator.
-  Region2D::ConstSegmentIterator Region2D::cShead() const
-  {
-     ConstSegmentIterator h;
-     h.handlei->iteratorIndex = 0;
-     h.handlei->current = handle;
-     return h;
-  }
-
-  // Method that returns a constant Segment iterator to the position after the
-  // last Segment of a Region2D object. Note that dereferencing this iterator
-  // yields the empty constant Segment iterator.
-  Region2D::ConstSegmentIterator Region2D::cStail() const
-  {
-     ConstSegmentIterator t;
-     t.handlei->iteratorIndex = handle->segments.size()-1;
-     t.handlei->current = handle;
-     return t;
-  }
-*/
