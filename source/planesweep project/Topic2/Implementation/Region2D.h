@@ -2,14 +2,14 @@
  *  File: Region2D.h
  /******************************************************************************
  *  Purpose:  This file specifies interfaces to the class Region2D and to
-*   several nested iterator classes thaty enable access to components (that is,
-*   faces, cycles, segments) of Region2D objects.
+ *  all the nested iterator classes that enable access to components (that is,
+ *  faces and cycles) of Region2D objects.
 
  *  Created on: Oct 8, 2015
 
  *  Authors: Ahmed Khaled, Revathi Kadari, Namrata Choudhury, Deepa Narain
 
- * Date: Fall Semester 2015
+ *  Date: Fall Semester 2015
 *******************************************************************************/
 
 #ifndef REGION2D_H_
@@ -39,11 +39,10 @@ class Region2D
     //object can be created from the input.
     Region2D(std::vector<Seg2D> segmentList);
 
-    // Constructor for complex region structure. It takes as input a string name that can represent either :
-    // 1) file name which contains the vector of segments from which to construct the region object 
-    // 2) string the textually represents the input vector of segments.
+    // Constructor for complex region structure. It takes as input a string name that can represent:
+    //  string that textually represents the input vector of segments.
     //
-    // The grammar for representing a segment vector in both cases 1 and 2 are structured as follows:
+    // The grammar for representing a segment vector is structured as follows:
     // Expression := '(' Segment+ ')'
     // Segment:= '(' Point ',' Point ')'
     // Point:= '(' Number ',' Number ')'
@@ -52,7 +51,7 @@ class Region2D
     // DigitWithoutZero := '1' | '2' |'3' | '4' | '5' | '6' | '7' | '8' | '9'
     // Digit:= '0' | DigitWithoutZero
     //
-    // example for segment list of seg1 and seg2 here is: (((1,2),(3,4)),((5,6),(7,8)))
+    // example input: "(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))"
     Region2D(std::string textualRegionList);
 
     //copy constructor that constructs a new Region2D object with the same 
@@ -95,28 +94,24 @@ class Region2D
     //of the == operator.
     bool operator != (Region2D& operand);
 
-    // less than operator that compares 2 Region2D objects through comparing their minimum bounding rectangles in the following way:
-    // if (min(x1) < min(x2)) the object is less than the operand object
-    // if ((min(x1) = min(x2)) and (min(y1) < min(y2))) the object is less than the operand object
-    // where min(x) and min(y) are the points with the minimum x,y values within the structure respectively.
+    // less than operator that compares 2 Region2D objects through comparing their sorted attributed half segments in lexicographic order.
+    // Eg: Region1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) < Region2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns true since 
+    // ((0,0),(1,1)) < ((5,5),(6,6))
     bool operator < (Region2D& operand);
 
-    // less or equal than operator that compares 2 Region2D objects through comparing their minimum bounding rectangles in the following way:
-    // if (min(x1) <= min(x2)) the object is less than or equal the operand object
-    // if ((min(x1) = min(x2)) and (min(y1) <= min(y2))) the object is less than or equal the operand object
-    // where min(x) and min(y) are the points with the minimum x,y values within the structure respectively.
+    // less than or equal operator that compares 2 Region2D objects through comparing their sorted attributed half segments in lexicographic 
+    //order. Eg: Region1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) <= Region2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns true since 
+    // ((0,0),(1,1)) <= ((5,5),(6,6))
     bool operator <= (Region2D& operand);
 
-    // greater than operator that compares 2 Region2D objects through comparing their minimum bounding rectangles in the following way:
-    // if (min(x1) > min(x2)) the object is greater the operand object
-    // if ((min(x1) = min(x2)) and (min(y1) > min(y2))) the object is greater the operand object
-    // where min(x) and min(y) are the points with the minimum x,y values within the structure respectively.
+    // greater than operator that compares 2 Region2D objects through comparing their sorted attributed half segments in lexicographic order.
+    // Eg: Region1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) > Region2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns false since 
+    // ((0,0),(1,1)) < ((5,5),(6,6)).
     bool operator > (Region2D& operand);
 
-    // greater or equal than operator that compares 2 Region2D objects through comparing their minimum bounding rectangles in the following way:
-    // if (min(x1) >= min(x2)) the object is greater than or equal the operand object
-    // if ((min(x1) = min(x2)) and (min(y1) >= min(y2))) the object is greater than or equal the operand object
-    // where min(x) and min(y) are the points with the minimum x,y values within the structure respectively.
+    // greater than or equal operator that compares 2 Region2D objects through comparing their sorted attributed half segments in lexicographic 
+    //order. Eg: Region1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) >= Region2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns false since 
+    // ((0,0),(1,1)) <= ((5,5),(6,6))
     bool operator >= (Region2D& operand);
 
     //++++++++++++++++++++++++++++++++
@@ -173,7 +168,7 @@ class Region2D
     // Output function
     //++++++++++++++++
 
-    // Textual output of segments of a Line2D object
+    // Textual output of segments of a Region2D object
     friend std::ostream& operator << (std::ostream& ostr, const Region2D& rhs);
 
     //+++++++++++++++++
@@ -262,7 +257,7 @@ class Region2D
     ConstFaceIterator cFtail() const;
 
 
-    // Constant Hole cycle iterator type that allows to navigate through the hole cycles of
+    // Constant cycle iterator type that allows to navigate through the cycles of
     // a Region2D object in forward and reverse direction. A change of the
     // holes is not possible. 
     class ConstCycleIterator
@@ -270,27 +265,27 @@ class Region2D
     friend class Region2D;
 
     public:
-      // Default constructor that creates an empty constant hole cycle iterator.
+      // Default constructor that creates an empty constant cycle iterator.
       ConstCycleIterator();
 
-      // Copy constructor that constructs a constant hole cycle iterator from a
-      // given constant hole cycle iterator "source".
+      // Copy constructor that constructs a constant cycle iterator from a
+      // given constant cycle iterator "source".
       ConstCycleIterator(const ConstCycleIterator& source);
 
-      // Move constructor that moves a given constant hole cycle iterator "source"
-      // to a constant hole cycle iterator. The constant hole cycle iterator "source"
-      // gets the empty constant hole cycle iterator as its value.
+      // Move constructor that moves a given constant cycle iterator "source"
+      // to a constant cycle iterator. The constant cycle iterator "source"
+      // gets the empty constant cycle iterator as its value.
       ConstCycleIterator(const ConstCycleIterator&& source);
 
       // Destructor that frees the main memory space allocated for a constant
-      // hole cycle iterator.
+      // cycle iterator.
       ~ConstCycleIterator();
 
-      // Assignment operator that assigns another constant hole cycle iterator
+      // Assignment operator that assigns another constant cycle iterator
       // "rhs" to the constant face iterator.
       ConstCycleIterator& operator = (const ConstCycleIterator& rhs);
 
-      // Predicate that tests whether a constant HoleCycle iterator is empty.
+      // Predicate that tests whether a constant Cycle iterator is empty.
       bool isEmpty() const;
 
       // Increment/decrement operators '++', '--'
@@ -299,14 +294,14 @@ class Region2D
       ConstCycleIterator& operator -- ();   // prefix
       ConstCycleIterator operator -- (int postfix); // postfix
 
-      // Dereferencing operators that return the value at the constant HoleCycle
+      // Dereferencing operators that return the value at the constant Cycle
       // iterator position. Dereferencing is only allowed if the iterator
-      // points to a hole cycle. The dereferenced value cannot be changed.
+      // points to a cycle. The dereferenced value cannot be changed.
       const Region2D operator *() const;
       const Region2D operator ->() const;
 
-      // Comparison operators that compare a constant HoleCycle iterator position
-      // with another const HoleCycle iterator position "rhs"
+      // Comparison operators that compare a constant Cycle iterator position
+      // with another const Cycle iterator position "rhs"
       bool operator == (const ConstCycleIterator& rhs) const;
       bool operator != (const ConstCycleIterator& rhs) const;
       bool operator <  (const ConstCycleIterator& rhs) const;
@@ -318,112 +313,30 @@ class Region2D
 
     protected:
       // Forward struct declaration for the hidden implementation of a
-      // constant HoleCycle iterator
+      // constant Cycle iterator
       struct ConstCycleIteratorImplementation;
 
       // Declaration of an opaque pointer
       ConstCycleIteratorImplementation* handlei;
     }; // class ConstCycleIterator
 
-    // Method that returns a constant HoleCycle iterator to the first HoleCycle of a
+    // Method that returns a constant Cycle iterator to the first Cycle of a
     // Region2D object.
     ConstCycleIterator cHbegin() const;
 
-    // Method that returns a constant HoleCycle iterator to the last HoleCycle of a
+    // Method that returns a constant Cycle iterator to the last Cycle of a
     // Region2D object.
     ConstCycleIterator cHend() const;
 
-    // Method that returns a constant HoleCycle iterator to the position before the
-    // first HoleCycle of a Region2D object. Note that dereferencing this iterator
-    // yields the empty constant HoleCycle iterator.
+    // Method that returns a constant Cycle iterator to the position before the
+    // first Cycle of a Region2D object. Note that dereferencing this iterator
+    // yields the empty constant Cycle iterator.
     ConstCycleIterator cHhead() const;
 
-    // Method that returns a constant HoleCycle iterator to the position after the
-    // last HoleCycle of a Region2D object. Note that dereferencing this iterator
-    // yields the empty constant HoleCycle iterator.
+    // Method that returns a constant Cycle iterator to the position after the
+    // last Cycle of a Region2D object. Note that dereferencing this iterator
+    // yields the empty constant Cycle iterator.
     ConstCycleIterator cHtail() const;
-
-/*
-    // Constant segment iterator type that allows to navigate through the segments of
-    // a Region2D object in forward and reverse direction. A change of the
-    // segments is not possible. 
-    class ConstSegmentIterator
-    {
-    friend class Region2D;
-
-    public:
-      // Default constructor that creates an empty constant Segment iterator.
-      ConstSegmentIterator();
-
-      // Copy constructor that constructs a constant Segment iterator from a
-      // given constant Segment iterator "source".
-      ConstSegmentIterator(const ConstSegmentIterator& source);
-
-      // Move constructor that moves a given constant Segment iterator "source"
-      // to a constant Segment iterator. The constant Segment iterator "source"
-      // gets the empty constant Segment iterator as its value.
-      ConstSegmentIterator(const ConstSegmentIterator&& source);
-
-      // Destructor that frees the main memory space allocated for a constant
-      // Segment iterator.
-      ~ConstSegmentIterator();
-
-      // Assignment operator that assigns another constant Segment iterator
-      // "rhs" to the constant Segment iterator.
-      ConstSegmentIterator& operator = (const ConstSegmentIterator& rhs);
-
-      // Predicate that tests whether a constant Segment iterator is empty.
-      bool isEmpty() const;
-
-      // Increment/decrement operators '++', '--'
-      ConstSegmentIterator& operator ++ ();   // prefix
-      ConstSegmentIterator operator ++ (int postfix); // postfix
-      ConstSegmentIterator& operator -- ();   // prefix
-      ConstSegmentIterator operator -- (int postfix); // postfix
-
-      // Dereferencing operators that return the value at the constant Segment
-      // iterator position. Dereferencing is only allowed if the iterator
-      // points to a Segment. The dereferenced value cannot be changed.
-      const HalfSeg2D& operator *() const;
-      const HalfSeg2D* operator ->() const;
-
-      // Comparison operators that compare a constant Segment iterator position
-      // with another const Segment iterator position "rhs"
-      bool operator == (const ConstSegmentIterator& rhs) const;
-      bool operator != (const ConstSegmentIterator& rhs) const;
-      bool operator <  (const ConstSegmentIterator& rhs) const;
-      bool operator <= (const ConstSegmentIterator& rhs) const;
-      bool operator >  (const ConstSegmentIterator& rhs) const;
-      bool operator >= (const ConstSegmentIterator& rhs) const;
-
-    private:
-      // Forward struct declaration for the hidden implementation of a
-      // constant Segment iterator
-      struct ConstSegmentIteratorImplementation;
-
-      // Declaration of an opaque pointer
-      ConstSegmentIteratorImplementation* handlei;
-    }; // class ConstSegmentIterator
-
-    // Method that returns a constant Segment iterator to the first Segment of a
-    // Region2D object.
-    ConstSegmentIterator cSbegin() const;
-
-    // Method that returns a constant Segment iterator to the last Segment of a
-    // Region2D object.
-    ConstSegmentIterator cSend() const;
-
-    // Method that returns a constant Segment iterator to the position before the
-    // first Segment of a Region2D object. Note that dereferencing this iterator
-    // yields the empty constant Segment iterator.
-    ConstSegmentIterator cShead() const;
-
-    // Method that returns a constant Segment iterator to the position after the
-    // last Segment of a Region2D object. Note that dereferencing this iterator
-    // yields the empty constant Segment iterator.
-    ConstSegmentIterator cStail() const;
-
-*/
 
 protected:
     // Forward struct declaration for the hidden implementation of class

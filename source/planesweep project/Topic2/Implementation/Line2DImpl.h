@@ -1,14 +1,13 @@
 /******************************************************************************
 * File: Line2DImpl.h
 *******************************************************************************
-* Purpose: Interface to the class for the spatial data type Line2D
+* Purpose: Interface to the class for the spatial data type Line2DImpl
 *
-* Description: This file specifies interface to the class Line2D and to
-*   several nested iterator classes that enable access to components (that is,
-*   segments) of Line2D objects. The class Line2D contains
+* Description: This file specifies interface to the class Line2DImpl and to
+*   nested iterator class that enable access to internal components (that is,
+*   Half-Segments) of Line2DImpl objects. The class Line2DImpl contains
 *   specifications of several constructors, a destructor, and several
-*   type-specific unary methods of this spatial data type. Binary spatial
-*   operations that involve Line2D objects are specified elsewhere. 
+*   type-specific unary methods of this spatial data type.  
 *
 * Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
 *
@@ -28,12 +27,12 @@ class Line2DImpl : public Line2D
     // Constructors and destructor
     //++++++++++++++++++++++++++++
 
-    // Default constructor. It represents the empty Line2D object.
+    // Default constructor. It represents the empty Line2DImpl object.
     Line2DImpl();
 
     // Constructor that takes a collection (vector) of segments (Seg2D objects)
     // as input. The constructor checks whether the collection of segments
-    // forms a correct Line2D object in the sense that it conforms to the
+    // forms a correct Line2DImpl object in the sense that it conforms to the
     // formal definition of this data type.
     Line2DImpl(std::vector<Seg2D> segs);
 
@@ -49,56 +48,52 @@ class Line2DImpl : public Line2D
     // DigitWithoutZero := '1' | '2' |'3' | '4' | '5' | '6' | '7' | '8' | '9'
     // Digit            := '0' | DigitWithoutZero
     //
-    // example for segment list of seg1 and seg2 here is: (((1,2),(3,4)),((5,6),(7,8))) 
+    // example for segment list of seg1 and seg2 here is: (((1,2),(3,4)),((5,6),(7,8)))  
     Line2DImpl(std::string textRepresentation);
 
-    // Copy constructor that constructs a Line2D object from a given Line2D
+    // Copy constructor that constructs a Line2DImpl object from a given Line2DImpl
     // object "source".
     Line2DImpl(Line2DImpl& source);
 
-    // Move constructor that moves a given Line2D object "source" to a
-    // Line2D object. The Line2D object "source" gets the empty Line2D
+    // Move constructor that moves a given Line2DImpl object "source" to a
+    // Line2D object. The Line2D object "source" gets the empty Line2DImpl
     // object as its value.
     Line2DImpl(Line2DImpl&& source);
 
-    //Destructor
-    virtual ~Line2DImpl();
-
-    
     
     //+++++++++++++++++
     // Iterator classes
     //+++++++++++++++++
 
-    // Constant segment iterator type that allows to navigate through the segments of
-    // a Line2D object in forward and reverse direction. A change of the
-    // segments is not possible.
+    // Constant HalfSegment iterator type that allows to navigate through the halfsegments of
+    // a Line2DImpl object in forward and reverse direction. A change of the
+    // halfsegments is not possible.
     class ConstHalfSegIterator
     {
       friend class Line2DImpl;
 
       public:
-        // Default constructor that creates an empty constant segment iterator.
+        // Default constructor that creates an empty constant halfsegment iterator.
         ConstHalfSegIterator();
 
-        // Copy constructor that constructs a constant segment iterator from a
-        // given constant segment iterator "source".
+        // Copy constructor that constructs a constant halfsegment iterator from a
+        // given constant halfsegment iterator "source".
         ConstHalfSegIterator(const ConstHalfSegIterator& source);
 
-        // Move constructor that moves a given constant segment iterator "source"
-        // to a constant segment iterator. The constant segment iterator "source"
-        // gets the empty constant segment iterator as its value.
+        // Move constructor that moves a given constant halfsegment iterator "source"
+        // to a constant halfsegment iterator. The constant halfsegment iterator "source"
+        // gets the empty constant halfsegment iterator as its value.
         ConstHalfSegIterator(const ConstHalfSegIterator&& source);
 
         // Destructor that frees the main memory space allocated for a constant
-        // segment iterator.
+        // halfsegment iterator.
         ~ConstHalfSegIterator();
 
-        // Assignment operator that assigns another constant segment iterator
-        // "rhs" to the constant segment iterator.
+        // Assignment operator that assigns another constant halfsegment iterator
+        // "rhs" to the constant halfsegment iterator.
         ConstHalfSegIterator& operator = (const ConstHalfSegIterator& rhs);
 
-        // Predicate that tests whether a constant segment iterator is empty.
+        // Predicate that tests whether a constant halfsegment iterator is empty.
         bool isEmpty() const;
 
         // Increment/decrement operators '++', '--'
@@ -107,14 +102,14 @@ class Line2DImpl : public Line2D
         ConstHalfSegIterator& operator -- ();   // prefix
         ConstHalfSegIterator operator -- (int postfix); // postfix
 
-        // Dereferencing operators that return the value at the constant segment
+        // Dereferencing operators that return the value at the constant halfsegment
         // iterator position. Dereferencing is only allowed if the iterator
-        // points to a segment. The dereferenced value cannot be changed.
+        // points to a halfsegment. The dereferenced value cannot be changed.
         const HalfSeg2D& operator *() const;
         const HalfSeg2D* operator ->() const;
 
-        // Comparison operators that compare a constant segment iterator position
-        // with another const segment iterator position "rhs"
+        // Comparison operators that compare a constant halfsegment iterator position
+        // with another const halfsegment iterator position "rhs"
         bool operator == (const ConstHalfSegIterator& rhs) const;
         bool operator != (const ConstHalfSegIterator& rhs) const;
         bool operator <  (const ConstHalfSegIterator& rhs) const;
@@ -122,33 +117,34 @@ class Line2DImpl : public Line2D
         bool operator >  (const ConstHalfSegIterator& rhs) const;
         bool operator >= (const ConstHalfSegIterator& rhs) const;
         
+        //friend member that display the internal members information of halfsegment
         friend std::ostream&operator<<(std::ostream&, const ConstHalfSegIterator&);
 
       protected:
         // Forward struct declaration for the hidden implementation of a
-        // constant segment iterator
+        // constant halfsegment iterator that holds the different variables of the iterator
         struct ConstHalfSegIteratorImplementation;
 
         // Declaration of an opaque pointer
         ConstHalfSegIteratorImplementation* handlei;
     }; // class ConstHalfSegIterator
 
-    // Method that returns a constant segment iterator to the first segment of a
+    // Method that returns a constant halfsegment iterator to the first halfsegment of a
     // Line2D object.
     ConstHalfSegIterator hBegin() const;
 
-    // Method that returns a constant segment iterator to the last segment of a
+    // Method that returns a constant halfsegment iterator to the last halfsegment of a
     // Line2D object.
     ConstHalfSegIterator hEnd() const;
 
-    // Method that returns a constant segment iterator to the position before the
-    // first segment of a Line2D object. Note that dereferencing this iterator
-    // yields the empty constant segment iterator.
+    // Method that returns a constant halfsegment iterator to the position before the
+    // first halfsegment of a Line2DImpl object. Note that dereferencing this iterator
+    // yields the empty constant halfsegment iterator.
     ConstHalfSegIterator hHead() const;
 
-    // Method that returns a constant segment iterator to the position after the
-    // last segment of a Line2D object. Note that dereferencing this iterator
-    // yields the empty constant segment iterator.
+    // Method that returns a constant halfsegment iterator to the position after the
+    // last halfsegment of a Line2DImpl object. Note that dereferencing this iterator
+    // yields the empty constant halfsegment iterator.
     ConstHalfSegIterator hTail() const;
 	
 

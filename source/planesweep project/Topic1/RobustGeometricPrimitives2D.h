@@ -157,8 +157,8 @@ public:
 	bool operator >=(const AttrHalfSeg2D& operand);
 	bool operator ==(const AttrHalfSeg2D& operand);
 	bool operator !=(const AttrHalfSeg2D& operand);
-	friend std::ostream&operator<<(std::ostream& os, const AttHalfSegVariable& output);
-	friend std::istream&operator>>(std::istream& is, const AttHalfSegVariable& input);
+	friend std::ostream&operator<<(std::ostream& os, const AttrHalfSeg2D& output);
+	friend std::istream&operator>>(std::istream& is, AttHalfSegVariable& input);
 
 };
 

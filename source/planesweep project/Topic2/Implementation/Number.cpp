@@ -114,11 +114,6 @@ Number Number::operator * (const Number& operand)
 
 Number Number::operator / (const Number& operand)
 {
-	if (Number("0") == operand)
-	{
-		std::cout << "Not a valid division\n";
-		return Number("0");
-	}
 	Number answer;
 	answer.p->value = p->value / operand.p->value;
 	return answer;
