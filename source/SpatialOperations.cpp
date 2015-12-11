@@ -254,9 +254,45 @@ Line2D spatialDifference(const Line2D &lineLhs, const Line2D &lineRhs) {
 * Parameters : const Region2D& regionLhs and const Region2D& regionRhs
 * Returns    : Region2D
 ******************************************************************************/
-Region2D spatialIntersection(const Region2D &regionLhs,
-                             const Region2D &regionRhs) {
-    Region2D region;
+Region2D spatialIntersection(Region2D &regionLhs,
+                             Region2D &regionRhs) {
+    //Region2D region;
+    Region2D emptyRegionObject;
+    if (&regionLhs == NULL || &regionRhs == NULL || regionLhs.isEmptyRegion2D() || regionRhs.isEmptyRegion2D()) {
+        return emptyRegionObject;
+    }
+
+    vector<Seg2D> intersectionRegionVector;
+    PlaneSweep planeSweep(regionLhs, regionRhs);
+
+    ParallelObjectTraversal::object previousObjectHistory = planeSweep.getObject();
+
+    while (planeSweep.getObject() != ParallelObjectTraversal::none &&
+           planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
+        if (planeSweep.getObject() == ParallelObjectTraversal::both &&
+            previousObjectHistory == ParallelObjectTraversal::both) {
+            AttrHalfSeg2D attrHalfSeg2D = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::first);
+            Seg2D seg2D = attrHalfSeg2D.hseg.seg;
+            SegmentClass segClass = planeSweep.getSegClass(seg2D);
+            int lor = segClass.getLowerOrRight();
+            int uol = segClass.getUpperOrLeft();
+            if(lor == 2 && uol ==2) {
+                intersectionRegionVector.push_back(seg2D);
+            }
+//The argument could be ParallelObjectTraversal::second as well since they're the same.
+        } else if (planeSweep.getObject() == ParallelObjectTraversal::both) {
+            //update previous event's object with this event
+            AttrHalfSeg2D firstAttrHalfSeg2D  = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::first);
+            AttrHalfSeg2D secondAttrHalfSeg2D = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::second);
+            if (firstAttrHalfSeg2D.hseg.isLeft == secondAttrHalfSeg2D.hseg.isLeft) {
+                previousObjectHistory = ParallelObjectTraversal::both;
+            }
+        } else if (planeSweep.getObject() != ParallelObjectTraversal::both) {
+            previousObjectHistory = ParallelObjectTraversal::none;
+        }
+        planeSweep.selectNext();
+    }
+
     //implementation
     /*
      * Only add segments from sweepLineStatus which have the segmentClass
@@ -270,7 +306,8 @@ Region2D spatialIntersection(const Region2D &regionLhs,
      *  3. If the segment is from both the objects, then assign 2 or 0 based on whether the predecessor or
      *      successor is present or not.
      */
-    return region;
+    Region2D intersectionRegionObject(intersectionRegionVector);
+    return intersectionRegionObject;
 }
 
 Region2D spatialUnion(const Region2D &regionLhs, const Region2D &regionRhs) {
