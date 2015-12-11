@@ -9,36 +9,24 @@
 
 
 class SegmentClass {
- //(1/2) => (lowerOrRight/upperOrLeft)
+
     int lowerOrRight, upperOrLeft;
 
 public:
 
-    SegmentClass() {
-        //default
-        lowerOrRight = 0;
-        upperOrLeft = 0;
-    }
+    SegmentClass();
 
-    SegmentClass(int lOrR, int uOrL) {
-        lowerOrRight = lOrR;
-        upperOrLeft = uOrL;
-    }
+    SegmentClass(int lOrR, int uOrL);
 
-    int getLowerOrRight() {
-        return lowerOrRight;
-    }
-    int getUpperOrLeft() {
-        return upperOrLeft;
-    }
+    int getLowerOrRight();
 
-    void setLowerOrRight(int lOrR) {
-         lowerOrRight = lOrR;
-    }
+    int getUpperOrLeft();
 
-    void setUpperOrLeft(int uOrL) {
-         upperOrLeft = uOrL;
-    }
+    void setLowerOrRight(int lOrR);
+
+    void setUpperOrLeft(int uOrL);
+
+    ~SegmentClass();
 };
 
 

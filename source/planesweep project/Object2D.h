@@ -10,8 +10,7 @@
 
 #include "Topic2/Implementation/Point2D.h"
 #include "Topic2/Implementation/Line2D.h"
-#include "Region2D.h"
-#include "ObjectIterator.h"
+#include "Topic2/Implementation/Region2D.h"
 
 
 // 11/03/2015 DT
@@ -31,13 +30,13 @@ public:
 
     ~Object2D();
 
-    ObjectIterator cbegin() const;
-
-    ObjectIterator cend() const;
-
-    ObjectIterator chead() const;
-
-    ObjectIterator ctail() const;
+//    ObjectIterator cbegin() const;
+//
+//    ObjectIterator cend() const;
+//
+//    ObjectIterator chead() const;
+//
+//    ObjectIterator ctail() const;
 
     bool operator == (Object2D& operand);
 

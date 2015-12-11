@@ -10,22 +10,23 @@
 
 using namespace std;
 
-class MinHeap
-{
-private:
-    vector<AttrHalfSeg2D> _vector;
-    void BubbleDown(int index);
-    void BubbleUp(int index);
-    void Heapify();
-
+template<class T>
+class MinHeap {
 public:
-    MinHeap(AttrHalfSeg2D* array, int length);
-    MinHeap(const vector<AttrHalfSeg2D>& vector);
-    MinHeap();
-
-    void Insert(AttrHalfSeg2D newValue);
-    AttrHalfSeg2D GetMin();
-    void DeleteMin();
+    MinHeap(int MinHeapSize = 10);
+    ~MinHeap() {delete [] heap;}
+    int Size() const {return CurrentSize;}
+    T GetMin();
+    T GetNext(T x);
+    MinHeap<T>& Insert(const T& x);
+    MinHeap<T>& DeleteMin();
+    void Initialize(T a[], int size, int ArraySize);
+    void Deactivate() {heap = 0;}
+    void Output() const;
+    bool isEmpty();
+private:
+    int CurrentSize, MaxSize;
+    T *heap; // element array
 };
 
 #endif //PLANESWEEP_PROJECT_MINHEAP_H

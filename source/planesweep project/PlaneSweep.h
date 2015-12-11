@@ -10,7 +10,7 @@
 #include "Topic2/Implementation/Line2D.h"
 #include "Topic1/RobustGeometricPrimitives2D.h"
 #include "Topic2/Implementation/Number.h"
-#include "Topic2/Interfaces/Region2D.h"
+#include "Topic2/Implementation/Region2D.h"
 
 #include "Object2D.h"
 #include "ParallelObjectTraversal.h"
@@ -84,7 +84,7 @@ public:
     SegmentClass getPredSegmentClass(Seg2D);
     bool getPredInsideAbove(Seg2D);
 
-    Seg2D &predOfP(Poi2D &);
+    Seg2D predOfP(Poi2D &);
 
     bool lookAhead(HalfSeg2D &, Line2D &);
 
@@ -109,9 +109,6 @@ private:
      */
     AVLTree<PlaneSweepLineStatusObject> *sweepLineStatus;
 
-    //Should increment the object pointers within either/both of the two objects.
-    void selectFirst();
-
     /* A vertical sweep line traversing the plane from left to right stops at special
      * event points which are stored in a queue called event point schedule. The event
      * point schedule must allow one to insert new event points discovered during
@@ -120,6 +117,8 @@ private:
      */
     MinHeap dynamicEPSObjF;
     MinHeap dynamicEPSObjG;
+
+    Object2D objF,objG;
 
 
     /*
@@ -137,12 +136,6 @@ private:
      */
     int findLeast();
 
-    /*
-     *  Checks whether a Seg2D has intersections with any of the predecessor and successor already
-     *  in the sweepLineStatus. If it does, it calls the functions
-     *  splitLines().
-     */
-    bool calculateRelation(Seg2D&);
 
 
     /*
@@ -164,8 +157,8 @@ private:
     /*
      * Functions for getting predecessor and getting successor
      */
-    Seg2D& getPredecessor(Seg2D&);
-    Seg2D& getSuccessor(Seg2D&);
+    Seg2D getPredecessor(Seg2D&);
+    Seg2D getSuccessor(Seg2D&);
 
     /*
      * Function for checking if a relation exists between two segments
