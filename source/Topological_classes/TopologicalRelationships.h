@@ -9,7 +9,7 @@
 *
 * Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
 *
-* Authors: Group 4 [(GROUP MEMBERS)]
+* Authors: Group 4 [Michael Kemerer,Tjindra Djundi,Natasha Mandal,Aswini Ramesh,Kyuseo Park]
 *
 * Date: Fall Semester 2015
 ******************************************************************************/
