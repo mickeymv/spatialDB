@@ -1,6 +1,18 @@
-//
-// Created by Djundi on 10/10/15.
-//
+/******************************************************************************
+* File: TopologicalRelationships.cpp
+*******************************************************************************
+* Purpose: Interface to exploration functions and validation predicates for
+*   the topological relationships between two complex objects of the spatial
+*   data types Point2D, Line2D, and Region2D
+* Description: Topological relationships characterize the relative topological
+*   position between two spatial objects.
+*
+* Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
+*
+* Authors: Group 4 [Michael Kemerer,Tjindra Djundi,Natasha Mandal,Aswini Ramesh,Kyuseo Park]
+*
+* Date: Fall Semester 2015
+******************************************************************************/
 
 #include "TopologicalRelationships.h"
 #include "Point2DPoint2D.h"

@@ -1,7 +1,19 @@
-//
-// Created by Djundi on 12/2/15.
-//
-
+/******************************************************************************
+* File: Point2DPoint2D.h
+*******************************************************************************
+* Purpose: Interface to exploration functions and evaluation functions for
+*   the topological relationships between two Point2D objects.This also contains
+ *  clustered predicate verification functions
+ *
+* Description: Interface for Exploration and Evaluation algorithms and functions
+ * for Topological Predicate Verification and Determination
+ *
+* Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
+*
+* Authors:Group 4 [Michael Kemerer,Tjindra Djundi,Natasha Mandal,Aswini Ramesh,Kyuseo Park]
+*
+* Date: Fall Semester 2015
+******************************************************************************/
 #ifndef POINT2DPONT2D_POINT2DPOINT2D_H
 #define POINT2DPONT2D_POINT2DPOINT2D_H
 

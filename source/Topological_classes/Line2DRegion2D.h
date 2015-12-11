@@ -1,6 +1,19 @@
-//
-// Created by Djundi on 11/8/15.
-//
+/******************************************************************************
+* File: Line2DRegion2D.h
+*******************************************************************************
+* Purpose: Interface to exploration functions and evaluation functions for
+*   the topological relationships between a Line2D and a Region2D object.This also contains
+ *  clustered predicate verification functions
+ *
+* Description: Interface for Exploration and Evaluation algorithms and functions
+ * for Topological Predicate Verification and Determination
+ *
+* Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
+*
+* Authors:Group 4 [Michael Kemerer,Tjindra Djundi,Natasha Mandal,Aswini Ramesh,Kyuseo Park]
+*
+* Date: Fall Semester 2015
+******************************************************************************/
 
 #ifndef PLANESWEEP_PROJECT_LINE2DREGION2D_H
 #define PLANESWEEP_PROJECT_LINE2DREGION2D_H

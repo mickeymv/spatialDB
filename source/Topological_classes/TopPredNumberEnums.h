@@ -1,6 +1,16 @@
-//
-// Created by Djundi on 12/4/15.
-//
+/******************************************************************************
+* File: TopPredNumberEnums.h
+*******************************************************************************
+* Purpose: This file declares the enums for clustered topological predicates
+ *
+* Description: Clustered Topological Predicates are used for predicate verification and predicate determination
+ *
+* Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
+*
+* Authors: Group 4 [Michael Kemerer,Tjindra Djundi,Natasha Mandal,Aswini Ramesh,Kyuseo Park]
+*
+* Date: Fall Semester 2015
+******************************************************************************/
 
 #ifndef POINT2DPONT2D_TOPPREDNUMBERENUMS_H
 #define POINT2DPONT2D_TOPPREDNUMBERENUMS_H

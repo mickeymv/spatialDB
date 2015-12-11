@@ -1,6 +1,19 @@
-//
-// Aswini Ramesh
-//
+/******************************************************************************
+* File: Line2DLine2D.h
+*******************************************************************************
+* Purpose: Interface to exploration functions and evaluation functions for
+*   the topological relationships between two Line2D objects.This also contains
+ *  clustered predicate verification functions
+ *
+* Description: Interface for Exploration and Evaluation algorithms and functions
+ * for Topological Predicate Verification and Determination
+ *
+* Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
+*
+* Authors:Group 4 [Michael Kemerer,Tjindra Djundi,Natasha Mandal,Aswini Ramesh,Kyuseo Park]
+*
+* Date: Fall Semester 2015
+******************************************************************************/
 
 #ifndef PLANESWEEP_PROJECT_LINE2DLINE2D_H
 #define PLANESWEEP_PROJECT_LINE2DLINE2D_H

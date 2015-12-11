@@ -1,13 +1,25 @@
-//
-// Created by Djundi on 11/8/15.
-//
-
+/******************************************************************************
+* File: Point2DLine2D.cpp
+*******************************************************************************
+* Purpose: Implementation of exploration functions and evaluation functions for
+*   the topological relationships between a Point2D and a Line2D object.This also contains
+ *  clustered predicate verification functions
+ *
+* Description: Implementation of Exploration and Evaluation algorithms and functions
+ * for Topological Predicate Verification and Determination
+ *
+* Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
+*
+* Authors:Group 4 [Michael Kemerer,Tjindra Djundi,Natasha Mandal,Aswini Ramesh,Kyuseo Park]
+*
+* Date: Fall Semester 2015
+******************************************************************************/
 #include "Point2DLine2D.h"
 
 
 Point2DLine2D::Point2DLine2D(Point2D &F, Line2D &G) {
     // set obj1 and obj2
-   objF=F;
+    objF=F;
     objG=G;
 
     // initialize vF and vG with false

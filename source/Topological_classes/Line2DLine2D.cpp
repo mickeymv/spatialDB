@@ -1,7 +1,20 @@
-//
-// Aswini Ramesh
-//
 
+/******************************************************************************
+* File: Line2DLine2D.cpp
+*******************************************************************************
+* Purpose: Implementation of exploration functions and evaluation functions for
+*   the topological relationships between two Line2D object.This also contains
+ *  clustered predicate verification functions
+ *
+* Description: Implementation of Exploration and Evaluation algorithms and functions
+ * for Topological Predicate Verification and Determination
+ *
+* Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
+*
+* Authors:Group 4 [Michael Kemerer,Tjindra Djundi,Natasha Mandal,Aswini Ramesh,Kyuseo Park]
+*
+* Date: Fall Semester 2015
+******************************************************************************/
 #include "Line2DLine2D.h"
 
 Line2DLine2D::Line2DLine2D(Line2D &F, Line2D &G) {
@@ -211,7 +224,7 @@ void Line2DLine2D::evaluateTopoPred() {
 
 
     int IMC[3][3];
-    
+
 
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
