@@ -98,14 +98,16 @@ ParallelObjectTraversal::status  PlaneSweep::getStatus() {
     return getPot()->getStatus();
 }
 
-void PlaneSweep::addLeft(Seg2D &seg2D) {
-    sweepLineStatus->insert(seg2D);
+void PlaneSweep::addLeft(PlaneSweepLineStatusObject &planeSweepLineStatusObject) {
+    sweepLineStatus->insert(planeSweepLineStatusObject);
 
     /*
      * Add the updateSegmentClass code here.
      * it should update the segmentClass for the added segment
      * as well as it's predecessor and successor.
      */
+
+    Seg2D seg2D = planeSweepLineStatusObject.getSegment2D();
 
     Seg2D pred = getPredecessor(seg2D);
     Seg2D succ = getSuccessor(seg2D);
@@ -118,7 +120,10 @@ void PlaneSweep::addLeft(Seg2D &seg2D) {
     }
 }
 
-void PlaneSweep::delRight(Seg2D &seg2D) {
+void PlaneSweep::delRight(PlaneSweepLineStatusObject &planeSweepLineStatusObject) {
+
+    Seg2D seg2D = planeSweepLineStatusObject.getSegment2D();
+
     Seg2D pred = getPredecessor(seg2D);
     Seg2D succ = getSuccessor(seg2D);
     sweepLineStatus->deleteKey(seg2D);
