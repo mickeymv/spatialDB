@@ -43,12 +43,13 @@ void Point2DRegion2D::exploreTopoPred() {
             }
             else
             {
-                //?check seg2D implementation
+
                 Seg2D s= S.predOfP(p);
-                if(s!=NULL)
+                if(s!= NULL)
                 {
-                    AttrHalfSeg2D ah=S.getAttrHalfSegEvent(object_value);
-                    bool ia= ah.insideAbove;
+                    //check whether interior of G is above the segment
+                    bool ia = S.getInsideAbove(s);
+
                     if(ia)
                     {
                         vF[poi_inside]= true;
@@ -68,20 +69,18 @@ void Point2DRegion2D::exploreTopoPred() {
 
         else
         {   //object not equal to first
-            //here half segment and attributed half segment is considered as two cases.Attributed half segment is used for getting ia  and half segment is used for operations??
-            HalfSeg2D h = S.getHalfSegEvent(ParallelObjectTraversal::second);
 
-            //should we use getInsideabove??
             ParallelObjectTraversal::object object_value = S.getObject();
+
             AttrHalfSeg2D ahSecond=S.getAttrHalfSegEvent(object_value);
             bool ia= ahSecond.insideAbove;
-            if(h.isLeft) {
-                S.addLeft(h.seg);
-                S.setInsideAbove(h.seg,ia);
+            if(ahSecond.isLeft) {
+                S.addLeft(ahSecond.seg);
+                S.setInsideAbove(ahSecond.seg,ia);
             }
             else
             {
-                S.delRight(h.seg);
+                S.delRight(ahSecond.seg);
             }
             if(object_value==ParallelObjectTraversal::both)
             {
