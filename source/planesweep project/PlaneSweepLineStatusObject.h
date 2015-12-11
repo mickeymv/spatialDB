@@ -21,9 +21,17 @@ class PlaneSweepLineStatusObject {
 
 public:
 
+    PlaneSweepLineStatusObject() {
+        //default behaviour
+        setInsideAbove(false);
+        setSegmentClass(0,0);
+    }
+
     PlaneSweepLineStatusObject(Seg2D& seg2D) {
         setSegment2D(seg2D);
-        setInsideAbove(false); //default behaviour
+        //default behaviour for ia and segmentClass
+        setInsideAbove(false);
+        setSegmentClass(0,0);
     }
 
     bool operator<(PlaneSweepLineStatusObject &operand);

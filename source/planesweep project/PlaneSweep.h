@@ -70,9 +70,9 @@ public:
      * data structure.
      * It should call calculateIntersection() and calculateOverlap() within it.
      */
-    void addLeft(Seg2D &);
+    void addLeft(PlaneSweepLineStatusObject &);
 
-    void delRight(Seg2D &);
+    void delRight(PlaneSweepLineStatusObject &);
 
 	bool getInsideAbove(Seg2D seg);
 	SegmentClass getSegClass(Seg2D seg);
