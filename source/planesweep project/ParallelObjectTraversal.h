@@ -10,10 +10,11 @@
 #include "Topic2/Implementation/Point2D.h"
 #include "Topic2/Implementation/Line2D.h"
 #include "Topic1/RobustGeometricPrimitives2D.h"
-#include "Topic2/Interfaces/Region2D.h"
+#include "Topic2/Implementation/Region2D.h"
 
 #include "Object2D.h"
-#include "ObjectIterator.h"
+#include "Topic2/Implementation/Line2DImpl.h"
+#include "Topic2/Implementation/Region2DImpl.h"
 
 
 class ParallelObjectTraversal {
@@ -29,7 +30,9 @@ public:
 
     status getStatus();
 
-    ObjectIterator *getObjIterator(object);
+    Point2D::ConstPoiIterator * getPoiObjIterator(object);
+    Line2DImpl::ConstHalfSegIterator * getHalfSegIterator(object);
+    Region2DImpl::ConstAttributedHalfSegmentIterator * getAttrHalfSegIterator(object);
 	// need to finalise the return type
 	void setNextMin();
 
@@ -39,8 +42,8 @@ public:
     Object2D getObjF();
     Object2D getObjG();
 
-    ObjectIterator* getNextObjIterator(HalfSeg2D,object);
-    ObjectIterator* getNextObjIterator(AttrHalfSeg2D,object);
+    Line2DImpl::ConstHalfSegIterator *  getNextObjIterator(HalfSeg2D,object);
+    Region2DImpl::ConstAttributedHalfSegmentIterator *  getNextObjIterator(AttrHalfSeg2D,object);
 
     /*Checks whether the given segments are within an object
    */
@@ -78,8 +81,8 @@ private:
     Object2D *objF, *objG;
 
     Point2D::ConstPoiIterator * objFpoiIterator = nullptr, * objGpoiIterator = nullptr; // DTj Dec 5, 2015
-    Line2D::ConstSegIterator * objFsegIterator = nullptr, * objGsegIterator = nullptr; 
-    Region2D::ConstRegionIterator * objFregionIterator = nullptr, * objGregionIterator = nullptr; 
+    Line2DImpl::ConstHalfSegIterator * objFsegIterator = nullptr, * objGsegIterator = nullptr;
+    Region2DImpl::ConstAttributedHalfSegmentIterator * objFregionIterator = nullptr, * objGregionIterator = nullptr;
 
 };
 

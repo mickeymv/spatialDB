@@ -24,14 +24,13 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "../../Object2D.h"
-
+#include "RobustGeometricPrimitives2D.h"
 using namespace std;
 
 
-class Line2D : public Object2D
+class Line2D 
 {
-public:
+  public:
     //++++++++++++++++++++++++++++
     // Constructors and destructor
     //++++++++++++++++++++++++++++
@@ -46,7 +45,7 @@ public:
     // formal definition of this data type.
     Line2D(std::vector<Seg2D> segmentList);
 
-
+    
     // Constructor for complex Line structure. It takes as input a string that represent the textually represents
     //        the input vector of Segments.
     //
@@ -61,7 +60,7 @@ public:
     //
     // example for segment list of seg1 and seg2 here is: (((1,2),(3,4)),((5,6),(7,8)))  
     Line2D(std::string textualLineList);
-
+    
 
     // Copy constructor that constructs a Line2D object from a given Line2D
     // object "source".
@@ -78,7 +77,7 @@ public:
     //Destructor
     virtual ~Line2D();
 
-
+    
     //+++++++++++++++++++++
     // Assignment operators
     //+++++++++++++++++++++
@@ -92,7 +91,7 @@ public:
     // object as its value.
     Line2D& operator = (Line2D&& source);
 
-
+    
     //+++++++++++++++++++++
     // Comparison operators
     //+++++++++++++++++++++
@@ -101,19 +100,19 @@ public:
     //equal operator that checks if the Line2D object and input Line2D
     //object are the same spatial region.
     bool operator == ( Line2D& rhs);
-
+	
     //unequal operator that checks if the Line2D object and the inputted
     //Line2D object are different spatial regions. It is the logical opposite
     //of the == operator.
     bool operator != ( Line2D& rhs);
-
+	
     //less than operator that compares 2 Line2D objects and checks which one is lesser 
     //by comparing their lengths in the following way:
     //if length(x1) < length(x2) the object is less than "source" object
     //length(x1) < length(x2)
     //length(y1) < length(y2)
     //length(y1) < length(y2)
-    bool operator <  ( Line2D& rhs);
+    bool operator <  ( Line2D& rhs); 
 
     //less than operator that compares 2 Line2D objects and checks which one is lesser 
     //or equal by comparing their lengths in the following way:
@@ -121,7 +120,7 @@ public:
     //length(x1) <= length(x2)
     //length(y1) <= length(y2)
     //length(y1) <= length(y2)	
-    bool operator <= ( Line2D& rhs);
+    bool operator <= ( Line2D& rhs);   
 
     //less than operator that compares 2 Line2D objects and checks which one is greater 
     //by comparing their lengths in the following way:
@@ -129,7 +128,7 @@ public:
     //length(x1) > length(x2)
     //length(y1) > length(y2)
     //length(y1) > length(y2)	
-    bool operator >  (Line2D& rhs);
+    bool operator >  (Line2D& rhs);  
 
     //less than operator that compares 2 Line2D objects and checks which one is greater 
     //or equal by comparing their lengths in the following way:
@@ -137,7 +136,7 @@ public:
     //length(x1) >= length(x2)
     //length(y1) >= length(y2)
     //length(y1) >= length(y2)
-    bool operator >= (Line2D& rhs);
+    bool operator >= (Line2D& rhs);    
 
 
     //++++++++++++++++++++++++++++++++
@@ -171,9 +170,9 @@ public:
     // blocks is not possible.
     class ConstBlockIterator
     {
-        friend class Line2D;
+      friend class Line2D;
 
-    public:
+      public:
         // Default constructor that creates an empty constant block iterator.
         ConstBlockIterator();
 
@@ -217,10 +216,10 @@ public:
         bool operator <= (const ConstBlockIterator& rhs) const;
         bool operator >  (const ConstBlockIterator& rhs) const;
         bool operator >= (const ConstBlockIterator& rhs) const;
-
+        
         friend std::ostream&operator<<(std::ostream&, const ConstBlockIterator&);
 
-    protected:
+      protected:
         // Forward struct declaration for the hidden implementation of a
         // constant block iterator
         struct ConstBlockIteratorImplementation;
@@ -334,7 +333,7 @@ public:
     
     
 
-protected:
+  protected:
     // Forward struct declaration for the hidden implementation of class
     // "Line2D" as an abstract data type (ADT)
     struct Line2DSImpl;

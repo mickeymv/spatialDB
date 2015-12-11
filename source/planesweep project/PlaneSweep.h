@@ -10,7 +10,7 @@
 #include "Topic2/Implementation/Line2D.h"
 #include "Topic1/RobustGeometricPrimitives2D.h"
 #include "Topic2/Implementation/Number.h"
-#include "Topic2/Interfaces/Region2D.h"
+#include "Topic2/Implementation/Region2D.h"
 
 #include "Object2D.h"
 #include "ParallelObjectTraversal.h"
@@ -118,6 +118,8 @@ private:
     MinHeap dynamicEPSObjF;
     MinHeap dynamicEPSObjG;
 
+    Object2D objF,objG;
+
 
     /*
      *  This function would be called from within the selectNext() function.
@@ -134,12 +136,6 @@ private:
      */
     int findLeast();
 
-    /*
-     *  Checks whether a Seg2D has intersections with any of the predecessor and successor already
-     *  in the sweepLineStatus. If it does, it calls the functions
-     *  splitLines().
-     */
-    bool calculateRelation(Seg2D&);
 
 
     /*
