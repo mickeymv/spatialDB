@@ -373,13 +373,13 @@ bool HalfSeg2D::operator < (const HalfSeg2D& operand)
 	Poi2D dominatingPointOfSeg2;
 	Poi2D nonDominatingPointOfSeg1;
 	Poi2D nonDominatingPointOfSeg2;
-	
+
 	if (this->isLeft == true)
 	{
 		dominatingPointOfSeg1 = seg1.p1;
 		nonDominatingPointOfSeg1 = seg1.p2;
 	}
-	
+
 	else
 	{
 		dominatingPointOfSeg1 = seg1.p2;
@@ -420,7 +420,7 @@ bool HalfSeg2D::operator > (const HalfSeg2D& operand)
 {
 	if (!(*this < operand) && *this != operand)
 		return true;
-	else 
+	else
 		return false;
 }
 
@@ -815,7 +815,7 @@ bool SimplePolygon2D::operator == (const SimplePolygon2D& operand)
 {
 	if (this->vertices.size() != operand.vertices.size())
 		return false;
-	
+
 	else
 	{
 		for (int i = 0; i < operand.vertices.size(); i++)
@@ -838,8 +838,8 @@ bool SimplePolygon2D::operator != (const SimplePolygon2D& operand)
 std::ostream&operator << (std::ostream& os, SimplePolygon2D& output)
 {
 	for (int i = 0; i < output.vertices.size(); i++)
-		std::cout << "Point" << i <<":"<< output.vertices[i]<<" ";
-	
+		std::cout << "Point" << i << ":" << output.vertices[i] << " ";
+
 	return os;
 }
 
@@ -852,18 +852,18 @@ Functions between Segment and Point.
 //Returns true if poi lies on the segment.
 bool PointLiesOnSegment(Poi2D& q, Seg2D& seg)
 {
-	
+
 	Number minp1p2x;
 	Number maxp1p2x;
 	Number minp1p2y;
 	Number maxp1p2y;
-	
+
 	if (!PointIsCollinearToSegment(q, seg))
 	{
 		//std::cout << "not collinear";
 		return false;
 	}
-	
+
 	if (seg.p1.x>seg.p2.x)
 	{
 		minp1p2x = seg.p2.x;
@@ -903,13 +903,13 @@ bool PointLiesOnSegment(Poi2D& q, Seg2D& seg)
 }
 //Returns the point that lies on the segment and not on the endpoints.
 bool PointLiesOnSegmentAndNotEndpoints(Poi2D& poi, Seg2D& seg)
-{	
+{
 	if (!PointIsCollinearToSegment(poi, seg))
 	{
 		//std::cout << "not collinear";
 		return false;
 	}
-	if (PointLiesOnSegment(poi, seg) && ((poi != seg.p1)&&(poi != seg.p2)))
+	if (PointLiesOnSegment(poi, seg) && ((poi != seg.p1) && (poi != seg.p2)))
 		return true;
 	else
 		return false;
@@ -983,7 +983,7 @@ bool PointLiesBelowOrOnSegment(Poi2D& poi, Seg2D& seg)
 // Returns true if poi PointLies on the left end point of the segment.
 bool PointLiesOnLeftEndPointOfSegment(Poi2D& poi, Seg2D& seg)
 {
-	
+
 	if (PointLiesOnSegment(poi, seg) && (seg.p1 == poi))
 		return true;
 	else
@@ -1026,10 +1026,10 @@ bool PointIsCollinearToSegment(Poi2D& poi, Seg2D& seg)
 				else
 					return false;
 			}
-			
+
 		}
 	}
-		
+
 	else
 	{
 		if (poi.x == seg.p1.x)
@@ -1077,7 +1077,7 @@ bool SegmentLiesAboveSegment(Seg2D& seg1, Seg2D& seg2)
 {
 	if (PointLiesAboveSegment(seg1.p1, seg2) && PointLiesAboveSegment(seg1.p2, seg2))
 		return true;
-	else 
+	else
 		return false;
 }
 
@@ -1117,19 +1117,19 @@ bool SegmentIsCollinear(Seg2D& seg1, Seg2D& seg2)
 		return false;
 	/*if (seg1.p2.x - seg1.p1.x == Number("0") || seg2.p2.x - seg2.p1.x == Number("0"))
 	if (seg1.p1.x == seg2.p2.x)
-		return true;
+	return true;
 	else
-		return false;
+	return false;
 	else
 	{
-		Number seg1slope = (seg1.p2.y - seg1.p1.y) / (seg1.p2.x - seg1.p1.x);
-		Number seg2slope = (seg2.p2.y - seg2.p1.y) / (seg2.p2.x - seg2.p1.x);
-		Number seg1yintercept = (seg1.p1.y) - ((seg1slope)*seg1.p1.x);
-		Number seg2yintercept = (seg2.p1.y) - ((seg2slope)*seg2.p1.x);
-		if (seg1slope == seg2slope && seg1yintercept == seg2yintercept)
-			return true;
-		else
-			return false;
+	Number seg1slope = (seg1.p2.y - seg1.p1.y) / (seg1.p2.x - seg1.p1.x);
+	Number seg2slope = (seg2.p2.y - seg2.p1.y) / (seg2.p2.x - seg2.p1.x);
+	Number seg1yintercept = (seg1.p1.y) - ((seg1slope)*seg1.p1.x);
+	Number seg2yintercept = (seg2.p1.y) - ((seg2slope)*seg2.p1.x);
+	if (seg1slope == seg2slope && seg1yintercept == seg2yintercept)
+	return true;
+	else
+	return false;
 	}*/
 }
 
@@ -1280,10 +1280,10 @@ bool SegmentLiesOnOrWithinSegment(Seg2D& seg1, Seg2D& seg2)
 	else
 		return false;
 }
-int poly_orientation(Poi2D& p1, Poi2D& p2, Poi2D& q1) 
+int poly_orientation(Poi2D& p1, Poi2D& p2, Poi2D& q1)
 {
 	Number val = (p2.y - p1.y) * (q1.x - p2.x) - (q1.y - p2.y) * (p2.x - p1.x);
-	
+
 	if (val == Number("0"))
 		return 0;
 	else
@@ -1362,7 +1362,7 @@ bool Poly_intersects(Seg2D& seg1, Seg2D& seg2)
 	int o4 = poly_orientation(seg2.p1, seg2.p2, seg1.p2);
 
 	//std::cout << "\n o1:" << o1 << "\n o2:" << o2 << "\n o3:" << o3 << "\n o4:" << o4;
-	
+
 	if (o1 != o2 && o3 != o4)
 	{
 		//std::cout << "weird case";
@@ -1370,14 +1370,14 @@ bool Poly_intersects(Seg2D& seg1, Seg2D& seg2)
 	}
 	if (PointLiesOnSegment(seg1.p1, seg2) || PointLiesOnSegment(seg1.p2, seg2) || PointLiesOnSegment(seg2.p1, seg1) || PointLiesOnSegment(seg2.p2, seg1))
 	{
-	
+
 		//std::cout << "case 1";
 		return true;
-	// Special Cases
+		// Special Cases
 	}
 	if (o1 == 0 && PointLiesOnSegment(seg2.p1, seg1))
 	{
-	
+
 		//std::cout << "case 2";
 		return true;
 	}
@@ -1520,7 +1520,7 @@ bool BasicPointInBoundingBox(Poi2D& poi, SimplePolygon2D& polygon)
 	Number miny = polygon.vertices[0].y;
 	Number maxx = polygon.vertices[0].x;
 	Number maxy = polygon.vertices[0].y;
-	
+
 	for (int i = 1; i < polygon.vertices.size(); i++)
 	{
 		if (polygon.vertices[i].x < minx)
@@ -1531,7 +1531,7 @@ bool BasicPointInBoundingBox(Poi2D& poi, SimplePolygon2D& polygon)
 			miny = polygon.vertices[i].y;
 		if (polygon.vertices[i].y > maxy)
 			maxy = polygon.vertices[i].y;
-		
+
 	}
 	//std::cout << "BOUNDING BOX:\nminx" << minx << "maxx:" << maxx << "maxy" << maxy << "miny" << miny;
 	if (poi.x < minx || poi.y < miny || poi.x > maxx || poi.y > maxy)
@@ -1557,7 +1557,7 @@ bool simplePointInsideSimplePolygon(Poi2D& poi, SimplePolygon2D& polygon)
 	//std::cout << "simpleCheck" << simpleCheck << std::endl;
 	int numbeOfIntersection = 0;
 	int forI = 0;
-	
+
 	if (simpleCheck == false){
 		return false;
 	}
@@ -1618,7 +1618,7 @@ bool simplePointInsideSimplePolygon(Poi2D& poi, SimplePolygon2D& polygon)
 					//std::cout << "pointOfIntersection" << pointOfIntersection << std::endl;
 					if (PointLiesOnSegmentAndNotEndpoints(polygon.vertices[i], segC) || PointLiesOnSegmentAndNotEndpoints(polygon.vertices[k], segC)){
 
-						
+
 						pointCheck = true;
 						if (PointLiesOnSegmentAndNotEndpoints(polygon.vertices[i], segC)){
 							pointOfIntersection = polygon.vertices[i];
@@ -1654,23 +1654,26 @@ bool simplePointInsideSimplePolygon(Poi2D& poi, SimplePolygon2D& polygon)
 							}
 						}
 
-					}else if (pointCheck){
+					}
+					else if (pointCheck){
 						Seg2D segR(poi, pointOfIntersection);
-						if(l==0){
+						if (l == 0){
 							prevPoint = totalNumberOfVertices - 1;
 
-						}else{
+						}
+						else{
 							prevPoint = l - 1;
 						}
-						if(l== totalNumberOfVertices - 1 ){
+						if (l == totalNumberOfVertices - 1){
 							nextPoint = 0;
-						}else{
+						}
+						else{
 							nextPoint = l + 1;
 						}
 
 						//std::cout << "polygon.vertices[prevPoint]" << polygon.vertices[prevPoint];
 						//std::cout << "polygon.vertices[nextPoint]" << polygon.vertices[nextPoint];
-						if(PointIsCollinearToSegment(polygon.vertices[nextPoint],segC)){
+						if (PointIsCollinearToSegment(polygon.vertices[nextPoint], segC)){
 							i = i - 1;
 						}
 
@@ -1703,7 +1706,7 @@ bool simplePointInsideSimplePolygon(Poi2D& poi, SimplePolygon2D& polygon)
 
 	}
 
-	
+
 }
 //Determines whether the point is located in the interior or on the boundary of the simple polygon 
 bool simplePointOnBoundaryOfSimplePoly(Poi2D& poi, SimplePolygon2D& simplepolygon)
@@ -1714,10 +1717,10 @@ bool simplePointOnBoundaryOfSimplePoly(Poi2D& poi, SimplePolygon2D& simplepolygo
 	{
 		if (i == polygonSize - 1)
 			tempSegment = Seg2D(simplepolygon.vertices[i], simplepolygon.vertices[0]);
-		
+
 		else
 			tempSegment = Seg2D(simplepolygon.vertices[i], simplepolygon.vertices[i + 1]);
-		
+
 		if (PointLiesOnSegment(poi, tempSegment))
 			return true;
 	}

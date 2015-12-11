@@ -3,11 +3,11 @@
 * File: RobustGeometricPrimitives2D.h
 -----------------------------------------------------------------------------------
 - Description:
-- 
+-
 - This file contains the definitions of the Spatial datatypes Poi2D,Seg2D,
 - HalfSeg2D,AttrHalfSeg2D,Rect2D and SimplePolygon2D and additional helper
 - functions.
-- 
+-
 - Created by:
 - Prerna Mandal, Sivasubramanian Kandaswami, Umar Majeed, Jyotsana Walia
 ------------------------------------------------------------------------------------*/
@@ -130,7 +130,6 @@ public:
 /*
 *Attributed Half Segment Class
 */
-struct AttHalfSegVariable;
 class AttrHalfSeg2D
 {
 public:
@@ -158,14 +157,13 @@ public:
 	bool operator ==(const AttrHalfSeg2D& operand);
 	bool operator !=(const AttrHalfSeg2D& operand);
 	friend std::ostream&operator<<(std::ostream& os, const AttrHalfSeg2D& output);
-	friend std::istream&operator>>(std::istream& is, AttHalfSegVariable& input);
+	friend std::istream&operator>>(std::istream& is, const AttrHalfSeg2D& input);
 
 };
 
 /*
 *Minimum Bounding Rectangle Class
 */
-struct Rect2DVariable;
 class Rect2D
 {
 public:
@@ -269,7 +267,7 @@ bool simplePointInsideSimplePolygon(Poi2D& poi, SimplePolygon2D& simplepolygon);
 //Determines whether the point is located in the interior or on the boundary of the simple polygon 
 bool simplePointOnBoundaryOfSimplePoly(Poi2D& poi, SimplePolygon2D& simplepolygon);
 //Determines whether the segment is located in the interior of the simple polygon 
-bool segInsideSimplePolygon(Seg2D& seg,SimplePolygon2D& simplepolygon);
+bool segInsideSimplePolygon(Seg2D& seg, SimplePolygon2D& simplepolygon);
 //Determines whether the segment is located on the boundary of the simple polygon 
 bool segOnBoundaryOfSimplePolygon(Seg2D& seg, SimplePolygon2D& simplepolygon);
 
