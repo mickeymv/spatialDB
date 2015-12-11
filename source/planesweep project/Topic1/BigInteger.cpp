@@ -1,6 +1,7 @@
 #include "BigInteger.h"
 #include <vector>
 #include <math.h>
+#include <algorithm>
 
 //A constant long long int value for the base that is used
 //Since the maximum number a cell can hold is UINT_MAX, 
