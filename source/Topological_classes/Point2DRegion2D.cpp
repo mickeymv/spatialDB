@@ -1,5 +1,5 @@
 //
-// Created by Djundi on 11/8/15.
+// Aswini Ramesh
 //
 
 #include "Point2DRegion2D.h"
@@ -29,7 +29,7 @@ void Point2DRegion2D::exploreTopoPred() {
     S.newSweep();
 
 
-    //selectnext??
+
     while((S.getStatus()!=ParallelObjectTraversal::end_of_none)&&(!(vF[poi_inside]))&&(vF[poi_on_bound])&&(vF[poi_outside]))
     {
         ParallelObjectTraversal::object object_value = S.getObject();
@@ -65,9 +65,9 @@ void Point2DRegion2D::exploreTopoPred() {
 
             }
         }
-            //object not equal to first
+
         else
-        {
+        {   //object not equal to first
             //here half segment and attributed half segment is considered as two cases.Attributed half segment is used for getting ia  and half segment is used for operations??
             HalfSeg2D h = S.getHalfSegEvent(ParallelObjectTraversal::second);
 
@@ -101,6 +101,8 @@ void Point2DRegion2D::exploreTopoPred() {
 void Point2DRegion2D::evaluateTopoPred() {
     int IMC[3][3];
 
+
+    //populating 9IM
     for(int i=0; i<3; i++)
     {
         for(int j=0; j<3; j++)
@@ -127,7 +129,7 @@ void Point2DRegion2D::evaluateTopoPred() {
     IMC[2][2]=1;
 
 
-
+//Evaluation phase
 if(IMC[0][0])
 {
 

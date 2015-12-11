@@ -1,5 +1,5 @@
 //
-// Created by Djundi on 11/8/15.
+// Aswini Ramesh
 //
 
 #ifndef PLANESWEEP_PROJECT_POINT2DREGION2D_H
@@ -21,6 +21,7 @@ public:
 
   //Function to check whether the given spatial predicate holds true
     bool isTopologicalRelationship(TopPredNumberPoint2DRegion2D predicate);
+
     //Function to check return  spatial predicate
     TopPredNumberPoint2DRegion2D getTopologicalRelationship();
 

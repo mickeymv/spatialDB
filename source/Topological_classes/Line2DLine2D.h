@@ -1,5 +1,5 @@
 //
-// Created by Djundi on 11/8/15.
+// Aswini Ramesh
 //
 
 #ifndef PLANESWEEP_PROJECT_LINE2DLINE2D_H
@@ -21,10 +21,13 @@ public:
     Line2DLine2D(Line2D &F, Line2D &G);
     ~Line2DLine2D();
 
-
+    //Function to check whether the given spatial predicate holds true
     bool isTopologicalRelationship(TopPredNumberLine2DLine2D predicate);
+
+    //Function to check return  spatial predicate
     TopPredNumberLine2DLine2D getTopologicalRelationship();
 
+    //8 basic spatial predicates based on 9IM
     bool overlap();
     bool disjoint();
     bool meet();
@@ -41,7 +44,6 @@ private:
     }vFLine2DLine2DPredicates;
 
     typedef enum {
-        //other way??
         seg_unshared_VG,bound_on_interior_VG,bound_disjoint_VG
     }vGLine2DLine2DPredicates;
 
