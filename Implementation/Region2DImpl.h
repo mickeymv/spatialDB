@@ -2,7 +2,7 @@
  *  File: Region2DImpl.h
  /******************************************************************************
  *  Purpose:  This file specifies interfaces to the class Region2DImpl and to
-*   several nested iterator classes thaty enable access to components (that is,
+*   several nested iterator classes that enable access to components (that is,
 *   faces, cycles, segments) of Region2DImpl objects.
 
  *  Created on: Oct 8, 2015
@@ -17,12 +17,12 @@
 
 #include "Region2D.h"
 
-class Region2DImpl: protected Region2D        //inherits Region2D  
+class Region2DImpl: public Region2D        //inherits Region2D  
 {
   public:
 	//++++++++++++++++++++++++++++
-    // Constructors and destructor
-    //++++++++++++++++++++++++++++
+       // Constructors and destructor
+       //++++++++++++++++++++++++++++
 
 	//Empty constructor. Represents the empty region object.
 	Region2DImpl();
@@ -33,11 +33,10 @@ class Region2DImpl: protected Region2D        //inherits Region2D
 	//object can be created from the input.
 	Region2DImpl(std::vector<Seg2D> segmentList);
 
-    // Constructor for complex region structure. It takes as input a string name that can represent either :
-    // 1) file name which contains the vector of segments from which to construct the region object 
-    // 2) string the textually represents the input vector of segments.
+    // Constructor for complex region structure. It takes as input a string name that can represent:
+    //  string that textually represents the input vector of segments.
     //
-    // The grammar for representing a segment vector in both cases 1 and 2 are structured as follows:
+    // The grammar for representing a segment vector is structured as follows:
     // Expression := '(' Segment+ ')'
     // Segment:= '(' Point ',' Point ')'
     // Point:= '(' Number ',' Number ')'
@@ -46,29 +45,29 @@ class Region2DImpl: protected Region2D        //inherits Region2D
     // DigitWithoutZero := '1' | '2' |'3' | '4' | '5' | '6' | '7' | '8' | '9'
     // Digit:= '0' | DigitWithoutZero
     //
-    // example for pointslist of point1, point2 and point3 here is: ((x1, y1),(x2, y2),(x3, y3))
+    // example input: "(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))"
 	Region2DImpl(std::string textualRegionList);
 
     //copy constructor that constructs a new Region2D object with the same 
     //properties as the inputted Region2D object.
 	Region2DImpl(Region2DImpl& source);
 
-	// Move constructor that moves a given Region2D object "source" to a
-    // Region2D object. The Region2D object "source" gets the empty Region2D
-    // object as its value.
+     // Move constructor that moves a given Region2D object "source" to a
+     // Region2D object. The Region2D object "source" gets the empty Region2D
+     // object as its value.
 	Region2DImpl(Region2DImpl&& source);
 
-	//Destructor
-	virtual ~Region2DImpl();
+     //Destructor
+     virtual ~Region2DImpl();
 
 
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		//All functions will be inherited from Region2D.cpp when called
+	//All functions will be inherited from Region2D.cpp when called
         //Additional functions in the extended file start here
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
-	//+++++++++++++++++
+    //+++++++++++++++++
     // Iterator classes
     //+++++++++++++++++
 
