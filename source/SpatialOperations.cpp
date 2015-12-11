@@ -111,6 +111,52 @@ Point2D spatialDifference(const Point2D &pointLhs, const Point2D &pointRhs) {
     return differencePoint;
 }
 
+void updateSweepLineForLine(PlaneSweep &planeSweep) {
+    /*
+         * Start of adding/removing segments from the sweepLine
+         */
+    Seg2D segmentForSweepLine;
+    HalfSeg2D halfsegment;
+    PlaneSweepLineStatusObject sweepLineStatusObject;
+    if (planeSweep.getObject() == ParallelObjectTraversal::both) {
+
+        //when object==both, which line object is this halfSeg from?
+        /*
+         * is it from the first line2D object or the second?
+         * why this is important is because when we add a segment to the
+         * sweepLine, we need to tell which object it belongs to.
+         * We can't add the segment saying 'both' since both only implies the
+         * dominating point is the same, not the other x/y coordinate in the segment.
+         */
+        HalfSeg2D halfsegmentFirst = planeSweep.getHalfSegEvent(ParallelObjectTraversal::first);
+        HalfSeg2D halfsegmentSecond = planeSweep.getHalfSegEvent(ParallelObjectTraversal::second);
+        if (halfsegmentFirst < halfsegmentSecond) {
+            halfsegment = halfsegmentFirst;
+            sweepLineStatusObject.setObject(ParallelObjectTraversal::first);
+        } else if (halfsegmentFirst > halfsegmentSecond) {
+            halfsegment = halfsegmentSecond;
+            sweepLineStatusObject.setObject(ParallelObjectTraversal::second);
+        }
+    } else if (planeSweep.getObject() == ParallelObjectTraversal::first) {
+        halfsegment = planeSweep.getHalfSegEvent(ParallelObjectTraversal::first);
+        sweepLineStatusObject.setObject(ParallelObjectTraversal::first);
+    } else if (planeSweep.getObject() == ParallelObjectTraversal::second) {
+        halfsegment = planeSweep.getHalfSegEvent(ParallelObjectTraversal::second);
+        sweepLineStatusObject.setObject(ParallelObjectTraversal::second);
+    }
+    segmentForSweepLine = halfsegment.seg;
+    sweepLineStatusObject.setSegment2D(segmentForSweepLine);
+    if (halfsegment.isLeft == true) { //add left half-segments to sweepline
+        planeSweep.addLeft(sweepLineStatusObject);
+    } else if (halfsegment.isLeft == false) { //remove right half-segments from sweepline
+        planeSweep.delRight(sweepLineStatusObject);
+    }
+    /*
+     * End of adding/removing segments from the sweepLine
+     */
+
+}
+
 /******************************************************************************
 * Spatial operations union, intersection, and difference applied to two
 * Line2D objects and yielding a Line2D object
@@ -140,6 +186,10 @@ Line2D spatialIntersection(const Line2D &lineLhs, const Line2D &lineRhs) {
     //planesweep.selectFirst would be called implicitly in the planesweep constructor.
     while (planeSweep.getObject() != ParallelObjectTraversal::none &&
            planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
+        updateSweepLineForLine(planeSweep);
+        /*
+         * Start of intersection implementation.
+         */
         if (planeSweep.getObject() == ParallelObjectTraversal::both &&
             previousObjectHistory == ParallelObjectTraversal::both) {
             HalfSeg2D halfSeg2D = planeSweep.getHalfSegEvent(ParallelObjectTraversal::first);
@@ -175,6 +225,7 @@ Line2D spatialUnion(const Line2D &lineLhs, const Line2D &lineRhs) {
     //planesweep.selectFirst would be called implicitly in the planesweep constructor.
     while (planeSweep.getObject() != ParallelObjectTraversal::none &&
            planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
+        updateSweepLineForLine(planeSweep);
         ParallelObjectTraversal::object objectValue = planeSweep.getObject();
         if (objectValue == ParallelObjectTraversal::both) {
             objectValue = ParallelObjectTraversal::first;
@@ -209,6 +260,7 @@ Line2D spatialDifference(const Line2D &lineLhs, const Line2D &lineRhs) {
     //planesweep.selectFirst would be called implicitly in the planesweep constructor.
     while (planeSweep.getObject() != ParallelObjectTraversal::none &&
            planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
+        updateSweepLineForLine(planeSweep);
         if (
                 ((planeSweep.getObject() == ParallelObjectTraversal::first ||
                   planeSweep.getObject() == ParallelObjectTraversal::both) &&
@@ -276,13 +328,13 @@ Region2D spatialIntersection(Region2D &regionLhs,
             SegmentClass segClass = planeSweep.getSegClass(seg2D);
             int lor = segClass.getLowerOrRight();
             int uol = segClass.getUpperOrLeft();
-            if(lor == 2 && uol ==2) {
+            if (lor == 2 && uol == 2) {
                 intersectionRegionVector.push_back(seg2D);
             }
 //The argument could be ParallelObjectTraversal::second as well since they're the same.
         } else if (planeSweep.getObject() == ParallelObjectTraversal::both) {
             //update previous event's object with this event
-            AttrHalfSeg2D firstAttrHalfSeg2D  = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::first);
+            AttrHalfSeg2D firstAttrHalfSeg2D = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::first);
             AttrHalfSeg2D secondAttrHalfSeg2D = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::second);
             if (firstAttrHalfSeg2D.hseg.isLeft == secondAttrHalfSeg2D.hseg.isLeft) {
                 previousObjectHistory = ParallelObjectTraversal::both;
