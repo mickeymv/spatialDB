@@ -255,6 +255,2205 @@ void Line2DLine2D::evaluateTopoPred() {
     IMC[2][2]=1;
 
 
+    //Disjoint
+    if((!IMC[0][0])&&(!IMC[0][1])&&(!IMC[1][0])&&(!IMC[1][1]))
+    {
+        topPredNumberLine2DLine2D = TopPredNumberLine2DLine2D::ll_disjoint_m4;
+        isPredSet=true;
+    }
+
+    //Touches/meet
+   if(!(IMC[0][0]))
+   {
+       if(IMC[0][1]||IMC[1][0]||IMC[1][1])
+       {
+           topPredNumberLine2DLine2D = TopPredNumberLine2DLine2D::ll_meet_m25;
+           isPredSet=true;
+       }
+   }
+    //equals
+    if(IMC[0][0])
+    {
+        if((!IMC[2][0])&&(!IMC[2][1])&&(!IMC[0][2])&&(!IMC[1][2]))
+        {
+            topPredNumberLine2DLine2D = TopPredNumberLine2DLine2D::ll_meet_m25;
+            isPredSet=true;
+        }
+    }
+    //inside
+    if(IMC[0][0])
+    {
+        if((!(IMC[0][2]))&&(!(IMC[1][2])))
+        {
+            topPredNumberLine2DLine2D = TopPredNumberLine2DLine2D::ll_inside_m39;
+            isPredSet=true;
+        }
+    }
+    //coveredBy
+    if((!(IMC[0][2]))&&(!(IMC[1][2]))) {
+
+
+        if((IMC[0][0])||(IMC[0][1])||(IMC[1][0])||(IMC[1][1]))
+        {
+            topPredNumberLine2DLine2D = TopPredNumberLine2DLine2D::ll_coveredby_m37;
+            isPredSet=true;
+        }
+    }
+  //contains
+    if(IMC[0][0])
+    {
+        if((!(IMC[2][0]))&&(!(IMC[2][1])))
+        {
+            topPredNumberLine2DLine2D = TopPredNumberLine2DLine2D::ll_contains_m43;
+            isPredSet=true;
+        }
+    }
+
+    //overlaps
+    if((IMC[0][0])&&(IMC[0][2])&&(IMC[2][0]))
+    {
+        topPredNumberLine2DLine2D = TopPredNumberLine2DLine2D::ll_overlap_m44;
+        isPredSet=true;
+    }
+
+    //covers
+    if((!(IMC[2][0]))&&(!(IMC[2][1])))
+    {
+        if((IMC[0][0])||(IMC[0][1])||(IMC[1][0])||(IMC[1][1]))
+        {
+            topPredNumberLine2DLine2D = TopPredNumberLine2DLine2D::ll_covers_m72;
+            isPredSet=true;
+        }
+    }
+
+
+
+    if(IMC[0][0])
+    {//00 true
+
+        if(IMC[0][1])
+        {//00 true 01 true
+
+            if(IMC[0][2])
+            {//00 true 02 true
+
+               if(IMC[1][0])
+               {//00 true 10 true
+                   if(IMC[1][1])
+                   {//00 true 11 true
+
+                       if(IMC[1][2])
+                       {//00 true 12 true
+                           if(IMC[2][1])
+                           {//00 true 21 true
+                               if(IMC[2][2])
+                               {//00 01 02 10 11 12 21 22 true
+
+                               }
+                               else
+                               { //00 01 02 10 11 12 21 true 22 false
+
+                               }
+
+
+
+                           }
+                           else
+                           {//00 01 02 10 11 12 true 21 false
+                               if(IMC[2][2])
+                               {//00 01 02 10 11 12 22 true 21 false
+
+                               }
+                               else
+                               {//00 01 02 10 11 12 21 22 false
+
+                               }
+                           }
+
+                       }
+                       else
+                       {//00 true 12 false
+                           if(IMC[2][1])
+                           {
+                               //00 true 21 true
+                               if(IMC[2][2])
+                               {//00 01 02 10 11 21 22 true 12 false
+
+                               }
+                               else
+                               { //00 01 02 10 11 21 true 22 12 false
+
+                               }
+                           }
+                           else
+                           {
+                              //
+                               if(IMC[2][2])
+                               {// 00 01 02 10 11 22 true 12 21 false 22 true
+
+                               }
+                               else
+                               { //00 true 22 false
+
+                               }
+
+                           }
+
+
+                       }
+
+
+
+                   }
+                   else
+                   {//00 true 11 false
+                       if(IMC[1][2])
+                       {//00 true 12 true
+                           if(IMC[2][1])
+                           {
+                               //00 true 21 true
+                               if(IMC[2][2])
+                               {//00 true 22 true
+
+                               }
+                               else
+                               { //00 true 22 false
+
+                               }
+                           }
+                           else
+                           {//00 true 21 false
+                               if(IMC[2][2])
+                               {//00 true 22 true
+
+                               }
+                               else
+                               { //00 true 22 false
+
+                               }
+
+                           }
+
+
+                       }
+                       else
+                       {//00 true 12 false
+                           if(IMC[2][1])
+                           {
+                               //00 true 21 true
+                               if(IMC[2][2])
+                               {//00 true 22 true
+
+                               }
+                               else
+                               { //00 true 22 false
+
+                               }
+                           }
+                           else
+                           {//00 true 21 false
+                               if(IMC[2][2])
+                               {//00 true 22 true
+
+                               }
+                               else
+                               { //00 true 22 false
+
+                               }
+
+                           }
+
+
+                       }
+
+                   }
+
+               }
+               else
+               {//10 false
+                   if(IMC[1][1])
+                   {//11 true
+                       if(IMC[1][2])
+                       {//12 true
+                           if(IMC[2][1])
+                           {
+                               //21 true
+                               if(IMC[2][2])
+                               {//22 true
+
+                               }
+                               else
+                               { //22 false
+
+                               }
+                           }
+                           else
+                           {//21 false
+                               if(IMC[2][2])
+                               {//22 true
+
+                               }
+                               else
+                               { //22 false
+
+                               }
+
+                           }
+
+
+                       }
+                       else
+                       {//12 false
+                           if(IMC[2][1])
+                           {
+                               //21 true
+                               if(IMC[2][2])
+                               {//22 true
+
+                               }
+                               else
+                               { //22 false
+
+                               }
+                           }
+                           else
+                           {//21 false
+                               if(IMC[2][2])
+                               {//22 true
+
+                               }
+                               else
+                               { //22 false
+
+                               }
+
+                           }
+
+
+                       }
+
+                   }
+                   else
+                   {//11 false
+                       if(IMC[1][2])
+                       {//12 true
+                           if(IMC[2][1])
+                           {
+                               //21 true
+                               if(IMC[2][2])
+                               {//22 true
+
+                               }
+                               else
+                               { //22 false
+
+                               }
+                           }
+                           else
+                           {//21 false
+                               if(IMC[2][2])
+                               {//22 true
+
+                               }
+                               else
+                               { //22 false
+
+                               }
+
+                           }
+
+
+                       }
+                       else
+                       {//12 false
+                           if(IMC[2][1])
+                           {
+                               //21 true
+                               if(IMC[2][2])
+                               {//22 true
+
+                               }
+                               else
+                               { //22 false
+
+                               }
+                           }
+                           else
+                           {//21 false
+                               if(IMC[2][2])
+                               {//22 true
+
+                               }
+                               else
+                               { //22 false
+
+                               }
+
+                           }
+
+
+                       }
+
+                   }
+
+               }
+
+
+
+            }
+            else
+            {//02 false
+                if(IMC[1][0])
+                {//10 true
+                    if(IMC[1][1])
+                    {//11 true
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+                    else
+                    {//11 false
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+
+                }
+                else
+                {//10 false
+                    if(IMC[1][1])
+                    {//11 true
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+                    else
+                    {//11 false
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+
+
+        }
+        else
+        {//01 false
+            if(IMC[0][2])
+            {//02 true
+                if(IMC[1][0])
+                {//10 true
+                    if(IMC[1][1])
+                    {//11 true
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+                    else
+                    {//11 false
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+
+                }
+                else
+                {//10 false
+                    if(IMC[1][1])
+                    {//11 true
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+                    else
+                    {//11 false
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+
+                }
+
+            }
+            else
+            {//02 false
+                if(IMC[1][0])
+                {//10 true
+                    if(IMC[1][1])
+                    {//11 true
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+                    else
+                    {//11 false
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+
+                }
+                else
+                {//10 false
+                    if(IMC[1][1])
+                    {//11 true
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+                    else
+                    {//11 false
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+     //00 true ends
+    }
+    else
+    {//00 false
+        if(IMC[0][1])
+        {//01 true
+            if(IMC[0][2])
+            {//02 true
+                if(IMC[1][0])
+                {//10 true
+                    if(IMC[1][1])
+                    {//11 true
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+                    else
+                    {//11 false
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+
+                    }
+
+                }
+                else
+                {//10 false
+                    if(IMC[1][1])
+                    {//11 true
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+                    else
+                    {//11 false
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+
+                }
+
+            }
+            else
+            {//02 false
+                if(IMC[1][0])
+                {//10 true
+                    if(IMC[1][1])
+                    {//11 true
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+                    else
+                    {//11 false
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+
+                }
+                else
+                {//10 false
+                    if(IMC[1][1])
+                    {//11 true
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+                    else
+                    {//11 false
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+        else
+        {//01 false
+            if(IMC[0][2])
+            {//02 true
+                if(IMC[1][0])
+                {//10 true
+                    if(IMC[1][1])
+                    {//11 true
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+                    else
+                    {//11 false
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+
+                }
+                else
+                {//10 false
+                    if(IMC[1][1])
+                    {//11 true
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+                    else
+                    {//11 false
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+                                 //disjoint
+                                }
+                                else
+                                { //22 false
+                                  //disjoint
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+                                    //disjoint
+
+                                }
+                                else
+                                { //22 false
+                                    //disjoint
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+                                    //disjoint
+
+                                }
+                                else
+                                { //22 false
+                                    //disjoint
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+                                    //disjoint
+
+                                }
+                                else
+                                { //22 false
+                                    //disjoint
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+
+                }
+
+            }
+            else
+            {//02 false
+                if(IMC[1][0])
+                {//10 true
+                    if(IMC[1][1])
+                    {//11 true
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+                    else
+                    {//11 false
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+
+                }
+                else
+                {//10 false
+                    if(IMC[1][1])
+                    {//11 true
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+                    else
+                    {//11 false
+                        if(IMC[1][2])
+                        {//12 true
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+                        else
+                        {//12 false
+                            if(IMC[2][1])
+                            {
+                                //21 true
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+                            }
+                            else
+                            {//21 false
+                                if(IMC[2][2])
+                                {//22 true
+
+                                }
+                                else
+                                { //22 false
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+
+    }
+
+
+
 }
 
 
@@ -340,6 +2539,16 @@ bool Line2DLine2D::disjoint()
 
 bool Line2DLine2D::contains()
 {
+
+    if (!isPredSet)
+    {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    if(topPredNumberLine2DLine2D ==TopPredNumberLine2DLine2D:: ll_contains_m43||topPredNumberLine2DLine2D ==TopPredNumberLine2DLine2D:: ll_contains_m46||topPredNumberLine2DLine2D ==TopPredNumberLine2DLine2D:: ll_contains_m63||topPredNumberLine2DLine2D ==TopPredNumberLine2DLine2D:: ll_contains_m66)
+    {
+        return true;
+    }
     return false;
 }
 
