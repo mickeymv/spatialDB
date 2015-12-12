@@ -777,7 +777,18 @@ void ParallelObjectTraversal::selectNext() {
 }
 
 Poi2D *ParallelObjectTraversal::getNextPoi2DMin() {
-    if (minPoi2DF != nullptr) {
+    if(minPoi2DF != nullptr&&minPoi2DG != nullptr)
+    {
+        if(*minPoi2DF<*minPoi2DG)
+        {
+            return minPoi2DF;
+        }
+        else
+        {
+            return minPoi2DG;
+        }
+    }
+    else if (minPoi2DF != nullptr) {
         return minPoi2DF;
     }
     else if (minPoi2DG != nullptr) {
@@ -787,7 +798,17 @@ Poi2D *ParallelObjectTraversal::getNextPoi2DMin() {
 }
 
 HalfSeg2D *ParallelObjectTraversal::getNextHalfSeg2DMin() {
-    if (minHalfSeg2DF != nullptr) {
+    if(minHalfSeg2DF!= nullptr&&minHalfSeg2DG!= nullptr)
+    {
+        if(*minHalfSeg2DF<*minHalfSeg2DG)
+        {
+            return minHalfSeg2DF;
+        }
+        else{
+            return minHalfSeg2DG;
+        }
+    }
+    else if (minHalfSeg2DF != nullptr) {
         return minHalfSeg2DF;
     }
     else if (minHalfSeg2DG != nullptr) {
@@ -797,10 +818,21 @@ HalfSeg2D *ParallelObjectTraversal::getNextHalfSeg2DMin() {
 }
 
 AttrHalfSeg2D *ParallelObjectTraversal::getNextAttrHalfSeg2DMin() {
-    if (minHalfSeg2DF != nullptr) {
+    if(minAttrHalfSeg2DF!= nullptr&&minAttrHalfSeg2DG!= nullptr)
+    {
+        if(*minAttrHalfSeg2DF<*minAttrHalfSeg2DG)
+        {
+            return minAttrHalfSeg2DF;
+        }
+        else
+        {
+            return minAttrHalfSeg2DG;
+        }
+    }
+    else if (minAttrHalfSeg2DF != nullptr) {
         return minAttrHalfSeg2DF;
     }
-    else if (minHalfSeg2DG != nullptr) {
+    else if (minAttrHalfSeg2DG != nullptr) {
         return minAttrHalfSeg2DG;
     }
     return nullptr;
@@ -1038,4 +1070,27 @@ Object2D ParallelObjectTraversal::getObjG() {
     return *objG;
 }
 
-
+Poi2D* ParallelObjectTraversal::getMinPoi2DF()
+{
+        return minPoi2DF;
+}
+Poi2D* ParallelObjectTraversal::getMinPoi2DG()
+{
+    return minPoi2DG;
+}
+HalfSeg2D* ParallelObjectTraversal::getMinHalfSeg2DF()
+{
+    return minHalfSeg2DF;
+}
+HalfSeg2D* ParallelObjectTraversal::getMinHalfSeg2DG()
+{
+    return minHalfSeg2DG;
+}
+AttrHalfSeg2D* ParallelObjectTraversal::getMinAttrHalfSeg2DF()
+{
+    return minAttrHalfSeg2DF;
+}
+AttrHalfSeg2D* ParallelObjectTraversal::getMinAttrHalfSeg2DG()
+{
+    return minAttrHalfSeg2DG;
+}

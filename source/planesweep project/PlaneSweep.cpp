@@ -73,7 +73,7 @@ int PlaneSweep::findLeast() {
 
         if(objSP!= nullptr)
         {
-            if(getPot()->getObjF().isPoint2D()&&(getPot()->minPoi2DF==*objSP))
+            if(getPot()->getObjF().isPoint2D()&&(*(getPot()->getMinPoi2DF())==*objSP))
             {
                 if(getPot()->getObjG().isPoint2D())
                 {
@@ -103,7 +103,7 @@ int PlaneSweep::findLeast() {
                     return 2;
                 }
             }
-            else if(getPot()->getObjG().isPoint2D()&&(getPot()->minPoi2DG==*objSP))
+            else if(getPot()->getObjG().isPoint2D()&&(*(getPot()->getMinPoi2DG())==*objSP))
             {
                     return 1;
             }
@@ -111,7 +111,7 @@ int PlaneSweep::findLeast() {
         else if(objHS!= nullptr)
         {
 
-            if(getPot()->getObjF().isLine2D()&&(getPot()->minHalfSeg2DF==*objHS))
+            if(getPot()->getObjF().isLine2D()&&(*(getPot()->getMinHalfSeg2DF())==*objHS))
             {
                 HalfSeg2D objD1;
                 if(!dynamicEPSObjF.isEmpty())
@@ -169,7 +169,7 @@ int PlaneSweep::findLeast() {
                     }
                 }
             }
-            else if(getPot()->getObjG().isLine2D()&&(getPot()->minHalfSeg2DG==*objHS)) {
+            else if(getPot()->getObjG().isLine2D()&&(*(getPot()->getMinHalfSeg2DG())==*objHS)) {
                 HalfSeg2D objD1;
                 if(!dynamicEPSObjG.isEmpty())
                 {
@@ -201,30 +201,6 @@ int PlaneSweep::findLeast() {
 
 
                 }
-                else if (getPot()->getObjF().isRegion2D()) {
-                    if((!dynamicEPSObjF.isEmpty())&&(!dynamicEPSObjG.isEmpty()))
-                    {
-                        AttrHalfSeg2D objD2 = dynamicEPSObjF.GetMin();
-                        if(objD1 < objD2)
-                        {
-                            HalfSeg2D objD = objD1;
-                            if (*objHS < objD)
-                                return 1;
-                            return 2;
-                        }
-                        else
-                        {
-                            AttrHalfSeg2D objD = objD2;
-                            if (*objHS < objD)
-                                return 1;
-                            return 2;
-                        }
-                    }
-                    else if(dynamicEPSObjF.isEmpty()&&dynamicEPSObjG.isEmpty())
-                    {
-                        return 1;
-                    }
-                }
                 else if(getPot()->getObjF().isPoint2D())
                 {
                     if(dynamicEPSObjG.isEmpty())
@@ -242,7 +218,7 @@ int PlaneSweep::findLeast() {
         }
         else if(objAHS!= nullptr)
         {
-            if(getPot()->getObjF().isRegion2D()&&(getPot()->minAttrHalfSeg2DF==*objAHS))
+            if(getPot()->getObjF().isRegion2D()&&(*(getPot()->getMinAttrHalfSeg2DF())==*objAHS))
             {
                 AttrHalfSeg2D objD1;
                 if(!dynamicEPSObjF.isEmpty())
@@ -270,7 +246,7 @@ int PlaneSweep::findLeast() {
                     }
                 }
             }
-            else if(getPot()->getObjG().isRegion2D()&&(getPot()->minAttrHalfSeg2DG==*objAHS))
+            else if(getPot()->getObjG().isRegion2D()&&(*(getPot()->getMinAttrHalfSeg2DG())==*objAHS))
             {
                 AttrHalfSeg2D objD1;
                 if(!dynamicEPSObjG.isEmpty())
