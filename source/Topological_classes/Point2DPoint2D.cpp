@@ -101,11 +101,8 @@ void Point2DPoint2D::exploreTopoPred() {
 
     // implementation...
 
-// TODO
 
-    int i = 0;
-//TODO: DTj. commented out
-    while ( (i<200) && (pot->getStatus() == ParallelObjectTraversal::end_of_none) &&
+    while ( (pot->getStatus() == ParallelObjectTraversal::end_of_none) &&
            !(vF[vF_Predicates::poi_disjoint] && vG[vG_Predicates::poi_disjoint_g] && vF[vF_Predicates::poi_shared])) {
 
         if (pot->getObject() == ParallelObjectTraversal::first) vF[vF_Predicates::poi_disjoint] = true;
@@ -115,10 +112,7 @@ void Point2DPoint2D::exploreTopoPred() {
 
         pot->selectNext();
 
-        i++;
     }
-
-    cout << "i= " << i << endl;
 
 
     cout << "vF[poi_shared] =" << vF[vF_Predicates::poi_shared] << endl;
