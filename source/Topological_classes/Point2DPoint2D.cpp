@@ -101,7 +101,10 @@ void Point2DPoint2D::exploreTopoPred() {
     // implementation...
 
 
-    while ( (pot->getStatus() == ParallelObjectTraversal::end_of_none) &&
+   // I have changed the status from orginially on paper checking the end_of_none to NOT end_of_both 
+   // otherwise the loop will exit early before all the Poi elements from both objects are traversed
+   // while ( (pot->getStatus() == ParallelObjectTraversal::end_of_none) &&
+   while ( (pot->getStatus() != ParallelObjectTraversal::end_of_both) &&
            !(vF[vF_Predicates::poi_disjoint] && vG[vG_Predicates::poi_disjoint_g] && vF[vF_Predicates::poi_shared])) {
 
         if (pot->getObject() == ParallelObjectTraversal::first) vF[vF_Predicates::poi_disjoint] = true;
@@ -113,12 +116,20 @@ void Point2DPoint2D::exploreTopoPred() {
 
     }
 
+    // this part is according to the paper
+    if (pot->getStatus() == ParallelObjectTraversal::end_of_first) vG[vG_Predicates::poi_disjoint_g] = true;
+    else if (pot->getStatus() == ParallelObjectTraversal::end_of_second) vF[vF_Predicates::poi_disjoint] = true;
 
+    // but I have added this below, it looks like it is missing in the paper:
+    if (pot->getObject()  == ParallelObjectTraversal::both) vF[vF_Predicates::poi_shared] = true;
+    
+    
     cout << "vF[poi_shared] =" << vF[vF_Predicates::poi_shared] << endl;
     cout << "vF[poi_disjoint] =" << vF[vF_Predicates::poi_disjoint] << endl;
     cout << "vG[poi_disjoint] =" << vG[vG_Predicates::poi_disjoint_g] << endl;
 
 }
+
 
 // evaluate topological predicate method
 void Point2DPoint2D::evaluateTopoPred() {
