@@ -59,13 +59,23 @@ private:
     //     pl_inside_m11, pl_inside_m12, pl_overlap_m13, pl_overlap_m14
     // };
 
-    typedef enum {
-        poi_disjoint,poi_on_interior,poi_on_bound
-    }vFPoint2DLine2DPredicates;
+//    typedef enum {
+//        poi_disjoint,poi_on_interior,poi_on_bound
+//    }vFPoint2DLine2DPredicates;
+//
+//    typedef enum {
+//        bound_poi_disjoint
+//    }vGPoint2DLine2DPredicates;
 
-    typedef enum {
+    enum vF_Predicates
+    {
+        poi_disjoint,poi_on_interior,poi_on_bound
+    };
+
+    enum vG_Predicates
+    {
         bound_poi_disjoint
-    }vGPoint2DLine2DPredicates;
+    };
 
     Point2D objF;
     Line2D objG;

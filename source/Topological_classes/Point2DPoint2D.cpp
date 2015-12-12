@@ -50,7 +50,6 @@ TopPredNumberPoint2DPoint2D Point2DPoint2D::getTopologicalRelationship() {
     exploreTopoPred();
     evaluateTopoPred();
 
-    topPredNumberPoint2DPoint2D = TopPredNumberPoint2DPoint2D::pp_equal_m2;
     return topPredNumberPoint2DPoint2D;
 
 }

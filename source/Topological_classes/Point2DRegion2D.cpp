@@ -123,15 +123,15 @@ void Point2DRegion2D::evaluateTopoPred() {
             IMC[i][j]=0;
         }
     }
-    if(vF[vFPoint2DRegion2DPredicates::poi_inside])
+    if(vF[poi_inside])
     {
         IMC[0][0]=1;
     }
-    if(vF[vFPoint2DRegion2DPredicates::poi_on_bound])
+    if(vF[poi_on_bound])
     {
         IMC[0][1]=1;
     }
-    if(vF[vFPoint2DRegion2DPredicates::poi_outside])
+    if(vF[poi_outside])
     {
         IMC[0][2]=1;
     }

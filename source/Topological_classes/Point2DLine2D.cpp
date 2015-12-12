@@ -60,11 +60,11 @@ void Point2DLine2D::exploreTopoPred() {
             Poi2D p = S.getPoiEvent(ParallelObjectTraversal::first);
             if(S.poiInSeg(p))
             {
-                vF[vFPoint2DLine2DPredicates::poi_on_interior]= true;
+                vF[poi_on_interior]= true;
             }
             else
             {
-                vF[vFPoint2DLine2DPredicates::poi_disjoint]=true;
+                vF[poi_disjoint]=true;
             }
         }
         else if(object_value==ParallelObjectTraversal::second)
@@ -87,7 +87,7 @@ void Point2DLine2D::exploreTopoPred() {
             }
             if(!S.lookAhead(h,objG))
             {
-                vG[vGPoint2DLine2DPredicates::bound_poi_disjoint]= true;
+                vG[bound_poi_disjoint]= true;
             }
         }
         else if(object_value==ParallelObjectTraversal::both)
@@ -107,18 +107,18 @@ void Point2DLine2D::exploreTopoPred() {
             last_dp=dp;
             if(S.lookAhead(h,objG))
             {
-                vF[vFPoint2DLine2DPredicates::poi_on_interior]=true;
+                vF[poi_on_interior]=true;
             }
             else
             {
-                vF[vFPoint2DLine2DPredicates::poi_on_bound]=true;
+                vF[poi_on_bound]=true;
             }
         }
         S.selectNext();
     }
     if(S.getStatus()==ParallelObjectTraversal::end_of_second)
     {
-        vF[vFPoint2DLine2DPredicates::poi_disjoint]=true;
+        vF[poi_disjoint]=true;
     }
     return; // return true if no error, else false
 }
@@ -135,20 +135,20 @@ void Point2DLine2D::evaluateTopoPred()
         }
     }
 
-    if(vF[vFPoint2DLine2DPredicates::poi_on_interior])
+    if(vF[poi_on_interior])
     {
         IMC[0][0]=1;
     }
-    if(vF[vFPoint2DLine2DPredicates::poi_on_bound])
+    if(vF[poi_on_bound])
     {
         IMC[0][1]=1;
     }
-    if(vF[vFPoint2DLine2DPredicates::poi_disjoint])
+    if(vF[poi_disjoint])
     {
         IMC[0][2]=1;
     }
     IMC[2][0]=1;
-    if(vG[vGPoint2DLine2DPredicates::bound_poi_disjoint])
+    if(vG[bound_poi_disjoint])
     {
         IMC[2][1]=1;
     }

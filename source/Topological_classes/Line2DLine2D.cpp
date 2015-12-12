@@ -54,7 +54,7 @@ void Line2DLine2D::exploreTopoPred() {
     Poi2D last_bound_in_g;
     Poi2D last_bound_in_f;
 
-    while ((S.getStatus() != ParallelObjectTraversal::end_of_second) && (!(vF[seg_shared] && vF[interior_poi_shared] && vF[seg_unshared] &&vF[bound_on_interior]&&vF[bound_shared]&&vF[bound_disjoint]&&vG[bound_disjoint_VG]&&vG[bound_on_interior_VG]&&vG[seg_unshared_VG])))
+    while ((S.getStatus() != ParallelObjectTraversal::end_of_second) && (!(vF[seg_shared] && vF[interior_poi_shared] && vF[seg_unshared] &&vF[bound_on_interior]&&vF[bound_shared]&&vF[bound_disjoint]&&vG[bound_disjoint_g]&&vG[bound_on_interior_g]&&vG[seg_unshared_g])))
     {
         ParallelObjectTraversal::object object_value = S.getObject();
         if (object_value == ParallelObjectTraversal::first) {
@@ -197,7 +197,7 @@ void Line2DLine2D::exploreTopoPred() {
                }
                if(last_bound_in_g == last_dp_f)
                {
-                   vG[bound_on_interior_VG]=true;
+                   vG[bound_on_interior_g]=true;
                }
            }
 
@@ -207,7 +207,7 @@ void Line2DLine2D::exploreTopoPred() {
         //check status
         if((S.getStatus() != ParallelObjectTraversal::end_of_first))
         {
-            vG[seg_unshared_VG]= true;
+            vG[seg_unshared_g]= true;
         }
         else if((S.getStatus() != ParallelObjectTraversal::end_of_second))
         {
@@ -232,28 +232,28 @@ void Line2DLine2D::evaluateTopoPred() {
         }
     }
     //populating 9IM
-    if (vF[vFLine2DLine2DPredicates::seg_shared] && vF[vFLine2DLine2DPredicates::interior_poi_shared]) {
+    if (vF[seg_shared] && vF[interior_poi_shared]) {
         IMC[0][0] = 1;
     }
-    else if (vG[vGLine2DLine2DPredicates::bound_on_interior_VG]) {
+    else if (vG[bound_on_interior_g]) {
         IMC[0][1] = 1;
     }
-    else if (vF[vFLine2DLine2DPredicates::seg_unshared]) {
+    else if (vF[seg_unshared]) {
         IMC[0][2] = 1;
     }
-    else if (vF[vFLine2DLine2DPredicates::bound_on_interior]) {
+    else if (vF[bound_on_interior]) {
         IMC[1][0] = 1;
     }
-    else if (vF[vFLine2DLine2DPredicates::bound_shared]) {
+    else if (vF[bound_shared]) {
         IMC[1][1] = 1;
     }
-    else if (vF[vFLine2DLine2DPredicates::bound_disjoint]) {
+    else if (vF[bound_disjoint]) {
         IMC[1][2] = 1;
     }
-    else if (vG[vGLine2DLine2DPredicates::seg_unshared_VG]) {
+    else if (vG[seg_unshared_g]) {
         IMC[2][0] = 1;
     }
-    else if (vG[vGLine2DLine2DPredicates::bound_disjoint_VG]) {
+    else if (vG[bound_disjoint_g]) {
         IMC[2][1] = 1;
     }
 

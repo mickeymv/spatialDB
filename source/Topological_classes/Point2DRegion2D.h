@@ -59,9 +59,14 @@ private:
     TopPredNumberPoint2DRegion2D  topPredNumberPoint2DRegion2D;
 
 // predicates enum
-    typedef enum {
+//    typedef enum {
+//        poi_inside, poi_outside, poi_on_bound
+//    }vFPoint2DRegion2DPredicates;
+
+    enum vF_Predicates
+    {
         poi_inside, poi_outside, poi_on_bound
-    }vFPoint2DRegion2DPredicates;
+    };
 
     Point2D objF;
     Region2D objG;

@@ -52,13 +52,23 @@ public:
 
 private:
 
-    typedef enum {
-        seg_shared,interior_poi_shared,seg_unshared,bound_on_interior,bound_shared,bound_disjoint
-    }vFLine2DLine2DPredicates;
+//    typedef enum {
+//        seg_shared,interior_poi_shared,seg_unshared,bound_on_interior,bound_shared,bound_disjoint
+//    }vFLine2DLine2DPredicates;
+//
+//    typedef enum {
+//        seg_unshared_g,bound_on_interior_g,bound_disjoint_g
+//    }vGLine2DLine2DPredicates;
 
-    typedef enum {
-        seg_unshared_VG,bound_on_interior_VG,bound_disjoint_VG
-    }vGLine2DLine2DPredicates;
+    enum vF_Predicates
+    {
+        seg_shared,interior_poi_shared,seg_unshared,bound_on_interior,bound_shared,bound_disjoint
+    };
+
+    enum vG_Predicates
+    {
+        seg_unshared_g,bound_on_interior_g,bound_disjoint_g
+    };
 
     Line2D objF;
     Line2D objG;
