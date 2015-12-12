@@ -160,11 +160,11 @@ ParallelObjectTraversal::~ParallelObjectTraversal() {
 
 }
 
-object ParallelObjectTraversal::getObject() {
+ParallelObjectTraversal::object ParallelObjectTraversal::getObject() {
     return object_value;
 }
 
-status ParallelObjectTraversal::getStatus() {
+ParallelObjectTraversal::status ParallelObjectTraversal::getStatus() {
     return status_value;
 }
 
