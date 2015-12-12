@@ -31,7 +31,7 @@
 class Line2DLine2D{
 
 public:
-    Line2DLine2D(Line2D &F, Line2D &G);
+    Line2DLine2D(const Line2D &F, const Line2D &G);
     ~Line2DLine2D();
 
     //Function to check whether the given spatial predicate holds true

@@ -28,7 +28,7 @@
 class Point2DLine2D{
 
 public:
-    Point2DLine2D(Point2D &F, Line2D &G);
+    Point2DLine2D(const Point2D &F, const Line2D &G);
     ~Point2DLine2D();
 
     bool isTopologicalRelationship(TopPredNumberPoint2DLine2D predicate);

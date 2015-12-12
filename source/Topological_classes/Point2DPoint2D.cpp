@@ -105,28 +105,28 @@ void Point2DPoint2D::exploreTopoPred() {
    // otherwise the loop will exit early before all the Poi elements from both objects are traversed
    // while ( (pot->getStatus() == ParallelObjectTraversal::end_of_none) &&
    while ( (pot->getStatus() != ParallelObjectTraversal::end_of_both) &&
-           !(vF[vF_Predicates::poi_disjoint] && vG[vG_Predicates::poi_disjoint_g] && vF[vF_Predicates::poi_shared])) {
+           !(vF[poi_disjoint] && vG[poi_disjoint_g] && vF[poi_shared])) {
 
-        if (pot->getObject() == ParallelObjectTraversal::first) vF[vF_Predicates::poi_disjoint] = true;
-        else if (pot->getObject() == ParallelObjectTraversal::second) vG[vG_Predicates::poi_disjoint_g] = true;
+        if (pot->getObject() == ParallelObjectTraversal::first) vF[poi_disjoint] = true;
+        else if (pot->getObject() == ParallelObjectTraversal::second) vG[poi_disjoint_g] = true;
         else /* object both */
-            vF[vF_Predicates::poi_shared] = true;
+            vF[poi_shared] = true;
 
         pot->selectNext();
 
     }
 
     // this part is according to the paper
-    if (pot->getStatus() == ParallelObjectTraversal::end_of_first) vG[vG_Predicates::poi_disjoint_g] = true;
-    else if (pot->getStatus() == ParallelObjectTraversal::end_of_second) vF[vF_Predicates::poi_disjoint] = true;
+    if (pot->getStatus() == ParallelObjectTraversal::end_of_first) vG[poi_disjoint_g] = true;
+    else if (pot->getStatus() == ParallelObjectTraversal::end_of_second) vF[poi_disjoint] = true;
 
     // but I have added this below, it looks like it is missing in the paper:
-    if (pot->getObject()  == ParallelObjectTraversal::both) vF[vF_Predicates::poi_shared] = true;
+    if (pot->getObject()  == ParallelObjectTraversal::both) vF[poi_shared] = true;
     
     
-    cout << "vF[poi_shared] =" << vF[vF_Predicates::poi_shared] << endl;
-    cout << "vF[poi_disjoint] =" << vF[vF_Predicates::poi_disjoint] << endl;
-    cout << "vG[poi_disjoint] =" << vG[vG_Predicates::poi_disjoint_g] << endl;
+    cout << "vF[poi_shared] =" << vF[poi_shared] << endl;
+    cout << "vF[poi_disjoint] =" << vF[poi_disjoint] << endl;
+    cout << "vG[poi_disjoint] =" << vG[poi_disjoint_g] << endl;
 
 }
 

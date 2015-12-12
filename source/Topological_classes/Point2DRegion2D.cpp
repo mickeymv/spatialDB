@@ -16,7 +16,7 @@
 ******************************************************************************/
 #include "Point2DRegion2D.h"
 
-Point2DRegion2D::Point2DRegion2D(Point2D &F, Region2D &G) {
+Point2DRegion2D::Point2DRegion2D(const Point2D &F, const Region2D &G) {
     // set obj1 and obj2
     objF=F;
     objG=G;

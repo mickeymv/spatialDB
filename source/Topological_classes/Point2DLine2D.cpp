@@ -17,7 +17,7 @@
 #include "Point2DLine2D.h"
 
 
-Point2DLine2D::Point2DLine2D(Point2D &F, Line2D &G) {
+Point2DLine2D::Point2DLine2D(const Point2D &F, const Line2D &G) {
     // set obj1 and obj2
     objF=F;
     objG=G;

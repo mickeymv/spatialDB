@@ -28,7 +28,7 @@
 class Point2DRegion2D{
 
 public:
-    Point2DRegion2D(Point2D &F, Region2D &G);
+    Point2DRegion2D(const Point2D &F, const Region2D &G);
     ~Point2DRegion2D();
 
   //Function to check whether the given spatial predicate holds true
