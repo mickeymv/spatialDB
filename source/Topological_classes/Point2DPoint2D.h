@@ -35,14 +35,14 @@ public:
 
     TopPredNumberPoint2DPoint2D getTopologicalRelationship();
 
-    //    bool overlap();
-//    bool disjoint();
-//    bool meet();
-//    bool equal();
-//    bool contains();
-//    bool covers();
-//    bool coveredBy();
-//    bool inside();
+    bool overlap();
+    bool disjoint();
+    bool meet();
+    bool equal();
+    bool contains();
+    bool covers();
+    bool coveredBy();
+    bool inside();
 
 private:
 

@@ -48,13 +48,13 @@ public:
 
 private:
 
-    typedef enum {
-        seg_inside,seg_shared,seg_outside,poi_shared,bound_inside,bound_shared,bound_disjoint,bound_outside
-    }vFLine2DRegion2DPredicates;
-
-    typedef enum {
-        seg_unshared
-    }vGLine2DRegion2DPredicates;
+//    typedef enum {
+//        seg_inside,seg_shared,seg_outside,poi_shared,bound_inside,bound_shared,bound_disjoint,bound_outside
+//    }vFLine2DRegion2DPredicates;
+//
+//    typedef enum {
+//        seg_unshared
+//    }vGLine2DRegion2DPredicates;
 
 
     // predicates enum
@@ -66,6 +66,15 @@ private:
 //        seg_unshared
 //    };
 
+    enum vF_Predicates
+    {
+        seg_inside,seg_shared,seg_outside,poi_shared,bound_inside,bound_shared,bound_disjoint
+    };
+
+    enum vG_Predicates
+    {
+        seg_unshared
+    };
 
     Line2D objF;
     Region2D objG;

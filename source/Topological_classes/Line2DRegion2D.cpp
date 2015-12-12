@@ -85,8 +85,8 @@ void Line2DRegion2D::exploreTopoPred() {
                             // if np = 1 then vF[bound_inside] = true
                             // else vF[bound_outside] = true
                         }
-                        else {
-                            vF[bound_outside] = true;
+                        else { // if np = 1
+                            vF[bound_inside] = true;
                         }
 
                     }
@@ -159,7 +159,7 @@ bool Line2DRegion2D::isTopologicalRelationship(TopPredNumberLine2DRegion2D predi
 }
 
 TopPredNumberLine2DRegion2D Line2DRegion2D::getTopologicalRelationship() {
-    return lr_overlap_m34;
+    return TopPredNumberLine2DRegion2D:: lr_overlap_m34;
 }
 
 bool Line2DRegion2D::overlap() {
