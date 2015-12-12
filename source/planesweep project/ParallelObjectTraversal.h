@@ -20,6 +20,16 @@
 class ParallelObjectTraversal {
 
 public:
+    typedef enum {
+        none, first, second, both
+    } object;
+
+    typedef enum {
+        end_of_none,
+        end_of_first, end_of_second, end_of_both
+    } status;
+    
+    
     ParallelObjectTraversal(Object2D &, Object2D &);
 
     ~ParallelObjectTraversal();
@@ -50,14 +60,6 @@ public:
     bool isInObjF(Seg2D&);
     bool isInObjG(Seg2D&);
 
-    typedef enum {
-        none, first, second, both
-    } object;
-
-    typedef enum {
-        end_of_none,
-        end_of_first, end_of_second, end_of_both
-    } status;
 
     Poi2D getPoiEvent(object objectEnumVal);
     HalfSeg2D getHalfSegEvent(object objectEnumVal);
