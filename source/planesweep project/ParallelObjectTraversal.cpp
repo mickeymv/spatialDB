@@ -186,32 +186,24 @@ void ParallelObjectTraversal::selectFirst() {
     // Dtj Dec 10, 2015
     // set all the iterators to the beginning of the vector
     if (objF->isPoint2D()) {
-        if (!objFpoiIterator)
-            objFpoiIterator = new Point2D::ConstPoiIterator(((Point2D *) objF)->cbegin());
+        *objFpoiIterator = ((Point2D *) objF)->cbegin();
     }
     if (objG->isPoint2D()) {
-        if (!objGpoiIterator)
-            objGpoiIterator = new Point2D::ConstPoiIterator(((Point2D *) objG)->cbegin());
+        *objGpoiIterator = ((Point2D *) objG)->cbegin();
     }
 
     if (objF->isLine2D()) {
-        if (!objFsegIterator)
-            objFsegIterator = new Line2DImpl::ConstHalfSegIterator(((Line2DImpl *) objF)->hBegin());
+        *objFsegIterator = ((Line2DImpl *) objF)->hBegin();
     }
     if (objG->isLine2D()) {
-        if (!objGsegIterator)
-            objGsegIterator = new Line2DImpl::ConstHalfSegIterator(((Line2DImpl *) objG)->hBegin());
+        *objGsegIterator = ((Line2DImpl *) objG)->hBegin();
     }
 
     if (objF->isRegion2D()) {
-        if (!objFregionIterator)
-            objFregionIterator = new Region2DImpl::ConstAttributedHalfSegmentIterator(
-                    ((Region2DImpl *) objF)->cbegin());
+        *objFregionIterator = ((Region2DImpl *) objF)->cbegin();
     }
     if (objG->isRegion2D()) {
-        if (!objGregionIterator)
-            objGregionIterator = new Region2DImpl::ConstAttributedHalfSegmentIterator(
-                    ((Region2DImpl *) objG)->cbegin());
+        *objGregionIterator = ((Region2DImpl *) objG)->cbegin();
     }
 
     // Dtj Dec 10, 2015
