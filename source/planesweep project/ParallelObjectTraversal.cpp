@@ -4,10 +4,7 @@
 
 
 
-#include "ParallelObjectTraversal.h" 
-#include "Topic2/Implementation/Line2DImpl.h"
-#include "Topic2/Implementation/Region2D.h"
-#include "Topic2/Implementation/Region2DImpl.h"
+#include "ParallelObjectTraversal.h"
 
 using namespace std;
 
@@ -234,7 +231,7 @@ void ParallelObjectTraversal::selectFirst() {
 
 
 
-    if (objF->isPoint2D()  && objG->isPoint2D()) {
+    if (objF->isPoint2D() && objG->isPoint2D()) {
 
         // TODO: check whether "isEmpty()" useful
         if (objFpoiIterator->isEmpty() && objGpoiIterator->isEmpty()) {
@@ -259,7 +256,7 @@ void ParallelObjectTraversal::selectFirst() {
 
     }
 
-    if (objF->isPoint2D()  && objG->isLine2D()) {
+    if (objF->isPoint2D() && objG->isLine2D()) {
 
         // TODO: check whether "isEmpty()" useful
         if (objFpoiIterator->isEmpty() && objGsegIterator->isEmpty()) {
@@ -274,17 +271,19 @@ void ParallelObjectTraversal::selectFirst() {
             // this code lines below are the same like in 'selectNext()'.
             // We are using inline codes here for the sake of the readibility:
             // e.g. 'currentFPoi()' will be replaced with '(Poi2D)(**objFpoiIterator)' at compiling time.
-            if (currentFPoi() < currentGSeg())
+            Poi2D firstObjectCurrentPoi = currentFPoi();
+            HalfSeg2D secondObjectCurrentHalfSegment = currentGSeg();
+            if (firstObjectCurrentPoi < secondObjectCurrentHalfSegment)
                 object_value = first;
-            else if (currentFPoi() > currentGSeg())
+            else if (firstObjectCurrentPoi > secondObjectCurrentHalfSegment)
                 object_value = second;
-            else if (currentFPoi() == currentGSeg())
+            else if (firstObjectCurrentPoi == secondObjectCurrentHalfSegment)
                 object_value = both;
         }
 
     }
 
-    if (objF->isPoint2D()  && objG->isRegion2D()) {
+    if (objF->isPoint2D() && objG->isRegion2D()) {
 
         // TODO: check whether "isEmpty()" useful
         if (objFpoiIterator->isEmpty() && objGregionIterator->isEmpty()) {
@@ -299,17 +298,19 @@ void ParallelObjectTraversal::selectFirst() {
             // this code lines below are the same like in 'selectNext()'.
             // We are using inline codes here for the sake of the readibility:
             // e.g. 'currentFPoi()' will be replaced with '(Poi2D)(**objFpoiIterator)' at compiling time.
-            if (currentFPoi() < currentGASeg())
+            Poi2D firstObjectCurrentPoi = currentFPoi();
+            AttrHalfSeg2D secondObjectCurrentAttrHalfSeg2D = currentGASeg();
+            if (firstObjectCurrentPoi < secondObjectCurrentAttrHalfSeg2D)
                 object_value = first;
-            else if (currentFPoi() > currentGASeg())
+            else if (firstObjectCurrentPoi > secondObjectCurrentAttrHalfSeg2D)
                 object_value = second;
-            else if (currentFPoi() == currentGASeg())
+            else if (firstObjectCurrentPoi == secondObjectCurrentAttrHalfSeg2D)
                 object_value = both;
         }
 
     }
 
-    if (objF->isLine2D()  && objG->isLine2D()) {
+    if (objF->isLine2D() && objG->isLine2D()) {
 
         // TODO: check whether "isEmpty()" useful
         if (objFsegIterator->isEmpty() && objGsegIterator->isEmpty()) {
@@ -334,7 +335,7 @@ void ParallelObjectTraversal::selectFirst() {
 
     }
 
-    if (objF->isLine2D()  && objG->isRegion2D()) {
+    if (objF->isLine2D() && objG->isRegion2D()) {
 
         // TODO: check whether "isEmpty()" useful
         if (objFsegIterator->isEmpty() && objGregionIterator->isEmpty()) {
@@ -349,17 +350,19 @@ void ParallelObjectTraversal::selectFirst() {
             // this code lines below are the same like in 'selectNext()'.
             // We are using inline codes here for the sake of the readibility:
             // e.g. 'currentFPoi()' will be replaced with '(Poi2D)(**objFpoiIterator)' at compiling time.
-            if (currentFSeg() < currentGASeg())
+            HalfSeg2D firstObjectCurrentHalfSegment2D = currentFSeg();
+            AttrHalfSeg2D secondObjectCurrentAttrHalfSeg2D = currentGASeg();
+            if (firstObjectCurrentHalfSegment2D < secondObjectCurrentAttrHalfSeg2D)
                 object_value = first;
-            else if (currentFSeg() > currentGASeg())
+            else if (firstObjectCurrentHalfSegment2D > secondObjectCurrentAttrHalfSeg2D)
                 object_value = second;
-            else if (currentFSeg() == currentGASeg())
+            else if (firstObjectCurrentHalfSegment2D == secondObjectCurrentAttrHalfSeg2D)
                 object_value = both;
         }
 
     }
 
-    if (objF->isRegion2D()  && objG->isRegion2D()) {
+    if (objF->isRegion2D() && objG->isRegion2D()) {
 
         // TODO: check whether "isEmpty()" useful
         if (objFregionIterator->isEmpty() && objGregionIterator->isEmpty()) {
@@ -376,9 +379,9 @@ void ParallelObjectTraversal::selectFirst() {
             // e.g. 'currentFPoi()' will be replaced with '(Poi2D)(**objFpoiIterator)' at compiling time.
             if (currentFASeg() < currentGASeg())
                 object_value = first;
-            else if (currentFSeg() > currentGASeg())
+            else if (currentFASeg() > currentGASeg())
                 object_value = second;
-            else if (currentFSeg() == currentGASeg())
+            else if (currentFASeg() == currentGASeg())
                 object_value = both;
         }
 
@@ -401,7 +404,7 @@ void ParallelObjectTraversal::selectFirst() {
 //        else
 //            object_value = both;
 
-        //TODO: DTj. commented out
+    //TODO: DTj. commented out
 //        if ((objFpoiIterator->getCurrent() == ((Point2D *) objF)->cend()||objFsegIterator->getCurrent()== ((Line2DImpl *) objF)->hEnd()||objFregionIterator->getCurrent()==((Region2DImpl *)objF)->cend())
 //            && ((objGpoiIterator->getCurrent() == ((Point2D *)objG)->cend()||objGsegIterator->getCurrent()== ((Line2DImpl *)objG)->hEnd()||objGregionIterator->getCurrent()==((Region2DImpl *)objG)->cend())))
 //            status_value = end_of_both;
@@ -419,100 +422,91 @@ void ParallelObjectTraversal::selectFirst() {
 //TODO - see if the return type should be AttrHalfSeg2D or check what it should be
 void ParallelObjectTraversal::setNextMin() {
 
-   // TODO: DTj. commented out
-    if(objF->isPoint2D())
-    {
+    // TODO: DTj. commented out
+    if (objF->isPoint2D()) {
         Poi2D obj11 = currentFPoi();
         Poi2D obj12 = nextFPoi();
-        minPoi2DF=new Poi2D();
-        if(objG->isPoint2D())
-        {
+        minPoi2DF = new Poi2D();
+        if (objG->isPoint2D()) {
             Poi2D obj21 = currentGPoi();
             Poi2D obj22 = nextGPoi();
-            minPoi2DG= new Poi2D();
+            minPoi2DG = new Poi2D();
             if (object_value == first)
-                (obj12 < obj21 ? *minPoi2DF=obj12 : *minPoi2DG=obj21);
+                (obj12 < obj21 ? *minPoi2DF = obj12 : *minPoi2DG = obj21);
             if (object_value == second)
-                (obj11 < obj22 ? *minPoi2DF=obj11 : *minPoi2DG=obj22);
+                (obj11 < obj22 ? *minPoi2DF = obj11 : *minPoi2DG = obj22);
             if (object_value == both)
-                (obj12 < obj22 ? *minPoi2DF=obj12 : *minPoi2DG=obj22);
+                (obj12 < obj22 ? *minPoi2DF = obj12 : *minPoi2DG = obj22);
             return;
         }
-        if(objG->isLine2D())
-        {
+        if (objG->isLine2D()) {
             minHalfSeg2DG = new HalfSeg2D();
             HalfSeg2D obj21 = currentGSeg();
             HalfSeg2D obj22 = nextGSeg();
             if (object_value == first)
-                (obj12 < obj21 ? *minPoi2DF=obj12 : *minHalfSeg2DG=obj21);
+                (obj12 < obj21 ? *minPoi2DF = obj12 : *minHalfSeg2DG = obj21);
             if (object_value == second)
-                (obj11 < obj22 ? *minPoi2DF=obj11 : *minHalfSeg2DG=obj22);
+                (obj11 < obj22 ? *minPoi2DF = obj11 : *minHalfSeg2DG = obj22);
             if (object_value == both)
-                (obj12 < obj22 ? *minPoi2DF=obj12 : *minHalfSeg2DG=obj22);
+                (obj12 < obj22 ? *minPoi2DF = obj12 : *minHalfSeg2DG = obj22);
             return;
         }
-        if(objG->isRegion2D())
-        {
+        if (objG->isRegion2D()) {
             AttrHalfSeg2D obj21 = currentGASeg();
             AttrHalfSeg2D obj22 = nextGASeg();
             minAttrHalfSeg2DG = new AttrHalfSeg2D();
             if (object_value == first)
-                (obj12 < obj21 ? *minPoi2DF=obj12 : *minAttrHalfSeg2DG=obj21);
+                (obj12 < obj21 ? *minPoi2DF = obj12 : *minAttrHalfSeg2DG = obj21);
             if (object_value == second)
-                (obj11 < obj22 ? *minPoi2DF=obj11 : *minAttrHalfSeg2DG=obj22);
+                (obj11 < obj22 ? *minPoi2DF = obj11 : *minAttrHalfSeg2DG = obj22);
             if (object_value == both)
-                (obj12 < obj22 ? *minPoi2DF=obj12 : *minAttrHalfSeg2DG=obj22);
+                (obj12 < obj22 ? *minPoi2DF = obj12 : *minAttrHalfSeg2DG = obj22);
             return;
         }
     }
-    if(objF->isLine2D())
-    {
+    if (objF->isLine2D()) {
         HalfSeg2D obj11 = currentFSeg();
         HalfSeg2D obj12 = nextFSeg();
         minHalfSeg2DF = new HalfSeg2D();
-        if(objG->isLine2D())
-        {
+        if (objG->isLine2D()) {
             HalfSeg2D obj21 = currentGSeg();
             HalfSeg2D obj22 = nextGSeg();
             minHalfSeg2DG = new HalfSeg2D();
             if (object_value == first)
-                (obj12 < obj21 ? *minHalfSeg2DF=obj12 : *minHalfSeg2DG=obj21);
+                (obj12 < obj21 ? *minHalfSeg2DF = obj12 : *minHalfSeg2DG = obj21);
             if (object_value == second)
-                (obj11 < obj22 ? *minHalfSeg2DF=obj11 : *minHalfSeg2DG=obj22);
+                (obj11 < obj22 ? *minHalfSeg2DF = obj11 : *minHalfSeg2DG = obj22);
             if (object_value == both)
-                (obj12 < obj22 ? *minHalfSeg2DF=obj12 : *minHalfSeg2DG=obj22);
+                (obj12 < obj22 ? *minHalfSeg2DF = obj12 : *minHalfSeg2DG = obj22);
             return;
         }
-        if(objG->isRegion2D())
-        {
+        if (objG->isRegion2D()) {
             AttrHalfSeg2D obj21 = currentGASeg();
             AttrHalfSeg2D obj22 = nextGASeg();
             minAttrHalfSeg2DG = new AttrHalfSeg2D();
             if (object_value == first)
-                (obj12 < obj21 ? *minHalfSeg2DF=obj12 : *minAttrHalfSeg2DG=obj21);
+                (obj12 < obj21 ? *minHalfSeg2DF = obj12 : *minAttrHalfSeg2DG = obj21);
             if (object_value == second)
-                (obj11 < obj22 ? *minHalfSeg2DF=obj11 : *minAttrHalfSeg2DG=obj22);
+                (obj11 < obj22 ? *minHalfSeg2DF = obj11 : *minAttrHalfSeg2DG = obj22);
             if (object_value == both)
-                (obj12 < obj22 ? *minHalfSeg2DF=obj12 : *minAttrHalfSeg2DG=obj22);
+                (obj12 < obj22 ? *minHalfSeg2DF = obj12 : *minAttrHalfSeg2DG = obj22);
             return;
         }
     }
-    if(objF->isRegion2D())
-    {
+    if (objF->isRegion2D()) {
         AttrHalfSeg2D obj11 = currentFASeg();
         AttrHalfSeg2D obj12 = nextFASeg();
         minAttrHalfSeg2DF = new AttrHalfSeg2D();
-        if(objG->isRegion2D())
-        {
+        if (objG->isRegion2D()) {
             AttrHalfSeg2D obj21 = currentGASeg();
             AttrHalfSeg2D obj22 = nextGASeg();
             minAttrHalfSeg2DG = new AttrHalfSeg2D();
             if (object_value == first)
-                (obj12 < obj21 ? *minAttrHalfSeg2DF=obj12 : *minAttrHalfSeg2DG=obj21);
+                (obj12 < obj21 ? *minAttrHalfSeg2DF = obj12 : *minAttrHalfSeg2DG = obj21);
             if (object_value == second)
-                (obj11 < obj22 ? *minAttrHalfSeg2DF=obj11 : *minAttrHalfSeg2DG=obj22);
+                (obj11 < obj22 ? *minAttrHalfSeg2DF = obj11 : *minAttrHalfSeg2DG = obj22);
             if (object_value == both)
-                (obj12 < obj22 ? *minAttrHalfSeg2DF=obj12 : *minAttrHalfSeg2DG=obj22);
+                (obj12 < obj22 ? *minAttrHalfSeg2DF = obj12 : *minAttrHalfSeg2DG = obj22);
             return;
         }
     }
@@ -546,7 +540,7 @@ void ParallelObjectTraversal::selectNext() {
     if (objF->isPoint2D()) {
 
         // check whether the position of the iterator has not yet reached the end
-        if (*objFpoiIterator !=  ((Point2D *) objF)->cend()) {
+        if (*objFpoiIterator != ((Point2D *) objF)->cend()) {
             // if object is equal to first or both, increment the F iterator
             if ((object_value == first) || (object_value == both))
                 (*objFpoiIterator)++;
@@ -558,7 +552,7 @@ void ParallelObjectTraversal::selectNext() {
 
     if (objG->isPoint2D()) {
         // check whether the position of the iterator has not yet reached the end
-        if (*objGpoiIterator !=  ((Point2D *) objG)->cend()) {
+        if (*objGpoiIterator != ((Point2D *) objG)->cend()) {
             // if object is equal to second or both, increment the G iterator
             if ((object_value == second) || (object_value == both))
                 (*objGpoiIterator)++;
@@ -566,14 +560,14 @@ void ParallelObjectTraversal::selectNext() {
         else
             // if it reaches the end, set the status accordingly but only not end_of_first
             // otherwise, both has ended!
-            if (status_value != end_of_first)
-                status_value = end_of_second;
-            else status_value = end_of_both;
+        if (status_value != end_of_first)
+            status_value = end_of_second;
+        else status_value = end_of_both;
     }
     if (objF->isLine2D()) {
 
         // check whether the position of the iterator has not yet reached the end
-        if (*objFsegIterator !=  ((Line2DImpl *) objF)->hEnd()) {
+        if (*objFsegIterator != ((Line2DImpl *) objF)->hEnd()) {
             // if object is equal to first or both, increment the F iterator
             if ((object_value == first) || (object_value == both))
                 (*objFsegIterator)++;
@@ -585,7 +579,7 @@ void ParallelObjectTraversal::selectNext() {
 
     if (objG->isLine2D()) {
         // check whether the position of the iterator has not yet reached the end
-        if (*objGsegIterator !=  ((Line2DImpl *) objG)->hEnd()) {
+        if (*objGsegIterator != ((Line2DImpl *) objG)->hEnd()) {
             // if object is equal to second or both, increment the G iterator
             if ((object_value == second) || (object_value == both))
                 (*objGsegIterator)++;
@@ -593,15 +587,15 @@ void ParallelObjectTraversal::selectNext() {
         else
             // if it reaches the end, set the status accordingly but only not end_of_first
             // otherwise, both has ended!
-            if (status_value != end_of_first)
-                status_value = end_of_second;
-            else status_value = end_of_both;
+        if (status_value != end_of_first)
+            status_value = end_of_second;
+        else status_value = end_of_both;
     }
 
     if (objF->isRegion2D()) {
 
         // check whether the position of the iterator has not yet reached the end
-        if (*objFregionIterator !=  ((Region2DImpl *) objF)->cend()) {
+        if (*objFregionIterator != ((Region2DImpl *) objF)->cend()) {
             // if object is equal to first or both, increment the F iterator
             if ((object_value == first) || (object_value == both))
                 (*objFregionIterator)++;
@@ -613,7 +607,7 @@ void ParallelObjectTraversal::selectNext() {
 
     if (objG->isRegion2D()) {
         // check whether the position of the iterator has not yet reached the end
-        if (*objGregionIterator !=  ((Region2DImpl *) objG)->cend()) {
+        if (*objGregionIterator != ((Region2DImpl *) objG)->cend()) {
             // if object is equal to second or both, increment the G iterator
             if ((object_value == second) || (object_value == both))
                 (*objGregionIterator)++;
@@ -621,9 +615,9 @@ void ParallelObjectTraversal::selectNext() {
         else
             // if it reaches the end, set the status accordingly but only not end_of_first
             // otherwise, both has ended!
-            if (status_value != end_of_first)
-                status_value = end_of_second;
-            else status_value = end_of_both;
+        if (status_value != end_of_first)
+            status_value = end_of_second;
+        else status_value = end_of_both;
     }
 
     // do comparison of the object f and g and set the object value
@@ -641,21 +635,27 @@ void ParallelObjectTraversal::selectNext() {
         if (objF->isPoint2D() && objG->isLine2D()) {
 
             // set the object to the smaller Poi2D, if both equal then set object to both
-            if (currentFPoi() < (currentGSeg()))
+            Poi2D firstObjectCurrentPoi = currentFPoi();
+            HalfSeg2D secondObjectCurrentHalfSegment = currentGSeg();
+
+            if (firstObjectCurrentPoi < secondObjectCurrentHalfSegment)
                 object_value = first;
-            else if (currentFPoi() > currentGSeg())
+            else if (firstObjectCurrentPoi > secondObjectCurrentHalfSegment)
                 object_value = second;
-            else if (currentFPoi() == currentGSeg())
+            else if (firstObjectCurrentPoi == secondObjectCurrentHalfSegment)
                 object_value = both;
         }
         if (objF->isPoint2D() && objG->isRegion2D()) {
 
             // set the object to the smaller Poi2D, if both equal then set object to both
-            if (currentFPoi() < (currentGASeg()))
+            Poi2D firstObjectCurrentPoi = currentFPoi();
+            AttrHalfSeg2D secondObjectCurrentAttrHalfSegment = currentGASeg();
+
+            if (firstObjectCurrentPoi < secondObjectCurrentAttrHalfSegment)
                 object_value = first;
-            else if (currentFPoi() > currentGASeg())
+            else if (firstObjectCurrentPoi > secondObjectCurrentAttrHalfSegment)
                 object_value = second;
-            else if (currentFPoi() == currentGASeg())
+            else if (firstObjectCurrentPoi == secondObjectCurrentAttrHalfSegment)
                 object_value = both;
         }
         if (objF->isLine2D() && objG->isLine2D()) {
@@ -671,11 +671,14 @@ void ParallelObjectTraversal::selectNext() {
         if (objF->isLine2D() && objG->isRegion2D()) {
 
             // set the object to the smaller Poi2D, if both equal then set object to both
-            if (currentFSeg() < (currentGASeg()))
+            HalfSeg2D firstObjectCurrentHalfSegment2D = currentFSeg();
+            AttrHalfSeg2D secondObjectCurrentAttrHalfSeg2D = currentGASeg();
+
+            if (firstObjectCurrentHalfSegment2D < secondObjectCurrentAttrHalfSeg2D)
                 object_value = first;
-            else if (currentFSeg() > currentGASeg())
+            else if (firstObjectCurrentHalfSegment2D > secondObjectCurrentAttrHalfSeg2D)
                 object_value = second;
-            else if (currentFSeg() == currentGASeg())
+            else if (firstObjectCurrentHalfSegment2D == secondObjectCurrentAttrHalfSeg2D)
                 object_value = both;
         }
         if (objF->isRegion2D() && objG->isRegion2D()) {
@@ -769,14 +772,11 @@ void ParallelObjectTraversal::selectNext() {
 }
 
 Poi2D *ParallelObjectTraversal::getNextPoi2DMin() {
-    if(minPoi2DF != nullptr&&minPoi2DG != nullptr)
-    {
-        if(*minPoi2DF<*minPoi2DG)
-        {
+    if (minPoi2DF != nullptr && minPoi2DG != nullptr) {
+        if (*minPoi2DF < *minPoi2DG) {
             return minPoi2DF;
         }
-        else
-        {
+        else {
             return minPoi2DG;
         }
     }
@@ -790,13 +790,11 @@ Poi2D *ParallelObjectTraversal::getNextPoi2DMin() {
 }
 
 HalfSeg2D *ParallelObjectTraversal::getNextHalfSeg2DMin() {
-    if(minHalfSeg2DF!= nullptr&&minHalfSeg2DG!= nullptr)
-    {
-        if(*minHalfSeg2DF<*minHalfSeg2DG)
-        {
+    if (minHalfSeg2DF != nullptr && minHalfSeg2DG != nullptr) {
+        if (*minHalfSeg2DF < *minHalfSeg2DG) {
             return minHalfSeg2DF;
         }
-        else{
+        else {
             return minHalfSeg2DG;
         }
     }
@@ -810,14 +808,11 @@ HalfSeg2D *ParallelObjectTraversal::getNextHalfSeg2DMin() {
 }
 
 AttrHalfSeg2D *ParallelObjectTraversal::getNextAttrHalfSeg2DMin() {
-    if(minAttrHalfSeg2DF!= nullptr&&minAttrHalfSeg2DG!= nullptr)
-    {
-        if(*minAttrHalfSeg2DF<*minAttrHalfSeg2DG)
-        {
+    if (minAttrHalfSeg2DF != nullptr && minAttrHalfSeg2DG != nullptr) {
+        if (*minAttrHalfSeg2DF < *minAttrHalfSeg2DG) {
             return minAttrHalfSeg2DF;
         }
-        else
-        {
+        else {
             return minAttrHalfSeg2DG;
         }
     }
@@ -864,42 +859,33 @@ AttrHalfSeg2D ParallelObjectTraversal::getAttrHalfSegEvent(object objectEnumVal)
 }
 
 //TODO: DTj. commented out
-Point2D::ConstPoiIterator * ParallelObjectTraversal::getPoiObjIterator(object objectparam)
-{
-    if(objectparam==first)
-    {
+Point2D::ConstPoiIterator *ParallelObjectTraversal::getPoiObjIterator(object objectparam) {
+    if (objectparam == first) {
         return objFpoiIterator;
     }
-    else if(objectparam==second)
-    {
+    else if (objectparam == second) {
         return objGpoiIterator;
     }
     return nullptr;
 }
 
 //TODO: DTj. commented out
-Line2DImpl::ConstHalfSegIterator * ParallelObjectTraversal::getHalfSegIterator(object objectparam)
-{
-    if(objectparam==first)
-    {
+Line2DImpl::ConstHalfSegIterator *ParallelObjectTraversal::getHalfSegIterator(object objectparam) {
+    if (objectparam == first) {
         return objFsegIterator;
     }
-    else if(objectparam==second)
-    {
+    else if (objectparam == second) {
         return objGsegIterator;
     }
     return nullptr;
 }
 
 //TODO: DTj. commented out
-Region2DImpl::ConstAttributedHalfSegmentIterator * ParallelObjectTraversal::getAttrHalfSegIterator(object objectparam)
-{
-    if(objectparam==first)
-    {
+Region2DImpl::ConstAttributedHalfSegmentIterator *ParallelObjectTraversal::getAttrHalfSegIterator(object objectparam) {
+    if (objectparam == first) {
         return objFregionIterator;
     }
-    else if(objectparam==second)
-    {
+    else if (objectparam == second) {
         return objGregionIterator;
     }
     return nullptr;
@@ -963,16 +949,16 @@ bool ParallelObjectTraversal::isInObjG(Seg2D &seg2D) {
 
 
 //TODO: DTj. commented out
-Line2DImpl::ConstHalfSegIterator * ParallelObjectTraversal::getNextObjIterator(HalfSeg2D halfSeg2D, object objectparam) {
-    Line2DImpl::ConstHalfSegIterator * obji;
+Line2DImpl::ConstHalfSegIterator *ParallelObjectTraversal::getNextObjIterator(HalfSeg2D halfSeg2D, object objectparam) {
+    Line2DImpl::ConstHalfSegIterator *obji;
     if (objectparam == first) {
-        if(objF->isLine2D()) {
-            for (*obji = ((Line2DImpl*)objF)->hBegin(); *obji <= ((Line2DImpl *)objF)->hEnd(); (*obji)++) {
+        if (objF->isLine2D()) {
+            for (*obji = ((Line2DImpl *) objF)->hBegin(); *obji <= ((Line2DImpl *) objF)->hEnd(); (*obji)++) {
                 HalfSeg2D iter = *(*obji);
-                if (halfSeg2D==iter) {
+                if (halfSeg2D == iter) {
                     if ((status_value != end_of_first) && (status_value != end_of_both)) {
                         (*obji)++;
-                        Line2DImpl::ConstHalfSegIterator* result = obji;
+                        Line2DImpl::ConstHalfSegIterator *result = obji;
                         return result;
                     }
                 }
@@ -982,14 +968,14 @@ Line2DImpl::ConstHalfSegIterator * ParallelObjectTraversal::getNextObjIterator(H
         return nullptr;
     }
     if (objectparam == second) {
-        if(objG->isLine2D()) {
-            for (*obji = ((Line2DImpl *)objG)->hBegin(); *obji <= ((Line2DImpl *)objG)->hEnd(); (*obji)++) {
+        if (objG->isLine2D()) {
+            for (*obji = ((Line2DImpl *) objG)->hBegin(); *obji <= ((Line2DImpl *) objG)->hEnd(); (*obji)++) {
 
                 HalfSeg2D iter = *(*obji);
-                if (halfSeg2D==iter) {
+                if (halfSeg2D == iter) {
                     if ((status_value != end_of_second) && (status_value != end_of_both)) {
                         (*obji)++;
-                        Line2DImpl::ConstHalfSegIterator* result = obji;
+                        Line2DImpl::ConstHalfSegIterator *result = obji;
                         return result;
                     }
                 }
@@ -1000,14 +986,15 @@ Line2DImpl::ConstHalfSegIterator * ParallelObjectTraversal::getNextObjIterator(H
 }
 
 //TODO: DTj. commented out
-Region2DImpl::ConstAttributedHalfSegmentIterator* ParallelObjectTraversal::getNextObjIterator(AttrHalfSeg2D attrhalfSeg2D, object objectparam) {
-    Region2DImpl::ConstAttributedHalfSegmentIterator* obji;
+Region2DImpl::ConstAttributedHalfSegmentIterator *ParallelObjectTraversal::getNextObjIterator(
+        AttrHalfSeg2D attrhalfSeg2D, object objectparam) {
+    Region2DImpl::ConstAttributedHalfSegmentIterator *obji;
     if (objectparam == first) {
-        if(objF->isRegion2D()) {
-            for (*obji = ((Region2DImpl *)objF)->cbegin(); *obji <= ((Region2DImpl*)objF)->cend(); (*obji)++) {
+        if (objF->isRegion2D()) {
+            for (*obji = ((Region2DImpl *) objF)->cbegin(); *obji <= ((Region2DImpl *) objF)->cend(); (*obji)++) {
 
                 AttrHalfSeg2D iter = *(*obji);
-                if (attrhalfSeg2D==iter) {
+                if (attrhalfSeg2D == iter) {
                     if ((status_value != end_of_first) && (status_value != end_of_both)) {
                         (*obji)++;
                         Region2DImpl::ConstAttributedHalfSegmentIterator *result = obji;
@@ -1019,11 +1006,11 @@ Region2DImpl::ConstAttributedHalfSegmentIterator* ParallelObjectTraversal::getNe
         return nullptr;
     }
     if (objectparam == second) {
-        if(objG->isRegion2D()) {
-            for (*obji = ((Region2DImpl*)objG)->cbegin(); *obji <= ((Region2DImpl*)objG)->cend(); (*obji)++) {
+        if (objG->isRegion2D()) {
+            for (*obji = ((Region2DImpl *) objG)->cbegin(); *obji <= ((Region2DImpl *) objG)->cend(); (*obji)++) {
 
                 AttrHalfSeg2D iter = *(*obji);
-                if (attrhalfSeg2D==iter) {
+                if (attrhalfSeg2D == iter) {
                     if ((status_value != end_of_second) && (status_value != end_of_both)) {
                         (*obji)++;
                         Region2DImpl::ConstAttributedHalfSegmentIterator *result = obji;
@@ -1062,27 +1049,26 @@ Object2D ParallelObjectTraversal::getObjG() {
     return *objG;
 }
 
-Poi2D* ParallelObjectTraversal::getMinPoi2DF()
-{
-        return minPoi2DF;
+Poi2D *ParallelObjectTraversal::getMinPoi2DF() {
+    return minPoi2DF;
 }
-Poi2D* ParallelObjectTraversal::getMinPoi2DG()
-{
+
+Poi2D *ParallelObjectTraversal::getMinPoi2DG() {
     return minPoi2DG;
 }
-HalfSeg2D* ParallelObjectTraversal::getMinHalfSeg2DF()
-{
+
+HalfSeg2D *ParallelObjectTraversal::getMinHalfSeg2DF() {
     return minHalfSeg2DF;
 }
-HalfSeg2D* ParallelObjectTraversal::getMinHalfSeg2DG()
-{
+
+HalfSeg2D *ParallelObjectTraversal::getMinHalfSeg2DG() {
     return minHalfSeg2DG;
 }
-AttrHalfSeg2D* ParallelObjectTraversal::getMinAttrHalfSeg2DF()
-{
+
+AttrHalfSeg2D *ParallelObjectTraversal::getMinAttrHalfSeg2DF() {
     return minAttrHalfSeg2DF;
 }
-AttrHalfSeg2D* ParallelObjectTraversal::getMinAttrHalfSeg2DG()
-{
+
+AttrHalfSeg2D *ParallelObjectTraversal::getMinAttrHalfSeg2DG() {
     return minAttrHalfSeg2DG;
 }
