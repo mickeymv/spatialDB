@@ -572,8 +572,11 @@ void ParallelObjectTraversal::selectNext() {
                 (*objGpoiIterator)++;
         }
         else
-            // if it reaches the end, set the status accordingly
-            status_value = end_of_second;
+            // if it reaches the end, set the status accordingly but only not end_of_first
+            // otherwise, both has ended!
+            if (status_value != end_of_first)
+                status_value = end_of_second;
+            else status_value = end_of_both;
     }
     if (objF->isLine2D()) {
 
@@ -596,8 +599,11 @@ void ParallelObjectTraversal::selectNext() {
                 (*objGsegIterator)++;
         }
         else
-            // if it reaches the end, set the status accordingly
-            status_value = end_of_second;
+            // if it reaches the end, set the status accordingly but only not end_of_first
+            // otherwise, both has ended!
+            if (status_value != end_of_first)
+                status_value = end_of_second;
+            else status_value = end_of_both;
     }
 
     if (objF->isRegion2D()) {
@@ -621,8 +627,11 @@ void ParallelObjectTraversal::selectNext() {
                 (*objGregionIterator)++;
         }
         else
-            // if it reaches the end, set the status accordingly
-            status_value = end_of_second;
+            // if it reaches the end, set the status accordingly but only not end_of_first
+            // otherwise, both has ended!
+            if (status_value != end_of_first)
+                status_value = end_of_second;
+            else status_value = end_of_both;
     }
 
     // do comparison of the object f and g and set the object value
