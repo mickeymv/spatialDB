@@ -39,9 +39,9 @@ public:
 
     status getStatus();
 
-//    Point2D::ConstPoiIterator * getPoiObjIterator(object);
-//    Line2DImpl::ConstHalfSegIterator * getHalfSegIterator(object);
-//    Region2DImpl::ConstAttributedHalfSegmentIterator * getAttrHalfSegIterator(object);
+    Point2D::ConstPoiIterator * getPoiObjIterator(object);
+    Line2DImpl::ConstHalfSegIterator * getHalfSegIterator(object);
+    Region2DImpl::ConstAttributedHalfSegmentIterator * getAttrHalfSegIterator(object);
     // need to finalise the return type
     void setNextMin();
 
@@ -51,8 +51,8 @@ public:
     Object2D getObjF();
     Object2D getObjG();
 
-//    Line2DImpl::ConstHalfSegIterator *  getNextObjIterator(HalfSeg2D,object);
-//    Region2DImpl::ConstAttributedHalfSegmentIterator *  getNextObjIterator(AttrHalfSeg2D,object);
+    Line2DImpl::ConstHalfSegIterator *  getNextObjIterator(HalfSeg2D,object);
+    Region2DImpl::ConstAttributedHalfSegmentIterator *  getNextObjIterator(AttrHalfSeg2D,object);
 
     /*Checks whether the given segments are within an object
    */
@@ -96,6 +96,18 @@ private:
 
     inline HalfSeg2D currentFSeg() {return (HalfSeg2D)(**objFsegIterator); }
     inline HalfSeg2D currentGSeg() {return (HalfSeg2D)(**objGsegIterator); }
+
+    inline AttrHalfSeg2D currentFASeg() {return (AttrHalfSeg2D)(**objFregionIterator); }
+    inline AttrHalfSeg2D currentGASeg() {return (AttrHalfSeg2D)(**objGregionIterator); }
+
+    inline Poi2D nextFPoi() { Point2D::ConstPoiIterator nextobjFpoiIterator = (*objFpoiIterator)++;(*objFpoiIterator)--;return (Poi2D)(*nextobjFpoiIterator); }
+    inline Poi2D nextGPoi() {Point2D::ConstPoiIterator nextobjGpoiIterator = (*objGpoiIterator)++;(*objGpoiIterator)--;return (Poi2D)(*nextobjGpoiIterator); }
+
+    inline HalfSeg2D nextFSeg() {Line2DImpl::ConstHalfSegIterator nextobjFsegIterator = (*objFsegIterator)++;(*objFsegIterator)--;return (HalfSeg2D)(*nextobjFsegIterator);  }
+    inline HalfSeg2D nextGSeg() {Line2DImpl::ConstHalfSegIterator nextobjGsegIterator = (*objGsegIterator)++;(*objGsegIterator)--;return (HalfSeg2D)(*nextobjGsegIterator);  }
+
+    inline AttrHalfSeg2D nextFASeg() {Region2DImpl::ConstAttributedHalfSegmentIterator nextobjFregionIterator = (*objFregionIterator)++;(*objFregionIterator)--;return (AttrHalfSeg2D)(*nextobjFregionIterator);  }
+    inline AttrHalfSeg2D nextGASeg() {Region2DImpl::ConstAttributedHalfSegmentIterator nextobjGregionIterator = (*objGregionIterator)++;(*objGregionIterator)--;return (AttrHalfSeg2D)(*nextobjGregionIterator);  }
 
     // TODO
     // define the rest of the inlined currentFXXX and currentGxxx below
