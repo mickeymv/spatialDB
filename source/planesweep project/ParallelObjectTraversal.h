@@ -28,8 +28,7 @@ public:
         end_of_none,
         end_of_first, end_of_second, end_of_both
     } status;
-    
-    
+
     ParallelObjectTraversal(Object2D &, Object2D &);
 
     ~ParallelObjectTraversal();
@@ -40,11 +39,11 @@ public:
 
     status getStatus();
 
-    Point2D::ConstPoiIterator * getPoiObjIterator(object);
-    Line2DImpl::ConstHalfSegIterator * getHalfSegIterator(object);
-    Region2DImpl::ConstAttributedHalfSegmentIterator * getAttrHalfSegIterator(object);
-	// need to finalise the return type
-	void setNextMin();
+//    Point2D::ConstPoiIterator * getPoiObjIterator(object);
+//    Line2DImpl::ConstHalfSegIterator * getHalfSegIterator(object);
+//    Region2DImpl::ConstAttributedHalfSegmentIterator * getAttrHalfSegIterator(object);
+    // need to finalise the return type
+    void setNextMin();
 
     bool isObjectF(Object2D);
     bool isObjectG(Object2D);
@@ -52,8 +51,8 @@ public:
     Object2D getObjF();
     Object2D getObjG();
 
-    Line2DImpl::ConstHalfSegIterator *  getNextObjIterator(HalfSeg2D,object);
-    Region2DImpl::ConstAttributedHalfSegmentIterator *  getNextObjIterator(AttrHalfSeg2D,object);
+//    Line2DImpl::ConstHalfSegIterator *  getNextObjIterator(HalfSeg2D,object);
+//    Region2DImpl::ConstAttributedHalfSegmentIterator *  getNextObjIterator(AttrHalfSeg2D,object);
 
     /*Checks whether the given segments are within an object
    */
@@ -78,13 +77,29 @@ private:
     void selectFirst();
 
     ParallelObjectTraversal *pot;
-    object object_value;
-    status status_value;
+
+    // both object and status are initialized with initial value
+    object object_value = none;
+    status status_value = end_of_both;
+
     Object2D *objF, *objG;
 
     Point2D::ConstPoiIterator * objFpoiIterator = nullptr, * objGpoiIterator = nullptr; // DTj Dec 5, 2015
     Line2DImpl::ConstHalfSegIterator * objFsegIterator = nullptr, * objGsegIterator = nullptr;
     Region2DImpl::ConstAttributedHalfSegmentIterator * objFregionIterator = nullptr, * objGregionIterator = nullptr;
+
+
+    // below are inline codes to get the current simple object from the iterator
+    // Dtj. Dec 12, 2015
+    inline Poi2D currentFPoi() {return (Poi2D)(**objFpoiIterator); }
+    inline Poi2D currentGPoi() {return (Poi2D)(**objGpoiIterator); }
+
+    inline HalfSeg2D currentFSeg() {return (HalfSeg2D)(**objFsegIterator); }
+    inline HalfSeg2D currentGSeg() {return (HalfSeg2D)(**objGsegIterator); }
+
+    // TODO
+    // define the rest of the inlined currentFXXX and currentGxxx below
+    ///
 
 };
 
