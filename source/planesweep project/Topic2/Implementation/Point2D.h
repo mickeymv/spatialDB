@@ -17,10 +17,13 @@
 
 #include <vector>
 #include "RobustGeometricPrimitives2D.h"
+#include "../../Object2D.h"
+
 using namespace std;
 
 
-class Point2D
+
+class Point2D : public Object2D
 {
   public:
 

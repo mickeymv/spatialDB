@@ -20,6 +20,15 @@
 class ParallelObjectTraversal {
 
 public:
+    typedef enum {
+        none, first, second, both
+    } object;
+
+    typedef enum {
+        end_of_none,
+        end_of_first, end_of_second, end_of_both
+    } status;
+
     ParallelObjectTraversal(Object2D &, Object2D &);
 
     ~ParallelObjectTraversal();
@@ -33,8 +42,8 @@ public:
     Point2D::ConstPoiIterator * getPoiObjIterator(object);
     Line2DImpl::ConstHalfSegIterator * getHalfSegIterator(object);
     Region2DImpl::ConstAttributedHalfSegmentIterator * getAttrHalfSegIterator(object);
-	// need to finalise the return type
-	void setNextMin();
+    // need to finalise the return type
+    void setNextMin();
 
     bool isObjectF(Object2D);
     bool isObjectG(Object2D);
@@ -50,14 +59,6 @@ public:
     bool isInObjF(Seg2D&);
     bool isInObjG(Seg2D&);
 
-    typedef enum {
-        none, first, second, both
-    } object;
-
-    typedef enum {
-        end_of_none,
-        end_of_first, end_of_second, end_of_both
-    } status;
 
     Poi2D getPoiEvent(object objectEnumVal);
     HalfSeg2D getHalfSegEvent(object objectEnumVal);
@@ -66,9 +67,14 @@ public:
     Poi2D* getNextPoi2DMin();
     HalfSeg2D* getNextHalfSeg2DMin();
     AttrHalfSeg2D* getNextAttrHalfSeg2DMin();
-    Poi2D *minPoi2DF = nullptr,*minPoi2DG = nullptr;
-    HalfSeg2D *minHalfSeg2DF = nullptr, *minHalfSeg2DG= nullptr;
-    AttrHalfSeg2D *minAttrHalfSeg2DF= nullptr, *minAttrHalfSeg2DG= nullptr;
+
+
+    Poi2D* getMinPoi2DF();
+    Poi2D* getMinPoi2DG();
+    HalfSeg2D* getMinHalfSeg2DF();
+    HalfSeg2D* getMinHalfSeg2DG();
+    AttrHalfSeg2D* getMinAttrHalfSeg2DF();
+    AttrHalfSeg2D* getMinAttrHalfSeg2DG();
 
 
 private:
@@ -76,13 +82,43 @@ private:
     void selectFirst();
 
     ParallelObjectTraversal *pot;
-    object object_value;
-    status status_value;
+
+    // both object and status are initialized with initial value
+    object object_value = none;
+    status status_value = end_of_both;
+
     Object2D *objF, *objG;
 
     Point2D::ConstPoiIterator * objFpoiIterator = nullptr, * objGpoiIterator = nullptr; // DTj Dec 5, 2015
     Line2DImpl::ConstHalfSegIterator * objFsegIterator = nullptr, * objGsegIterator = nullptr;
     Region2DImpl::ConstAttributedHalfSegmentIterator * objFregionIterator = nullptr, * objGregionIterator = nullptr;
+
+    // below are inline codes to get the current simple object from the iterator
+    // Dtj. Dec 12, 2015
+    inline Poi2D currentFPoi() {return (Poi2D)(**objFpoiIterator); }
+    inline Poi2D currentGPoi() {return (Poi2D)(**objGpoiIterator); }
+
+    inline HalfSeg2D currentFSeg() {return (HalfSeg2D)(**objFsegIterator); }
+    inline HalfSeg2D currentGSeg() {return (HalfSeg2D)(**objGsegIterator); }
+
+    inline AttrHalfSeg2D currentFASeg() {return (AttrHalfSeg2D)(**objFregionIterator); }
+    inline AttrHalfSeg2D currentGASeg() {return (AttrHalfSeg2D)(**objGregionIterator); }
+
+    inline Poi2D nextFPoi() { Point2D::ConstPoiIterator nextobjFpoiIterator = (*objFpoiIterator)++;(*objFpoiIterator)--;return (Poi2D)(*nextobjFpoiIterator); }
+    inline Poi2D nextGPoi() {Point2D::ConstPoiIterator nextobjGpoiIterator = (*objGpoiIterator)++;(*objGpoiIterator)--;return (Poi2D)(*nextobjGpoiIterator); }
+
+    inline HalfSeg2D nextFSeg() {Line2DImpl::ConstHalfSegIterator nextobjFsegIterator = (*objFsegIterator)++;(*objFsegIterator)--;return (HalfSeg2D)(*nextobjFsegIterator);  }
+    inline HalfSeg2D nextGSeg() {Line2DImpl::ConstHalfSegIterator nextobjGsegIterator = (*objGsegIterator)++;(*objGsegIterator)--;return (HalfSeg2D)(*nextobjGsegIterator);  }
+
+    inline AttrHalfSeg2D nextFASeg() {Region2DImpl::ConstAttributedHalfSegmentIterator nextobjFregionIterator = (*objFregionIterator)++;(*objFregionIterator)--;return (AttrHalfSeg2D)(*nextobjFregionIterator);  }
+    inline AttrHalfSeg2D nextGASeg() {Region2DImpl::ConstAttributedHalfSegmentIterator nextobjGregionIterator = (*objGregionIterator)++;(*objGregionIterator)--;return (AttrHalfSeg2D)(*nextobjGregionIterator);  }
+
+    Poi2D *minPoi2DF = nullptr,*minPoi2DG = nullptr;
+    HalfSeg2D *minHalfSeg2DF = nullptr, *minHalfSeg2DG= nullptr;
+    AttrHalfSeg2D *minAttrHalfSeg2DF= nullptr, *minAttrHalfSeg2DG= nullptr;
+    // TODO
+    // define the rest of the inlined currentFXXX and currentGxxx below
+    ///
 
 };
 
