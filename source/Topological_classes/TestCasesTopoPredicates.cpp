@@ -32,13 +32,13 @@ int main() {
     TopPredNumberPoint2DPoint2D tpred;
     bool result = false;
 
-  cout << "Test begins..." << endl << endl;
+    cout << "Test begins..." << endl << endl;
 
     // *****************************
     // Case 1: Point2DPoint2D
     // *****************************
 
-    // 1. Test no share Poi, F and G same number of elements
+    // 1. Test pp_disjoint_m1, F and G same number of elements
     a = new Point2D("((0,0),(3,3),(6,6))");
     b = new Point2D("((1,1),(2,2),(4,3))");
 
@@ -49,7 +49,7 @@ int main() {
     cout << "Case 1: Point2DPoint2D" << endl;
     cout << "*****************************" << endl;
     cout << endl;
-    cout << "1. Test no share Poi, F and G same number of elements." << endl;
+    cout << "1. Test pp_disjoint_m1, F and G same number of elements." << endl;
     cout << "Point2D a(\"((0,0),(3,3),(6,6))\");" << endl;
     cout << "Point2D b(\"((1,1),(2,2),(4,3))\");" << endl;
 
@@ -65,14 +65,14 @@ int main() {
     // don't forget to cleanup
     delete a, b;
 
-    // 2. Test share Poi, F and G same number of elements
+    // 2. Test pp_overlap_m5, F and G same number of elements
     a = new Point2D("((0,0),(1,1),(6,6))");
     b = new Point2D("((1,1),(2,2),(4,3))");
 
     tpred = getTopologicalRelationship(*a, *b);
     result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_disjoint_m1);
 
-    cout << "2. Test shared Poi, F and G same number of elements." << endl;
+    cout << "2. Test pp_overlap_m5" << endl;
     cout << "Point2D a(\"((0,0),(1,1),(6,6))\");" << endl;
     cout << "Point2D b(\"((1,1),(2,2),(4,3))\");" << endl;
 
@@ -88,14 +88,14 @@ int main() {
     delete a, b;
 
 
-    // 3. Test share Poi, F and G uneven number of elements
+    // 3. Test pp_overlap_m5, F and G uneven number of elements
     a = new Point2D("((2,2))");
     b = new Point2D("((1,1),(2,2),(4,3))");
 
     tpred = getTopologicalRelationship(*a, *b);
     result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_equal_m2);
 
-    cout << "3. Test share Poi, F and G uneven number of elements." << endl;
+    cout << "3. Test pp_overlap_m5" << endl;
     cout << "Point2D a(\"((2,2))\");" << endl;
     cout << "Point2D b(\"((1,1),(2,2),(4,3))\");" << endl;
 
@@ -110,6 +110,98 @@ int main() {
     // don't forget to cleanup
     delete a, b;
 
+    // 4. Test pp_equal_m2
+    a = new Point2D("((1,1),(2,2))");
+    b = new Point2D("((1,1),(2,2))");
+
+    tpred = getTopologicalRelationship(*a, *b);
+    result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_equal_m2);
+
+    cout << "4. Test pp_equal_m2" << endl;
+    cout << "Point2D a(\"((1,1),(2,2))\");" << endl;
+    cout << "Point2D b(\"((1,1),(2,2))\");" << endl;
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    printPoint2DPoint2DPredicate(tpred);
+    cout << endl;
+    cout << "   isTopologicalRelationship(a, b, pp_equal_m2) :" << endl;
+    cout << "   returns ==> " << result << endl << endl;
+
+    // don't forget to cleanup
+    delete a, b;
+
+    // 5. Test pp_contains_m4
+    a = new Point2D("((1,1))");
+    b = new Point2D("((1,1),(2,2))");
+
+    tpred = getTopologicalRelationship(*a, *b);
+
+    cout << "5. Test pp_contains_m4, F and G same number of elements, same values." << endl;
+    cout << "Point2D a(\"((1,1))\");" << endl;
+    cout << "Point2D b(\"((1,1),(2,2))\");" << endl;
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    printPoint2DPoint2DPredicate(tpred);
+    cout << endl;
+
+    result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_equal_m2);
+    cout << "   isTopologicalRelationship(a, b, pp_equal_m2) :" << endl;
+    cout << "   returns ==> " << result << endl << endl;
+
+    result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_disjoint_m1);
+    cout << "   isTopologicalRelationship(a, b, pp_disjoint_m1) :" << endl;
+    cout << "   returns ==> " << result << endl << endl;
+
+    result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_contains_m4);
+    cout << "   isTopologicalRelationship(a, b, pp_contains_m4) :" << endl;
+    cout << "   returns ==> " << result << endl << endl;
+
+    // don't forget to cleanup
+    delete a, b;
+
+    // 6. Test pp_disjoint_m1, F and G uneven number of elements
+    a = new Point2D("((0,0),(3,3),(6,6))");
+    b = new Point2D("((1,1))");
+
+    tpred = getTopologicalRelationship(*a, *b);
+
+    cout << "6. Test pp_disjoint_m1, F and G uneven number of elements." << endl;
+    cout << "Point2D a(\"((0,0),(3,3),(6,6))\");" << endl;
+    cout << "Point2D b(\"((1,1))\");" << endl;
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    printPoint2DPoint2DPredicate(tpred);
+    cout << endl;
+
+
+    // don't forget to cleanup
+    delete a, b;
+
+    // 7. Test pp_inside_m3
+    a = new Point2D("((2,2),(3,3))");
+    b = new Point2D("((2,2))");
+
+    tpred = getTopologicalRelationship(*a, *b);
+
+    cout << "7. Test pp_inside_m3." << endl;
+    cout << "Point2D a(\"((2,2),(3,3))\");" << endl;
+    cout << "Point2D b(\"((2,2))\");" << endl;
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    printPoint2DPoint2DPredicate(tpred);
+    cout << endl;
+
+
+    // don't forget to cleanup
+    delete a, b;
 
     cout << "----" << endl;
 
@@ -146,8 +238,6 @@ int main() {
     // *****************************
     // Case 6: Region2DRegion2D
     // *****************************
-
-
 
 
     cout << "Test succesfully ended." << endl;
