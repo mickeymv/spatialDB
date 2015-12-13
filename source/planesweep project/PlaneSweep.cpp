@@ -22,8 +22,6 @@ void PlaneSweep::setSegClass(Seg2D seg, int lOrR, int uOrL) {
     AVLnode<PlaneSweepLineStatusObject> *node =
             sweepLineStatus->FindKey(psso);
     node->key.setSegmentClass(lOrR, uOrL);
-    node = NULL;
-    delete psso;
 }
 
 void PlaneSweep::setInsideAbove(Seg2D seg, bool ia) {
@@ -31,8 +29,6 @@ void PlaneSweep::setInsideAbove(Seg2D seg, bool ia) {
     AVLnode<PlaneSweepLineStatusObject> *node =
             sweepLineStatus->FindKey(psso);
     node->key.setInsideAbove(ia);
-    node = NULL;
-    delete psso;
 }
 
 SegmentClass PlaneSweep::getSegClass(Seg2D seg) {
@@ -40,8 +36,6 @@ SegmentClass PlaneSweep::getSegClass(Seg2D seg) {
     AVLnode<PlaneSweepLineStatusObject> *node =
             sweepLineStatus->FindKey(psso);
     SegmentClass sc = node->key.getSegmentClass();
-    node = NULL;
-    delete psso;
     return sc;
 }
 
@@ -50,8 +44,6 @@ bool PlaneSweep::getInsideAbove(Seg2D seg) {
     AVLnode<PlaneSweepLineStatusObject> *node =
             sweepLineStatus->FindKey(psso);
     bool ia = node->key.getInsideAbove();
-    node = NULL;
-    delete psso;
     return ia;
 }
 
@@ -78,7 +70,7 @@ int PlaneSweep::findLeast() {
                 if (dynamicEPSObjG.isEmpty()) {
                     return 1;
                 }
-                HalfSeg2D objD2 = dynamicEPSObjG.GetMin();
+                HalfSeg2D objD2 = dynamicEPSObjG.GetMin().hseg;
 
                 if (*objSP < objD2)
                     return 1;
@@ -103,11 +95,11 @@ int PlaneSweep::findLeast() {
         if (getPot()->getObjF().isLine2D() && (*(getPot()->getMinHalfSeg2DF()) == *objHS)) {
             HalfSeg2D objD1;
             if (!dynamicEPSObjF.isEmpty()) {
-                objD1 = dynamicEPSObjF.GetMin();
+                objD1 = dynamicEPSObjF.GetMin().hseg;
             }
             if (getPot()->getObjG().isLine2D()) {
                 if ((!dynamicEPSObjF.isEmpty()) && (!dynamicEPSObjG.isEmpty())) {
-                    HalfSeg2D objD2 = dynamicEPSObjG.GetMin();
+                    HalfSeg2D objD2 = dynamicEPSObjG.GetMin().hseg;
                     if (objD1 < objD2) {
                         HalfSeg2D objD = objD1;
                         if (*objHS < objD)
@@ -151,11 +143,11 @@ int PlaneSweep::findLeast() {
         else if (getPot()->getObjG().isLine2D() && (*(getPot()->getMinHalfSeg2DG()) == *objHS)) {
             HalfSeg2D objD1;
             if (!dynamicEPSObjG.isEmpty()) {
-                objD1 = dynamicEPSObjG.GetMin();
+                objD1 = dynamicEPSObjG.GetMin().hseg;
             }
             if (getPot()->getObjF().isLine2D()) {
                 if ((!dynamicEPSObjF.isEmpty()) && (!dynamicEPSObjG.isEmpty())) {
-                    HalfSeg2D objD2 = dynamicEPSObjF.GetMin();
+                    HalfSeg2D objD2 = dynamicEPSObjF.GetMin().hseg;
                     if (objD1 < objD2) {
                         HalfSeg2D objD = objD1;
                         if (*objHS < objD)
@@ -222,7 +214,7 @@ int PlaneSweep::findLeast() {
             }
             if (getPot()->getObjF().isLine2D()) {
                 if ((!dynamicEPSObjF.isEmpty()) && (!dynamicEPSObjG.isEmpty())) {
-                    HalfSeg2D objD2 = dynamicEPSObjF.GetMin();
+                    HalfSeg2D objD2 = dynamicEPSObjF.GetMin().hseg;
                     if (objD1 < objD2) {
                         AttrHalfSeg2D objD = objD1;
                         if (*objAHS < objD)
@@ -244,7 +236,7 @@ int PlaneSweep::findLeast() {
             }
             else if (getPot()->getObjF().isRegion2D()) {
                 if ((!dynamicEPSObjF.isEmpty()) && (!dynamicEPSObjG.isEmpty())) {
-                    AttrHalfSeg2D objD2 = dynamicEPSObjF.GetMin();
+                    AttrHalfSeg2D objD2 = dynamicEPSObjF.GetMin().hseg;
                     if (objD1 < objD2) {
                         AttrHalfSeg2D objD = objD1;
                         if (*objAHS < objD)
@@ -295,10 +287,10 @@ void PlaneSweep::selectNext() {
         AttrHalfSeg2D objD, objD1AH, objD2AH;
 
         if (objF.isLine2D()) {
-            if (!dynamicEPSObjF.isEmpty()) { objD1H = dynamicEPSObjF.GetMin(); }
+            if (!dynamicEPSObjF.isEmpty()) { objD1H = dynamicEPSObjF.GetMin().hseg; }
             if (objG.isLine2D()) {
                 if (!dynamicEPSObjG.isEmpty()) {
-                    objD2H = dynamicEPSObjG.GetMin();
+                    objD2H = dynamicEPSObjG.GetMin().hseg;
                     if (objD1H < objD2H) {
                         dynamicEPSObjF.DeleteMin();
                     } else {
@@ -325,7 +317,7 @@ void PlaneSweep::selectNext() {
             }
             if (objG.isLine2D()) {
                 if (!dynamicEPSObjG.isEmpty()) {
-                    objD2H = dynamicEPSObjG.GetMin();
+                    objD2H = dynamicEPSObjG.GetMin().hseg;
                     if (objD1AH < objD2H) {
                         dynamicEPSObjF.DeleteMin();
                     } else {

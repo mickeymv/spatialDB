@@ -118,7 +118,7 @@ void MinHeap<T>::Output() const
 }
 
 template<class T>
-MinHeap<T> MinHeap<T>::GetMin() {
+T MinHeap<T>::GetMin() {
 
         if (CurrentSize == 0)
             return nullptr;

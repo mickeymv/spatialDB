@@ -335,8 +335,7 @@ void ParallelObjectTraversal::selectFirst() {
                 object_value = first;
             else if (firstObjectCurrentHalfSegment2D > secondObjectCurrentAttrHalfSeg2D)
                 object_value = second;
-//            else if (firstObjectCurrentHalfSegment2D == secondObjectCurrentAttrHalfSeg2D)
-            else
+            else //if (firstObjectCurrentHalfSegment2D == secondObjectCurrentAttrHalfSeg2D)
                 object_value = both;
         }
 
