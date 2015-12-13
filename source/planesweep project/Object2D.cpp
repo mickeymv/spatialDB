@@ -9,7 +9,7 @@
 
 
 // Equal operator that checks if the Object2D object and the operand Object2D are the same
-bool Object2D::operator == (Object2D& operand){
+bool Object2D::operator == (const Object2D& operand)const {
     if(this==&operand)
         return true;
     else
