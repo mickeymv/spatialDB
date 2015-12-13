@@ -86,7 +86,7 @@ void Point2DPoint2D::exploreTopoPred() {
 
     // this Explore algorithm below will set the vF and vG flag, but the function itself will return nothing (void).
     // the flag vF and vG set in the implementation below will be used by the "evaluateVerificationTopoPred" and "evaluateDeterminationTopoPred" function.
-    while ((pot->getStatus() != ParallelObjectTraversal::end_of_both) &&
+    while ((pot->getStatus() == ParallelObjectTraversal::end_of_none) &&
            !(vF[vF_Predicates::poi_disjoint] && vG[vG_Predicates::poi_disjoint_g] && vF[vF_Predicates::poi_shared])) {
 
         if (pot->getObject() == ParallelObjectTraversal::first) vF[vF_Predicates::poi_disjoint] = true;
