@@ -43,7 +43,7 @@ int main() {
     b = new Point2D("((1,1),(2,2),(4,3))");
 
     tpred = getTopologicalRelationship(*a, *b);
-    result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_equal_m2);
+    //result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_equal_m2);
 
     cout << "*****************************" << endl;
     cout << "Case 1: Point2DPoint2D" << endl;
@@ -85,7 +85,6 @@ int main() {
 
     printPoint2DPoint2DPredicate(tpred);
     cout << endl;
-    cout << endl;
     cout << "   disjoint() ==> " <<  disjoint(*a, *b) << endl;
     cout << "   overlap() ==> " <<  overlap(*a, *b) << endl;
     cout << endl;
@@ -96,14 +95,14 @@ int main() {
     delete a, b;
 
 
-    // 3. Test pp_overlap_m5, F and G uneven number of elements
+    // 3. Test pp_inside_m3, F and G uneven number of elements
     a = new Point2D("((2,2))");
     b = new Point2D("((1,1),(2,2),(4,3))");
 
     tpred = getTopologicalRelationship(*a, *b);
     result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_equal_m2);
 
-    cout << "3. Test pp_overlap_m5" << endl;
+    cout << "3. Test pp_inside_m3" << endl;
     cout << "Point2D a(\"((2,2))\");" << endl;
     cout << "Point2D b(\"((1,1),(2,2),(4,3))\");" << endl;
 
@@ -113,7 +112,9 @@ int main() {
     printPoint2DPoint2DPredicate(tpred);
     cout << endl;
     cout << "   isTopologicalRelationship(a, b, pp_equal_m2) :" << endl;
-    cout << "   returns ==> " << result << endl << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   inside() ==> " <<  inside(*a, *b) << endl << endl;
+
 
     // don't forget to cleanup
     delete a, b;
@@ -144,13 +145,13 @@ int main() {
     // don't forget to cleanup
     delete a, b;
 
-    // 5. Test pp_contains_m4
+    // 5. Test pp_inside_m3
     a = new Point2D("((1,1))");
     b = new Point2D("((1,1),(2,2))");
 
     tpred = getTopologicalRelationship(*a, *b);
 
-    cout << "5. Test pp_contains_m4, F and G same number of elements, same values." << endl;
+    cout << "5. Test pp_inside_m3" << endl;
     cout << "Point2D a(\"((1,1))\");" << endl;
     cout << "Point2D b(\"((1,1),(2,2))\");" << endl;
 
@@ -178,9 +179,16 @@ int main() {
     // don't forget to cleanup
     delete a, b;
 
+
     // 6. Test pp_disjoint_m1, F and G uneven number of elements
     a = new Point2D("((0,0),(3,3),(6,6))");
     b = new Point2D("((1,1))");
+
+//    for ( Point2D::ConstPoiIterator it = a->cbegin(); it < a->ctail(); it++ )
+//        cout << " output a:  " << it << endl;
+//    for ( Point2D::ConstPoiIterator it = b->cbegin(); it < b->ctail(); it++ )
+//        cout << " output b:  " << it << endl;
+
 
     tpred = getTopologicalRelationship(*a, *b);
 
@@ -192,19 +200,19 @@ int main() {
     cout << "   returns ==> ";
 
     printPoint2DPoint2DPredicate(tpred);
-    cout << endl;
+    cout << endl << endl;
 
 
     // don't forget to cleanup
     delete a, b;
 
-    // 7. Test pp_inside_m3
+    // 7. Test pp_contains_m4
     a = new Point2D("((2,2),(3,3))");
     b = new Point2D("((2,2))");
 
     tpred = getTopologicalRelationship(*a, *b);
 
-    cout << "7. Test pp_inside_m3." << endl;
+    cout << "7. Test pp_contains_m4." << endl;
     cout << "Point2D a(\"((2,2),(3,3))\");" << endl;
     cout << "Point2D b(\"((2,2))\");" << endl;
 
