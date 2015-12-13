@@ -1,8 +1,8 @@
 #include "SpatialOperations.h" 
 #include <stdio.h>
-#include "planesweep-project/Topic1/RobustGeometricPrimitives2D.h"
-#include "planesweep-project/Topic2/Implementation/Line2D.h"
-#include "planesweep-project/Topic2/Interfaces/Region2D.h"
+#include "planesweep project/Topic1/RobustGeometricPrimitives2D.h"
+#include "planesweep project/Topic2/Implementation/Line2D.h"
+#include "planesweep project/Topic2/Interfaces/Region2D.h"
 
 int main()
 { 

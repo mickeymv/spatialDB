@@ -353,19 +353,6 @@ Region2D spatialIntersection(Region2D &regionLhs,
         planeSweep.selectNext();
     }
 
-    //implementation
-    /*
-     * Only add segments from sweepLineStatus which have the segmentClass
-     * as (1/2), (2/1), (0/2), (2/0).
-     *
-     * How to assign overLap numbers.
-     *  1. If it has no successor  then assign 0 to upper and if there is no predecessor
-     *       then assign 0 to lower.
-     *  2. If the predecessor is another region object and the successor is the same region object, 1/2.
-     *      If the successor is different region object and the predecessor is same region object, 2/1.
-     *  3. If the segment is from both the objects, then assign 2 or 0 based on whether the predecessor or
-     *      successor is present or not.
-     */
     Region2D intersectionRegionObject(intersectionRegionVector);
     return intersectionRegionObject;
 }
