@@ -90,7 +90,7 @@ Point2D spatialUnion(const Point2D &pointLhs, const Point2D &pointRhs) {
 
 Point2D spatialDifference(const Point2D &pointLhs, const Point2D &pointRhs) {
     Point2D emptyPointObject;
-    if (pointLhs == NULL || pointLhs.isEmptyPoint2D()) {
+    if (pointLhs.isEmptyPoint2D()) {
         //TODO: ask group2 to make isEmpty const.
         return emptyPointObject;
     }
@@ -130,7 +130,7 @@ void updateSweepLineForLine(PlaneSweep &planeSweep);
 
 Line2D spatialIntersection(const Line2D &lineLhs, const Line2D &lineRhs) {
     Line2D emptyLineObject;
-    if (lineLhs == NULL || lineRhs == NULL || lineLhs.isEmptyLine2D() || lineRhs.isEmptyLine2D()) {
+    if (lineLhs.isEmptyLine2D() || lineRhs.isEmptyLine2D()) {
         return emptyLineObject;
     }
 
@@ -172,7 +172,7 @@ Line2D spatialIntersection(const Line2D &lineLhs, const Line2D &lineRhs) {
 
 Line2D spatialUnion(const Line2D &lineLhs, const Line2D &lineRhs) {
     Line2D emptyLineObject;
-    if (lineLhs == NULL || lineRhs == NULL || lineLhs.isEmptyLine2D() || lineRhs.isEmptyLine2D()) {
+    if (lineLhs.isEmptyLine2D() || lineRhs.isEmptyLine2D()) {
         return emptyLineObject;
     }
 
@@ -204,7 +204,7 @@ Line2D spatialUnion(const Line2D &lineLhs, const Line2D &lineRhs) {
 
 Line2D spatialDifference(const Line2D &lineLhs, const Line2D &lineRhs) {
     Line2D emptyLineObject;
-    if (lineLhs == NULL || lineRhs == NULL || lineLhs.isEmptyLine2D() || lineRhs.isEmptyLine2D()) {
+    if (lineLhs.isEmptyLine2D() || lineRhs.isEmptyLine2D()) {
         return emptyLineObject;
     }
 
