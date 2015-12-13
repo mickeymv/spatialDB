@@ -388,11 +388,17 @@ void PlaneSweep::updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject
      *                  I) pred's upper is 0 and ia is 1.
      *              a2) In the case where the predecessor's upper is 0/1, and ia is 0,
      *          and the current's ia is 1, then current's lower is 0/1.
+     *              Cases not possible:
+     *                  I) pred's upper is 2 and ia is 0.
+     *                  II) pred's ia=1 and curr's ia=1.
+     *                  III) pred's ia=0 and curr's ia=0.
      *
      *          b) current and successor are the same object.
      *              b1) In the case where the successor's lower is 0/1, and ia is 1,
      *          and the current's ia is 0, then current's upper is 0/1.
      *              b2) In the case where the successor's lower is 1/2, and ia is 0,
+     *          and the current's ia is 1, then current's upper is 1/2.
+     *              b3) In the case where the successor's lower is 0/1, and ia is 1,
      *          and the current's ia is 1, then current's upper is 1/2.
      *
      *
@@ -410,8 +416,40 @@ void PlaneSweep::updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject
      *                  I) pred's upper is 0 and ia is 1.
      *                  II) pred's upper is 2, ia=1, current's ia is 1.
      *
-     *          d)
+     *              c3) Pred's ia=0, curr's ia=1. if pred's upper is 0
+     *                  then curr's lower is 0.
+     *                  CASES which do NOT occur:
+     *                       I)pred's ia=0, curr's ia=0, pred's upper=1.
+     *                       II) pred's ia=0, pred's upper=2.
+     *                       III) pred's ia=0, curr's ia=0.
      *
+     *          d) current and successor are different objects
+     *              d1) succ's ia=0, curr's ia=0.
+     *                  succ's lower is 2, then curr's upper is 1 AND change succ's lower to 1.
+     *
+     *                  CASES which do not occur:
+     *                      I) succ's ia=0, lower is 0.
+     *                      II) succ's ia=0, lower is 1.
+     *
+     *              d2) succ's ia=0, curr's ia=1.
+     *                  succ's lower 1, then curr's upper is 2 AND change succ's lower to 2.
+     *
+     *                  CASES which do not occur:
+     *                      I) succ's ia=0, lower is 0.
+     *                      II) succ's ia=0, curr's ia=1, succ's lower=2.
+     *
+     *              d3) succ's ia=1, curr's ia=0.
+     *                  succ's lower 1, then curr's upper is 0 AND change succ's lower to 0.
+     *
+     *                  CASES which do not occur:
+     *                      I) succ's ia=1, succ's lower=0.
+     *                      II) uscc's ia=1, succ's lower=2.
+     *
+     *              d4) succ's ia=1, curr's ia=1.
+     *                  succ's lower is 0, then set curr's upper is 1, AND change succ's lower to 1.
+     *
+     *                  CASES which do not occur:
+     *                      I) ucc's ia=1, curr's ia=1, succ's lower=1/2.
      *
      */
 
