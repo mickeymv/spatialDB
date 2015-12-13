@@ -19,7 +19,6 @@
 #include "PlaneSweepLineStatusObject.h"
 #include "MinHeap.h"
 
-
 class PlaneSweep {
 
 
@@ -115,8 +114,8 @@ private:
      * processing; these are normally the initially unknown intersections of line segments.
      * Below are the DYNAMIC eventPointSchedules corresponding to each object.
      */
-    MinHeap dynamicEPSObjF;
-    MinHeap dynamicEPSObjG;
+    MinHeap<AttrHalfSeg2D> dynamicEPSObjF;
+    MinHeap<AttrHalfSeg2D> dynamicEPSObjG;
 
     Object2D objF,objG;
 

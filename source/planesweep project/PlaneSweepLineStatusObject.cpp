@@ -5,7 +5,7 @@
 #include "PlaneSweepLineStatusObject.h"
 
 
-bool operator<(PlaneSweepLineStatusObject &operand) {
+bool PlaneSweepLineStatusObject::operator<(PlaneSweepLineStatusObject &operand) {
     if (this->segment2D < operand.segment2D) {
         return true;
     } else {
@@ -13,7 +13,7 @@ bool operator<(PlaneSweepLineStatusObject &operand) {
     }
 }
 
-bool operator>(PlaneSweepLineStatusObject &operand) {
+bool PlaneSweepLineStatusObject::operator>(PlaneSweepLineStatusObject &operand) {
     if (this->segment2D > operand.segment2D) {
         return true;
     } else {
@@ -22,7 +22,7 @@ bool operator>(PlaneSweepLineStatusObject &operand) {
 }
 
 
-bool operator==(PlaneSweepLineStatusObject &operand) {
+bool PlaneSweepLineStatusObject::operator==(PlaneSweepLineStatusObject &operand) {
     if (this->segment2D == operand.segment2D) {
         return true;
     } else {

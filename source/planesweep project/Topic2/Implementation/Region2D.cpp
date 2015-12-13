@@ -192,7 +192,8 @@ using namespace std;
 	} 
 
     //to get the min bounding rectangle coordinates for each cycle
-    Number mbrCoordinates[ handle->cycles.size()][4];
+    Number mbrCoordinates[ 200][4]; //As we were getting an error, we switched to '200' to compile our code
+      //Error-> "error: variable length array of non-POD element type 'Number' "
     for (int i = 1; i<handle->cycles.size()-1; i++)
     {
       Number minx = Number(std::to_string(999));
@@ -238,6 +239,7 @@ using namespace std;
       mbrCoordinates[i][1] = miny;
       mbrCoordinates[i][2] = maxx;
       mbrCoordinates[i][3] = maxy;
+
     }
     
 	
@@ -675,7 +677,8 @@ using namespace std;
 	} 
 
     //to get the min bounding rectangle coordinates for each cycle
-    Number mbrCoordinates[ handle->cycles.size()][4];
+    Number mbrCoordinates[ 200][4]; //As we were getting an error, we switched to '200' to compile our code
+      //Error-> "error: variable length array of non-POD element type 'Number' "
     for (int i = 1; i<handle->cycles.size()-1; i++)
     {
       Number minx = Number(std::to_string(999));

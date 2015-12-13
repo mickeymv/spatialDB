@@ -87,7 +87,7 @@ private:
     object object_value = none;
     status status_value = end_of_both;
 
-    Object2D *objF, *objG;
+    const Object2D *objF, *objG;
 
     Point2D::ConstPoiIterator * objFpoiIterator = nullptr, * objGpoiIterator = nullptr; // DTj Dec 5, 2015
     Line2DImpl::ConstHalfSegIterator * objFsegIterator = nullptr, * objGsegIterator = nullptr;

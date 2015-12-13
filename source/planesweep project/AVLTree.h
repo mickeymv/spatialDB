@@ -95,9 +95,9 @@ void AVLTree<T>::getElements(T **result) {
 
 template<class T>
 AVLnode<T> *AVLTree<T>::getSucc(T val) {
-    AVLnode *valTemp = FindKey(val);
+    AVLnode<T> *valTemp = FindKey(val);
     if (valTemp != NULL && valTemp->right != NULL) {
-        AVLnode *temp = valTemp->right;
+        AVLnode<T> *temp = valTemp->right;
         while (temp->left != NULL) {
             temp = temp->left;
         }
@@ -108,9 +108,9 @@ AVLnode<T> *AVLTree<T>::getSucc(T val) {
 
 template<class T>
 AVLnode<T> *AVLTree<T>::getPred(T val) {
-    AVLnode *valTemp = FindKey(val);
+    AVLnode<T> *valTemp = FindKey(val);
     if (valTemp != NULL && valTemp->left != NULL) {
-        AVLnode *temp = valTemp->left;
+        AVLnode<T> *temp = valTemp->left;
         while (temp->right != NULL) {
             temp = temp->right;
         }
@@ -286,7 +286,7 @@ bool AVLTree<T>::insert(T key) {
 }
 
 template<class T>
-AVLnode *AVLTree<T>::FindKey(const T val) {
+AVLnode<T> *AVLTree<T>::FindKey(const T val) {
     if (root != NULL) {
         AVLnode<T> *n = root;
 

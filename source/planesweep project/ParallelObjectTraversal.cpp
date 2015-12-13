@@ -15,19 +15,19 @@ ParallelObjectTraversal::ParallelObjectTraversal(const Object2D &F, const Object
     // 11/04/2015 DT
     // note that for the symmetrical object combination, only one instance is created, but the passing of the object is swapped accordingly
     if (F.isPoint2D()) {
-        objF = dynamic_cast<Point2D *>(&F);  // to access objF use it like this:  (Point2D *) objF
+        objF = dynamic_cast<const Point2D *>(&F);  // to access objF use it like this:  (Point2D *) objF
         objFpoiIterator = new Point2D::ConstPoiIterator(((Point2D *) objF)->cbegin());
 
 
         if (G.isPoint2D()) {
-            objG = dynamic_cast<Point2D *>(&G);
+            objG = dynamic_cast<const Point2D *>(&G);
 
             // assign objG Poi Iterator
             objGpoiIterator = new Point2D::ConstPoiIterator(((Point2D *) objG)->cbegin());
         }
 
         if (G.isPoint2D()) {
-            objG = dynamic_cast<Point2D *>(&G);
+            objG = dynamic_cast< const Point2D *>(&G);
             objGpoiIterator = new Point2D::ConstPoiIterator(((Point2D *) objG)->cbegin());
 
         } else if (G.isLine2D()) {
@@ -38,7 +38,7 @@ ParallelObjectTraversal::ParallelObjectTraversal(const Object2D &F, const Object
             // objGIterator = &lineIterator;
 
             // Dtj Dec 10, 2015
-            objG = dynamic_cast<Line2D *>(&G);
+            objG = dynamic_cast<const Line2D *>(&G);
             objGsegIterator = new Line2DImpl::ConstHalfSegIterator(((Line2DImpl *) objG)->hBegin());
 
 
@@ -50,7 +50,7 @@ ParallelObjectTraversal::ParallelObjectTraversal(const Object2D &F, const Object
             // objGIterator = &regionIterator;
 
             // Dtj Dec 10, 2015
-            objG = dynamic_cast<Region2D *>(&G);
+            objG = dynamic_cast<const Region2D *>(&G);
             objGregionIterator = new Region2DImpl::ConstAttributedHalfSegmentIterator(
                     ((Region2DImpl *) objG)->cbegin());
 
@@ -63,7 +63,7 @@ ParallelObjectTraversal::ParallelObjectTraversal(const Object2D &F, const Object
         // objFIterator = &lineIterator;
 
         // Dtj Dec 10, 2015
-        objF = dynamic_cast<Line2D *>(&F);
+        objF = dynamic_cast<const Line2D *>(&F);
         objFsegIterator = new Line2DImpl::ConstHalfSegIterator(((Line2DImpl *) objF)->hBegin());
 
         if (G.isPoint2D()) {
@@ -74,7 +74,7 @@ ParallelObjectTraversal::ParallelObjectTraversal(const Object2D &F, const Object
             // objGIterator = &pointIterator;
 
             // Dtj Dec 10, 2015
-            objG = dynamic_cast<Point2D *>(&G);
+            objG = dynamic_cast<const Point2D *>(&G);
             objGpoiIterator = new Point2D::ConstPoiIterator(((Point2D *) objG)->cbegin());
 
         } else if (G.isLine2D()) {
@@ -85,7 +85,7 @@ ParallelObjectTraversal::ParallelObjectTraversal(const Object2D &F, const Object
             // objGIterator = &lineIterator;
 
             // Dtj Dec 10, 2015
-            objG = dynamic_cast<Line2D *>(&G);
+            objG = dynamic_cast<const Line2D *>(&G);
             objGsegIterator = new Line2DImpl::ConstHalfSegIterator(((Line2DImpl *) objG)->hBegin());
 
         } else if (G.isRegion2D()) {
@@ -96,7 +96,7 @@ ParallelObjectTraversal::ParallelObjectTraversal(const Object2D &F, const Object
             // objGIterator = &regionIterator;
 
             // Dtj Dec 10, 2015
-            objG = dynamic_cast<Region2D *>(&G);
+            objG = dynamic_cast<const Region2D *>(&G);
             objGregionIterator = new Region2DImpl::ConstAttributedHalfSegmentIterator(
                     ((Region2DImpl *) objG)->cbegin());
         }
@@ -108,7 +108,7 @@ ParallelObjectTraversal::ParallelObjectTraversal(const Object2D &F, const Object
         // objGIterator = &regionIterator;
 
         // Dtj Dec 10, 2015
-        objF = dynamic_cast<Region2D *>(&F);
+        objF = dynamic_cast<const Region2D *>(&F);
         objFregionIterator = new Region2DImpl::ConstAttributedHalfSegmentIterator(((Region2DImpl *) objF)->cbegin());
 
         if (G.isPoint2D()) {
@@ -119,7 +119,7 @@ ParallelObjectTraversal::ParallelObjectTraversal(const Object2D &F, const Object
             // objGIterator = &pointIterator;
 
             // Dtj Dec 10, 2015
-            objG = dynamic_cast<Point2D *>(&G);
+            objG = dynamic_cast<const Point2D *>(&G);
             objGpoiIterator = new Point2D::ConstPoiIterator(((Point2D *) objG)->cbegin());
 
         } else if (G.isLine2D()) {
@@ -130,7 +130,7 @@ ParallelObjectTraversal::ParallelObjectTraversal(const Object2D &F, const Object
             // objGIterator = &lineIterator;
 
             // Dtj Dec 10, 2015
-            objG = dynamic_cast<Line2D *>(&G);
+            objG = dynamic_cast<const Line2D *>(&G);
             objGsegIterator = new Line2DImpl::ConstHalfSegIterator(((Line2DImpl *) objG)->hBegin());
 
 
@@ -142,7 +142,7 @@ ParallelObjectTraversal::ParallelObjectTraversal(const Object2D &F, const Object
             // objGIterator = &regionIterator;
 
             // Dtj Dec 10, 2015
-            objG = dynamic_cast<Region2D *>(&G);
+            objG = dynamic_cast<const Region2D *>(&G);
             objGregionIterator = new Region2DImpl::ConstAttributedHalfSegmentIterator(
                     ((Region2DImpl *) objG)->cbegin());
 
@@ -901,7 +901,7 @@ bool ParallelObjectTraversal::isInObjF(Seg2D &seg2D) {
         Line2DImpl::ConstHalfSegIterator obji;
         for (obji = ((Line2DImpl *) objF)->hBegin(); obji <= ((Line2DImpl *) objF)->hEnd(); obji++) {
 
-            //Line2DImpl::ConstSegIterator val = dynamic_cast<Line2DImpl::ConstSegIterator>(obji);
+            //Line2DImpl::ConstSegIterator val = dynamic_cast<const Line2DImpl::ConstSegIterator>(obji);
             HalfSeg2D iter = *(obji);
             if (seg2D == iter.seg) {
                 return true;

@@ -59,6 +59,6 @@ set(SOURCE_FILES
     "planesweep project/SegmentClass.h"
     SpatialOperations.cpp
     SpatialOperations.h
-    SpatialOperationsMainClass.cpp)
+        PointSpatialOperationsTestClass.cpp)
 
 add_executable(source ${SOURCE_FILES})

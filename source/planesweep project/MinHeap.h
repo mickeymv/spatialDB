@@ -16,8 +16,8 @@ public:
     MinHeap(int MinHeapSize = 10);
     ~MinHeap() {delete [] heap;}
     int Size() const {return CurrentSize;}
-    T GetMin();
-    T GetNext(T x);
+    MinHeap<T> GetMin();
+    MinHeap<T> GetNext(T x);
     MinHeap<T>& Insert(const T& x);
     MinHeap<T>& DeleteMin();
     void Initialize(T a[], int size, int ArraySize);

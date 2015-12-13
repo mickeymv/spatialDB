@@ -4,6 +4,8 @@
 
 #include "Object2D.h"
 #include "Topic2/Interfaces/Region2D.h"
+#include "Topic2/Implementation/Point2D.h"
+#include "Topic2/Implementation/Line2D.h"
 
 // Equal operator that checks if the Object2D object and the operand Object2D are the same
 bool Object2D::operator == (Object2D& operand){
@@ -15,7 +17,7 @@ bool Object2D::operator == (Object2D& operand){
 
 bool Object2D::isPoint2D() const
 {
- if(dynamic_cast<Point2D*>(this))
+ if(dynamic_cast<const Point2D*>(this))
  {
      return true;
  }
@@ -27,7 +29,8 @@ bool Object2D::isPoint2D() const
 
 bool Object2D::isLine2D() const
 {
-    if(dynamic_cast<Line2D*>(this))
+
+    if(dynamic_cast<const Line2D*>(this))
     {
         return true;
     }
@@ -39,7 +42,7 @@ bool Object2D::isLine2D() const
 
 bool Object2D::isRegion2D() const
 {
-    if(dynamic_cast<Region2D*>(this))
+    if(dynamic_cast<const Region2D*>(this))
     {
         return true;
     }

@@ -39,7 +39,7 @@
 
 Point2D spatialIntersection(const Point2D &pointLhs, const Point2D &pointRhs) {
     Point2D emptyPointObject;
-    if (pointLhs == NULL || pointRhs == NULL || pointLhs.isEmptyPoint2D() || pointRhs.isEmptyPoint2D()) {
+    if (pointLhs == nullptr || pointRhs == nullptr || pointLhs.isEmptyPoint2D() || pointRhs.isEmptyPoint2D()) {
         //TODO: ask group2 to make isEmpty const.
         return emptyPointObject;
     }
@@ -50,7 +50,7 @@ Point2D spatialIntersection(const Point2D &pointLhs, const Point2D &pointRhs) {
     while (parallelObjectTraversal.getObject() != ParallelObjectTraversal::none &&
            parallelObjectTraversal.getStatus() == ParallelObjectTraversal::end_of_none) {
         if (parallelObjectTraversal.getObject() == ParallelObjectTraversal::both) {
-            intersectionPointsVector.push_back(parallelObjectTraversal.getEvent(ParallelObjectTraversal::first));
+            intersectionPointsVector.push_back(parallelObjectTraversal.getPoiEvent(ParallelObjectTraversal::first));
             //The argument could be ParallelObjectTraversal::second as well since they're the same.
         }
         parallelObjectTraversal.selectNext();
@@ -73,12 +73,12 @@ Point2D spatialUnion(const Point2D &pointLhs, const Point2D &pointRhs) {
     while (parallelObjectTraversal.getObject() != ParallelObjectTraversal::none &&
            parallelObjectTraversal.getStatus() == ParallelObjectTraversal::end_of_none) {
         if (parallelObjectTraversal.getObject() == ParallelObjectTraversal::both) {
-            unionPointsVector.push_back(parallelObjectTraversal.getEvent(ParallelObjectTraversal::first));
+            unionPointsVector.push_back(parallelObjectTraversal.getPoiEvent(ParallelObjectTraversal::first));
             //The argument could be ParallelObjectTraversal::second as well since they're the same.
         } else if (parallelObjectTraversal.getObject() == ParallelObjectTraversal::first) {
-            unionPointsVector.push_back(parallelObjectTraversal.getEvent(ParallelObjectTraversal::first));
+            unionPointsVector.push_back(parallelObjectTraversal.getPoiEvent(ParallelObjectTraversal::first));
         } else if (parallelObjectTraversal.getObject() == ParallelObjectTraversal::second) {
-            unionPointsVector.push_back(parallelObjectTraversal.getEvent(ParallelObjectTraversal::second));
+            unionPointsVector.push_back(parallelObjectTraversal.getPoiEvent(ParallelObjectTraversal::second));
         }
         parallelObjectTraversal.selectNext();
     }
@@ -101,7 +101,7 @@ Point2D spatialDifference(const Point2D &pointLhs, const Point2D &pointRhs) {
     while (parallelObjectTraversal.getObject() != ParallelObjectTraversal::none &&
            parallelObjectTraversal.getStatus() == ParallelObjectTraversal::end_of_none) {
         if (parallelObjectTraversal.getObject() == ParallelObjectTraversal::first) {
-            differencePointsVector.push_back(parallelObjectTraversal.getEvent(ParallelObjectTraversal::first));
+            differencePointsVector.push_back(parallelObjectTraversal.getPoiEvent(ParallelObjectTraversal::first));
         }
         parallelObjectTraversal.selectNext();
     }
