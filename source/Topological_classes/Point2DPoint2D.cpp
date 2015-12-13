@@ -160,6 +160,62 @@ void Point2DPoint2D::evaluateTopoPred() {
         topPredNumberPoint2DPoint2D = TopPredNumberPoint2DPoint2D::pp_overlap_m5;
         isPredSet = true;
     }
+}
+
+bool Point2DPoint2D::overlap() {
+    if (!isPredSet) {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    return topPredNumberPoint2DPoint2D == TopPredNumberPoint2DPoint2D::pp_overlap_m5;
+}
 
 
+bool Point2DPoint2D::disjoint() {
+    if (!isPredSet) {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    return topPredNumberPoint2DPoint2D == TopPredNumberPoint2DPoint2D::pp_disjoint_m1;
+}
+
+
+bool Point2DPoint2D::meet() {
+    return false;
+}
+
+bool Point2DPoint2D::equal() {
+    if (!isPredSet) {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    return topPredNumberPoint2DPoint2D == TopPredNumberPoint2DPoint2D::pp_equal_m2;
+}
+
+bool Point2DPoint2D::contains() {
+    if (!isPredSet) {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    return topPredNumberPoint2DPoint2D == TopPredNumberPoint2DPoint2D::pp_contains_m4;
+}
+
+bool Point2DPoint2D::covers() {
+    return false;
+}
+
+bool Point2DPoint2D::coveredBy() {
+    return false;
+}
+
+bool Point2DPoint2D::inside() {
+    if (!isPredSet) {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    return topPredNumberPoint2DPoint2D == TopPredNumberPoint2DPoint2D::pp_inside_m3;
+}
+
+bool Point2DPoint2D::touch() {
+    return false;
 }
