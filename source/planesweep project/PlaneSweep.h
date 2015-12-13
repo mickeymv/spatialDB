@@ -157,13 +157,17 @@ private:
     /*
      * Functions for getting predecessor and getting successor
      */
-    Seg2D getPredecessor(Seg2D&);
-    Seg2D getSuccessor(Seg2D&);
+    PlaneSweepLineStatusObject getPredecessor(PlaneSweepLineStatusObject&);
+    PlaneSweepLineStatusObject getSuccessor(PlaneSweepLineStatusObject&);
 
     /*
      * Function for checking if a relation exists between two segments
      */
     bool isRelation(Seg2D&, Seg2D&);
+
+    void updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject &sweepLineStatusObject);
+
+    void updateSegmentClassWhileRemovingSegment(PlaneSweepLineStatusObject &sweepLineStatusObject);
 };
 
 
