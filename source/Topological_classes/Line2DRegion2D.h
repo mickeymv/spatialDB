@@ -30,7 +30,7 @@
 class Line2DRegion2D{
 
 public:
-    Line2DRegion2D(Line2D &, Region2D &);
+    Line2DRegion2D(const Line2D &F, const Region2D &G);
     ~Line2DRegion2D();
 
     bool isTopologicalRelationship(TopPredNumberLine2DRegion2D predicate);

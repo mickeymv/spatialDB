@@ -17,7 +17,7 @@
 
 #include "Line2DRegion2D.h"
 
-Line2DRegion2D::Line2DRegion2D(Line2D &F, Region2D &G) {
+Line2DRegion2D::Line2DRegion2D(const Line2D &F,const Region2D &G) {
     // set obj1 and obj2
     objF = F;
     objG = G;
@@ -115,7 +115,7 @@ void Line2DRegion2D::exploreTopoPred() {
         } // line 49
         else {
             vF[seg_shared] = true;
-            AttrHalfSeg2D h = S.getAttrHalfSegEvent(ParallelObjectTraversal::both);
+            AttrHalfSeg2D h = S.getAttrHalfSegEvent(ParallelObjectTraversal::second); // I saw this in the paper (Natasha)
             Poi2D dp;
             if (h.isLeft) {
                 S.addLeft(h.seg);

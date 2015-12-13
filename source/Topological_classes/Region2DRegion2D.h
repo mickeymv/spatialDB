@@ -20,14 +20,14 @@
 
 #include "planesweep_project/Object2D.h"
 #include "TopPredNumberEnums.h"
-
+#include "planesweep_project/PlaneSweep.h"
 #include "Region2D.h"
 
 
 class Region2DRegion2D{
 
 public:
-    Region2DRegion2D(Object2D &, Object2D &);
+    Region2DRegion2D(const Region2D &F, const Region2D &G);
     ~Region2DRegion2D();
 
     bool isTopologicalRelationship(TopPredNumberRegion2DRegion2D predicate);
@@ -46,12 +46,18 @@ public:
 private:
     Region2D objF, objG;
     static const int vF_size=8;
+    static const int vG_size=4;
 
     bool vF[vF_size];
+    bool vG[vG_size];
 
     // enum predicates
     enum vF_Predicates{
         zero_one,one_zero,one_two,two_one,zero_two,two_zero,one_one,bound_poi_shared
+    };
+
+    enum vG_Predicates{
+        zero_one_g,one_zero_g,one_two_g,two_one_g
     };
 
     // get vector array vF
