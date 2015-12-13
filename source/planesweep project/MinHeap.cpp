@@ -140,7 +140,7 @@ bool MinHeap<T>::isEmpty()
 }
 
 template<class T>
-MinHeap<T> MinHeap<T>::GetNext(T x)
+T MinHeap<T>::GetNext(T x)
 {
     T *result = nullptr;
     for (int i = 0; i <= CurrentSize; i++)

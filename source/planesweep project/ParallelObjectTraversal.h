@@ -81,6 +81,16 @@ public:
     // setter methods
     void setObject(const object &object_value);
     void setStatus(const status &status_value);
+    // below are inline codes to get the current simple object from the iterator
+    // Dtj. Dec 12, 2015
+    inline Poi2D currentFPoi() {return (Poi2D)(**objFpoiIterator); }
+    inline Poi2D currentGPoi() {return (Poi2D)(**objGpoiIterator); }
+
+    inline HalfSeg2D currentFSeg() {return (HalfSeg2D)(**objFsegIterator); }
+    inline HalfSeg2D currentGSeg() {return (HalfSeg2D)(**objGsegIterator); }
+
+    inline AttrHalfSeg2D currentFASeg() {return (AttrHalfSeg2D)(**objFregionIterator); }
+    inline AttrHalfSeg2D currentGASeg() {return (AttrHalfSeg2D)(**objGregionIterator); }
 
 private:
     //SelectFirst should be called in the POT constructor.
@@ -97,17 +107,6 @@ private:
     Point2D::ConstPoiIterator * objFpoiIterator = nullptr, * objGpoiIterator = nullptr; // DTj Dec 5, 2015
     Line2DImpl::ConstHalfSegIterator * objFsegIterator = nullptr, * objGsegIterator = nullptr;
     Region2DImpl::ConstAttributedHalfSegmentIterator * objFregionIterator = nullptr, * objGregionIterator = nullptr;
-
-    // below are inline codes to get the current simple object from the iterator
-    // Dtj. Dec 12, 2015
-    inline Poi2D currentFPoi() {return (Poi2D)(**objFpoiIterator); }
-    inline Poi2D currentGPoi() {return (Poi2D)(**objGpoiIterator); }
-
-    inline HalfSeg2D currentFSeg() {return (HalfSeg2D)(**objFsegIterator); }
-    inline HalfSeg2D currentGSeg() {return (HalfSeg2D)(**objGsegIterator); }
-
-    inline AttrHalfSeg2D currentFASeg() {return (AttrHalfSeg2D)(**objFregionIterator); }
-    inline AttrHalfSeg2D currentGASeg() {return (AttrHalfSeg2D)(**objGregionIterator); }
 
     inline Poi2D nextFPoi() { Point2D::ConstPoiIterator nextobjFpoiIterator = (*objFpoiIterator)++;(*objFpoiIterator)--;return (Poi2D)(*nextobjFpoiIterator); }
     inline Poi2D nextGPoi() {Point2D::ConstPoiIterator nextobjGpoiIterator = (*objGpoiIterator)++;(*objGpoiIterator)--;return (Poi2D)(*nextobjGpoiIterator); }

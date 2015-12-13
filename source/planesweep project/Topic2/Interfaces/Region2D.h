@@ -21,7 +21,7 @@
 #include <algorithm>
 #include "RobustGeometricPrimitives2D.h"
 
-class Region2D 
+class Region2D : public Object2D
 {
   public:
 
