@@ -14,10 +14,10 @@ template<class T>
 class MinHeap {
 public:
     MinHeap(int MinHeapSize = 10);
-    ~MinHeap();
-    int Size() const;
-    T GetMin();
-    T GetNext(T x);
+    ~MinHeap() {delete [] heap;}
+    int Size() const {return CurrentSize;}
+    MinHeap<T> GetMin();
+    MinHeap<T> GetNext(T x);
     MinHeap<T>& Insert(const T& x);
     MinHeap<T>& DeleteMin();
     void Initialize(T a[], int size, int ArraySize);
