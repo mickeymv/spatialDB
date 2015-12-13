@@ -41,8 +41,7 @@ void Point2DRegion2D::exploreTopoPred() {
     S.newSweep();
 
 
-
-    while((S.getStatus()!=ParallelObjectTraversal::end_of_none)&&(!(vF[poi_inside]))&&(vF[poi_on_bound])&&(vF[poi_outside]))
+    while((S.getStatus() == ParallelObjectTraversal::end_of_none) && (!(vF[poi_inside]))&&(vF[poi_on_bound])&&(vF[poi_outside]))
     {
         ParallelObjectTraversal::object object_value = S.getObject();
         if(object_value==ParallelObjectTraversal::first)
