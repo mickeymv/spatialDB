@@ -192,7 +192,13 @@ using namespace std;
 	} 
 
     //to get the min bounding rectangle coordinates for each cycle
-    Number mbrCoordinates[ handle->cycles.size()][4];
+    //Number mbrCoordinates[ handle->cycles.size()][4];
+
+    Number** mbrCoordinates = new Number*[handle->cycles.size()];
+    for(int i = 0; i < handle->cycles.size(); ++i)
+      mbrCoordinates[i] = new Number[4];
+
+
     for (int i = 1; i<handle->cycles.size()-1; i++)
     {
       Number minx = Number(std::to_string(999));
@@ -301,6 +307,7 @@ using namespace std;
 	}
     
    handle->faces[faceCount++] = fe;
+   delete[] mbrCoordinates;
     
 	
     //To set AttrHalfSeg flags.
@@ -675,7 +682,11 @@ using namespace std;
 	} 
 
     //to get the min bounding rectangle coordinates for each cycle
-    Number mbrCoordinates[ handle->cycles.size()][4];
+    //Number mbrCoordinates[ handle->cycles.size()][4];
+    Number** mbrCoordinates = new Number*[handle->cycles.size()];
+    for(int i = 0; i < handle->cycles.size(); ++i)
+      mbrCoordinates[i] = new Number[4];
+
     for (int i = 1; i<handle->cycles.size()-1; i++)
     {
       Number minx = Number(std::to_string(999));
@@ -784,6 +795,7 @@ using namespace std;
 	}
     
    handle->faces[faceCount++] = fe;
+   delete[] mbrCoordinates;
     
 	
     //To set AttrHalfSeg flags.
