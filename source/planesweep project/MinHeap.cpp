@@ -8,6 +8,21 @@ MinHeap<T>::MinHeap(int MinHeapSize)
     CurrentSize = 0;
 }
 
+MinHeap::~MinHeap()
+{
+    delete [] heap;
+}
+
+int MinHeap::Size() const
+{
+    return CurrentSize;
+}
+
+void MinHeap::Deactivate()
+{
+    heap = nullptr;
+}
+
 template<class T>
 MinHeap<T>& MinHeap<T>::Insert(const T& x)
 {// Insert x into the min heap.

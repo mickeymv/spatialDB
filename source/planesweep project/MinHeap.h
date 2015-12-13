@@ -14,14 +14,14 @@ template<class T>
 class MinHeap {
 public:
     MinHeap(int MinHeapSize = 10);
-    ~MinHeap() {delete [] heap;}
-    int Size() const {return CurrentSize;}
+    ~MinHeap();
+    int Size() const;
     T GetMin();
     T GetNext(T x);
     MinHeap<T>& Insert(const T& x);
     MinHeap<T>& DeleteMin();
     void Initialize(T a[], int size, int ArraySize);
-    void Deactivate() {heap = 0;}
+    void Deactivate();
     void Output() const;
     bool isEmpty();
 private:

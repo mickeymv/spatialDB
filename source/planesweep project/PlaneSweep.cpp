@@ -2209,9 +2209,9 @@ PlaneSweepLineStatusObject PlaneSweep::getPredecessor(PlaneSweepLineStatusObject
     if (predecessor != NULL) {
         return predecessor->key;
     }
-    else {
-        return NULL;
-    }
+//    else {
+//        return NULL;
+//    }
 }
 
 PlaneSweepLineStatusObject PlaneSweep::getSuccessor(PlaneSweepLineStatusObject &s) {
@@ -2219,9 +2219,9 @@ PlaneSweepLineStatusObject PlaneSweep::getSuccessor(PlaneSweepLineStatusObject &
     if (successor != NULL) {
         return successor->key;
     }
-    else {
-        return NULL;
-    }
+//    else {
+//        return NULL;
+//    }
 }
 
 void PlaneSweep::newSweep() {
