@@ -60,10 +60,14 @@ int main() {
     cout << endl;
 
     cout << "   isTopologicalRelationship(a, b, pp_equal_m2) :" << endl;
-    cout << "   returns ==> " << result << endl << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   disjoint() ==> " <<  disjoint(*a, *b) << endl;
+    cout << "   overlap() ==> " <<  overlap(*a, *b) << endl;
+    cout << endl;
 
     // don't forget to cleanup
     delete a, b;
+
 
     // 2. Test pp_overlap_m5, F and G same number of elements
     a = new Point2D("((0,0),(1,1),(6,6))");
@@ -80,6 +84,10 @@ int main() {
     cout << "   returns ==> ";
 
     printPoint2DPoint2DPredicate(tpred);
+    cout << endl;
+    cout << endl;
+    cout << "   disjoint() ==> " <<  disjoint(*a, *b) << endl;
+    cout << "   overlap() ==> " <<  overlap(*a, *b) << endl;
     cout << endl;
     cout << "   isTopologicalRelationship(a, b, pp_disjoint_m1) :" << endl;
     cout << "   returns ==> " << result << endl << endl;
@@ -126,6 +134,10 @@ int main() {
 
     printPoint2DPoint2DPredicate(tpred);
     cout << endl;
+    cout << "   disjoint() ==> " <<  disjoint(*a, *b) << endl;
+    cout << "   equal() ==> " <<  equal(*a, *b) << endl;
+    cout << endl;
+
     cout << "   isTopologicalRelationship(a, b, pp_equal_m2) :" << endl;
     cout << "   returns ==> " << result << endl << endl;
 
@@ -158,7 +170,10 @@ int main() {
 
     result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_contains_m4);
     cout << "   isTopologicalRelationship(a, b, pp_contains_m4) :" << endl;
-    cout << "   returns ==> " << result << endl << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   contains() ==> " <<  contains(*a, *b) << endl;
+    cout << "   overlap() ==> " <<  overlap(*a, *b) << endl;
+    cout << endl;
 
     // don't forget to cleanup
     delete a, b;
@@ -198,7 +213,9 @@ int main() {
 
     printPoint2DPoint2DPredicate(tpred);
     cout << endl;
-
+    cout << "   contains() ==> " <<  contains(*a, *b) << endl;
+    cout << "   inside() ==> " <<  inside(*a, *b) << endl;
+    cout << endl;
 
     // don't forget to cleanup
     delete a, b;
