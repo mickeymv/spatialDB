@@ -52,7 +52,7 @@ void Point2DLine2D::exploreTopoPred() {
     S.newSweep();
     Poi2D last_dp;
 
-    while((S.getStatus()!=ParallelObjectTraversal::end_of_second)&&(S.getStatus()!=ParallelObjectTraversal::end_of_both)&&(!(vF[poi_disjoint]&&vF[poi_on_interior]&&vF[poi_on_bound]&&vG[bound_poi_disjoint])))
+    while((S.getStatus()!=ParallelObjectTraversal::end_of_second)&&(S.getStatus()==ParallelObjectTraversal::end_of_none)&&(!(vF[poi_disjoint]&&vF[poi_on_interior]&&vF[poi_on_bound]&&vG[bound_poi_disjoint])))
     {
         ParallelObjectTraversal::object object_value = S.getObject();
         if(object_value==ParallelObjectTraversal::first)
