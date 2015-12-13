@@ -16,7 +16,7 @@ bool Object2D::operator == (Object2D& operand){
         return false;
 }
 
-bool Object2D::isPoint2D()
+bool Object2D::isPoint2D() const
 {
     if(dynamic_cast<Point2D*>(this))
     {
@@ -28,7 +28,7 @@ bool Object2D::isPoint2D()
     }
 }
 
-bool Object2D::isLine2D()
+bool Object2D::isLine2D() const
 {
     if(dynamic_cast<Line2D*>(this))
     {
@@ -40,7 +40,7 @@ bool Object2D::isLine2D()
     }
 }
 
-bool Object2D::isRegion2D()
+bool Object2D::isRegion2D() const
 {
     if(dynamic_cast<Region2D*>(this))
     {

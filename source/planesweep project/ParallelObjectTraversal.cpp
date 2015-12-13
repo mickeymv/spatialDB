@@ -9,7 +9,7 @@
 using namespace std;
 
 
-const ParallelObjectTraversal::ParallelObjectTraversal(Object2D &F, Object2D &G) {
+ParallelObjectTraversal::ParallelObjectTraversal(const Object2D &F, const Object2D &G) {
 
 
     // 11/04/2015 DT

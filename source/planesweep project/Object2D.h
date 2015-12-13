@@ -40,11 +40,11 @@ public:
 
     bool operator == (Object2D& operand);
 
-    virtual bool isPoint2D();  // 'virtual' added, DT Dec 5, 2015
+    virtual bool isPoint2D() const;
 
-    virtual bool isLine2D();
+    virtual bool isLine2D() const;
 
-    virtual bool isRegion2D();
+    virtual bool isRegion2D() const;
 
 };
 
