@@ -496,7 +496,7 @@ void PlaneSweep::delRight(PlaneSweepLineStatusObject &planeSweepLineStatusObject
 }
 
 //TODO change type of getElements() from AVLtree
-bool PlaneSweep::coincident(Seg2D &givenSeg) {
+bool PlaneSweep::coincident(Seg2D &givenSeg) { // TODO what does partially collinear mean??
     int itr = 0;
     int const treeSize = sweepLineStatus->sizeOfAVL();
 
@@ -505,7 +505,7 @@ bool PlaneSweep::coincident(Seg2D &givenSeg) {
 
     for (itr = 0; itr < treeSize; itr++) {
         Seg2D seg2D = segArray[itr]->getSegment2D();
-        if (Intersects(seg2D, givenSeg))
+        if (SegmentIsCollinear(seg2D, givenSeg))
             return true;
     }
     return false;
@@ -2226,4 +2226,14 @@ PlaneSweepLineStatusObject PlaneSweep::getSuccessor(PlaneSweepLineStatusObject &
 
 void PlaneSweep::newSweep() {
     sweepLineStatus = new AVLTree<PlaneSweepLineStatusObject>();//Not sure if it is passed like this
+}
+
+void PlaneSweep::setObject(ParallelObjectTraversal::object object_value) {
+
+    getPot()->setObject(object_value);
+}
+
+void PlaneSweep::setStatus(ParallelObjectTraversal::status status_value) {
+
+    getPot()->setStatus(status_value);
 }

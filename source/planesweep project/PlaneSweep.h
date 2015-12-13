@@ -51,6 +51,9 @@ public:
 
     ParallelObjectTraversal::status getStatus();
 
+    void setObject(ParallelObjectTraversal::object);
+    void setStatus(ParallelObjectTraversal::status);
+
     void newSweep();
 
     /*

@@ -1075,9 +1075,9 @@ AttrHalfSeg2D *ParallelObjectTraversal::getMinAttrHalfSeg2DG() {
 
 // setter methods
 void ParallelObjectTraversal::setObject(const object &object_value) {
-    ParallelObjectTraversal::object_value = object_value;
+    this.object_value = object_value;
 }
 
 void ParallelObjectTraversal::setStatus(const status &status_value) {
-    ParallelObjectTraversal::status_value = status_value;
+    this.status_value = status_value;
 }
