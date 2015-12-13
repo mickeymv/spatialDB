@@ -475,13 +475,15 @@ void PlaneSweep::updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject
                 // dummy val 0 for uol
                 int lorCurr = predecessorNode->key.getSegmentClass().getUpperOrLeft();
                 if (lorCurr == 1 || lorCurr == 2) {
-                    sweepLineStatusObject.setSegmentClass(lorCurr, 0);
+                    //sweepLineStatusObject.setSegmentClass(lorCurr, 0);
+                    currentNode->key.getSegmentClass().setLowerOrRight(lorCurr);
                 }
             } else if (iaPred == false && iaCurr ==true) {
                 // dummy val 0 for uol
                 int lorCurr = predecessorNode->key.getSegmentClass().getUpperOrLeft();
                 if (lorCurr==0 || lorCurr==1) {
-                    sweepLineStatusObject.setSegmentClass(lorCurr, 0);
+                    //sweepLineStatusObject.setSegmentClass(lorCurr, 0);
+                    currentNode->key.getSegmentClass().setLowerOrRight(lorCurr);
                 }
             }
             /*
@@ -497,7 +499,8 @@ void PlaneSweep::updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject
                 int lorCurr = predecessorNode->key.getSegmentClass().getUpperOrLeft();
                 if(lorCurr ==2) {
                     //dummy val 1 for uol
-                    sweepLineStatusObject.setSegmentClass(lorCurr, 1);
+                    //sweepLineStatusObject.setSegmentClass(lorCurr, 1);
+                    currentNode->key.getSegmentClass().setLowerOrRight(lorCurr);
                 }
                 /*
                  * CASES which do not occur:
@@ -508,7 +511,8 @@ void PlaneSweep::updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject
                 int lorCurr = predecessorNode->key.getSegmentClass().getUpperOrLeft();
                 if(lorCurr == 1) {
                     //dummy val 2 for uol
-                    sweepLineStatusObject.setSegmentClass(lorCurr, 2);
+                    //sweepLineStatusObject.setSegmentClass(lorCurr, 2);
+                    currentNode->key.getSegmentClass().setLowerOrRight(lorCurr);
                 }
                 /*
                  * CASES which do not occur:
@@ -519,7 +523,8 @@ void PlaneSweep::updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject
                 int lorCurr = predecessorNode->key.getSegmentClass().getUpperOrLeft();
                 if (lorCurr ==0) {
                     //dummy val 1 for uol
-                    sweepLineStatusObject.setSegmentClass(lorCurr, 1);
+                    //sweepLineStatusObject.setSegmentClass(lorCurr, 1);
+                    currentNode->key.getSegmentClass().setLowerOrRight(lorCurr);
                 }
 
                 /*
@@ -530,7 +535,6 @@ void PlaneSweep::updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject
                  */
             }
         }
-
     } else {
         currentNode->key.getSegmentClass().setLowerOrRight(0); //Case1
     }
@@ -540,24 +544,65 @@ void PlaneSweep::updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject
             isSuccessorSameObjectAsCurrent = true;
             if(iaSucc == true && iaCurr == false) {
                 //dummy val 0 for lor
-                int uol = successorNode->key.getSegmentClass().getUpperOrLeft();
-                if (uol==0 || uol==1) {
-                    sweepLineStatusObject.setSegmentClass(0,uol);
+                int uolCurr = successorNode->key.getSegmentClass().getLowerOrRight();
+                if (uolCurr==0 || uolCurr==1) {
+                    //sweepLineStatusObject.setSegmentClass(0,uol);
+                    currentNode->key.getSegmentClass().setUpperOrLeft(uolCurr);
                 }
             } else if (iaSucc == false && iaCurr == true) {
                 //dummy val 0 for lor
-                int uol = successorNode->key.getSegmentClass().getUpperOrLeft();
-                if (uol==1 || uol==2) {
-                    sweepLineStatusObject.setSegmentClass(0,uol);
+                int uolCurr = successorNode->key.getSegmentClass().getLowerOrRight();
+                if (uolCurr==1 || uolCurr==2) {
+                    //sweepLineStatusObject.setSegmentClass(0,uolCurr);
+                    currentNode->key.getSegmentClass().setUpperOrLeft(uolCurr);
                 }
             }
         } else {
             isSuccessorSameObjectAsCurrent = false;
+            if(iaSucc == false && iaCurr == false) { //case d1 ??
+                //dummy val 2 for lor
+                int uolCurr = successorNode->key.getSegmentClass().getLowerOrRight();
+                if (uolCurr ==1) {
+                    //sweepLineStatusObject.setSegmentClass(2,uolCurr);
+                    currentNode->key.getSegmentClass().setUpperOrLeft(uolCurr);
+                } else if (uolCurr ==2) {
+                    uolCurr--;
+                    successorNode->key.getSegmentClass().setLowerOrRight(uolCurr);
+                    //sweepLineStatusObject.setSegmentClass(2,uolCurr);
+                    currentNode->key.getSegmentClass().setUpperOrLeft(uolCurr);
+                }
+
+            } else if (iaSucc == false && iaCurr == true) { //d2
+                // dummy val 1 for lor
+                int uolCurr = successorNode->key.getSegmentClass().getLowerOrRight();
+                if (uolCurr == 1) {
+                    uolCurr++;
+                    successorNode->key.getSegmentClass().setLowerOrRight(uolCurr);
+                    //sweepLineStatusObject.setSegmentClass(1,uolCurr);
+                    currentNode->key.getSegmentClass().setUpperOrLeft(uolCurr);
+                }
+            }  else if (iaSucc == true && iaCurr == false) { //d3
+                int uolCurr = successorNode->key.getSegmentClass().getLowerOrRight();
+                if (uolCurr ==1) {
+                    uolCurr--;
+                    successorNode->key.getSegmentClass().setLowerOrRight(uolCurr);
+                    //sweepLineStatusObject.setSegmentClass(1,uolCurr);
+                    currentNode->key.getSegmentClass().setUpperOrLeft(uolCurr);
+                }
+            } else if (iaSucc == true && iaCurr == true) { //d4
+                int uolCurr = successorNode->key.getSegmentClass().getLowerOrRight();
+                if (uolCurr ==0) {
+                    //dummy val 0 for lor
+                    uolCurr++;
+                    successorNode->key.getSegmentClass().setLowerOrRight(uolCurr);
+                    //sweepLineStatusObject.setSegmentClass(0,uolCurr);
+                    currentNode->key.getSegmentClass().setUpperOrLeft(uolCurr);
+                }
+            }
         }
     } else {
         currentNode->key.getSegmentClass().setUpperOrLeft(0); //Case1
     }
-
 }
 
 
