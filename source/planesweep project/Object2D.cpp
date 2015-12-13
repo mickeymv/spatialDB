@@ -3,7 +3,10 @@
 //
 
 #include "Object2D.h"
-#include "Topic2/Interfaces/Region2D.h"
+#include "Topic2/Implementation/Point2D.h"
+#include "Topic2/Implementation/Line2DImpl.h"
+#include "Topic2/Implementation/Region2DImpl.h"
+
 
 // Equal operator that checks if the Object2D object and the operand Object2D are the same
 bool Object2D::operator == (Object2D& operand){
@@ -15,14 +18,14 @@ bool Object2D::operator == (Object2D& operand){
 
 bool Object2D::isPoint2D()
 {
- if(dynamic_cast<Point2D*>(this))
- {
-     return true;
- }
- else
- {
-     return false;
- }
+    if(dynamic_cast<Point2D*>(this))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 bool Object2D::isLine2D()
