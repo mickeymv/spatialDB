@@ -101,12 +101,12 @@ void Line2DRegion2D::exploreTopoPred() {
         {
             AttrHalfSeg2D h = S.getAttrHalfSegEvent(ParallelObjectTraversal::second);
             Poi2D dp;
-            if (h.isLeft) {
-                S.addLeft(h.seg);
-                dp = h.seg.p1;
+            if (h.hseg.isLeft) {
+                S.addLeft(h.hseg.seg);
+                dp = h.hseg.seg.p1;
             }
             else {
-                S.delRight(h.seg);
+                S.delRight(h.hseg.seg);
                 vG[seg_unshared] = true;
             }
             if (dp != last_dp_in_G) {
@@ -117,16 +117,16 @@ void Line2DRegion2D::exploreTopoPred() {
             vF[seg_shared] = true;
             AttrHalfSeg2D h = S.getAttrHalfSegEvent(ParallelObjectTraversal::second); // I saw this in the paper (Natasha)
             Poi2D dp;
-            if (h.isLeft) {
-                S.addLeft(h.seg);
-                dp = h.seg.p1;
+            if (h.hseg.isLeft) {
+                S.addLeft(h.hseg.seg);
+                dp = h.hseg.seg.p1;
             }
             else {
-                S.delRight(h.seg);
+                S.delRight(h.hseg.seg);
             } // line 53
             if (dp != last_dp_in_F) {
                 last_dp_in_F = dp;
-                if (S.lookAhead(h.seg, objF))  // line 55
+                if (S.lookAhead(h.hseg.seg, objF))  // line 55
                 {
                     vF[bound_shared] = true;
                 }

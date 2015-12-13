@@ -19,7 +19,7 @@
 
 #include "planesweep_project/Object2D.h"
 #include "planesweep_project/Topic2/Implementation/Point2D.h"
-#include "planesweep_project/Region2D.h"
+#include "planesweep_project/Topic2/Implementation/Region2D.h"
 #include "planesweep_project/PlaneSweep.h"
 #include "TopologicalRelationships.h"
 

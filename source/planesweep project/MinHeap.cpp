@@ -1,130 +1,196 @@
-//
-// Created by Mickey Vellukunnel on 11/25/15.
-//
-
-#include <iostream>
 #include "MinHeap.h"
 
-MinHeap::MinHeap(AttrHalfSeg2D* array, int length) : _vector(length)
+template<class T>
+MinHeap<T>::MinHeap(int MinHeapSize)
+{// Min heap constructor.
+    MaxSize = MinHeapSize;
+    heap = new T[MaxSize+1];
+    CurrentSize = 0;
+}
+
+MinHeap::~MinHeap()
 {
-    for(int i = 0; i < length; ++i)
-    {
-        _vector[i] = array[i];
+    delete [] heap;
+}
+
+int MinHeap::Size() const
+{
+    return CurrentSize;
+}
+
+void MinHeap::Deactivate()
+{
+    heap = nullptr;
+}
+
+template<class T>
+MinHeap<T>& MinHeap<T>::Insert(const T& x)
+{// Insert x into the min heap.
+    if (CurrentSize == MaxSize)
+        return *this; // TODO - find out what to do
+
+    // find place for x
+    // i starts at new leaf and moves up tree
+    int i = ++CurrentSize;
+    while (i != 0 && x < heap[i/2]) {
+        // cannot put x in heap[i]
+        heap[i] = heap[i/2]; // move element down
+        i /= 2; // move to parent
     }
+    heap[i] = x;
 
-    Heapify();
+    return *this;
 }
 
-MinHeap::MinHeap(const vector<AttrHalfSeg2D>& vector) : _vector(vector)
-{
-    Heapify();
-}
+template<class T>
+MinHeap<T>& MinHeap<T>::DeleteMin()
+{// Set x to min element and delete
+    // min element from heap.
+    // check if heap is empty
+    if (CurrentSize == 0)
+        return *this; // TODO - find out what to do
 
-MinHeap::MinHeap()
-{
-}
+    //x = heap[0]; // min element
 
-void MinHeap::Heapify()
-{
-    int length = _vector.size();
-    for(int i=length-1; i>=0; --i)
-    {
-        BubbleDown(i);
+    // restructure heap
+    T y = heap[CurrentSize--]; // last element
+
+    // find place for y starting at root
+    int i = 1,  // current node of heap
+            ci = 2; // child of i
+    while (ci <= CurrentSize) {// find place to put y
+        // heap[ci] should be smaller child of i
+        if (ci < CurrentSize &&
+            heap[ci] > heap[ci+1]) ci++;
+
+        // can we put y in heap[i]?
+        if (y <= heap[ci]) break;  // yes
+
+        // no
+        heap[i] = heap[ci]; // move child up
+        i = ci;  // move down a level
+        ci *= 2;
     }
+    heap[i] = y;
+
+    return *this;
 }
 
-void MinHeap::BubbleDown(int index)
-{
-    int length = _vector.size();
-    int leftChildIndex = 2*index + 1;
-    int rightChildIndex = 2*index + 2;
+template<class T>
+void MinHeap<T>::Initialize(T a[], int size, int ArraySize)
+{// Initialize min heap to array a.
+    delete [] heap;
+    heap = a;
+    CurrentSize = size;
+    MaxSize = ArraySize;
 
-    if(leftChildIndex >= length)
-        return; //index is a leaf
+    // make into a min heap
+    for (int i = CurrentSize/2; i >= 0; i--) {
+        T y = heap[i]; // root of subtree
 
-    int minIndex = index;
+        // find place to put y
+        int c = 2*i; // parent of c is target
+        // location for y
+        while (c <= CurrentSize) {
+            // make c point to smaller sibling
+            if (c < CurrentSize &&
+                heap[c] > heap[c+1]) c++;
 
-    if(_vector[index] > _vector[leftChildIndex])
-    {
-        minIndex = leftChildIndex;
-    }
+            // can we put y in heap[c/2]?
+            if (y <= heap[c]) break;  // yes
 
-    if((rightChildIndex < length) && (_vector[minIndex] > _vector[rightChildIndex]))
-    {
-        minIndex = rightChildIndex;
-    }
-
-    if(minIndex != index)
-    {
-        //need to swap
-        AttrHalfSeg2D temp = _vector[index];
-        _vector[index] = _vector[minIndex];
-        _vector[minIndex] = temp;
-        BubbleDown(minIndex);
-    }
-}
-
-void MinHeap::BubbleUp(int index)
-{
-    if(index == 0)
-        return;
-
-    int parentIndex = (index-1)/2;
-
-    if(_vector[parentIndex] > _vector[index])
-    {
-        AttrHalfSeg2D temp = _vector[parentIndex];
-        _vector[parentIndex] = _vector[index];
-        _vector[index] = temp;
-        BubbleUp(parentIndex);
-    }
-}
-
-void MinHeap::Insert(AttrHalfSeg2D newValue)
-{
-    int length = _vector.size();
-    _vector[length] = newValue;
-
-    BubbleUp(length);
-}
-
-AttrHalfSeg2D MinHeap::GetMin()
-{
-    return _vector[0];
-}
-
-void MinHeap::DeleteMin()
-{
-    int length = _vector.size();
-
-    if(length == 0)
-    {
-        return;
-    }
-
-    _vector[0] = _vector[length-1];
-    _vector.pop_back();
-
-    BubbleDown(0);
-}
-
-AttrHalfSeg2D MinHeap::GetNext(AttrHalfSeg2D attrHalfSeg2D)
-{
-    vector<AttrHalfSeg2D>::iterator val;
-    AttrHalfSeg2D next = nullptr;
-    for(val=_vector.begin();val<=_vector.end();val++)
-    {
-        if(*(val)>attrHalfSeg2D && next== nullptr)
-        {
-            next = *(val);
+            // no
+            heap[c/2] = heap[c]; // move heap[c] up
+            c *= 2;              // move c down a level
         }
-        else if(*(val)>attrHalfSeg2D && next!= nullptr)
+        heap[c/2] = y;
+    }
+}
+
+template<class T>
+void MinHeap<T>::Output() const
+{
+    cout << "The " << CurrentSize
+    << " elements are"<< endl;
+    for (int i = 0; i <= CurrentSize; i++)
+        cout << heap[i] << ' ';
+    cout << endl;
+}
+
+template<class T>
+MinHeap<T> MinHeap<T>::GetMin() {
+
+        if (CurrentSize == 0)
+            return nullptr;
+        return heap[0];//
+
+}
+
+template<class T>
+bool MinHeap<T>::isEmpty()
+{
+    if(CurrentSize==0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+template<class T>
+MinHeap<T> MinHeap<T>::GetNext(T x)
+{
+    T *result = nullptr;
+    for (int i = 0; i <= CurrentSize; i++)
+    {
+        if((heap[i]>x)&&(result== nullptr))
         {
-            if(*(val)<next)
-            {
-                next = *(val);
-            }
+            result = heap[i];
+        }
+        else if((heap[i]>x)&&(result!= nullptr))
+        {
+         if(heap[i]<result)
+         {
+             result = heap[i];
+         }
         }
     }
-    return next;
+    return *result;
 }
+
+
+
+//AttrHalfSeg2D MinHeap::GetNext(AttrHalfSeg2D attrHalfSeg2D)
+//{
+//    vector<AttrHalfSeg2D>::iterator val;
+//    AttrHalfSeg2D next = nullptr;
+//    for(val=_vector.begin();val<=_vector.end();val++)
+//    {
+//        if(*(val)>attrHalfSeg2D && next== nullptr)
+//        {
+//            next = *(val);
+//        }
+//        else if(*(val)>attrHalfSeg2D && next!= nullptr)
+//        {
+//            if(*(val)<next)
+//            {
+//                next = *(val);
+//            }
+//        }
+//    }
+//    return next;
+//}
+//
+//bool MinHeap::isEmpty()
+//{
+//    if(_vector.size()==0)
+//    {
+//        return true;
+//    }
+//    else
+//    {
+//        return false;
+//    }
+//}

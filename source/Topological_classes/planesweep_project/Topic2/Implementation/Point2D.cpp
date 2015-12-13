@@ -87,7 +87,7 @@
       if (std::regex_match( textualPointList, std::regex( "\\(\\(.*\\)\\)" ) ))  // means the string is point representation
       { 
 	      points->vecPoints.clear();
-              points->vecPoints.push_back(Poi2D(Number( ),Number( )));
+          points->vecPoints.push_back(Poi2D(Number( ),Number( )));
 	      textualPointList.erase(std::remove(textualPointList.begin(), textualPointList.end(), ')'), textualPointList.end());
 	      textualPointList.erase(std::remove(textualPointList.begin(), textualPointList.end(), '('), textualPointList.end());
 	      std::istringstream ss(textualPointList);
@@ -128,9 +128,13 @@
     points->vecPoints.clear();
     std::copy(orginalPoint.points->vecPoints.begin(), orginalPoint.points->vecPoints.end(),std::back_inserter(points->vecPoints));
     points->first.iteratorIndex = orginalPoint.points->first.iteratorIndex;
-	  points->last.iteratorIndex = orginalPoint.points->last.iteratorIndex;
-	  points->first.current = orginalPoint.points->first.current;
-	  points->last.current = orginalPoint.points->last.current;
+    points->last.iteratorIndex = orginalPoint.points->last.iteratorIndex;
+    points->head.iteratorIndex = orginalPoint.points->head.iteratorIndex;
+    points->tail.iteratorIndex = orginalPoint.points->tail.iteratorIndex;
+    points->first.current = orginalPoint.points->first.current;
+    points->last.current = orginalPoint.points->last.current;
+    points->head.current = orginalPoint.points->head.current;
+    points->tail.current = orginalPoint.points->tail.current;
   }
 
   // Move constructor that moves the inputed Point2D object to a
@@ -142,9 +146,13 @@
     points->vecPoints.clear();
     std::move(orginalPoint.points->vecPoints.begin(), orginalPoint.points->vecPoints.end(),std::back_inserter(points->vecPoints));
     points->first.iteratorIndex = orginalPoint.points->first.iteratorIndex;
-	  points->last.iteratorIndex = orginalPoint.points->last.iteratorIndex;
-	  points->first.current = orginalPoint.points->first.current;
-	  points->last.current = orginalPoint.points->last.current;
+    points->last.iteratorIndex = orginalPoint.points->last.iteratorIndex;
+    points->head.iteratorIndex = orginalPoint.points->head.iteratorIndex;
+    points->tail.iteratorIndex = orginalPoint.points->tail.iteratorIndex;
+    points->first.current = orginalPoint.points->first.current;
+    points->last.current = orginalPoint.points->last.current;
+    points->head.current = orginalPoint.points->head.current;
+    points->tail.current = orginalPoint.points->tail.current;
   }
 
   // Destructor, that clears the internal objects of the Point2D structure.
@@ -168,8 +176,12 @@
 	  std::copy(orginalPoint.points->vecPoints.begin(), orginalPoint.points->vecPoints.end(),std::back_inserter(points->vecPoints));
       points->first.iteratorIndex = orginalPoint.points->first.iteratorIndex;
 	  points->last.iteratorIndex = orginalPoint.points->last.iteratorIndex;
+          points->head.iteratorIndex = orginalPoint.points->head.iteratorIndex;
+          points->tail.iteratorIndex = orginalPoint.points->tail.iteratorIndex;
 	  points->first.current = orginalPoint.points->first.current;
 	  points->last.current = orginalPoint.points->last.current;
+          points->head.current = orginalPoint.points->head.current;
+    points->tail.current = orginalPoint.points->tail.current;
     return(*this);
   }
 
@@ -183,8 +195,12 @@
 	  std::move(orginalPoint.points->vecPoints.begin(), orginalPoint.points->vecPoints.end(),std::back_inserter(points->vecPoints));
       points->first.iteratorIndex = orginalPoint.points->first.iteratorIndex;
 	  points->last.iteratorIndex = orginalPoint.points->last.iteratorIndex;
-	  points->first.current = orginalPoint.points->first.current;
+	  points->head.iteratorIndex = orginalPoint.points->head.iteratorIndex;
+          points->tail.iteratorIndex = orginalPoint.points->tail.iteratorIndex;
+          points->first.current = orginalPoint.points->first.current;
 	  points->last.current = orginalPoint.points->last.current;
+          points->head.current = orginalPoint.points->head.current;
+    points->tail.current = orginalPoint.points->tail.current; 
     return(*this);
   }
   
@@ -339,7 +355,7 @@
   
   // Predicate that checks whether the inputted Point2D object is an
   // empty Point2D object.
-  bool Point2D::isEmptyPoint2D()
+  bool Point2D::isEmptyPoint2D() const
   {
 	  return points->vecPoints.empty();
   }

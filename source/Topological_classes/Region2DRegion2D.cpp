@@ -62,39 +62,39 @@ void Region2DRegion2D::exploreTopoPred()
         if(S.getObject()==ParallelObjectTraversal::first)
         {
             h = S.getAttrHalfSegEvent(ParallelObjectTraversal::first);
-            if(h.isLeft)
+            if(h.hseg.isLeft)
             {
-                last_dp_in_F = h.seg.p1;
+                last_dp_in_F = h.hseg.seg.p1;
             }
             else
             {
-                last_dp_in_F = h.seg.p2;
+                last_dp_in_F = h.hseg.seg.p2;
             }
         }
         else if(S.getObject()==ParallelObjectTraversal::second)
         {
             h = S.getAttrHalfSegEvent(ParallelObjectTraversal::second);
-            if(h.isLeft)
+            if(h.hseg.isLeft)
             {
-                last_dp_in_G = h.seg.p1;
+                last_dp_in_G = h.hseg.seg.p1;
             }
             else
             {
-                last_dp_in_G = h.seg.p2;
+                last_dp_in_G = h.hseg.seg.p2;
             }
         }
         else // object = both
         {
             h = S.getAttrHalfSegEvent(ParallelObjectTraversal::first);
-            if(h.isLeft)
+            if(h.hseg.isLeft)
             {
-                last_dp_in_F = h.seg.p1;
-                last_dp_in_G = h.seg.p1;
+                last_dp_in_F = h.hseg.seg.p1;
+                last_dp_in_G = h.hseg.seg.p1;
             }
             else
             {
-                last_dp_in_F = h.seg.p2;
-                last_dp_in_G = h.seg.p2;
+                last_dp_in_F = h.hseg.seg.p2;
+                last_dp_in_G = h.hseg.seg.p2;
             }
 
         }
@@ -104,9 +104,9 @@ void Region2DRegion2D::exploreTopoPred()
             vF[bound_poi_shared]=1;
         }
 
-        if(!h.isLeft) // h is a right half segment
+        if(!h.hseg.isLeft) // h is a right half segment
         {
-            SegmentClass overlapNumber = S.getSegClass(h.seg);
+            SegmentClass overlapNumber = S.getSegClass(h.hseg.seg);
             if(S.getObject()==ParallelObjectTraversal::first)
             {
                 if((overlapNumber.getUpperOrLeft()==0)&&(overlapNumber.getLowerOrRight()==1))
@@ -192,27 +192,27 @@ void Region2DRegion2D::exploreTopoPred()
                     vF[one_one]=1;
                 }
             }
-            S.delRight(h.seg);
+            S.delRight(h.hseg.seg);
         }
         else // h is a left segment
         {
-            S.addLeft(h.seg);
-            if(S.coincident(h.seg))
+            S.addLeft(h.hseg.seg);
+            if(S.coincident(h.hseg.seg))
             {
-                S.setObject(ParallelObjectTraversal::both); // TODO use setObject of Plane Sweep
+                S.setObject(ParallelObjectTraversal::both);
             }
             int upperP;
             int lowerP;
             int upperS;
             int lowerS;
-            if(!S.predExists(h.seg))
+            if(!S.predExists(h.hseg.seg))
             {
                 upperP = -1; // undefined and doesn't matter
                 lowerP = 0;
             }
             else // Predecessor exists
             {
-             SegmentClass pred = S.getPredSegmentClass(h.seg);
+             SegmentClass pred = S.getPredSegmentClass(h.hseg.seg);
                 upperP = pred.getUpperOrLeft();
                 lowerP = pred.getLowerOrRight();
             }
@@ -221,7 +221,7 @@ void Region2DRegion2D::exploreTopoPred()
 
             if((S.getObject()==ParallelObjectTraversal::first)||(S.getObject()==ParallelObjectTraversal::both))
             {
-                if(S.getInsideAbove(h.seg)) // TODO Should we pass object F here??
+                if(S.getInsideAbove(h.hseg.seg)) // TODO Should we pass object F here??
                 {
                     upperS=upperS+1;
                 }
@@ -233,7 +233,7 @@ void Region2DRegion2D::exploreTopoPred()
 
             if((S.getObject()==ParallelObjectTraversal::second)||(S.getObject()==ParallelObjectTraversal::both))
             {
-                if(S.getInsideAbove(h.seg)) // TODO Should we pass object G here??
+                if(S.getInsideAbove(h.hseg.seg)) // TODO Should we pass object G here??
                 {
                     upperS=upperS+1;
                 }
@@ -242,7 +242,7 @@ void Region2DRegion2D::exploreTopoPred()
                     upperS= upperS-1;
                 }
             }
-            S.setSegClass(h.seg,lowerS,upperS);
+            S.setSegClass(h.hseg.seg,lowerS,upperS);
 
         }
 

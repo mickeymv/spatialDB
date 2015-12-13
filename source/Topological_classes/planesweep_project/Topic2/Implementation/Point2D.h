@@ -114,7 +114,7 @@ class Point2D
       
       // Predicate that checks whether the inputted Point2D object is an
       //empty Point2D object.
-      bool isEmptyPoint2D();
+      bool isEmptyPoint2D() const;
 
 
       //+++++++++++++++++

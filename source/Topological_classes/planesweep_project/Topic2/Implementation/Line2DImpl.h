@@ -21,7 +21,7 @@
 #define Line2DImpl_H
 #include "Line2D.h"
 
-class Line2DImpl : protected Line2D 
+class Line2DImpl : public Line2D 
 {
   public:
     //++++++++++++++++++++++++++++
@@ -65,89 +65,92 @@ class Line2DImpl : protected Line2D
     virtual ~Line2DImpl();
 
     
-    //++++++++++++++++++++++
-    //++ Block iterator ++++
-    //++++++++++++++++++++++
-    // Constant block iterator type that allows to navigate through the blocks of
+    
+    //+++++++++++++++++
+    // Iterator classes
+    //+++++++++++++++++
+
+    // Constant segment iterator type that allows to navigate through the segments of
     // a Line2D object in forward and reverse direction. A change of the
-    // blocks is not possible.
-    class ConstBlockIterator
+    // segments is not possible.
+    class ConstHalfSegIterator
     {
       friend class Line2DImpl;
 
       public:
-        // Default constructor that creates an empty constant block iterator.
-        ConstBlockIterator();
+        // Default constructor that creates an empty constant segment iterator.
+        ConstHalfSegIterator();
 
-        // Copy constructor that constructs a constant block iterator from a
-        // given constant block iterator "source".
-        ConstBlockIterator(const ConstBlockIterator& source);
+        // Copy constructor that constructs a constant segment iterator from a
+        // given constant segment iterator "source".
+        ConstHalfSegIterator(const ConstHalfSegIterator& source);
 
-        // Move constructor that moves a given constant block iterator "source"
-        // to a constant block iterator. The constant block iterator "source"
-        // gets the empty constant block iterator as its value.
-        ConstBlockIterator(const ConstBlockIterator&& source);
+        // Move constructor that moves a given constant segment iterator "source"
+        // to a constant segment iterator. The constant segment iterator "source"
+        // gets the empty constant segment iterator as its value.
+        ConstHalfSegIterator(const ConstHalfSegIterator&& source);
 
         // Destructor that frees the main memory space allocated for a constant
-        // block iterator.
-        ~ConstBlockIterator();
+        // segment iterator.
+        ~ConstHalfSegIterator();
 
-        // Assignment operator that assigns another constant block iterator
-        // "rhs" to the constant block iterator.
-        ConstBlockIterator& operator = (const ConstBlockIterator& rhs);
+        // Assignment operator that assigns another constant segment iterator
+        // "rhs" to the constant segment iterator.
+        ConstHalfSegIterator& operator = (const ConstHalfSegIterator& rhs);
 
-        // Predicate that tests whether a constant block iterator is empty.
+        // Predicate that tests whether a constant segment iterator is empty.
         bool isEmpty() const;
 
         // Increment/decrement operators '++', '--'
-        ConstBlockIterator& operator ++ ();   // prefix
-        ConstBlockIterator& operator ++ (int); // postfix
-        ConstBlockIterator& operator -- ();   // prefix
-        ConstBlockIterator& operator -- (int); // postfix
+        ConstHalfSegIterator& operator ++ ();   // prefix
+        ConstHalfSegIterator operator ++ (int postfix); // postfix
+        ConstHalfSegIterator& operator -- ();   // prefix
+        ConstHalfSegIterator operator -- (int postfix); // postfix
 
-        // Dereferencing operators that return the value at the constant block
+        // Dereferencing operators that return the value at the constant segment
         // iterator position. Dereferencing is only allowed if the iterator
-        // points to a block. The dereferenced value cannot be changed.
-        const std::vector<HalfSeg2D*>& operator *() const;
-        const std::vector<HalfSeg2D*>* operator ->() const;
+        // points to a segment. The dereferenced value cannot be changed.
+        const HalfSeg2D& operator *() const;
+        const HalfSeg2D* operator ->() const;
 
-        // Comparison operators that compare a constant block iterator position
-        // with another const block iterator position "rhs"
-        bool operator == (const ConstBlockIterator& rhs) const;
-        bool operator != (const ConstBlockIterator& rhs) const;
-        bool operator <  (const ConstBlockIterator& rhs) const;
-        bool operator <= (const ConstBlockIterator& rhs) const;
-        bool operator >  (const ConstBlockIterator& rhs) const;
-        bool operator >= (const ConstBlockIterator& rhs) const;
+        // Comparison operators that compare a constant segment iterator position
+        // with another const segment iterator position "rhs"
+        bool operator == (const ConstHalfSegIterator& rhs) const;
+        bool operator != (const ConstHalfSegIterator& rhs) const;
+        bool operator <  (const ConstHalfSegIterator& rhs) const;
+        bool operator <= (const ConstHalfSegIterator& rhs) const;
+        bool operator >  (const ConstHalfSegIterator& rhs) const;
+        bool operator >= (const ConstHalfSegIterator& rhs) const;
         
-        friend std::ostream&operator<<(std::ostream&, const ConstBlockIterator&);
+        friend std::ostream&operator<<(std::ostream&, const ConstHalfSegIterator&);
 
       protected:
         // Forward struct declaration for the hidden implementation of a
-        // constant block iterator
-        struct ConstBlockIteratorImplementation;
+        // constant segment iterator
+        struct ConstHalfSegIteratorImplementation;
 
         // Declaration of an opaque pointer
-        ConstBlockIteratorImplementation* handlei;
-    }; // class ConstBlockIterator
+        ConstHalfSegIteratorImplementation* handlei;
+    }; // class ConstHalfSegIterator
 
-    // Method that returns a constant block iterator to the first block of a
+    // Method that returns a constant segment iterator to the first segment of a
     // Line2D object.
-    ConstBlockIterator cbegin() const;
+    ConstHalfSegIterator hBegin() const;
 
-    // Method that returns a constant block iterator to the last block of a
+    // Method that returns a constant segment iterator to the last segment of a
     // Line2D object.
-    ConstBlockIterator cend() const;
+    ConstHalfSegIterator hEnd() const;
 
-    // Method that returns a constant block iterator to the position before the
-    // first block of a Line2D object. Note that dereferencing this iterator
-    // yields the empty constant block iterator.
-    ConstBlockIterator chead() const;
+    // Method that returns a constant segment iterator to the position before the
+    // first segment of a Line2D object. Note that dereferencing this iterator
+    // yields the empty constant segment iterator.
+    ConstHalfSegIterator hHead() const;
 
-    // Method that returns a constant block iterator to the position after the
-    // last block of a Line2D object. Note that dereferencing this iterator
-    // yields the empty constant block iterator.
-    ConstBlockIterator ctail() const;
+    // Method that returns a constant segment iterator to the position after the
+    // last segment of a Line2D object. Note that dereferencing this iterator
+    // yields the empty constant segment iterator.
+    ConstHalfSegIterator hTail() const;
+	
 
 }; // class Line2DImpl
 

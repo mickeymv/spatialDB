@@ -21,10 +21,9 @@ class PlaneSweepLineStatusObject {
 
 public:
 
-    PlaneSweepLineStatusObject(Seg2D& seg2D) {
-        setSegment2D(seg2D);
-        setInsideAbove(false); //default behaviour
-    }
+    PlaneSweepLineStatusObject();
+
+    PlaneSweepLineStatusObject(Seg2D& seg2D);
 
     bool operator<(PlaneSweepLineStatusObject &operand);
 
@@ -32,38 +31,21 @@ public:
 
     bool operator==(PlaneSweepLineStatusObject &operand);
 
-    SegmentClass getSegmentClass() {
-        return segmentClass;
-    }
+    SegmentClass getSegmentClass();
 
-    void setSegmentClass(int lOrR, int uOrL) {
-        segmentClass.setLowerOrRight(lOrR);
-        segmentClass.setUpperOrLeft(uOrL);
-    }
+    void setSegmentClass(int lOrR, int uOrL);
 
-    Seg2D getSegment2D() {
-        return segment2D;
-    }
+    Seg2D getSegment2D();
 
-    void setSegment2D(Seg2D line) {
-        segment2D = line;
-    }
+    void setSegment2D(Seg2D line);
 
-    bool getInsideAbove() {
-        return insideAbove;
-    }
+    bool getInsideAbove();
 
-    void setInsideAbove(bool ia) {
-        insideAbove = ia;
-    }
+    void setInsideAbove(bool ia);
 
-    void setObject(ParallelObjectTraversal::object object) {
-        objectValue = object;
-    }
+    void setObject(ParallelObjectTraversal::object object);
 
-    ParallelObjectTraversal::object getObject() {
-        return objectValue;
-    }
+    ParallelObjectTraversal::object getObject();
 };
 
 

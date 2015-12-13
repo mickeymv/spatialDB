@@ -85,16 +85,16 @@ void Point2DRegion2D::exploreTopoPred() {
             ParallelObjectTraversal::object object_value = S.getObject();
 
 
-            HalfSeg2D h = S.getHalfSegEvent(ParallelObjectTraversal::second);
-            bool ia = S.getInsideAbove(h.seg);
+            AttrHalfSeg2D h = S.getAttrHalfSegEvent(ParallelObjectTraversal::second);
+            bool ia = S.getInsideAbove(h.hseg.seg);
 
-            if(h.isLeft) {
-                S.addLeft(h.seg);
-                S.setInsideAbove(h.seg,ia);
+            if(h.hseg.isLeft) {
+                S.addLeft(h.hseg.seg);
+                S.setInsideAbove(h.hseg.seg,ia);
             }
             else
             {
-                S.delRight(h.seg);
+                S.delRight(h.hseg.seg);
             }
             if(object_value==ParallelObjectTraversal::both)
             {

@@ -10,7 +10,7 @@
 #include "Topic2/Implementation/Line2D.h"
 #include "Topic1/RobustGeometricPrimitives2D.h"
 #include "Topic2/Implementation/Number.h"
-#include "Region2D.h"
+#include "Topic2/Implementation/Region2D.h"
 
 #include "Object2D.h"
 #include "ParallelObjectTraversal.h"
@@ -51,6 +51,11 @@ public:
 
     ParallelObjectTraversal::status getStatus();
 
+    void setObject(ParallelObjectTraversal::object);
+    void setStatus(ParallelObjectTraversal::status);
+
+    void newSweep();
+
     /*
      * getEvent() functions would return the Poi, HalfSeg or
      * AttrHalfSeg events from either of the two objects based on the
@@ -68,9 +73,9 @@ public:
      * data structure.
      * It should call calculateIntersection() and calculateOverlap() within it.
      */
-    void addLeft(Seg2D &);
+    void addLeft(PlaneSweepLineStatusObject &);
 
-    void delRight(Seg2D &);
+    void delRight(PlaneSweepLineStatusObject &);
 
 	bool getInsideAbove(Seg2D seg);
 	SegmentClass getSegClass(Seg2D seg);
@@ -82,7 +87,7 @@ public:
     SegmentClass getPredSegmentClass(Seg2D);
     bool getPredInsideAbove(Seg2D);
 
-    Seg2D &predOfP(Poi2D &);
+    Seg2D predOfP(Poi2D &);
 
     bool lookAhead(HalfSeg2D &, Line2D &);
 
@@ -97,8 +102,6 @@ public:
 
     bool poiInSeg(Poi2D &);
 
-    void newSweep();
-
 private:
     // only one instance of ParallelObjectTraversal exist!
     ParallelObjectTraversal *pot;
@@ -107,10 +110,7 @@ private:
      * being swept at the current sweep line position is recorded in vertical order
      * in a data structure called sweep line status.
      */
-    AVLTree<PlaneSweepLineStatusObject &> *sweepLineStatus;
-
-    //Should increment the object pointers within either/both of the two objects.
-    void selectFirst();
+    AVLTree<PlaneSweepLineStatusObject> *sweepLineStatus;
 
     /* A vertical sweep line traversing the plane from left to right stops at special
      * event points which are stored in a queue called event point schedule. The event
@@ -120,6 +120,8 @@ private:
      */
     MinHeap dynamicEPSObjF;
     MinHeap dynamicEPSObjG;
+
+    Object2D objF,objG;
 
 
     /*
@@ -137,12 +139,6 @@ private:
      */
     int findLeast();
 
-    /*
-     *  Checks whether a Seg2D has intersections with any of the predecessor and successor already
-     *  in the sweepLineStatus. If it does, it calls the functions
-     *  splitLines().
-     */
-    bool calculateRelation(Seg2D&);
 
 
     /*
@@ -164,13 +160,17 @@ private:
     /*
      * Functions for getting predecessor and getting successor
      */
-    Seg2D& getPredecessor(Seg2D&);
-    Seg2D& getSuccessor(Seg2D&);
+    PlaneSweepLineStatusObject getPredecessor(PlaneSweepLineStatusObject&);
+    PlaneSweepLineStatusObject getSuccessor(PlaneSweepLineStatusObject&);
 
     /*
      * Function for checking if a relation exists between two segments
      */
     bool isRelation(Seg2D&, Seg2D&);
+
+    void updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject &sweepLineStatusObject);
+
+    void updateSegmentClassWhileRemovingSegment(PlaneSweepLineStatusObject &sweepLineStatusObject);
 };
 
 

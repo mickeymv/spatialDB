@@ -1,0 +1,1738 @@
+/******************************************************************************
+ *  File: Region2D.cpp
+ /******************************************************************************
+ *  Purpose:  This file implements interfaces to the class Region2D defined 
+ *  in the Region2D.h file and the several nested iterator classes that enable 
+ *  access to components (that is, faces, cycles, segments) of Region2D objects.
+
+ *  Created on: Oct 8, 2015
+
+ *  Authors: Ahmed Khaled, Revathi Kadari, Namrata Choudhury, Deepa Narain
+
+ * Date: Fall Semester 2015
+*******************************************************************************/
+#include <sstream>
+#include <cstring>
+#include "Region2D.h"
+using namespace std;
+
+  
+  struct Region2D::ConstFaceIterator::ConstFaceIteratorImplementation{
+      int iteratorIndex = -1;
+      Region2D::Region2DImplementation* current = NULL;     //pointer to the full structure
+  };
+  
+  struct Region2D::ConstCycleIterator::ConstCycleIteratorImplementation{
+      int iteratorIndex = -1;
+      Region2D::Region2DImplementation* current = NULL;     //pointer to the full structure
+  };
+  /*
+  struct Region2D::ConstSegmentIterator::ConstSegmentIteratorImplementation{
+      int iteratorIndex = -1;
+      Region2D::Region2DImplementation* current = NULL;     //pointer to the full structure
+  }; */
+
+  struct Region2D::Region2DImplementation
+  {
+      std::vector<AttrHalfSeg2D> segments;         //ordered set of all attributed half segments regarding the full Region2D structure   
+      std::map<int, std::vector<AttrHalfSeg2D *>> cycles;
+      std::map<int, std::map<int, std::vector<AttrHalfSeg2D *>>> faces;
+      Region2D::ConstFaceIterator::ConstFaceIteratorImplementation firstFace;
+      Region2D::ConstFaceIterator::ConstFaceIteratorImplementation lastFace;
+  };
+  
+  //++++++++++++++++++++++++++++
+  // Constructors and destructor
+  //++++++++++++++++++++++++++++
+
+  //Empty constructor. Represents the empty region object.
+  Region2D::Region2D()
+  {
+    handle = new Region2DImplementation;
+    handle->segments.clear();
+    handle->faces.clear();
+  }
+
+  //Constructor for complex Region2D object. It takes
+  //inputs as a vector of seg2D objects and creates a
+  //Region2D object after checking if a valid Region2D
+  //object can be created from the input.
+  Region2D::Region2D(std::vector<Seg2D> segmentList)
+  {
+    handle = new Region2DImplementation;
+    handle->segments.clear();
+    handle->faces.clear();
+
+    //splitting the input of segments into left and right attributed half segments
+    std::vector<AttrHalfSeg2D> attrhalfsegments;
+    AttrHalfSeg2D* ahl;
+    AttrHalfSeg2D* ahr;
+    for(int i=0;i<segmentList.size();i++)
+    {
+      ahl = new AttrHalfSeg2D(false, true, segmentList.at(i));
+      ahr = new AttrHalfSeg2D(false, false, segmentList.at(i));
+      //ahl = new HalfSeg2D(segmentList.at(i), true);
+      //ahr = new HalfSeg2D(segmentList.at(i), false);
+      attrhalfsegments.push_back(*ahl);
+      attrhalfsegments.push_back(*ahr);
+      delete ahl;
+      delete ahr;
+    }
+	 
+    //ordering the attributed half segments
+    AttrHalfSeg2D swap;
+    for (int c = 0 ; c < (attrhalfsegments.size()-1); c++)
+    {
+      for (int d = 0 ; d < (attrhalfsegments.size()-c-1); d++)
+      {
+        if (attrhalfsegments.at(d+1) < attrhalfsegments.at(d))
+        {
+	        swap = attrhalfsegments.at(d);
+	        attrhalfsegments.at(d) = attrhalfsegments.at(d+1);
+	        attrhalfsegments.at(d+1) = swap;
+	      }
+      }
+    }
+
+	//std::cout<<"Ordered segs:\n";
+	 for (int i = 0 ; i < attrhalfsegments.size(); i++)
+    {
+	    if(attrhalfsegments.at(i).hseg.isLeft)
+      {
+	      //std::cout<<attrhalfsegments.at(i)<<std::endl;
+	    }
+    }
+    
+    AttrHalfSeg2D ahe;
+    handle->segments.push_back(ahe);
+    for (int i = 0 ; i < attrhalfsegments.size(); i++)
+    {
+	    if(attrhalfsegments.at(i).hseg.isLeft)
+      {
+	      handle->segments.push_back(attrhalfsegments.at(i));
+	    }
+    }
+    handle->segments.push_back(ahe);
+ 
+    
+    std::vector<AttrHalfSeg2D *> ce; //empty cycle 
+    
+    
+    int size = handle->segments.size();
+    std::vector<AttrHalfSeg2D *> currentVector;
+    std::vector<AttrHalfSeg2D *> tempVector;
+    int mbc = 0;
+    int index = 0;
+    int flags[size];
+    int notCycle = 0;
+
+    handle->cycles[mbc++] = ce;    //empty cycle created for chead
+    
+    for (int i = 1; i<size-1; i++)
+    {
+	    flags[i] = 0;
+    }	
+    for (int k = 1; k<size-1; k++)
+    {
+      //std::cout<<k;
+      if (flags[k] == 0)  //unflaged segment.
+      {
+		//std::cout<<"Im in flags check condition with k = "<<k<<std::endl;
+	      index = 0;
+	      currentVector.clear();
+	      currentVector.push_back(&handle->segments.at(k));
+		//std::cout<<handle->segments.at(k)<<" is being pushed into CURRENT VECTOR in line 114\n";
+	      flags[k]=1;
+		//std::cout<<"flags["<<k<<"] is being set to 1\n";
+	      for (int i = 1; i<size-1; i++)
+        {
+		//std::cout<<"i has been incremented to "<<i<<std::endl;
+	        if (flags[i] == 0)   //unflaged segment.
+          {
+		//std::cout<<"index = "<<index <<" and currentVector.size()= "<<currentVector.size()<<std::endl;
+	          for ( int j = 0; j<currentVector.size(); j++)
+            {       
+	            if (Meet(currentVector.at(j)->hseg.seg, handle->segments.at(i).hseg.seg))
+              {
+			//std::cout<<handle->segments.at(i).seg<<" is being pushed into temp vector\n";
+	              tempVector.push_back(&handle->segments.at(i));
+			//std::cout<<handle->segments.at(i)<<" is being pushed into TEMP VECTOR in line 129\n";
+		            flags[i] = 1;
+			//std::cout<<"flags["<<i<<"] is being set to 1\n";
+
+	            }
+			else
+			{
+				//std::cout<<currentVector.at(j)->seg <<" and "<<handle->segments.at(i).seg<< " do not meet\n";
+			}
+	          }
+	          index = currentVector.size();
+	          for (int c = 0; c <tempVector.size(); c++)
+            {
+			//std::cout<<*tempVector[c]<<" is being pushed into CURRENT VECTOR in line 141\n";
+	            currentVector.push_back(tempVector[c]);
+	          }
+  	        tempVector.clear();
+          }
+	else
+	{
+		//std::cout<<"flags["<<i<<"] is: "<<flags[i]<<std::endl;
+	}
+        }//inner for loop
+
+	if ((currentVector.at(currentVector.size()-1)->hseg.seg) == (currentVector.at(currentVector.size()-2)->hseg.seg))
+	{
+		//std::cout<<"last 2 segs are same, so last is being removed!\n";
+		currentVector.pop_back();
+	}
+        handle->cycles[mbc++] = currentVector;
+	
+      }
+    }//outer for loop 
+
+    handle->cycles[mbc++] = ce;    //empty cycle created for ctail
+
+      /*for (int v=0; v<handle->cycles.size(); v++){
+      for(int w = 0; w<handle->cycles[v].size(); w++){
+          std::cout<<"mb["<<v<<"]["<<w<<"]: "<<*handle->cycles[v][w]<<std::endl;
+      }
+    }*/
+    
+	int c;
+	for (int x = 1; x<handle->cycles.size()-1; x++)
+	{
+		for (int i = 0; i<handle->cycles[x].size(); i++)
+         	{
+           		c = 0;  
+           		for (int j = 0; j<handle->cycles[x].size(); j++)
+           		{
+             			if ( i!= j)
+             			{
+                			if (Meet (handle->cycles[x][i]->hseg.seg, handle->cycles[x][j]->hseg.seg))
+					{
+						c++;
+               				}
+             			}
+           		}
+         
+         		if ( c == 2)
+         		{
+           			continue;        
+         		}
+         		else
+		 	{
+				handle->cycles.clear();  
+            			handle->faces.clear();  
+				 std::cout<<"REGION NOT VALID!!!!!\n";
+				 break;
+			 }
+	 	  } 
+	} 
+	
+
+     
+    /*
+    std::cout<<" I am at line 163 "<<std::endl;
+    std::cout<<"Printing no of cycles 1: "<<handle->cycles.size()<<std::endl; */
+
+    //to get the min bounding rectangle coordinates for each cycle
+    Number mbrCoordinates[ handle->cycles.size()][4];
+    for (int i = 1; i<handle->cycles.size()-1; i++)
+    {
+         Number minx = Number(std::to_string(999));
+	 Number(miny) = Number(std::to_string(999));
+	 Number(maxx) = Number(std::to_string(-999));
+	 Number(maxy) = Number(std::to_string(-999));
+      for (int j = 0; j<handle->cycles.at(i).size(); j++)
+      {
+	//std::cout<<"handle->cycles["<<i<<"]["<<j<<"]->hseg.seg.p1.x = "<<handle->cycles[i][j]->hseg.seg.p1.x<<std::endl;
+	//std::cout<<Number(std::to_string(minx))<<std::endl;
+	//std::cout<<handle->cycles[i][j]->hseg.seg.p1.x < Number(std::to_string(minx))<<std::endl;
+	//std::cout<<"handle->cycles["<<i<<"]["<<j<<"]->hseg.seg.p1.y = "<<handle->cycles[i][j]->hseg.seg.p1.y<<std::endl;
+	//std::cout<<"handle->cycles["<<i<<"]["<<j<<"]->hseg.seg.p2.x = "<<handle->cycles[i][j]->hseg.seg.p2.x<<std::endl;
+	//std::cout<<"handle->cycles["<<i<<"]["<<j<<"]->hseg.seg.p2.y = "<<handle->cycles[i][j]->hseg.seg.p2.y<<std::endl;
+
+        if (handle->cycles[i][j]->hseg.seg.p1.x < minx)
+	{
+		minx = handle->cycles[i][j]->hseg.seg.p1.x;
+	}
+	if (handle->cycles[i][j]->hseg.seg.p1.x > maxx)
+	{
+    		maxx = handle->cycles[i][j]->hseg.seg.p1.x;
+	}
+	if (handle->cycles[i][j]->hseg.seg.p1.y < miny)
+	{
+		miny = handle->cycles[i][j]->hseg.seg.p1.y;
+	}
+	if (handle->cycles[i][j]->hseg.seg.p1.y > maxy)
+	{
+    		maxy = handle->cycles[i][j]->hseg.seg.p1.y;
+	}
+	if (handle->cycles[i][j]->hseg.seg.p2.x < minx)
+	{
+		minx = handle->cycles[i][j]->hseg.seg.p2.x;
+	}
+	if (handle->cycles[i][j]->hseg.seg.p2.x > maxx)
+	{
+    		maxx = handle->cycles[i][j]->hseg.seg.p2.x;
+	}
+	if (handle->cycles[i][j]->hseg.seg.p2.y < miny)
+	{
+		miny = handle->cycles[i][j]->hseg.seg.p2.y;
+	}
+	if (handle->cycles[i][j]->hseg.seg.p2.y > maxy)
+	{
+    		maxy = handle->cycles[i][j]->hseg.seg.p2.y;
+	}
+      }
+      mbrCoordinates[i][0] = minx;
+      mbrCoordinates[i][1] = miny;
+      mbrCoordinates[i][2] = maxx;
+      mbrCoordinates[i][3] = maxy;
+
+	//std::cout<<"mbrCoordinates["<<i<<"][0] = "<<mbrCoordinates[i][0]<<std::endl;
+	//std::cout<<"mbrCoordinates["<<i<<"][1] = "<<mbrCoordinates[i][1]<<std::endl;
+	//std::cout<<"mbrCoordinates["<<i<<"][2] = "<<mbrCoordinates[i][2]<<std::endl;
+	//std::cout<<"mbrCoordinates["<<i<<"][3] = "<<mbrCoordinates[i][3]<<std::endl;
+
+    }
+    
+    std::map<int, std::vector<AttrHalfSeg2D *>> fe;
+    //make the faces
+    size = handle->cycles.size();
+    int checked[size];
+	int flagy = 0;
+    //std::cout<<"Number of cycles: "<<size<<std::endl;
+    int faceCount = 0;
+    int cycleCount = 0;
+
+    handle->faces[faceCount++] = fe;
+    for (int i = 1; i<size-1; i++)
+    {
+      checked[i] = 0;
+    }
+    for (int i = 1; i<size-1; i++)
+    {
+      if (checked[i] == 0)
+      {
+        for (int j = 1; j<size-1; j++)
+        {
+          if (i!=j)
+	      {
+            //if (Inside(handle->cycles[i], handle->cycles[j]))
+            if ((mbrCoordinates[j][0] > mbrCoordinates[i][0]) && (mbrCoordinates[j][2] < mbrCoordinates[i][2]) && 
+                (mbrCoordinates[j][1] > mbrCoordinates[i][1]) && (mbrCoordinates[j][3] < mbrCoordinates[i][3]))
+            {
+			//	std::cout<<j<<" is inside "<<i<<std::endl;
+              if (checked[i] == 0)
+              {
+                checked[i] = 1;
+                handle->faces[faceCount][cycleCount++] = handle->cycles[i];
+				flagy = 1;
+              }
+              checked[j] = 1;
+              handle->faces[faceCount][cycleCount++] = handle->cycles[j];
+            }
+          }
+        } // inner for loop
+		if (flagy ==1)
+		{
+			faceCount++;
+			cycleCount = 0;
+			flagy = 0;
+		}
+      }   
+    } // outer for loop  
+
+    for (int i = 1; i<size-1; i++)
+	{
+		 if (checked[i] == 0)
+		 {
+			checked[i] = 1;
+            handle->faces[faceCount++][0] = handle->cycles[i]; 
+		 }
+	}
+    
+   handle->faces[faceCount++] = fe;
+
+    /*
+    int numberOfFaces = handle->faces.size();
+
+	std::cout<<"numberOfFaces is: "<<numberOfFaces<<std::endl;
+	
+    for(int i = 0; i < numberOfFaces; i++)
+    { 
+      std::cout<<" Printing number of cycles in face "<<i<<":"<<std::endl;
+	  std::cout<<handle->faces[i].size()<<std::endl;
+	  for (int j = 0; j<handle->faces[i].size(); j++)
+	  {
+		  for (int k = 0; k<handle->faces[i][j].size(); k++)
+		  {
+			  std::cout<<*handle->faces[i][j][k]<<std::endl;
+		  }
+	  }
+    } 
+		
+   */
+
+       cout << " End of constructor ............. \n";
+    
+    //To set AttrHalfSeg flags.
+    //loop over face
+    for( int i=1; i < handle->faces.size()-1 ; i++)
+    {
+     cout << " Inside outer for " ;
+     std::vector<AttrHalfSeg2D *> OuterCycleSegs = handle->faces[i][0];    //outer cycle of every face 
+     for (int j =0 ; j < OuterCycleSegs.size() ; j++)
+      {  cout << " Inside first segments for " ;
+         Number midx = (handle->faces[i][0][j]->hseg.seg.p1.x + handle->faces[i][0][j]->hseg.seg.p2.x)/Number(std::to_string(2)) ;
+         Number midy = (handle->faces[i][0][j]->hseg.seg.p1.y + handle->faces[i][0][j]->hseg.seg.p2.y)/Number(std::to_string(2)) ;  
+         Poi2D P1(midx, Number(std::to_string(99999)));
+         Poi2D P2(midx, Number(std::to_string(-99999)));
+         Seg2D refLine(P1,P2);
+            
+         //std::vector<Seg2D > midIntersects;
+         std::vector<Number> midPoints;
+         int countless = 0;
+         int countmore = 0;
+         for(int k = 0; k < OuterCycleSegs.size() ; k++)
+         { cout << " Inside second segments for ";
+           if(j != k )
+           {
+             Seg2D S = handle->faces[i][0][k]->hseg.seg;
+             
+             if(Intersects(refLine, S))
+             {             
+              //midIntersects.push_back(S);
+                midPoints.push_back((S.p1.y + S.p2.y)/Number(std::to_string(2)));
+                cout << "mid points collecting .....";
+             } 
+           }
+         }
+         //make groups to filter 
+         cout << " Make groups .....\n";
+         for ( int l = 0; l < midPoints.size() ; l++ )
+         { 
+           cout << " Before if of filtering groups and counting .. \n";
+           if( midy < midPoints[l]  )
+             countmore++;
+           else if ( midy > midPoints[l] )
+             countless++;
+         }
+         
+         cout << " Count of more" << countmore << endl;
+         cout << " Count less " << countless << endl ;  
+         if ( countmore % 2 != 0)
+           { 
+             cout << "Region is above mid...set flag to true ";
+             handle->faces[i][0][j]->insideAbove = true;
+           }
+         else if ( countless % 2 != 0 )
+           { 
+             cout << "Region is below mid...set flag to false ";
+             handle->faces[i][0][j]->insideAbove = false;
+           }
+      }   
+  
+    }
+  }
+
+    // Constructor for complex region structure. It takes as input a string name that can represent either :
+    // 1) file name which contains the vector of segments from which to construct the region object 
+    // 2) string the textually represents the input vector of segments.
+    //
+    // The grammar for representing a segment vector in both cases 1 and 2 are structured as follows:
+    // Expression := '(' Segment+ ')'
+   // Segment:= '(' Point ',' Point ')'
+    // Point:= '(' Number ',' Number ')'
+    // Number := Sign ((DigitWithoutZero Digit* '.' Digit+) | ('0' '.' Digit+ ))
+    // Sign := ['+' | '-']
+    // DigitWithoutZero := '1' | '2' |'3' | '4' | '5' | '6' | '7' | '8' | '9'
+    // Digit:= '0' | DigitWithoutZero
+    //
+    // example for segment list of seg1 and seg2 here is: (((1,2),(3,4)),((5,6),(7,8)))
+
+  Region2D::Region2D(std::string textualRegionList)
+   {  
+     	handle = new Region2DImplementation;
+	handle->segments.clear();
+	handle->cycles.clear();
+        handle->faces.clear();
+	textualRegionList.erase(std::remove(textualRegionList.begin(), textualRegionList.end(), ')'), textualRegionList.end());
+	textualRegionList.erase(std::remove(textualRegionList.begin(), textualRegionList.end(), '('), textualRegionList.end());
+	std::istringstream ss(textualRegionList);
+	    
+        vector<Seg2D> segmentList;
+	std::string token;
+	Number N1,N2,N3;
+	int count=0;
+	while(std::getline(ss, token, ','))
+        {
+	     if(count==0)
+               {
+	         count=1;
+	            N1= Number(token.c_str());
+	       }
+              else if(count==1)
+               {
+	         count=2;
+	         N2= Number(token.c_str());
+	       }
+              else if(count==2)
+              {
+	         count=3;
+	         N3= Number(token.c_str());
+	      }
+              else if(count==3)
+              {
+	        count=0; 
+	        segmentList.push_back(Seg2D(Poi2D(N1,N2),Poi2D(N3,Number(token.c_str()))));
+	      }
+	 }
+	           
+	 if(segmentList.empty())
+         {
+	   return;
+	 }
+         
+    handle = new Region2DImplementation;
+    handle->segments.clear();
+    handle->faces.clear();
+
+    //splitting the input of segments into left and right attributed half segments
+    std::vector<AttrHalfSeg2D> attrhalfsegments;
+    AttrHalfSeg2D* ahl;
+    AttrHalfSeg2D* ahr;
+    for(int i=0;i<segmentList.size();i++)
+    {
+      ahl = new AttrHalfSeg2D(false, true, segmentList.at(i));
+      ahr = new AttrHalfSeg2D(false, false, segmentList.at(i));
+      //ahl = new HalfSeg2D(segmentList.at(i), true);
+      //ahr = new HalfSeg2D(segmentList.at(i), false);
+      attrhalfsegments.push_back(*ahl);
+      attrhalfsegments.push_back(*ahr);
+      delete ahl;
+      delete ahr;
+    }
+	 
+    //ordering the attributed half segments
+    AttrHalfSeg2D swap;
+    for (int c = 0 ; c < (attrhalfsegments.size()-1); c++)
+    {
+      for (int d = 0 ; d < (attrhalfsegments.size()-c-1); d++)
+      {
+        if (attrhalfsegments.at(d+1) < attrhalfsegments.at(d))
+        {
+	        swap = attrhalfsegments.at(d);
+	        attrhalfsegments.at(d) = attrhalfsegments.at(d+1);
+	        attrhalfsegments.at(d+1) = swap;
+	      }
+      }
+    }
+
+	//std::cout<<"Ordered segs:\n";
+	 for (int i = 0 ; i < attrhalfsegments.size(); i++)
+    {
+	    if(attrhalfsegments.at(i).hseg.isLeft)
+      {
+	      //std::cout<<attrhalfsegments.at(i)<<std::endl;
+	    }
+    }
+    
+    AttrHalfSeg2D ahe;
+    handle->segments.push_back(ahe);
+    for (int i = 0 ; i < attrhalfsegments.size(); i++)
+    {
+	    if(attrhalfsegments.at(i).hseg.isLeft)
+      {
+	      handle->segments.push_back(attrhalfsegments.at(i));
+	    }
+    }
+    handle->segments.push_back(ahe);
+ 
+    
+    std::vector<AttrHalfSeg2D *> ce; //empty cycle 
+    
+    
+    int size = handle->segments.size();
+    std::vector<AttrHalfSeg2D *> currentVector;
+    std::vector<AttrHalfSeg2D *> tempVector;
+    int mbc = 0;
+    int index = 0;
+    int flags[size];
+    int notCycle = 0;
+
+    handle->cycles[mbc++] = ce;    //empty cycle created for chead
+    
+    for (int i = 1; i<size-1; i++)
+    {
+	    flags[i] = 0;
+    }	
+    for (int k = 1; k<size-1; k++)
+    {
+      //std::cout<<k;
+      if (flags[k] == 0)  //unflaged segment.
+      {
+		//std::cout<<"Im in flags check condition with k = "<<k<<std::endl;
+	      index = 0;
+	      currentVector.clear();
+	      currentVector.push_back(&handle->segments.at(k));
+		//std::cout<<handle->segments.at(k)<<" is being pushed into CURRENT VECTOR in line 114\n";
+	      flags[k]=1;
+		//std::cout<<"flags["<<k<<"] is being set to 1\n";
+	      for (int i = 1; i<size-1; i++)
+        {
+		//std::cout<<"i has been incremented to "<<i<<std::endl;
+	        if (flags[i] == 0)   //unflaged segment.
+          {
+		//std::cout<<"index = "<<index <<" and currentVector.size()= "<<currentVector.size()<<std::endl;
+	          for ( int j = 0; j<currentVector.size(); j++)
+            {       
+	            if (Meet(currentVector.at(j)->hseg.seg, handle->segments.at(i).hseg.seg))
+              {
+			//std::cout<<handle->segments.at(i).seg<<" is being pushed into temp vector\n";
+	              tempVector.push_back(&handle->segments.at(i));
+			//std::cout<<handle->segments.at(i)<<" is being pushed into TEMP VECTOR in line 129\n";
+		            flags[i] = 1;
+			//std::cout<<"flags["<<i<<"] is being set to 1\n";
+
+	            }
+			else
+			{
+				//std::cout<<currentVector.at(j)->seg <<" and "<<handle->segments.at(i).seg<< " do not meet\n";
+			}
+	          }
+	          index = currentVector.size();
+	          for (int c = 0; c <tempVector.size(); c++)
+            {
+			//std::cout<<*tempVector[c]<<" is being pushed into CURRENT VECTOR in line 141\n";
+	            currentVector.push_back(tempVector[c]);
+	          }
+  	        tempVector.clear();
+          }
+	else
+	{
+		//std::cout<<"flags["<<i<<"] is: "<<flags[i]<<std::endl;
+	}
+        }//inner for loop
+
+	if ((currentVector.at(currentVector.size()-1)->hseg.seg) == (currentVector.at(currentVector.size()-2)->hseg.seg))
+	{
+		//std::cout<<"last 2 segs are same, so last is being removed!\n";
+		currentVector.pop_back();
+	}
+        handle->cycles[mbc++] = currentVector;
+	
+      }
+    }//outer for loop 
+
+    handle->cycles[mbc++] = ce;    //empty cycle created for ctail
+
+      /*for (int v=0; v<handle->cycles.size(); v++){
+      for(int w = 0; w<handle->cycles[v].size(); w++){
+          std::cout<<"mb["<<v<<"]["<<w<<"]: "<<*handle->cycles[v][w]<<std::endl;
+      }
+    }*/
+    
+	int c;
+	for (int x = 1; x<handle->cycles.size()-1; x++)
+	{
+		for (int i = 0; i<handle->cycles[x].size(); i++)
+         	{
+           		c = 0;  
+           		for (int j = 0; j<handle->cycles[x].size(); j++)
+           		{
+             			if ( i!= j)
+             			{
+                			if (Meet (handle->cycles[x][i]->hseg.seg, handle->cycles[x][j]->hseg.seg))
+					{
+						c++;
+               				}
+             			}
+           		}
+         
+         		if ( c == 2)
+         		{
+           			continue;        
+         		}
+         		else
+		 	{
+				handle->cycles.clear();  
+            			handle->faces.clear();  
+				 std::cout<<"REGION NOT VALID!!!!!\n";
+				 break;
+			 }
+	 	  } 
+	} 
+	
+
+     
+    /*
+    std::cout<<" I am at line 163 "<<std::endl;
+    std::cout<<"Printing no of cycles 1: "<<handle->cycles.size()<<std::endl; */
+
+    //to get the min bounding rectangle coordinates for each cycle
+    Number mbrCoordinates[ handle->cycles.size()][4];
+    for (int i = 1; i<handle->cycles.size()-1; i++)
+    {
+         Number minx = Number(std::to_string(999));
+	 Number(miny) = Number(std::to_string(999));
+	 Number(maxx) = Number(std::to_string(-999));
+	 Number(maxy) = Number(std::to_string(-999));
+      for (int j = 0; j<handle->cycles.at(i).size(); j++)
+      {
+	//std::cout<<"handle->cycles["<<i<<"]["<<j<<"]->hseg.seg.p1.x = "<<handle->cycles[i][j]->hseg.seg.p1.x<<std::endl;
+	//std::cout<<Number(std::to_string(minx))<<std::endl;
+	//std::cout<<handle->cycles[i][j]->hseg.seg.p1.x < Number(std::to_string(minx))<<std::endl;
+	//std::cout<<"handle->cycles["<<i<<"]["<<j<<"]->hseg.seg.p1.y = "<<handle->cycles[i][j]->hseg.seg.p1.y<<std::endl;
+	//std::cout<<"handle->cycles["<<i<<"]["<<j<<"]->hseg.seg.p2.x = "<<handle->cycles[i][j]->hseg.seg.p2.x<<std::endl;
+	//std::cout<<"handle->cycles["<<i<<"]["<<j<<"]->hseg.seg.p2.y = "<<handle->cycles[i][j]->hseg.seg.p2.y<<std::endl;
+
+        if (handle->cycles[i][j]->hseg.seg.p1.x < minx)
+	{
+		minx = handle->cycles[i][j]->hseg.seg.p1.x;
+	}
+	if (handle->cycles[i][j]->hseg.seg.p1.x > maxx)
+	{
+    		maxx = handle->cycles[i][j]->hseg.seg.p1.x;
+	}
+	if (handle->cycles[i][j]->hseg.seg.p1.y < miny)
+	{
+		miny = handle->cycles[i][j]->hseg.seg.p1.y;
+	}
+	if (handle->cycles[i][j]->hseg.seg.p1.y > maxy)
+	{
+    		maxy = handle->cycles[i][j]->hseg.seg.p1.y;
+	}
+	if (handle->cycles[i][j]->hseg.seg.p2.x < minx)
+	{
+		minx = handle->cycles[i][j]->hseg.seg.p2.x;
+	}
+	if (handle->cycles[i][j]->hseg.seg.p2.x > maxx)
+	{
+    		maxx = handle->cycles[i][j]->hseg.seg.p2.x;
+	}
+	if (handle->cycles[i][j]->hseg.seg.p2.y < miny)
+	{
+		miny = handle->cycles[i][j]->hseg.seg.p2.y;
+	}
+	if (handle->cycles[i][j]->hseg.seg.p2.y > maxy)
+	{
+    		maxy = handle->cycles[i][j]->hseg.seg.p2.y;
+	}
+      }
+      mbrCoordinates[i][0] = minx;
+      mbrCoordinates[i][1] = miny;
+      mbrCoordinates[i][2] = maxx;
+      mbrCoordinates[i][3] = maxy;
+
+	//std::cout<<"mbrCoordinates["<<i<<"][0] = "<<mbrCoordinates[i][0]<<std::endl;
+	//std::cout<<"mbrCoordinates["<<i<<"][1] = "<<mbrCoordinates[i][1]<<std::endl;
+	//std::cout<<"mbrCoordinates["<<i<<"][2] = "<<mbrCoordinates[i][2]<<std::endl;
+	//std::cout<<"mbrCoordinates["<<i<<"][3] = "<<mbrCoordinates[i][3]<<std::endl;
+
+    }
+    
+    std::map<int, std::vector<AttrHalfSeg2D *>> fe;
+    //make the faces
+    size = handle->cycles.size();
+    int checked[size];
+	int flagy = 0;
+    //std::cout<<"Number of cycles: "<<size<<std::endl;
+    int faceCount = 0;
+    int cycleCount = 0;
+
+    handle->faces[faceCount++] = fe;
+    for (int i = 1; i<size-1; i++)
+    {
+      checked[i] = 0;
+    }
+    for (int i = 1; i<size-1; i++)
+    {
+      if (checked[i] == 0)
+      {
+        for (int j = 1; j<size-1; j++)
+        {
+          if (i!=j)
+	      {
+            //if (Inside(handle->cycles[i], handle->cycles[j]))
+            if ((mbrCoordinates[j][0] > mbrCoordinates[i][0]) && (mbrCoordinates[j][2] < mbrCoordinates[i][2]) && 
+                (mbrCoordinates[j][1] > mbrCoordinates[i][1]) && (mbrCoordinates[j][3] < mbrCoordinates[i][3]))
+            {
+			//	std::cout<<j<<" is inside "<<i<<std::endl;
+              if (checked[i] == 0)
+              {
+                checked[i] = 1;
+                handle->faces[faceCount][cycleCount++] = handle->cycles[i];
+				flagy = 1;
+              }
+              checked[j] = 1;
+              handle->faces[faceCount][cycleCount++] = handle->cycles[j];
+            }
+          }
+        } // inner for loop
+		if (flagy ==1)
+		{
+			faceCount++;
+			cycleCount = 0;
+			flagy = 0;
+		}
+      }   
+    } // outer for loop  
+
+    for (int i = 1; i<size-1; i++)
+	{
+		 if (checked[i] == 0)
+		 {
+			checked[i] = 1;
+            handle->faces[faceCount++][0] = handle->cycles[i]; 
+		 }
+	}
+    
+   handle->faces[faceCount++] = fe;  
+   
+   }
+
+  //copy constructor that constructs a new Region2D object with the same 
+  //properties as the inputted Region2D object.
+  Region2D::Region2D(Region2D& source) 
+   { 
+     
+    handle = new Region2DImplementation;
+    handle->segments.clear();
+    handle->faces.clear();
+    //handle->firstFace.iteratorIndex = source.handle->firstFace.iteratorIndex;
+    //handle->lastFace.iteratorIndex = source.handle->lastFace.iteratorIndex;
+    //handle->firstFace.current = source.handle;
+    //handle->lastFace.current = source.handle;
+    std::copy(source.handle->segments.begin(), source.handle->segments.end(),std::back_inserter(handle->segments));
+    std::copy(source.handle->cycles.begin(), source.handle->cycles.end(), std::inserter(handle->cycles,handle->cycles.end()) );
+    std::copy(source.handle->faces.begin(), source.handle->faces.end(), std::inserter(handle->faces,handle->faces.end()) );
+
+   }
+
+   // Move constructor that moves a given Region2D object "source" to a
+   // Region2D object. The Region2D object "source" gets the empty Region2D
+   // object as its value.
+  Region2D::Region2D(Region2D&& source)
+  {
+    
+    handle = new Region2DImplementation;
+    handle->segments.clear();
+    handle->faces.clear();
+    handle->firstFace.iteratorIndex = source.handle->firstFace.iteratorIndex;
+    handle->lastFace.iteratorIndex = source.handle->lastFace.iteratorIndex;
+    handle->firstFace.current = source.handle;
+    handle->lastFace.current = source.handle;
+    std::move(source.handle->segments.begin(), source.handle->segments.end(),std::back_inserter(handle->segments));
+    std::move(source.handle->cycles.begin(), source.handle->cycles.end(), std::inserter(handle->cycles,handle->cycles.end()) );
+    std::move(source.handle->faces.begin(), source.handle->faces.end(), std::inserter(handle->faces,handle->faces.end()) );
+
+
+  }
+
+  //Destructor
+  Region2D::~Region2D()
+  {
+    delete handle;
+  }
+
+  //+++++++++++++++++++++
+  // Assignment operators
+  //+++++++++++++++++++++
+
+  //copy assignment operator that copies the inputted object
+  //to the Region2D object
+  Region2D& Region2D::operator = (Region2D& source)
+  {
+    handle = new Region2DImplementation;
+    handle->segments.clear();
+    handle->faces.clear();
+    handle->firstFace.iteratorIndex = source.handle->firstFace.iteratorIndex;
+    handle->lastFace.iteratorIndex = source.handle->lastFace.iteratorIndex;
+    handle->firstFace.current = source.handle;
+    handle->lastFace.current = source.handle;
+    std::copy(source.handle->segments.begin(), source.handle->segments.end(),std::back_inserter(handle->segments));
+    std::copy(source.handle->cycles.begin(), source.handle->cycles.end(), std::inserter(handle->cycles,handle->cycles.end()) );
+    std::copy(source.handle->faces.begin(), source.handle->faces.end(), std::inserter(handle->faces,handle->faces.end()) );
+ 
+  }
+
+  // Move assignment operator that moves the inputted Region2D object to the
+  // Region2D object. The inputted object gets the empty Region2D
+  // object as its value.
+  Region2D& Region2D::operator = (Region2D&& source)
+  {
+    handle = new Region2DImplementation;
+    handle->segments.clear();
+    handle->faces.clear();
+    handle->firstFace.iteratorIndex = source.handle->firstFace.iteratorIndex;
+    handle->lastFace.iteratorIndex = source.handle->lastFace.iteratorIndex;
+    handle->firstFace.current = source.handle;
+    handle->lastFace.current = source.handle;
+    std::move(source.handle->segments.begin(), source.handle->segments.end(),std::back_inserter(handle->segments));
+    std::move(source.handle->cycles.begin(), source.handle->cycles.end(), std::inserter(handle->cycles,handle->cycles.end()) );
+    std::move(source.handle->faces.begin(), source.handle->faces.end(), std::inserter(handle->faces,handle->faces.end()) );
+
+  }
+
+  //+++++++++++++++++++++
+  // Comparison operators
+  //+++++++++++++++++++++
+
+  //equal operator that checks if the Region2D object and inputted Region2D
+  //object are the same spatial region.
+  bool Region2D::operator == (Region2D& operand)
+  {
+               if(handle->faces.size() != operand.handle->faces.size())  
+		  return false;
+		for (unsigned i=0; i < handle->faces.size(); i++){
+		  if(handle->faces.at(i) != operand.handle->faces.at(i))
+			return false;
+		}
+		return true;
+  }
+
+  //unequal operator that checks if the Region2D object and the inputted
+  //Region2D object are different spatial regions. It is the logical opposite
+  //of the == operator.
+  bool Region2D::operator != (Region2D& operand)
+  {
+    		if(handle->faces.size() != operand.handle->faces.size())  
+		  return true;
+		for (unsigned i=0; i < handle->faces.size(); i++){
+		  if(handle->faces.at(i) != operand.handle->faces.at(i))
+		     return true;
+		}
+		return false;
+  }
+
+  //less than operator that compares 2 Region2D objects and checks which one is lesser 
+  //by comparing their minimum bounding rectangles in the following way:
+  //if min(x1) < min(x2) the object is less than "source" object
+  //else if max (x1) < max (x2) the object is less than "source" object
+  //else if min(y1) < min(y2) the object is less than "source" object
+  //else if max(y1) < max(y2) the object is less than "source" object
+  bool Region2D::operator < (Region2D& operand)
+  {
+   if(isEmptyRegion2D() || operand.isEmptyRegion2D()) 
+		return false;
+	  int x = (handle->segments.size() < operand.handle->segments.size()) ? handle->segments.size() : operand.handle->segments.size();
+      for (unsigned i=1; i < x; i++) {
+	    if (handle->segments.at(i) < operand.handle->segments.at(i))
+	      return true;
+	    else if (handle->segments.at(i) > operand.handle->segments.at(i))
+	      return false;
+	    else
+	      continue;
+	  }
+	  if (operand.handle->segments.size() > handle->segments.size())   
+	    return true;
+	  return false;
+  }
+    
+  //less than or equal operator that compares 2 Region2D objects and checks which one is lesser 
+  //or equal by comparing their minimum bounding rectangles in the following way:
+  //if min(x1) <= min(x2) the object is less than or equal to "source" object
+  //else if max (x1) <= max (x2) the object is less than or equal to "source" object
+  //min(y1) <= min(y2) the object is less than or equal to "source" object
+  //max(y1) <= max(y2) the object is less than or equal to "source" object
+  bool Region2D::operator <= (Region2D& operand)
+  {
+    if(isEmptyRegion2D() || operand.isEmptyRegion2D()) 
+		return false;
+	  int x = (handle->segments.size() < operand.handle->segments.size()) ? handle->segments.size() : operand.handle->segments.size();
+      for (unsigned i=1; i < x; i++) {
+	    if (handle->segments.at(i) <= operand.handle->segments.at(i))
+	      return true;
+	    else if (handle->segments.at(i) > operand.handle->segments.at(i))
+	      return false;
+	    else
+	      continue;
+	  }
+	  if (operand.handle->segments.size() > handle->segments.size())   
+	    return true;
+	  return false;
+  
+  }
+    
+  //greater than operator that compares 2 Region2D objects and checks which one is greater 
+  //by comparing their minimum bounding rectangles in the following way:
+  //if min(x1) > min(x2) the object is greater than "source" object
+  //else if max (x1) > max (x2)  the object is greater than "source" object
+  //else if min(y1) > min(y2) the object is greater than "source" object
+  //else if max(y1) > max(y2)  the object is greater than "source" object
+  bool Region2D::operator > (Region2D& operand)
+  {
+    if(isEmptyRegion2D() || operand.isEmptyRegion2D()) 
+		return false;
+	  int x = (handle->segments.size() < operand.handle->segments.size()) ? handle->segments.size() : operand.handle->segments.size();
+      for (unsigned i=1; i < x; i++) {
+	    if (operand.handle->segments.at(i) > handle->segments.at(i))
+	      return true;
+	    else if (operand.handle->segments.at(i) < handle->segments.at(i))
+	      return false;
+	    else
+	      continue;
+	  }
+	  if (operand.handle->segments.size() < handle->segments.size())   
+	    return true;
+	  return false;
+  
+  }
+    
+  //greater than or equal operator that compares 2 Region2D objects and checks which one is greater 
+  //or equal by comparing their minimum bounding rectangles in the following way:
+  //if min(x1) >= min(x2)  the object is greater than or equal to "source" object
+  //else if max (x1) >= max (x2) the object is greater than or equal to "source" object
+  //else if min(y1) >= min(y2) the object is greater than or equal to "source" object
+  //else if max(y1) >= max(y2) the object is greater than or equal to "source" object
+  bool Region2D::operator >= (Region2D& operand)
+  {
+      if(isEmptyRegion2D() || operand.isEmptyRegion2D()) 
+       return false;
+	  int x = (handle->segments.size() < operand.handle->segments.size()) ? handle->segments.size() : operand.handle->segments.size();
+      for (unsigned i=1; i < x; i++) {
+	    if (operand.handle->segments.at(i) >= handle->segments.at(i))
+	      return true;
+	    else if (operand.handle->segments.at(i) < handle->segments.at(i))
+	      return false;
+	    else
+	      continue;
+	  }
+	  if (operand.handle->segments.size() < handle->segments.size())   
+	    return true;
+	  return false;
+  }
+
+  //++++++++++++++++++++++++++++++++
+  // Unary predicates and operations
+  //++++++++++++++++++++++++++++++++
+
+  // Predicate that checks whether the inputted Region2D object is an 
+  //empty Region2D object.
+  bool Region2D::isEmptyRegion2D() const
+  {
+    if((handle->segments.size() == 0)||(handle->segments.size() == 2))
+	        return true;
+		return false;       
+    //if testing fails, use faces.size()
+  }
+
+  // Predicate that checks whether the inputted Region2D object is a simple Region2D
+  // object, that is, a single-component Region2D object without holes. The
+  // predicate yields false for an empty Region2D object.
+  bool Region2D::isSimpleRegion2D()
+  {
+   if((handle->faces.size() == 1)||(handle->faces.size() == 3))
+     if((handle->cycles.size() == 1)||(handle->cycles.size() == 3))
+	        return true;
+		
+		return false;
+  }
+
+  // Predicate that checks whether the inputted Region2D object is a simple (that is,
+  // single-component) Region2D object with at least one hole. The predicate
+  // yields false for an empty Region2D object.
+  bool Region2D::isSimpleRegion2DWithHoles()
+  {   
+    if((handle->faces.size() == 1)||(handle->faces.size() == 3))
+     if((handle->cycles.size() > 3))
+	        return true;
+		
+		return false;
+  }
+
+  // Predicate that checks whether the inputted Region2D object is a face object, that
+  // is, a single-component Region2D object with or without holes. The
+  // predicate yields false for an empty Region2D object.
+  bool Region2D::isFace()
+  { 
+    if(isSimpleRegion2D() || isSimpleRegion2DWithHoles() )
+      return true;
+      return false;
+  }
+
+  // Method that yields the number of faces of the inputted Region2D object. The
+  // number of faces of an empty Region2D object is 0.
+  Number Region2D::getNumberOfFaces()
+  {   
+     if(isEmptyRegion2D()) 
+        return Number(std::to_string(0));
+     return(Number(std::to_string(handle->faces.size()-2)));
+  }
+
+  // Method that yields the number of hole cycles of a face, which is
+  // represented as a simple Region2D object with or without holes. If the
+  // Region2D object is a multi-component object, that is, has more than one
+  // face, the value -1 is returned. Otherwise, if the face does not contain
+  // holes, the value 0 is returned. If the face is an empty Region2D object,
+  // the value -2 is returned.
+  Number Region2D::getNumberOfHoleCycles()
+  { 
+    if(isEmptyRegion2D()) 
+        return Number(std::to_string(-2));
+    if(isSimpleRegion2D())
+       return(Number(std::to_string(handle->cycles.size()-3))); //minus head,tail,outer cycle
+    else
+      return Number(std::to_string(-1)); 
+  }
+
+  // Method that yields the number of segments of a cycle (outer cycle or
+  // hole cycle), which is represented as a simple Region2D object (without
+  // holes). If the Region2D object is an empty Region2D object, the value
+  // -2 is returned. If the Region2D object is not simple, the value -1 is
+  // returned.
+  Number Region2D::getNumberOfSegments()
+  {
+     if(isEmptyRegion2D()) 
+        return Number(std::to_string(-2));
+     if(isSimpleRegion2D())
+       return(Number(std::to_string(handle->segments.size()-3)));
+     else
+      return Number(std::to_string(-1));
+  }
+
+  // Method that returns the outer cycle of a face, which is a simple
+  // Region2D object with or without holes. If the Region2D is complex, that
+  // is, has multiple faces, the empty Region2D object is returned. If the
+  // Region2D object is simple and thus has no holes, then a copy of the
+  // object is returned. Otherwise, the outer cycle is determined and
+  // returned.
+  Region2D Region2D::getOuterCycle()
+  { 
+    std::vector<Seg2D> Segs; 
+   
+    if(isFace()) 
+     { for ( int i = 0; i < handle->faces[1][0].size(); i++)
+       {
+          Segs.push_back(handle->faces[1][0][i]->hseg.seg);
+       }
+       return(Region2D(Segs));
+     }
+    else 
+      return(Region2D());
+   
+  }
+
+  //++++++++++++++++
+  // Output function
+  //++++++++++++++++
+
+  // Textual output of segments of a Region2D object
+  std::ostream& operator << (std::ostream& os, const Region2D& output)
+  {
+    for (unsigned i=1; i<output.handle->segments.size()-1; i++) {
+      os << output.handle->segments.at(i)<<" ";
+      os <<std::endl;
+    }
+
+    int numberOfFaces = output.handle->faces.size();
+
+	std::cout<<"numberOfFaces is: "<<numberOfFaces-2<<std::endl;
+	
+    for(int i = 1; i < numberOfFaces-1; i++)
+    { 
+      std::cout<<" Printing number of cycles in face ---------->"<<i<<":"<<std::endl;
+	  std::cout<<output.handle->faces[i].size()<<std::endl;
+	  for (int j = 0; j<output.handle->faces[i].size(); j++)
+	  {
+		  for (int k = 0; k<output.handle->faces[i][j].size(); k++)
+		  {
+			  std::cout<<*output.handle->faces[i][j][k]<<std::endl;
+		  }
+	  }
+    } 
+    return os;
+  }
+
+  //++++++++++++++++++++
+  // Iterator functions
+  //++++++++++++++++++++
+
+  // Default constructor that creates an empty constant face iterator.
+  Region2D::ConstFaceIterator::ConstFaceIterator()
+  {
+   handlei = new ConstFaceIteratorImplementation;
+   handlei->iteratorIndex = -1;
+   handlei->current = NULL;
+  }
+
+  // Copy constructor that constructs a constant face iterator from a
+  // given constant face iterator "source".
+  Region2D::ConstFaceIterator::ConstFaceIterator(const ConstFaceIterator& source)
+  {
+   handlei = new ConstFaceIteratorImplementation;
+   handlei->iteratorIndex = source.handlei->iteratorIndex;
+   handlei->current = source.handlei->current;
+  }
+
+  // Move constructor that moves a given constant face iterator "source"
+  // to a constant face iterator. The constant face iterator "source"
+  // gets the empty constant face iterator as its value.
+  Region2D::ConstFaceIterator::ConstFaceIterator(const ConstFaceIterator&& source)
+  { 
+   handlei = new ConstFaceIteratorImplementation;
+   handlei->iteratorIndex = std::move(source.handlei->iteratorIndex);
+   handlei->current = std::move(source.handlei->current);
+  }
+
+  // Destructor that frees the main memory space allocated for a constant
+  // face iterator.
+  Region2D::ConstFaceIterator::~ConstFaceIterator()
+  {
+   delete handlei;
+  }
+
+
+  // Assignment operator that assigns another constant face iterator
+  // "rhs" to the constant face iterator.
+  Region2D::ConstFaceIterator& Region2D::ConstFaceIterator::operator = (const ConstFaceIterator& rhs)
+  {
+   handlei->iteratorIndex = rhs.handlei->iteratorIndex; 
+   handlei->current = rhs.handlei->current;
+  }
+
+  // Predicate that tests whether a constant face iterator is empty.
+  bool Region2D::ConstFaceIterator::isEmpty() const
+  {
+   return (handlei->current == NULL);
+  }
+
+  // Increment/decrement operators '++', '--'
+  Region2D::ConstFaceIterator& Region2D::ConstFaceIterator::operator ++ () //prefix
+  {
+   if(handlei->iteratorIndex < handlei->current->faces.size()-1)
+    {  handlei->iteratorIndex++;
+       return(*this);
+    }
+    //else cannot increment as it goes beyond ctail
+  }
+
+  Region2D::ConstFaceIterator Region2D::ConstFaceIterator::operator ++ (int postfix) //postfix
+  {
+   if(handlei->iteratorIndex < handlei->current->faces.size()-1)
+   {
+     ConstFaceIterator tmp(*this);
+     handlei->iteratorIndex++;
+     return(tmp);
+   }
+
+  }
+
+  Region2D::ConstFaceIterator& Region2D::ConstFaceIterator::operator -- ()   // prefix
+  {
+   if(handlei->iteratorIndex > 0)
+   {
+     handlei->iteratorIndex--;
+     return(*this);
+   }
+  }
+
+  Region2D::ConstFaceIterator Region2D::ConstFaceIterator::operator -- (int postfix) // postfix
+  {
+   if(handlei->iteratorIndex > 0)
+   {
+     ConstFaceIterator tmp(*this);
+     handlei->iteratorIndex--;
+     return(tmp);
+   }
+  }
+
+  // Dereferencing operators that return the value at the constant face
+  // iterator position. Dereferencing is only allowed if the iterator
+  // points to a face. The dereferenced value cannot be changed.
+  const Region2D Region2D::ConstFaceIterator::operator *() const
+  { 
+   int i = this->handlei->iteratorIndex;
+   //std::vector<AttrHalfSeg2D> newAttrSegs = *(this->handlei->current->cycles[i]);
+   std::vector<Seg2D> Segs1;
+   
+   for( int k = 0; k < this->handlei->current->faces[i].size(); k++)
+    
+      for ( int l = 0; l < this->handlei->current->faces[i][k].size(); l++)
+       {
+          Segs1.push_back(this->handlei->current->faces[i][k][l]->hseg.seg);
+       }
+   return(Region2D(Segs1)); 
+  }
+
+  const Region2D Region2D::ConstFaceIterator::operator ->() const
+  {  
+    int i = this->handlei->iteratorIndex;
+   //std::vector<AttrHalfSeg2D> newAttrSegs = *(this->handlei->current->cycles[i]);
+   std::vector<Seg2D> Segs2;
+   
+   for( int k = 0; k < this->handlei->current->faces[i].size(); k++)
+    
+      for ( int l = 0; l < this->handlei->current->faces[i][k].size(); l++)
+       {
+          Segs2.push_back(this->handlei->current->faces[i][k][l]->hseg.seg);
+       }
+   return(Region2D(Segs2)); 
+  }
+
+  // Comparison operators that compare a constant face iterator position
+  // with another const face iterator position "rhs"
+  bool Region2D::ConstFaceIterator::operator == (const ConstFaceIterator& rhs) const
+  {
+    return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex == rhs.handlei->iteratorIndex));
+  }
+
+  bool Region2D::ConstFaceIterator::operator != (const ConstFaceIterator& rhs) const
+  {
+   return ((this->handlei->current != rhs.handlei->current)||(this->handlei->iteratorIndex != rhs.handlei->iteratorIndex));
+  }
+
+  bool Region2D::ConstFaceIterator::operator <  (const ConstFaceIterator& rhs) const
+  {
+   return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex < rhs.handlei->iteratorIndex));
+  }
+
+  bool Region2D::ConstFaceIterator::operator <= (const ConstFaceIterator& rhs) const
+  {
+   return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex <= rhs.handlei->iteratorIndex));
+  }
+
+  bool Region2D::ConstFaceIterator::operator >  (const ConstFaceIterator& rhs) const
+  {
+   return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex > rhs.handlei->iteratorIndex));
+  }
+
+  bool Region2D::ConstFaceIterator::operator >= (const ConstFaceIterator& rhs) const
+  {
+   return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex >= rhs.handlei->iteratorIndex));
+  }
+  
+
+   std::ostream&operator<<(std::ostream& os, const Region2D::ConstFaceIterator& output)
+   {
+     //if( output.handlei->iteratorIndex > 0 && output.handlei->iteratorIndex < output.handlei->current->faces.size()-2 )
+     //{
+      os << "index Value:" << output.handlei->iteratorIndex<<" ";
+      os << "number of cycles in face:" << output.handlei->current->faces.at(output.handlei->iteratorIndex).size()<<" "<<endl;
+      for(int x=0;x<output.handlei->current->faces.at(output.handlei->iteratorIndex).size();x++)
+        { 
+        for(int y=0;y<output.handlei->current->faces[output.handlei->iteratorIndex][x].size();y++)
+	 os << "segments" << *output.handlei->current->faces[output.handlei->iteratorIndex][x][y]<<" "<<endl;
+	}
+      //}
+      return os;
+   }
+  // Method that returns a constant face iterator to the first face of a
+  // Region2D object.
+  Region2D::ConstFaceIterator Region2D::cFbegin() const
+  {
+   ConstFaceIterator begin;
+   begin.handlei->iteratorIndex = 1;
+   begin.handlei->current = handle;
+   return begin;
+  }
+
+  // Method that returns a constant face iterator to the last face of a
+  // Region2D object.
+  Region2D::ConstFaceIterator Region2D::cFend() const
+  {
+   ConstFaceIterator begin;
+   begin.handlei->iteratorIndex = handle->faces.size()-2;
+   begin.handlei->current = handle;
+   return begin;
+  }
+
+  // Method that returns a constant face iterator to the position before the
+  // first face of a Region2D object. Note that dereferencing this iterator
+  // yields the empty constant face iterator.
+  Region2D::ConstFaceIterator Region2D::cFhead() const  
+  {
+   ConstFaceIterator begin;
+   begin.handlei->iteratorIndex = 0;
+   begin.handlei->current = handle;
+   return begin;
+  }
+
+  // Method that returns a constant face iterator to the position after the
+  // last face of a Region2D object. Note that dereferencing this iterator
+  // yields the empty constant face iterator.
+  Region2D::ConstFaceIterator Region2D::cFtail() const
+  {
+   ConstFaceIterator begin;
+   begin.handlei->iteratorIndex = handle->faces.size()-1;
+   begin.handlei->current = handle;
+   return begin;
+  }
+
+
+  // Default constructor that creates an empty constant hole cycle iterator.
+  Region2D::ConstCycleIterator::ConstCycleIterator()
+  {
+   handlei = new ConstCycleIteratorImplementation;
+   handlei->iteratorIndex = -1;
+   handlei->current = NULL;
+  }
+
+  // Copy constructor that constructs a constant hole cycle iterator from a
+  // given constant hole cycle iterator "source".
+  Region2D::ConstCycleIterator::ConstCycleIterator(const ConstCycleIterator& source)
+  {
+   handlei = new ConstCycleIteratorImplementation;
+   handlei->iteratorIndex = source.handlei->iteratorIndex;
+   handlei->current = source.handlei->current;
+  }
+
+  // Move constructor that moves a given constant hole cycle iterator "source"
+  // to a constant hole cycle iterator. The constant hole cycle iterator "source"
+  // gets the empty constant hole cycle iterator as its value.
+  Region2D::ConstCycleIterator::ConstCycleIterator(const ConstCycleIterator&& source)
+  {
+   handlei = new ConstCycleIteratorImplementation;
+   handlei->iteratorIndex = std::move(source.handlei->iteratorIndex);
+   handlei->current = std::move(source.handlei->current);
+  }
+
+  // Destructor that frees the main memory space allocated for a constant
+  // hole cycle iterator.
+  Region2D::ConstCycleIterator::~ConstCycleIterator()
+  {
+   delete handlei;
+  }
+
+  // Assignment operator that assigns another constant hole cycle iterator
+  // "rhs" to the constant face iterator.
+  Region2D::ConstCycleIterator& Region2D::ConstCycleIterator::operator = (const ConstCycleIterator& rhs)
+  {
+    handlei->iteratorIndex = rhs.handlei->iteratorIndex; 
+    handlei->current = rhs.handlei->current; 
+  }
+
+  // Predicate that tests whether a constant HoleCycle iterator is empty.
+  bool Region2D::ConstCycleIterator::isEmpty() const
+  {
+   return (handlei->current == NULL);   
+  }
+
+  // Increment/decrement operators '++', '--'
+  Region2D::ConstCycleIterator& Region2D::ConstCycleIterator::operator ++ ()  // prefix
+  { 
+
+    //if(handlei->iteratorIndex < handlei->current->cycles.size()-2)
+    //{ 
+      handlei->iteratorIndex++;
+      return(*this);
+    //}
+  }
+
+  Region2D::ConstCycleIterator Region2D::ConstCycleIterator::operator ++ (int postfix) // postfix
+  {
+    
+    //if(handlei->iteratorIndex < handlei->current->cycles.size()-2)
+    //{
+      ConstCycleIterator tmp(*this);
+      handlei->iteratorIndex++;
+      return(tmp);
+    //}
+  }
+
+  Region2D::ConstCycleIterator& Region2D::ConstCycleIterator::operator -- ()   // prefix
+  {
+    //if(handlei->iteratorIndex > 1)
+    //{
+      handlei->iteratorIndex--;
+      return(*this);
+    //}
+  }
+
+  Region2D::ConstCycleIterator Region2D::ConstCycleIterator::operator -- (int postfix) // postfix
+  { 
+    //if(handlei->iteratorIndex > 1)
+    //{ 
+     ConstCycleIterator tmp(*this);
+     handlei->iteratorIndex--;
+     return(tmp);
+    //}
+  }
+
+  // Dereferencing operators that return the value at the constant HoleCycle
+  // iterator position. Dereferencing is only allowed if the iterator
+  // points to a hole cycle. The dereferenced value cannot be changed.
+  const Region2D Region2D::ConstCycleIterator::operator *() const
+  {
+   
+   int i = this->handlei->iteratorIndex;
+   //std::vector<AttrHalfSeg2D> newAttrSegs = *(this->handlei->current->cycles[i]);
+   std::vector<Seg2D> newSegs1;
+   for ( int j = 0; j < this->handlei->current->cycles[i].size(); j++)
+   {
+     newSegs1.push_back(this->handlei->current->cycles[i][j]->hseg.seg);
+   }
+   return(Region2D(newSegs1)); 
+   
+  }
+  
+
+  const Region2D Region2D::ConstCycleIterator::operator ->() const
+  { 
+   int i = this->handlei->iteratorIndex;
+   //std::vector<AttrHalfSeg2D> newAttrSegs = *(this->handlei->current->cycles[i]);
+   std::vector<Seg2D> newSegs2;
+   for ( int j = 0; j < this->handlei->current->cycles[i].size(); j++)
+   {
+     newSegs2.push_back(this->handlei->current->cycles[i][j]->hseg.seg);
+   }
+   return(Region2D(newSegs2));
+    
+   }
+
+  // Comparison operators that compare a constant HoleCycle iterator position
+  // with another const HoleCycle iterator position "rhs"
+  bool Region2D::ConstCycleIterator::operator == (const ConstCycleIterator& rhs) const
+  {
+   return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex == rhs.handlei->iteratorIndex));
+  }
+
+  bool Region2D::ConstCycleIterator::operator != (const ConstCycleIterator& rhs) const
+  {
+   return ((this->handlei->current != rhs.handlei->current)&&(this->handlei->iteratorIndex != rhs.handlei->iteratorIndex));
+  }
+
+  bool Region2D::ConstCycleIterator::operator <  (const ConstCycleIterator& rhs) const
+  {
+   return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex < rhs.handlei->iteratorIndex));
+  }
+
+  bool Region2D::ConstCycleIterator::operator <= (const ConstCycleIterator& rhs) const
+  {
+   return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex <= rhs.handlei->iteratorIndex));
+  }
+
+  bool Region2D::ConstCycleIterator::operator >  (const ConstCycleIterator& rhs) const
+  {
+   return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex > rhs.handlei->iteratorIndex));
+  }
+
+  bool Region2D::ConstCycleIterator::operator >= (const ConstCycleIterator& rhs) const
+  {
+   return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex >= rhs.handlei->iteratorIndex));
+  }
+
+  std::ostream&operator<<(std::ostream& os, const Region2D::ConstCycleIterator& output)
+   { 
+     
+       os << "index Value:" << output.handlei->iteratorIndex<<" ";
+       os << "number of segments in cycle:" << output.handlei->current->cycles.at(output.handlei->iteratorIndex).size()<<" "<<endl;
+       for(int x=0;x<output.handlei->current->cycles.at(output.handlei->iteratorIndex).size();x++)
+        { 
+	 os << "segments" << *output.handlei->current->cycles[output.handlei->iteratorIndex][x]<<" "<<endl;
+	}
+       
+     return os;
+   }
+
+  // Method that returns a constant HoleCycle iterator to the first HoleCycle of a
+  // Region2D object.
+  Region2D::ConstCycleIterator Region2D::cHbegin() const
+  {
+    ConstCycleIterator begin;
+    begin.handlei->iteratorIndex = 1;
+    begin.handlei->current = handle;
+    return begin;
+  }
+
+  // Method that returns a constant HoleCycle iterator to the last HoleCycle of a
+  // Region2D object.
+  Region2D::ConstCycleIterator Region2D::cHend() const
+  {
+    ConstCycleIterator last;
+    last.handlei->iteratorIndex = handle->cycles.size()-2;
+    last.handlei->current = handle;
+    return last;
+  }
+
+
+  // Method that returns a constant HoleCycle iterator to the position before the
+  // first HoleCycle of a Region2D object. Note that dereferencing this iterator
+  // yields the empty constant HoleCycle iterator.
+  Region2D::ConstCycleIterator Region2D::cHhead() const
+  {
+     ConstCycleIterator h;
+     h.handlei->iteratorIndex = 0;
+     h.handlei->current = handle;
+     return h;
+  }
+
+  // Method that returns a constant HoleCycle iterator to the position after the
+  // last HoleCycle of a Region2D object. Note that dereferencing this iterator
+  // yields the empty constant HoleCycle iterator.
+  Region2D::ConstCycleIterator Region2D::cHtail() const
+  {
+     ConstCycleIterator t;
+     t.handlei->iteratorIndex = handle->cycles.size()-1; //segments.size replace by no.ofcycles method?
+     t.handlei->current = handle;
+     return t;
+  }
+
+
+
+/*
+  // Default constructor that creates an empty constant Segment iterator.
+  Region2D::ConstSegmentIterator::ConstSegmentIterator()
+  {
+   handlei = new ConstSegmentIteratorImplementation;
+   handlei->iteratorIndex = -1;
+   handlei->current = NULL;
+  }
+
+  // Copy constructor that constructs a constant Segment iterator from a
+  // given constant Segment iterator "source".
+  Region2D::ConstSegmentIterator::ConstSegmentIterator(const ConstSegmentIterator& source)
+  {
+   handlei = new ConstSegmentIteratorImplementation;
+   handlei->iteratorIndex = source.handlei->iteratorIndex;
+   handlei->current = source.handlei->current;
+  }
+
+  // Move constructor that moves a given constant Segment iterator "source"
+  // to a constant Segment iterator. The constant Segment iterator "source"
+  // gets the empty constant Segment iterator as its value.
+  Region2D::ConstSegmentIterator::ConstSegmentIterator(const ConstSegmentIterator&& source)
+  {
+   handlei = new ConstSegmentIteratorImplementation;
+   handlei->iteratorIndex = std::move(source.handlei->iteratorIndex);
+   handlei->current = std::move(source.handlei->current);
+  }
+
+  // Destructor that frees the main memory space allocated for a constant
+  // Segment iterator.
+  Region2D::ConstSegmentIterator::~ConstSegmentIterator()
+  {
+    delete handlei;
+  }
+
+  // Assignment operator that assigns another constant Segment iterator
+  // "rhs" to the constant Segment iterator.
+  Region2D::ConstSegmentIterator& Region2D::ConstSegmentIterator::operator = (const ConstSegmentIterator& rhs)
+  {
+    handlei->iteratorIndex = rhs.handlei->iteratorIndex; 
+    handlei->current = rhs.handlei->current; 
+  }
+
+  // Predicate that tests whether a constant Segment iterator is empty.
+  bool Region2D::ConstSegmentIterator::isEmpty() const
+  {
+    return (handlei->current == NULL);
+  }
+
+  // Increment/decrement operators '++', '--'
+  Region2D::ConstSegmentIterator& Region2D::ConstSegmentIterator::operator ++ ()   // prefix
+  {
+    handlei->iteratorIndex++;
+    return(*this);
+  }
+
+  Region2D::ConstSegmentIterator Region2D::ConstSegmentIterator::operator ++ (int postfix) // postfix
+  {
+    ConstSegmentIterator tmp(*this);
+    handlei->iteratorIndex++;
+    return(tmp);
+  }
+
+  Region2D::ConstSegmentIterator& Region2D::ConstSegmentIterator::operator -- ()   // prefix
+  {
+    handlei->iteratorIndex--;
+    return(*this);
+  }
+
+  Region2D::ConstSegmentIterator Region2D::ConstSegmentIterator::operator -- (int postfix) // postfix
+  {
+    ConstSegmentIterator tmp(*this);
+    handlei->iteratorIndex--;
+    return(tmp);
+  }
+
+  // Dereferencing operators that return the value at the constant Segment
+  // iterator position. Dereferencing is only allowed if the iterator
+  // points to a Segment. The dereferenced value cannot be changed.
+  const HalfSeg2D& Region2D::ConstSegmentIterator::operator *() const
+  {
+   return(this->handlei->current->segments.at(this->handlei->iteratorIndex));
+  }
+
+  const HalfSeg2D* Region2D::ConstSegmentIterator::operator ->() const
+  {
+   return(&this->handlei->current->segments.at(this->handlei->iteratorIndex)); 
+  }
+
+  // Comparison operators that compare a constant Segment iterator position
+  // with another const Segment iterator position "rhs"
+  bool Region2D::ConstSegmentIterator::operator == (const ConstSegmentIterator& rhs) const
+  {
+   return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex == rhs.handlei->iteratorIndex));
+  }
+
+  bool Region2D::ConstSegmentIterator::operator != (const ConstSegmentIterator& rhs) const
+  {
+   return ((this->handlei->current != rhs.handlei->current)&&(this->handlei->iteratorIndex != rhs.handlei->iteratorIndex));
+  }
+
+  bool Region2D::ConstSegmentIterator::operator <  (const ConstSegmentIterator& rhs) const
+  {
+   return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex < rhs.handlei->iteratorIndex));
+  }
+
+  bool Region2D::ConstSegmentIterator::operator <= (const ConstSegmentIterator& rhs) const
+  {
+   return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex <= rhs.handlei->iteratorIndex));
+  }
+
+  bool Region2D::ConstSegmentIterator::operator >  (const ConstSegmentIterator& rhs) const
+  {
+   return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex > rhs.handlei->iteratorIndex));
+  }
+
+  bool Region2D::ConstSegmentIterator::operator >= (const ConstSegmentIterator& rhs) const
+  {
+    return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex >= rhs.handlei->iteratorIndex));
+  }
+
+
+  // Method that returns a constant Segment iterator to the first Segment of a
+  // Region2D object.
+  Region2D::ConstSegmentIterator Region2D::cSbegin() const
+  {
+   ConstSegmentIterator begin;
+   begin.handlei->iteratorIndex = 1;
+   begin.handlei->current = handle;
+   return begin;
+  }
+
+  // Method that returns a constant Segment iterator to the last Segment of a
+  // Region2D object.
+  Region2D::ConstSegmentIterator Region2D::cSend() const
+  {
+   ConstSegmentIterator last;
+   last.handlei->iteratorIndex = handle->segments.size()-2;
+   last.handlei->current = handle;
+   return last;
+  }
+
+  // Method that returns a constant Segment iterator to the position before the
+  // first Segment of a Region2D object. Note that dereferencing this iterator
+  // yields the empty constant Segment iterator.
+  Region2D::ConstSegmentIterator Region2D::cShead() const
+  {
+     ConstSegmentIterator h;
+     h.handlei->iteratorIndex = 0;
+     h.handlei->current = handle;
+     return h;
+  }
+
+  // Method that returns a constant Segment iterator to the position after the
+  // last Segment of a Region2D object. Note that dereferencing this iterator
+  // yields the empty constant Segment iterator.
+  Region2D::ConstSegmentIterator Region2D::cStail() const
+  {
+     ConstSegmentIterator t;
+     t.handlei->iteratorIndex = handle->segments.size()-1;
+     t.handlei->current = handle;
+     return t;
+  }
+*/
