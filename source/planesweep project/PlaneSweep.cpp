@@ -973,14 +973,14 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                 }
                 if (objF.isRegion2D() || objG.isRegion2D()) {
                     if (objF.isRegion2D()) {
-                        AttrHalfSeg2D temp = dynamic_cast<AttrHalfSeg2D>(objF);
+                        AttrHalfSeg2D temp = getPot()->currentFASeg();
                         attrHalfSeg11FRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                         attrHalfSeg21FRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                         attrHalfSeg22FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
                         attrHalfSeg22FRight = new AttrHalfSeg2D(temp.insideAbove, false, S22);
                     }
                     if (objG.isRegion2D()) {
-                        AttrHalfSeg2D temp = dynamic_cast<AttrHalfSeg2D>(objG);
+                        AttrHalfSeg2D temp = getPot()->currentGASeg();
                         attrHalfSeg11GRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                         attrHalfSeg21GRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                         attrHalfSeg22GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
@@ -1059,13 +1059,13 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             }
             if (objF.isRegion2D() || objG.isRegion2D()) {
                 if (objF.isRegion2D()) {
-                    AttrHalfSeg2D temp = dynamic_cast<AttrHalfSeg2D>(objF);
+                    AttrHalfSeg2D temp = getPot()->currentFASeg();
                     attrHalfSeg11FRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                     attrHalfSeg12FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
                     attrHalfSeg12FRight = new AttrHalfSeg2D(temp.insideAbove, false, S12);
                 }
                 if (objG.isRegion2D()) {
-                    AttrHalfSeg2D temp = dynamic_cast<AttrHalfSeg2D>(objG);
+                    AttrHalfSeg2D temp = getPot()->currentGASeg();
                     attrHalfSeg11GRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                     attrHalfSeg12GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
                     attrHalfSeg12GRight = new AttrHalfSeg2D(temp.insideAbove, false, S12);
@@ -1144,13 +1144,13 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             }
             if (objF.isRegion2D() || objG.isRegion2D()) {
                 if (objF.isRegion2D()) {
-                    AttrHalfSeg2D temp = dynamic_cast<AttrHalfSeg2D>(objF);
+                    AttrHalfSeg2D temp = getPot()->currentFASeg();
                     attrHalfSeg21FRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                     attrHalfSeg22FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
                     attrHalfSeg22FRight = new AttrHalfSeg2D(temp.insideAbove, false, S22);
                 }
                 if (objG.isRegion2D()) {
-                    AttrHalfSeg2D temp = dynamic_cast<AttrHalfSeg2D>(objG);
+                    AttrHalfSeg2D temp = getPot()->currentGASeg();
                     attrHalfSeg21GRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                     attrHalfSeg22GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
                     attrHalfSeg22GRight = new AttrHalfSeg2D(temp.insideAbove, false, S22);
@@ -1240,7 +1240,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             }
             if (objF.isRegion2D() || objG.isRegion2D()) {
                 if (objF.isRegion2D()) {
-                    AttrHalfSeg2D temp = dynamic_cast<AttrHalfSeg2D>(objF);
+                    AttrHalfSeg2D temp = getPot()->currentFASeg();
                     attrHalfSeg11FRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                     attrHalfSeg12FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
                     attrHalfSeg12FRight = new AttrHalfSeg2D(temp.insideAbove, false, S12);
@@ -1248,7 +1248,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     attrHalfSeg13FRight = new AttrHalfSeg2D(temp.insideAbove, false, S13);
                 }
                 if (objG.isRegion2D()) {
-                    AttrHalfSeg2D temp = dynamic_cast<AttrHalfSeg2D>(objG);
+                    AttrHalfSeg2D temp = getPot()->currentGASeg();
                     attrHalfSeg11GRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                     attrHalfSeg12GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
                     attrHalfSeg12GRight = new AttrHalfSeg2D(temp.insideAbove, false, S12);
@@ -1360,7 +1360,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             }
             if (objF.isRegion2D() || objG.isRegion2D()) {
                 if (objF.isRegion2D()) {
-                    AttrHalfSeg2D temp = dynamic_cast<AttrHalfSeg2D>(objF);
+                    AttrHalfSeg2D temp = getPot()->currentFASeg();
                     attrHalfSeg21FRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                     attrHalfSeg22FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
                     attrHalfSeg22FRight = new AttrHalfSeg2D(temp.insideAbove, false, S22);
@@ -1368,7 +1368,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     attrHalfSeg23FRight = new AttrHalfSeg2D(temp.insideAbove, false, S23);
                 }
                 if (objG.isRegion2D()) {
-                    AttrHalfSeg2D temp = dynamic_cast<AttrHalfSeg2D>(objG);
+                    AttrHalfSeg2D temp = getPot()->currentGASeg();
                     attrHalfSeg21GRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                     attrHalfSeg22GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
                     attrHalfSeg22GRight = new AttrHalfSeg2D(temp.insideAbove, false, S22);
@@ -1469,13 +1469,13 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             }
             if (objF.isRegion2D() || objG.isRegion2D()) {
                 if (objF.isRegion2D()) {
-                    AttrHalfSeg2D temp = dynamic_cast<AttrHalfSeg2D>(objF);
+                    AttrHalfSeg2D temp = getPot()->currentFASeg();
                     attrHalfSeg11FRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                     attrHalfSeg12FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
                     attrHalfSeg12FRight = new AttrHalfSeg2D(temp.insideAbove, false, S12);
                 }
                 if (objG.isRegion2D()) {
-                    AttrHalfSeg2D temp = dynamic_cast<AttrHalfSeg2D>(objG);
+                    AttrHalfSeg2D temp = getPot()->currentGASeg();
                     attrHalfSeg11GRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                     attrHalfSeg12GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
                     attrHalfSeg12GRight = new AttrHalfSeg2D(temp.insideAbove, false, S12);
@@ -1563,13 +1563,13 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             }
             if (objF.isRegion2D() || objG.isRegion2D()) {
                 if (objF.isRegion2D()) {
-                    AttrHalfSeg2D temp = dynamic_cast<AttrHalfSeg2D>(objF);
+                    AttrHalfSeg2D temp = getPot()->currentFASeg();
                     attrHalfSeg21FRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                     attrHalfSeg22FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
                     attrHalfSeg22FRight = new AttrHalfSeg2D(temp.insideAbove, false, S22);
                 }
                 if (objG.isRegion2D()) {
-                    AttrHalfSeg2D temp = dynamic_cast<AttrHalfSeg2D>(objG);
+                    AttrHalfSeg2D temp = getPot()->currentGASeg();
                     attrHalfSeg21GRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                     attrHalfSeg22GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
                     attrHalfSeg22GRight = new AttrHalfSeg2D(temp.insideAbove, false, S22);
@@ -1672,7 +1672,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
             if (objF.isRegion2D() || objG.isRegion2D()) {
                 if (objF.isRegion2D()) {
-                    AttrHalfSeg2D temp = dynamic_cast<AttrHalfSeg2D>(objF);
+                    AttrHalfSeg2D temp = getPot()->currentFASeg();
                     attrHalfSeg11FRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                     attrHalfSeg12FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
                     attrHalfSeg12FRight = new AttrHalfSeg2D(temp.insideAbove, false, S12);
@@ -1680,7 +1680,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     attrHalfSeg22FRight = new AttrHalfSeg2D(temp.insideAbove, false, S22);
                 }
                 if (objG.isRegion2D()) {
-                    AttrHalfSeg2D temp = dynamic_cast<AttrHalfSeg2D>(objG);
+                    AttrHalfSeg2D temp = getPot()->currentGASeg();
                     attrHalfSeg11GRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                     attrHalfSeg12GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
                     attrHalfSeg12GRight = new AttrHalfSeg2D(temp.insideAbove, false, S12);
@@ -1795,7 +1795,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             }
             else if (objF.isRegion2D() || objG.isRegion2D()) {
                 if (objF.isRegion2D()) {
-                    AttrHalfSeg2D temp = dynamic_cast<AttrHalfSeg2D>(objF);
+                    AttrHalfSeg2D temp = getPot()->currentFASeg();
                     attrHalfSeg21FRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                     attrHalfSeg22FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
                     attrHalfSeg22FRight = new AttrHalfSeg2D(temp.insideAbove, false, S22);
@@ -1803,7 +1803,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     attrHalfSeg12FRight = new AttrHalfSeg2D(temp.insideAbove, false, S12);
                 }
                 if (objG.isRegion2D()) {
-                    AttrHalfSeg2D temp = dynamic_cast<AttrHalfSeg2D>(objG);
+                    AttrHalfSeg2D temp = getPot()->currentGASeg();
                     attrHalfSeg21GRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                     attrHalfSeg22GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
                     attrHalfSeg22GRight = new AttrHalfSeg2D(temp.insideAbove, false, S22);
@@ -2353,23 +2353,25 @@ bool PlaneSweep::poiOnSeg(Poi2D &poi2D) {
 }
 
 PlaneSweepLineStatusObject PlaneSweep::getPredecessor(PlaneSweepLineStatusObject &s) {
+    PlaneSweepLineStatusObject planeSweepLineStatusObject;
     AVLnode<PlaneSweepLineStatusObject> *predecessor = sweepLineStatus->getPred(s);
     if (predecessor != NULL) {
         return predecessor->key;
     }
-//    else {
-//        return NULL;
-//    }
+    else {
+        return planeSweepLineStatusObject;
+    }
 }
 
 PlaneSweepLineStatusObject PlaneSweep::getSuccessor(PlaneSweepLineStatusObject &s) {
+    PlaneSweepLineStatusObject planeSweepLineStatusObject;
     AVLnode<PlaneSweepLineStatusObject> *successor = sweepLineStatus->getSucc(s);
     if (successor != NULL) {
         return successor->key;
     }
-//    else {
-//        return NULL;
-//    }
+    else {
+        return planeSweepLineStatusObject;
+    }
 }
 
 void PlaneSweep::newSweep() {
