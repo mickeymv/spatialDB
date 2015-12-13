@@ -21,13 +21,6 @@ const ParallelObjectTraversal::ParallelObjectTraversal(Object2D &F, Object2D &G)
 
         if (G.isPoint2D()) {
             objG = dynamic_cast<Point2D *>(&G);
-
-            // assign objG Poi Iterator
-            objGpoiIterator = new Point2D::ConstPoiIterator(((Point2D *) objG)->cbegin());
-        }
-
-        if (G.isPoint2D()) {
-            objG = dynamic_cast<Point2D *>(&G);
             objGpoiIterator = new Point2D::ConstPoiIterator(((Point2D *) objG)->cbegin());
 
         } else if (G.isLine2D()) {
@@ -171,36 +164,34 @@ ParallelObjectTraversal::status ParallelObjectTraversal::getStatus() {
 //TODO selectFirst() and selectNext() should use the next min element based on setNextMin().Right now it is comparing just ObjectIterators. Where are we getting the nextMin value based on setMin()?
 
 void ParallelObjectTraversal::selectFirst() {
-    // to be deleted
-    // if (!(objFIterator->isEmpty())) {
-    //     *objFIterator = objF->cbegin();
-    // }
-    // if (!(objGIterator->isEmpty())) {
-    //     *objGIterator = objG->cbegin();
-    // }
 
-
-    // Dtj Dec 10, 2015
+   // Dtj Dec 10, 2015
     // set all the iterators to the beginning of the vector
     if (objF->isPoint2D()) {
-        *objFpoiIterator = ((Point2D *) objF)->cbegin();
+        if (*objFpoiIterator != ((Point2D *) objF)->cbegin())
+            *objFpoiIterator = ((Point2D *) objF)->cbegin();
     }
     if (objG->isPoint2D()) {
-        *objGpoiIterator = ((Point2D *) objG)->cbegin();
+        if (*objGpoiIterator != ((Point2D *) objG)->cbegin())
+            *objGpoiIterator = ((Point2D *) objG)->cbegin();
     }
 
     if (objF->isLine2D()) {
-        *objFsegIterator = ((Line2DImpl *) objF)->hBegin();
+        if (*objFsegIterator != ((Line2DImpl *) objF)->hBegin())
+            *objFsegIterator = ((Line2DImpl *) objF)->hBegin();
     }
     if (objG->isLine2D()) {
-        *objGsegIterator = ((Line2DImpl *) objG)->hBegin();
+        if (*objGsegIterator != ((Line2DImpl *) objG)->hBegin())
+            *objGsegIterator = ((Line2DImpl *) objG)->hBegin();
     }
 
     if (objF->isRegion2D()) {
-        *objFregionIterator = ((Region2DImpl *) objF)->cbegin();
+        if (*objFregionIterator != ((Region2DImpl *) objF)->cbegin())
+            *objFregionIterator = ((Region2DImpl *) objF)->cbegin();
     }
     if (objG->isRegion2D()) {
-        *objGregionIterator = ((Region2DImpl *) objG)->cbegin();
+        if(*objGregionIterator != ((Region2DImpl *) objG)->cbegin())
+            *objGregionIterator = ((Region2DImpl *) objG)->cbegin();
     }
 
     // Dtj Dec 10, 2015
@@ -210,27 +201,6 @@ void ParallelObjectTraversal::selectFirst() {
 
 
     // Point2DPoint2D
-//    if (objF->isPoint2D()  && objG->isPoint2D()) {
-//        if (objFpoiIterator->isEmpty() && objGpoiIterator->isEmpty()) {
-//            object_value = none;
-//            status_value = end_of_both;
-//        } else {
-//            if (objGpoiIterator->isEmpty())
-//                object_value = first;
-//            else if (objFpoiIterator->isEmpty())
-//                object_value = second;
-//            else {
-//                if (*objFpoiIterator == *objGpoiIterator) {
-//                    object_value = both;
-//                }
-//                status_value = end_of_none;
-//            }
-//        }
-//
-//    }
-
-
-
     if (objF->isPoint2D() && objG->isPoint2D()) {
 
         // TODO: check whether "isEmpty()" useful
@@ -256,6 +226,7 @@ void ParallelObjectTraversal::selectFirst() {
 
     }
 
+    // Point2DLine2D
     if (objF->isPoint2D() && objG->isLine2D()) {
 
         // TODO: check whether "isEmpty()" useful
@@ -283,6 +254,7 @@ void ParallelObjectTraversal::selectFirst() {
 
     }
 
+    // Point2DRegion2D
     if (objF->isPoint2D() && objG->isRegion2D()) {
 
         // TODO: check whether "isEmpty()" useful
@@ -309,7 +281,8 @@ void ParallelObjectTraversal::selectFirst() {
         }
 
     }
-
+    
+    // Line2DLine2D
     if (objF->isLine2D() && objG->isLine2D()) {
 
         // TODO: check whether "isEmpty()" useful
@@ -335,6 +308,7 @@ void ParallelObjectTraversal::selectFirst() {
 
     }
 
+    // Line2DRegion2D
     if (objF->isLine2D() && objG->isRegion2D()) {
 
         // TODO: check whether "isEmpty()" useful
@@ -362,6 +336,7 @@ void ParallelObjectTraversal::selectFirst() {
 
     }
 
+    // Region2DRegion2D
     if (objF->isRegion2D() && objG->isRegion2D()) {
 
         // TODO: check whether "isEmpty()" useful
@@ -621,7 +596,8 @@ void ParallelObjectTraversal::selectNext() {
     }
 
     // do comparison of the object f and g and set the object value
-    if (status_value == end_of_none) {
+    //    if (status_value == end_of_none) {   // <=== confirm again not to use this but '!= end_of_both'
+    if (status_value != end_of_both) {
         if (objF->isPoint2D() && objG->isPoint2D()) {
 
             // set the object to the smaller Poi2D, if both equal then set object to both
