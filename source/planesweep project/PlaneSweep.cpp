@@ -463,21 +463,94 @@ void PlaneSweep::updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject
 
     SegmentClass predecessorSegmentClass = predecessorNode->key.getSegmentClass();
     SegmentClass successorSegmentClass = successorNode->key.getSegmentClass();
+    bool iaPred, iaSucc, iaCurr = sweepLineStatusObject.getInsideAbove();
 
-    if (predecessorNode != NULL) {
+    if (predecessorNode && successorNode) {
+
+    } else if (predecessorNode != NULL) {
+        iaPred = predecessorNode->key.getInsideAbove();
         if (currentNode->key.getObject() == predecessorNode->key.getObject()) {
             isPredecessorSameObjectAsCurrent = true;
-
+            if(iaPred == true && iaCurr == false) {
+                // dummy val 0 for uol
+                int lorCurr = predecessorNode->key.getSegmentClass().getUpperOrLeft();
+                if (lorCurr == 1 || lorCurr == 2) {
+                    sweepLineStatusObject.setSegmentClass(lorCurr, 0);
+                }
+            } else if (iaPred == false && iaCurr ==true) {
+                // dummy val 0 for uol
+                int lorCurr = predecessorNode->key.getSegmentClass().getUpperOrLeft();
+                if (lorCurr==0 || lorCurr==1) {
+                    sweepLineStatusObject.setSegmentClass(lorCurr, 0);
+                }
+            }
+            /*
+             * Cases not possible:
+             * I) pred's upper is 2 and ia is 0.
+             * II) pred's ia=1 and curr's ia=1.
+             * III) pred's ia=0 and curr's ia=0.
+             * IV) pred's upper is 0 and ia is 1.
+             */
         } else {
             isPredecessorSameObjectAsCurrent = false;
+            if(iaPred ==true && iaCurr ==false) { //c1
+                int lorCurr = predecessorNode->key.getSegmentClass().getUpperOrLeft();
+                if(lorCurr ==2) {
+                    //dummy val 1 for uol
+                    sweepLineStatusObject.setSegmentClass(lorCurr, 1);
+                }
+                /*
+                 * CASES which do not occur:
+                 * I) pred's upper is 0 and ia is 1.
+                 * II) pred's upper is 1, ia=1, current's ia=0
+                 */
+            } else if (iaPred == true && iaCurr ==true) { //c2
+                int lorCurr = predecessorNode->key.getSegmentClass().getUpperOrLeft();
+                if(lorCurr == 1) {
+                    //dummy val 2 for uol
+                    sweepLineStatusObject.setSegmentClass(lorCurr, 2);
+                }
+                /*
+                 * CASES which do not occur:
+                 * I) pred's upper is 0 and ia is 1.
+                 * II) pred's upper is 2, ia=1, current's ia is 1.
+                 */
+            } else if (iaPred == false && iaCurr == true) { //c3
+                int lorCurr = predecessorNode->key.getSegmentClass().getUpperOrLeft();
+                if (lorCurr ==0) {
+                    //dummy val 1 for uol
+                    sweepLineStatusObject.setSegmentClass(lorCurr, 1);
+                }
+
+                /*
+                 * CASES which do NOT occur:
+                 * I)pred's ia=0, curr's ia=0, pred's upper=1.
+                 * II) pred's ia=0, pred's upper=2.
+                 * III) pred's ia=0, curr's ia=0. counter arguement : WHY NOT?
+                 */
+            }
         }
 
     } else {
         currentNode->key.getSegmentClass().setLowerOrRight(0); //Case1
     }
     if (successorNode != NULL) {
+        iaSucc = successorNode->key.getInsideAbove();
         if (currentNode->key.getObject() == successorNode->key.getObject()) {
             isSuccessorSameObjectAsCurrent = true;
+            if(iaSucc == true && iaCurr == false) {
+                //dummy val 0 for lor
+                int uol = successorNode->key.getSegmentClass().getUpperOrLeft();
+                if (uol==0 || uol==1) {
+                    sweepLineStatusObject.setSegmentClass(0,uol);
+                }
+            } else if (iaSucc == false && iaCurr == true) {
+                //dummy val 0 for lor
+                int uol = successorNode->key.getSegmentClass().getUpperOrLeft();
+                if (uol==1 || uol==2) {
+                    sweepLineStatusObject.setSegmentClass(0,uol);
+                }
+            }
         } else {
             isSuccessorSameObjectAsCurrent = false;
         }
