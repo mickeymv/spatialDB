@@ -40,11 +40,11 @@ public:
 
     bool operator == (Object2D& operand);
 
-    bool isPoint2D();
+    bool isPoint2D() const;
 
-    bool isLine2D();
+    bool isLine2D() const;
 
-    bool isRegion2D();
+    bool isRegion2D() const;
 
 };
 
