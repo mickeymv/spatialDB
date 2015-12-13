@@ -79,8 +79,8 @@ public:
     AttrHalfSeg2D* getMinAttrHalfSeg2DG();
 
     // setter methods
-    void setObject_value(const object &object_value);
-    void setStatus_value(const status &status_value);
+    void setObject(const object &object_value);
+    void setStatus(const status &status_value);
 
 private:
     //SelectFirst should be called in the POT constructor.
