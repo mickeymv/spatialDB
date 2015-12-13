@@ -45,8 +45,8 @@ public:
     // need to finalise the return type
     void setNextMin();
 
-    bool isObjectF(Object2D);
-    bool isObjectG(Object2D);
+    bool isObjectF(const Object2D);
+    bool isObjectG(const Object2D);
 
     Object2D getObjF();
     Object2D getObjG();
