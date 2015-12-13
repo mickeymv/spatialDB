@@ -35,9 +35,6 @@ public:
 
     void selectNext();
 
-    object getObject();
-
-    status getStatus();
 
     Point2D::ConstPoiIterator * getPoiObjIterator(object);
     Line2DImpl::ConstHalfSegIterator * getHalfSegIterator(object);
@@ -48,8 +45,7 @@ public:
     bool isObjectF(Object2D);
     bool isObjectG(Object2D);
 
-    Object2D getObjF();
-    Object2D getObjG();
+    
 
     Line2DImpl::ConstHalfSegIterator *  getNextObjIterator(HalfSeg2D,object);
     Region2DImpl::ConstAttributedHalfSegmentIterator *  getNextObjIterator(AttrHalfSeg2D,object);
@@ -60,6 +56,13 @@ public:
     bool isInObjG(Seg2D&);
 
 
+ // getter methods
+    object getObject();
+    status getStatus();
+    Object2D getObjF();
+    Object2D getObjG();
+    
+    
     Poi2D getPoiEvent(object objectEnumVal);
     HalfSeg2D getHalfSegEvent(object objectEnumVal);
     AttrHalfSeg2D getAttrHalfSegEvent(object objectEnumVal);
@@ -68,7 +71,6 @@ public:
     HalfSeg2D* getNextHalfSeg2DMin();
     AttrHalfSeg2D* getNextAttrHalfSeg2DMin();
 
-
     Poi2D* getMinPoi2DF();
     Poi2D* getMinPoi2DG();
     HalfSeg2D* getMinHalfSeg2DF();
@@ -76,6 +78,9 @@ public:
     AttrHalfSeg2D* getMinAttrHalfSeg2DF();
     AttrHalfSeg2D* getMinAttrHalfSeg2DG();
 
+    // setter methods
+    void setObject_value(const object &object_value);
+    void setStatus_value(const status &status_value);
 
 private:
     //SelectFirst should be called in the POT constructor.
