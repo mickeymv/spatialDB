@@ -38,13 +38,13 @@ public:
 //
 //    ObjectIterator ctail() const;
 
-    bool operator == (Object2D& operand);
+    bool operator == (const Object2D& operand) const ;
 
-    virtual bool isPoint2D();
+    virtual bool isPoint2D() const;
 
-    virtual bool isLine2D();
+    virtual bool isLine2D() const;
 
-    virtual bool isRegion2D();
+    virtual bool isRegion2D() const;
 
 };
 
