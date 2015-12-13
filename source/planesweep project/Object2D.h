@@ -8,9 +8,9 @@
 #include <memory>
 #include <typeinfo>
 
-#include "Topic2/Implementation/Point2D.h"
-#include "Topic2/Implementation/Line2D.h"
-#include "Topic2/Implementation/Region2D.h"
+//#include "Topic2/Implementation/Point2D.h"
+//#include "Topic2/Implementation/Line2D.h"
+//#include "Topic2/Implementation/Region2D.h"
 
 
 // 11/03/2015 DT
@@ -26,9 +26,9 @@ class Object2D {
 
 public:
 
-    Object2D();
+    Object2D(){};
 
-    ~Object2D();
+    ~Object2D(){};
 
 //    ObjectIterator cbegin() const;
 //
@@ -40,11 +40,11 @@ public:
 
     bool operator == (Object2D& operand);
 
-    bool isPoint2D();
+    virtual bool isPoint2D() const;
 
-    bool isLine2D();
+    virtual bool isLine2D() const;
 
-    bool isRegion2D();
+    virtual bool isRegion2D() const;
 
 };
 

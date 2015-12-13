@@ -29,7 +29,7 @@ public:
         end_of_first, end_of_second, end_of_both
     } status;
 
-    ParallelObjectTraversal(Object2D &, Object2D &);
+    ParallelObjectTraversal(const Object2D &, const Object2D &);
 
     ~ParallelObjectTraversal();
 
