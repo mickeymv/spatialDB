@@ -10,7 +10,7 @@
  *
 * Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
 *
-* Authors:Group 4 [Tjindra Djundi]
+* Authors:Group 4. Dtj.
 *
 * Date: Fall Semester 2015
 ******************************************************************************/
@@ -50,6 +50,7 @@ TopPredNumberPoint2DPoint2D Point2DPoint2D::getTopologicalRelationship() {
     exploreTopoPred();
     evaluateTopoPred();
 
+    //topPredNumberPoint2DPoint2D = TopPredNumberPoint2DPoint2D::pp_equal_m2;
     return topPredNumberPoint2DPoint2D;
 
 }
@@ -80,69 +81,85 @@ bool *Point2DPoint2D::getVG() {
 }
 
 
-// setter function for objF
-//void Point2DPoint2D::setObjF(const Point2D &objF) {
-//    Point2DPoint2D::objF = objF;
-//}
-//
-//
-//// setter function for objG
-//void Point2DPoint2D::setObjG(const Point2D &objG) {
-//    Point2DPoint2D::objG = objG;
-//}
-
-
 // explore topological predicate method
 void Point2DPoint2D::exploreTopoPred() {
 
     // this Explore algorithm below will set the vF and vG flag, but the function itself will return nothing (void).
     // the flag vF and vG set in the implementation below will be used by the "evaluateVerificationTopoPred" and "evaluateDeterminationTopoPred" function.
+    while ((pot->getStatus() != ParallelObjectTraversal::end_of_both) &&
+           !(vF[vF_Predicates::poi_disjoint] && vG[vG_Predicates::poi_disjoint_g] && vF[vF_Predicates::poi_shared])) {
 
-    // implementation...
-
-
-   // I have changed the status from orginially on paper checking the end_of_none to NOT end_of_both 
-   // otherwise the loop will exit early before all the Poi elements from both objects are traversed
-   // while ( (pot->getStatus() == ParallelObjectTraversal::end_of_none) &&
-   while ( (pot->getStatus() != ParallelObjectTraversal::end_of_both) &&
-           !(vF[poi_disjoint] && vG[poi_disjoint_g] && vF[poi_shared])) {
-
-        if (pot->getObject() == ParallelObjectTraversal::first) vF[poi_disjoint] = true;
-        else if (pot->getObject() == ParallelObjectTraversal::second) vG[poi_disjoint_g] = true;
+        if (pot->getObject() == ParallelObjectTraversal::first) vF[vF_Predicates::poi_disjoint] = true;
+        else if (pot->getObject() == ParallelObjectTraversal::second) vG[vG_Predicates::poi_disjoint_g] = true;
         else /* object both */
-            vF[poi_shared] = true;
+            vF[vF_Predicates::poi_shared] = true;
 
         pot->selectNext();
-
     }
 
-    // this part is according to the paper
-    if (pot->getStatus() == ParallelObjectTraversal::end_of_first) vG[poi_disjoint_g] = true;
-    else if (pot->getStatus() == ParallelObjectTraversal::end_of_second) vF[poi_disjoint] = true;
+    if (pot->getStatus() == ParallelObjectTraversal::end_of_first) vG[vG_Predicates::poi_disjoint_g] = true;
+    else if (pot->getStatus() == ParallelObjectTraversal::end_of_second) vF[vF_Predicates::poi_disjoint] = true;
 
-    // but I have added this below, it looks like it is missing in the paper:
-    if (pot->getObject()  == ParallelObjectTraversal::both) vF[poi_shared] = true;
-    
-    
-    cout << "vF[poi_shared] =" << vF[poi_shared] << endl;
-    cout << "vF[poi_disjoint] =" << vF[poi_disjoint] << endl;
-    cout << "vG[poi_disjoint] =" << vG[poi_disjoint_g] << endl;
-
+    // missing in the paper:
+    if (pot->getObject() == ParallelObjectTraversal::both) vF[vF_Predicates::poi_shared] = true;
 }
-
 
 // evaluate topological predicate method
 void Point2DPoint2D::evaluateTopoPred() {
 
+    // IMC 3x3 matrix array
+    int IMC[3][3];
+
+    // set all values to 0
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            IMC[i][j] = 0;
+        }
+    }
+
+    //set the respective element with the vF and vG results from exploreTopoPred()
+    if (vF[poi_shared]) IMC[0][0] = 1;
+    if (vF[poi_disjoint]) IMC[0][2] = 1;
+    if (vG[poi_disjoint_g]) IMC[2][0] = 1;
+
+    IMC[2][2] = 1; // always true
+
+
+    // test for pp_disjoint_m1
+    if (!IMC[0][0] && !IMC[0][1] && IMC[0][2]
+        && !IMC[1][0] && !IMC[1][1] && !IMC[1][2]
+        && IMC[2][0] && !IMC[2][1] && IMC[2][2]) {
+        topPredNumberPoint2DPoint2D = TopPredNumberPoint2DPoint2D::pp_disjoint_m1;
+        isPredSet = true;
+    } else
+    // test for pp_equal_m2
+    if (IMC[0][0] && !IMC[0][1] && !IMC[0][2]
+        && !IMC[1][0] && !IMC[1][1] && !IMC[1][2]
+        && !IMC[2][0] && !IMC[2][1] && IMC[2][2]) {
+        topPredNumberPoint2DPoint2D = TopPredNumberPoint2DPoint2D::pp_equal_m2;
+        isPredSet = true;
+    } else
+    // test for pp_inside_m3
+    if (IMC[0][0] && !IMC[0][1] && !IMC[0][2]
+        && !IMC[1][0] && !IMC[1][1] && !IMC[1][2]
+        && IMC[2][0] && !IMC[2][1] && IMC[2][2]) {
+        topPredNumberPoint2DPoint2D = TopPredNumberPoint2DPoint2D::pp_inside_m3;
+        isPredSet = true;
+    } else
+        // test for pp_contains_m4
+    if (IMC[0][0] && !IMC[0][1] && IMC[0][2]
+        && !IMC[1][0] && !IMC[1][1] && !IMC[1][2]
+        && !IMC[2][0] && !IMC[2][1] && IMC[2][2]) {
+        topPredNumberPoint2DPoint2D = TopPredNumberPoint2DPoint2D::pp_contains_m4;
+        isPredSet = true;
+    } else
+        // test for pp_overlap_m5
+    if (IMC[0][0] && !IMC[0][1] && IMC[0][2]
+        && !IMC[1][0] && !IMC[1][1] && !IMC[1][2]
+        && IMC[2][0] && !IMC[2][1] && IMC[2][2]) {
+        topPredNumberPoint2DPoint2D = TopPredNumberPoint2DPoint2D::pp_overlap_m5;
+        isPredSet = true;
+    }
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
