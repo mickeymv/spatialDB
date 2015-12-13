@@ -24,14 +24,13 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "../../Object2D.h"
-
+#include "RobustGeometricPrimitives2D.h"
 using namespace std;
 
 
-class Line2D : public Object2D
+class Line2D 
 {
-public:
+  public:
     //++++++++++++++++++++++++++++
     // Constructors and destructor
     //++++++++++++++++++++++++++++
@@ -46,7 +45,7 @@ public:
     // formal definition of this data type.
     Line2D(std::vector<Seg2D> segmentList);
 
-
+    
     // Constructor for complex Line structure. It takes as input a string that represent the textually represents
     //        the input vector of Segments.
     //
@@ -61,7 +60,7 @@ public:
     //
     // example for segment list of seg1 and seg2 here is: (((1,2),(3,4)),((5,6),(7,8)))  
     Line2D(std::string textualLineList);
-
+    
 
     // Copy constructor that constructs a Line2D object from a given Line2D
     // object "source".
@@ -78,7 +77,7 @@ public:
     //Destructor
     virtual ~Line2D();
 
-
+    
     //+++++++++++++++++++++
     // Assignment operators
     //+++++++++++++++++++++
@@ -92,7 +91,7 @@ public:
     // object as its value.
     Line2D& operator = (Line2D&& source);
 
-
+    
     //+++++++++++++++++++++
     // Comparison operators
     //+++++++++++++++++++++
@@ -101,19 +100,19 @@ public:
     //equal operator that checks if the Line2D object and input Line2D
     //object are the same spatial region.
     bool operator == ( Line2D& rhs);
-
+	
     //unequal operator that checks if the Line2D object and the inputted
     //Line2D object are different spatial regions. It is the logical opposite
     //of the == operator.
     bool operator != ( Line2D& rhs);
-
+	
     //less than operator that compares 2 Line2D objects and checks which one is lesser 
     //by comparing their lengths in the following way:
     //if length(x1) < length(x2) the object is less than "source" object
     //length(x1) < length(x2)
     //length(y1) < length(y2)
     //length(y1) < length(y2)
-    bool operator <  ( Line2D& rhs);
+    bool operator <  ( Line2D& rhs); 
 
     //less than operator that compares 2 Line2D objects and checks which one is lesser 
     //or equal by comparing their lengths in the following way:
@@ -121,7 +120,7 @@ public:
     //length(x1) <= length(x2)
     //length(y1) <= length(y2)
     //length(y1) <= length(y2)	
-    bool operator <= ( Line2D& rhs);
+    bool operator <= ( Line2D& rhs);   
 
     //less than operator that compares 2 Line2D objects and checks which one is greater 
     //by comparing their lengths in the following way:
@@ -129,7 +128,7 @@ public:
     //length(x1) > length(x2)
     //length(y1) > length(y2)
     //length(y1) > length(y2)	
-    bool operator >  (Line2D& rhs);
+    bool operator >  (Line2D& rhs);  
 
     //less than operator that compares 2 Line2D objects and checks which one is greater 
     //or equal by comparing their lengths in the following way:
@@ -137,7 +136,7 @@ public:
     //length(x1) >= length(x2)
     //length(y1) >= length(y2)
     //length(y1) >= length(y2)
-    bool operator >= (Line2D& rhs);
+    bool operator >= (Line2D& rhs);    
 
 
     //++++++++++++++++++++++++++++++++
@@ -146,7 +145,7 @@ public:
 
     // Predicate that checks whether a Line2D object is an empty Line2D
     // object. 
-    bool isEmptyLine2D() const;
+    bool isEmptyLine2D();
 
     // Method that yields the number of segments of Line2D object
     // If the Line2D object is an empty Line2D object, the value
@@ -171,9 +170,9 @@ public:
     // blocks is not possible.
     class ConstBlockIterator
     {
-        friend class Line2D;
+      friend class Line2D;
 
-    public:
+      public:
         // Default constructor that creates an empty constant block iterator.
         ConstBlockIterator();
 
@@ -217,10 +216,10 @@ public:
         bool operator <= (const ConstBlockIterator& rhs) const;
         bool operator >  (const ConstBlockIterator& rhs) const;
         bool operator >= (const ConstBlockIterator& rhs) const;
-
+        
         friend std::ostream&operator<<(std::ostream&, const ConstBlockIterator&);
 
-    protected:
+      protected:
         // Forward struct declaration for the hidden implementation of a
         // constant block iterator
         struct ConstBlockIteratorImplementation;
@@ -231,23 +230,110 @@ public:
 
     // Method that returns a constant block iterator to the first block of a
     // Line2D object.
-    ConstBlockIterator cbegin() const;
+    ConstBlockIterator bBegin() const;
 
     // Method that returns a constant block iterator to the last block of a
     // Line2D object.
-    ConstBlockIterator cend() const;
+    ConstBlockIterator bEnd() const;
 
     // Method that returns a constant block iterator to the position before the
     // first block of a Line2D object. Note that dereferencing this iterator
     // yields the empty constant block iterator.
-    ConstBlockIterator chead() const;
+    ConstBlockIterator bHead() const;
 
     // Method that returns a constant block iterator to the position after the
     // last block of a Line2D object. Note that dereferencing this iterator
     // yields the empty constant block iterator.
-    ConstBlockIterator ctail() const;
+    ConstBlockIterator bTail() const;
+    
+    
+    
+    // Constant segment iterator type that allows to navigate through the segments of
+    // a Line2D object in forward and reverse direction. A change of the
+    // segments is not possible.
+    class ConstSegIterator
+    {
+      friend class Line2D;
 
-protected:
+      public:
+        // Default constructor that creates an empty constant segment iterator.
+        ConstSegIterator();
+
+        // Copy constructor that constructs a constant segment iterator from a
+        // given constant segment iterator "source".
+        ConstSegIterator(const ConstSegIterator& source);
+
+        // Move constructor that moves a given constant segment iterator "source"
+        // to a constant segment iterator. The constant segment iterator "source"
+        // gets the empty constant segment iterator as its value.
+        ConstSegIterator(const ConstSegIterator&& source);
+
+        // Destructor that frees the main memory space allocated for a constant
+        // segment iterator.
+        ~ConstSegIterator();
+
+        // Assignment operator that assigns another constant segment iterator
+        // "rhs" to the constant segment iterator.
+        ConstSegIterator& operator = (const ConstSegIterator& rhs);
+
+        // Predicate that tests whether a constant segment iterator is empty.
+        bool isEmpty() const;
+
+        // Increment/decrement operators '++', '--'
+        ConstSegIterator& operator ++ ();   // prefix
+        ConstSegIterator operator ++ (int postfix); // postfix
+        ConstSegIterator& operator -- ();   // prefix
+        ConstSegIterator operator -- (int postfix); // postfix
+
+        // Dereferencing operators that return the value at the constant segment
+        // iterator position. Dereferencing is only allowed if the iterator
+        // points to a segment. The dereferenced value cannot be changed.
+        const Seg2D& operator *() const;
+        const Seg2D* operator ->() const;
+
+        // Comparison operators that compare a constant segment iterator position
+        // with another const segment iterator position "rhs"
+        bool operator == (const ConstSegIterator& rhs) const;
+        bool operator != (const ConstSegIterator& rhs) const;
+        bool operator <  (const ConstSegIterator& rhs) const;
+        bool operator <= (const ConstSegIterator& rhs) const;
+        bool operator >  (const ConstSegIterator& rhs) const;
+        bool operator >= (const ConstSegIterator& rhs) const;
+        
+        friend std::ostream&operator<<(std::ostream&, const ConstSegIterator&);
+
+      protected:
+        // Forward struct declaration for the hidden implementation of a
+        // constant segment iterator
+        struct ConstSegIteratorImplementation;
+
+        // Declaration of an opaque pointer
+        ConstSegIteratorImplementation* handlei;
+    }; // class ConstSegIterator
+
+    // Method that returns a constant segment iterator to the first segment of a
+    // Line2D object.
+    ConstSegIterator sBegin() const;
+
+    // Method that returns a constant segment iterator to the last segment of a
+    // Line2D object.
+    ConstSegIterator sEnd() const;
+
+    // Method that returns a constant segment iterator to the position before the
+    // first segment of a Line2D object. Note that dereferencing this iterator
+    // yields the empty constant segment iterator.
+    ConstSegIterator sHead() const;
+
+    // Method that returns a constant segment iterator to the position after the
+    // last segment of a Line2D object. Note that dereferencing this iterator
+    // yields the empty constant segment iterator.
+    ConstSegIterator sTail() const;
+    
+    
+    
+    
+
+  protected:
     // Forward struct declaration for the hidden implementation of class
     // "Line2D" as an abstract data type (ADT)
     struct Line2DSImpl;
