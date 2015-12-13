@@ -10,10 +10,11 @@
  *
 * Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
 *
-* Authors:Group 4 [Michael Kemerer,Tjindra Djundi,Natasha Mandal,Aswini Ramesh,Kyuseo Park]
+* Authors:Group 4. DTj.
 *
 * Date: Fall Semester 2015
 ******************************************************************************/
+
 
 #ifndef POINT2DPONT2D_POINT2DPOINT2D_H
 #define POINT2DPONT2D_POINT2DPOINT2D_H
@@ -35,14 +36,14 @@ public:
 
     TopPredNumberPoint2DPoint2D getTopologicalRelationship();
 
-    bool overlap();
-    bool disjoint();
-    bool meet();
-    bool equal();
-    bool contains();
-    bool covers();
-    bool coveredBy();
-    bool inside();
+    //    bool overlap();
+//    bool disjoint();
+//    bool meet();
+//    bool equal();
+//    bool contains();
+//    bool covers();
+//    bool coveredBy();
+//    bool inside();
 
 private:
 
@@ -52,6 +53,7 @@ private:
     };
 
     enum  vG_Predicates {
+        // the same as 'poi_disjoint", but we named it differently so it has no conflict with the same enum in vF_Predicates
         poi_disjoint_g
     };
 
@@ -74,7 +76,6 @@ private:
 //    void setObjF(const Point2D objF);
 //    void setObjG(const Point2D objG);
 
-
     // Exploration function
     void exploreTopoPred();
 
@@ -84,7 +85,6 @@ private:
     // properties
     ParallelObjectTraversal * pot;
 };
-
 
 
 #endif //POINT2DPONT2D_POINT2DPOINT2D_H
