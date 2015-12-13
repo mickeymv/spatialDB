@@ -317,7 +317,7 @@ Region2D spatialIntersection(Region2D &regionLhs,
                              Region2D &regionRhs) {
     //Region2D region;
     Region2D emptyRegionObject;
-    if (&regionLhs == NULL || &regionRhs == NULL || regionLhs.isEmptyRegion2D() || regionRhs.isEmptyRegion2D()) {
+    if (regionLhs.isEmptyRegion2D() || regionRhs.isEmptyRegion2D()) {
         return emptyRegionObject;
     }
 

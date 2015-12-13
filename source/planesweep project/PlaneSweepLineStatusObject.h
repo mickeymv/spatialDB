@@ -40,6 +40,12 @@ public:
 
     bool operator==(PlaneSweepLineStatusObject &operand);
 
+    bool operator>=(PlaneSweepLineStatusObject &operand);
+
+    bool operator<=(PlaneSweepLineStatusObject &operand);
+
+    PlaneSweepLineStatusObject operator=(PlaneSweepLineStatusObject &operand);
+
     SegmentClass getSegmentClass() {
         return segmentClass;
     }

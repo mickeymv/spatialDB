@@ -76,9 +76,11 @@ private:
 template<class T>
 void AVLTree<T>::inOrder1(AVLnode<T> *n, T **result, int *count) {
     if (n != NULL) {
-        inOrder1(n->left, result, *count++);
+        count++;
+        inOrder1(n->left, result, count);
         *result[*count] = n->key;
-        inOrder1(n->right, result, *count++);
+        count++;
+        inOrder1(n->right, result, count);
         *result[*count] = n->key;
     }
 
@@ -287,13 +289,14 @@ bool AVLTree<T>::insert(T key) {
 
 template<class T>
 AVLnode<T> *AVLTree<T>::FindKey(const T val) {
+    T tempVal = val;
     if (root != NULL) {
         AVLnode<T> *n = root;
 
         while (n) {
-            if (n->key == val)
+            if (n->key == tempVal)
                 return n;
-            if (n->key > val)
+            if (n->key > tempVal)
                 n = n->left;
             else
                 n = n->right;
@@ -304,6 +307,7 @@ AVLnode<T> *AVLTree<T>::FindKey(const T val) {
 
 template<class T>
 void AVLTree<T>::deleteKey(const T delKey) {
+    T tempDelKey = delKey;
     if (root == NULL)
         return;
 
@@ -316,8 +320,8 @@ void AVLTree<T>::deleteKey(const T delKey) {
     while (child != NULL) {
         parent = n;
         n = child;
-        child = delKey >= n->key ? n->right : n->left;
-        if (delKey == n->key)
+        child = tempDelKey >= n->key ? n->right : n->left;
+        if (tempDelKey == n->key)
             delNode = n;
     }
 
@@ -326,7 +330,7 @@ void AVLTree<T>::deleteKey(const T delKey) {
 
         child = n->left != NULL ? n->left : n->right;
 
-        if (root->key == delKey) {
+        if (root->key == tempDelKey) {
             root = child;
         }
         else {
