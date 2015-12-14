@@ -36,7 +36,7 @@ class PlaneSweep {
 public:
 
     // Constructor with two Object2D parameters
-    PlaneSweep(Object2D, Object2D);
+    PlaneSweep(const Object2D &, const Object2D &);
 
     // Destructor
     ~PlaneSweep();

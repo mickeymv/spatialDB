@@ -7,7 +7,7 @@
 
 #include "PlaneSweep.h"
 
-PlaneSweep::PlaneSweep(Object2D objF, Object2D objG) {
+PlaneSweep::PlaneSweep(const Object2D &objF, const Object2D &objG) {
     pot = new ParallelObjectTraversal(objF, objG);
     this->objF = objF;
     this->objG = objG;
