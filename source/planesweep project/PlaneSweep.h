@@ -1,6 +1,18 @@
-//
-// Created by Djundi on 11/3/15.
-//
+/******************************************************************************
+* File: PlaneSweep.h
+*******************************************************************************
+* Purpose: Interface to the class for Plane Sweep
+*
+* Description: Plane sweep scans a given configuration of two spatial objects, detects
+* all topological events (like intersections), and records them in data structures.
+*
+* Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
+*
+* Authors: Group 3 (Amritesh Randhi, Arvindh Mani, Mickey Vellukunnel, Sarath Francis)
+*          Group 4 (Aswini Ramesh, Djundi Tjindra, Kyuseo Park, Michael Kemerer, Natasha Mandal)
+*
+* Date: Fall Semester 2015
+******************************************************************************/
 
 #ifndef PLANESWEEP_PROJECT_PLANESWEEP_H
 #define PLANESWEEP_PROJECT_PLANESWEEP_H
@@ -50,6 +62,7 @@ public:
     ParallelObjectTraversal::status getStatus();
 
     void setObject(ParallelObjectTraversal::object);
+
     void setStatus(ParallelObjectTraversal::status);
 
     void newSweep();
@@ -75,14 +88,18 @@ public:
 
     void delRight(PlaneSweepLineStatusObject &);
 
-	bool getInsideAbove(Seg2D seg);
-	SegmentClass getSegClass(Seg2D seg);
-	void setInsideAbove(Seg2D seg, bool ia);
-	void setSegClass(Seg2D seg, int lOrR, int uOrL);
+    bool getInsideAbove(Seg2D seg);
+
+    SegmentClass getSegClass(Seg2D seg);
+
+    void setInsideAbove(Seg2D seg, bool ia);
+
+    void setSegClass(Seg2D seg, int lOrR, int uOrL);
 
     bool predExists(Seg2D &);
 
     SegmentClass getPredSegmentClass(Seg2D);
+
     bool getPredInsideAbove(Seg2D);
 
     Seg2D predOfP(Poi2D &);
@@ -119,7 +136,7 @@ private:
     MinHeap<AttrHalfSeg2D> dynamicEPSObjF;
     MinHeap<AttrHalfSeg2D> dynamicEPSObjG;
 
-    Object2D objF,objG;
+    Object2D objF, objG;
 
 
     /*
@@ -138,7 +155,6 @@ private:
     int findLeast();
 
 
-
     /*
      *  This function which is called from within the calculateRelation functions,
      *  it would split the two passed segments into more segments based on the relation between them and
@@ -146,25 +162,26 @@ private:
      *  The insertIntoDynamicEPS() function is just the insert() function for the
      *  two different min-heaps for the objects under consideration.
      */
-    void splitLines(Seg2D& firstSegment, Seg2D& secondSegment);
+    void splitLines(Seg2D &firstSegment, Seg2D &secondSegment);
 
     /*
      * This function is called within the splitLines function and would update the
      * sweepLineStatus data structure with the new updated split segment.
      */
-    void updateSweepLineStatus(Seg2D& segmentToBeReplaced, Seg2D& segmentToReplaceWith);
+    void updateSweepLineStatus(Seg2D &segmentToBeReplaced, Seg2D &segmentToReplaceWith);
 
 
     /*
      * Functions for getting predecessor and getting successor
      */
-    PlaneSweepLineStatusObject getPredecessor(PlaneSweepLineStatusObject&);
-    PlaneSweepLineStatusObject getSuccessor(PlaneSweepLineStatusObject&);
+    PlaneSweepLineStatusObject getPredecessor(PlaneSweepLineStatusObject &);
+
+    PlaneSweepLineStatusObject getSuccessor(PlaneSweepLineStatusObject &);
 
     /*
      * Function for checking if a relation exists between two segments
      */
-    bool isRelation(Seg2D&, Seg2D&);
+    bool isRelation(Seg2D &, Seg2D &);
 
     void updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject &sweepLineStatusObject);
 
