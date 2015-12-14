@@ -342,13 +342,12 @@ void PlaneSweep::selectNext() {
 
 }
 
-ParallelObjectTraversal::object  PlaneSweep::getObject() {
+ParallelObjectTraversal::object PlaneSweep::getObject() {
     // temporary, to be replaced
     return getPot()->getObject();
-
 }
 
-ParallelObjectTraversal::status  PlaneSweep::getStatus() {
+ParallelObjectTraversal::status PlaneSweep::getStatus() {
     // temporary, to be replaced
     return getPot()->getStatus();
 }
