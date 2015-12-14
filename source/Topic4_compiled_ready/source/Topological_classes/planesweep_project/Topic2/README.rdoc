@@ -1,0 +1,12 @@
+Topic2 branch has the interface and implementation for Spatial Data types.
+
+The three main Spatial datatypes are:
+1.Point
+2.Line
+3.Region
+
+A Point datatype is a collection of Poi2D (regular points)
+A Line can be a simple or complex line
+A region can be a simple region with/without holes or a complex region
+
+ 
