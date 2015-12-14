@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include "planesweep-project/Topic1/RobustGeometricPrimitives2D.h"
 #include "planesweep-project/Topic2/Implementation/Line2D.h"
-#include "planesweep-project/Topic2/Interfaces/Region2D.h"
+#include "planesweep-project/Topic2/Implementation/Region2D.h"
 
 int main() {
 
@@ -43,7 +43,7 @@ int main() {
 
 
 //Computation of spatial difference between two spatial regions.
-    region = spatialDifference(region, region);
+  //  region = spatialDifference(region, region);
 
     printf("\nSuccessfully ran Group 3's Spatial Operations Program!\n\n");
 
