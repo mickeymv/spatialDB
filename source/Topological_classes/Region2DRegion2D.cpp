@@ -101,7 +101,7 @@ void Region2DRegion2D::exploreTopoPred()
 
         if((last_dp_in_F==last_dp_in_G)||(last_dp_in_F==S.lookAhead(h,objG))||(last_dp_in_G==S.lookAhead(h,objF)))
         {
-            vF[bound_poi_shared]=1;
+            vF[bound_poi_shared]=true;
         }
 
         if(!h.hseg.isLeft) // h is a right half segment
@@ -111,85 +111,85 @@ void Region2DRegion2D::exploreTopoPred()
             {
                 if((overlapNumber.getUpperOrLeft()==0)&&(overlapNumber.getLowerOrRight()==1))
                 {
-                    vF[zero_one]=1;
+                    vF[zero_one]=true;
                 }
                 else if((overlapNumber.getUpperOrLeft()==1)&&(overlapNumber.getLowerOrRight()==0))
                 {
-                    vF[one_zero]=1;
+                    vF[one_zero]=true;
                 }
                 else if((overlapNumber.getUpperOrLeft()==1)&&(overlapNumber.getLowerOrRight()==2))
                 {
-                    vF[one_two]=1;
+                    vF[one_two]=true;
                 }
                 else if((overlapNumber.getUpperOrLeft()==2)&&(overlapNumber.getLowerOrRight()==1))
                 {
-                    vF[two_one]=1;
+                    vF[two_one]=true;
                 }
                 else if((overlapNumber.getUpperOrLeft()==0)&&(overlapNumber.getLowerOrRight()==2))
                 {
-                    vF[zero_two]=1;
+                    vF[zero_two]=true;
                 }
                 else if((overlapNumber.getUpperOrLeft()==2)&&(overlapNumber.getLowerOrRight()==0))
                 {
-                    vF[two_zero]=1;
+                    vF[two_zero]=true;
                 }
                 else if((overlapNumber.getUpperOrLeft()==1)&&(overlapNumber.getLowerOrRight()==1))
                 {
-                    vF[one_one]=1;
+                    vF[one_one]=true;
                 }
             }
             else if(S.getObject()==ParallelObjectTraversal::second)
             {
                 if((overlapNumber.getUpperOrLeft()==0)&&(overlapNumber.getLowerOrRight()==1))
                 {
-                    vG[zero_one_g]=1;
+                    vG[zero_one_g]=true;
                 }
                 else if((overlapNumber.getUpperOrLeft()==1)&&(overlapNumber.getLowerOrRight()==0))
                 {
-                    vG[one_zero_g]=1;
+                    vG[one_zero_g]=true;
                 }
                 else if((overlapNumber.getUpperOrLeft()==1)&&(overlapNumber.getLowerOrRight()==2))
                 {
-                    vG[one_two_g]=1;
+                    vG[one_two_g]=true;
                 }
                 else if((overlapNumber.getUpperOrLeft()==2)&&(overlapNumber.getLowerOrRight()==1))
                 {
-                    vG[two_one_g]=1;
+                    vG[two_one_g]=true;
                 }
             }
             else // object = both
             {
                 if((overlapNumber.getUpperOrLeft()==0)&&(overlapNumber.getLowerOrRight()==1))
                 {
-                    vF[zero_one]=1;
-                    vG[zero_one_g]=1;
+                    vF[zero_one]=true;
+                    vG[zero_one_g]=true;
                 }
                 else if((overlapNumber.getUpperOrLeft()==1)&&(overlapNumber.getLowerOrRight()==0))
                 {
-                    vF[one_zero]=1;
-                    vG[one_zero_g]=1;
+                    vF[one_zero]=true;
+                    vG[one_zero_g]=true;
                 }
                 else if((overlapNumber.getUpperOrLeft()==1)&&(overlapNumber.getLowerOrRight()==2))
                 {
-                    vF[one_two]=1;
-                    vG[one_two_g]=1;
+                    vF[one_two]=true;
+                    vG[one_two_g]=true;
                 }
                 else if((overlapNumber.getUpperOrLeft()==2)&&(overlapNumber.getLowerOrRight()==1))
                 {
-                    vF[two_one]=1;
-                    vG[two_one_g]=1;
+                    vF[two_one]=true;
+                    vG[two_one_g]=true;
                 }
                 else if((overlapNumber.getUpperOrLeft()==0)&&(overlapNumber.getLowerOrRight()==2))
                 {
-                    vF[zero_two]=1;
+                    vF[zero_two]=true;
                 }
                 else if((overlapNumber.getUpperOrLeft()==2)&&(overlapNumber.getLowerOrRight()==0))
                 {
-                    vF[two_zero]=1;
+                    vF[two_zero]=true;
                 }
                 else if((overlapNumber.getUpperOrLeft()==1)&&(overlapNumber.getLowerOrRight()==1))
                 {
-                    vF[one_one]=1;
+                    vF[one_one]=true;
                 }
             }
             S.delRight(h.hseg.seg);
@@ -221,7 +221,8 @@ void Region2DRegion2D::exploreTopoPred()
 
             if((S.getObject()==ParallelObjectTraversal::first)||(S.getObject()==ParallelObjectTraversal::both))
             {
-                if(S.getInsideAbove(h.hseg.seg)) // TODO Should we pass object F here??
+
+                if(h.insideAbove) // TODO Should we pass object F here??
                 {
                     upperS=upperS+1;
                 }
@@ -233,7 +234,7 @@ void Region2DRegion2D::exploreTopoPred()
 
             if((S.getObject()==ParallelObjectTraversal::second)||(S.getObject()==ParallelObjectTraversal::both))
             {
-                if(S.getInsideAbove(h.hseg.seg)) // TODO Should we pass object G here??
+                if(h.insideAbove) // TODO Should we pass object G here??
                 {
                     upperS=upperS+1;
                 }
@@ -251,12 +252,53 @@ void Region2DRegion2D::exploreTopoPred()
 
     if(S.getStatus()==ParallelObjectTraversal::end_of_first)
     {
-        vG[zero_one_g]=1;
-        vG[one_zero_g]=1;
+        vG[zero_one_g]=true;
+        vG[one_zero_g]=true;
     }
     else if(S.getStatus()==ParallelObjectTraversal::end_of_second)
     {
-        vF[zero_one]=1;
-        vF[one_zero]=1;
+        vF[zero_one]=true;
+        vF[one_zero]=true;
     }
+}
+
+void Region2DRegion2D::evaluateTopoPred()
+{
+    int IMC[3][3];
+
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            IMC[i][j] = 0;
+        }
+    }
+
+    if(vF[zero_one]||vF[one_zero])
+    {
+        IMC[1][2]=1;
+    }
+    if(vG[zero_one_g]||vG[one_zero_g])
+    {
+        IMC[2][1]=1;
+    }
+    if(vF[one_two]||vF[two_one])
+    {
+        IMC[1][0]=1;
+    }
+    if(vG[one_two_g]||vG[two_one_g])
+    {
+        IMC[0][1]=1;
+    }
+    if(vF[zero_two]||vF[two_zero])
+    {
+        IMC[1][1]=1;
+        IMC[0][0]=1;
+    }
+    if(vF[one_one])
+    {
+        IMC[1][1]=1;
+        IMC[0][2]=1;
+        IMC[2][0]=1;
+    }
+
 }

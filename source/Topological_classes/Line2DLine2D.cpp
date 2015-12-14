@@ -235,25 +235,25 @@ void Line2DLine2D::evaluateTopoPred() {
     if (vF[seg_shared] && vF[interior_poi_shared]) {
         IMC[0][0] = 1;
     }
-    else if (vG[bound_on_interior_g]) {
+    if (vG[bound_on_interior_g]) {
         IMC[0][1] = 1;
     }
-    else if (vF[seg_unshared]) {
+    if (vF[seg_unshared]) {
         IMC[0][2] = 1;
     }
-    else if (vF[bound_on_interior]) {
+    if (vF[bound_on_interior]) {
         IMC[1][0] = 1;
     }
-    else if (vF[bound_shared]) {
+    if (vF[bound_shared]) {
         IMC[1][1] = 1;
     }
-    else if (vF[bound_disjoint]) {
+    if (vF[bound_disjoint]) {
         IMC[1][2] = 1;
     }
-    else if (vG[seg_unshared_g]) {
+    if (vG[seg_unshared_g]) {
         IMC[2][0] = 1;
     }
-    else if (vG[bound_disjoint_g]) {
+    if (vG[bound_disjoint_g]) {
         IMC[2][1] = 1;
     }
 

@@ -85,7 +85,7 @@ void Point2DRegion2D::exploreTopoPred() {
 
 
             AttrHalfSeg2D h = S.getAttrHalfSegEvent(ParallelObjectTraversal::second);
-            bool ia = S.getInsideAbove(h.hseg.seg);
+            bool ia = h.insideAbove;
 
             if(h.hseg.isLeft) {
                 S.addLeft(h.hseg.seg);
