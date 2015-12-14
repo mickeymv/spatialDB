@@ -91,13 +91,6 @@ public:
     // Method that checks whether the given segments are within an object
     bool isInObjF(Seg2D&);
     bool isInObjG(Seg2D&);
-
-
-    // Getter methods for objF, objG, object, status
-    object getObject();
-    status getStatus();
-    Object2D getObjF();
-    Object2D getObjG();
     
     // TODO Are these methods needed?
     Poi2D getPoiEvent(object objectEnumVal);
