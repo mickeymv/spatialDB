@@ -40,7 +40,6 @@
 Point2D spatialIntersection(const Point2D &pointLhs, const Point2D &pointRhs) {
     Point2D emptyPointObject;
     if (pointLhs.isEmptyPoint2D() || pointRhs.isEmptyPoint2D()) {
-        //TODO: ask group2 to make isEmpty const.
         return emptyPointObject;
     }
 
@@ -63,7 +62,6 @@ Point2D spatialIntersection(const Point2D &pointLhs, const Point2D &pointRhs) {
 Point2D spatialUnion(const Point2D &pointLhs, const Point2D &pointRhs) {
     Point2D emptyPointObject;
     if (pointLhs.isEmptyPoint2D() && pointRhs.isEmptyPoint2D()) {
-        //TODO: ask group2 to make isEmpty const.
         return emptyPointObject;
     }
 
@@ -91,7 +89,6 @@ Point2D spatialUnion(const Point2D &pointLhs, const Point2D &pointRhs) {
 Point2D spatialDifference(const Point2D &pointLhs, const Point2D &pointRhs) {
     Point2D emptyPointObject;
     if (pointLhs.isEmptyPoint2D()) {
-        //TODO: ask group2 to make isEmpty const.
         return emptyPointObject;
     }
 
