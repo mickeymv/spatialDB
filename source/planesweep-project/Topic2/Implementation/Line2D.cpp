@@ -47,7 +47,7 @@
   // Line2D that holds the different variables of the line2D structure
   struct Line2D::Line2DSImpl
   {
-	 std::map<int, std::vector<HalfSeg2D *>> mapHseg; //map of vectors holding pointers for the blocks' halfsegments within segments 
+	 std::map<int, std::vector<HalfSeg2D *> > mapHseg; //map of vectors holding pointers for the blocks' halfsegments within segments
      std::vector<HalfSeg2D> segments;                 //ordered set of all HalfSegments regarding the full Line2D structure
      Line2D::ConstBlockIterator::ConstBlockIteratorImplementation firstBlock;  //pointer to the segments vector
      Line2D::ConstBlockIterator::ConstBlockIteratorImplementation lastBlock;   //pointer to the segments vector

@@ -32,8 +32,8 @@ using namespace std;
   struct Region2D::Region2DImplementation
   {
       std::vector<AttrHalfSeg2D> segments;         //ordered set of all attributed half segments regarding the full Region2D structure   
-      std::map<int, std::vector<AttrHalfSeg2D *>> cycles;
-      std::map<int, std::map<int, std::vector<AttrHalfSeg2D *>>> faces;
+      std::map<int, std::vector<AttrHalfSeg2D *> > cycles;
+      std::map<int, std::map<int, std::vector<AttrHalfSeg2D *> > > faces;
   };
   
   //++++++++++++++++++++++++++++
@@ -249,7 +249,7 @@ using namespace std;
     
 	
 	// Grouping all cycles into faces
-    std::map<int, std::vector<AttrHalfSeg2D *>> fe;
+    std::map<int, std::vector<AttrHalfSeg2D *> > fe;
     
     size = handle->cycles.size();
     int checked[size];
@@ -737,7 +737,7 @@ using namespace std;
     
 	
 	// Grouping all cycles into faces
-    std::map<int, std::vector<AttrHalfSeg2D *>> fe;
+    std::map<int, std::vector<AttrHalfSeg2D *> > fe;
     
     size = handle->cycles.size();
     int checked[size];
