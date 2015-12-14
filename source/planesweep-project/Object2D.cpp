@@ -3,9 +3,9 @@
 //
 
 #include "Object2D.h"
+#include "Topic2/Implementation/Region2D.h"
 #include "Topic2/Implementation/Point2D.h"
-#include "Topic2/Implementation/Line2DImpl.h"
-#include "Topic2/Implementation/Region2DImpl.h"
+#include "Topic2/Implementation/Line2D.h"
 
 
 // Equal operator that checks if the Object2D object and the operand Object2D are the same

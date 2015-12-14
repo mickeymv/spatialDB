@@ -19,7 +19,7 @@
 #ifndef Line2D_H
 #define Line2D_H
 
-#include "RobustGeometricPrimitives2D.h"
+#include "../../Topic1/RobustGeometricPrimitives2D.h"
 #include "../../Object2D.h"
 #include <vector>
 #include <map>

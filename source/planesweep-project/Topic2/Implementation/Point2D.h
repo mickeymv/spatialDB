@@ -16,7 +16,7 @@
 #define POINT2D_H_
 
 #include <vector>
-#include "RobustGeometricPrimitives2D.h"
+#include "../../Topic1/RobustGeometricPrimitives2D.h"
 #include "../../Object2D.h"
 
 using namespace std;
