@@ -1,10 +1,13 @@
-all: SpatialOperationsMainClass.o SpatialOperations.o;
-	g++ SpatialOperationsMainClass.o SpatialOperations.o -o SpatialOperationsProgram;
-SpatialOperationsMainClass.o: SpatialOperationsMainClass.cpp SpatialOperations.h;
-	g++ -c SpatialOperationsMainClass.cpp;
-SpatialOperations.o: SpatialOperations.cpp SpatialOperations.h;
-	g++ -c SpatialOperations.cpp;
-clean:
-	rm -rf *.o
-	rm SpatialOperationsProgram;
+SOURCES=$(shell find . -name "*.cpp")
+OBJECTS=$(SOURCES:%.cpp=%.o)
+TARGET=SpatialOps
 
+.PHONY: all
+all: $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(LINK.cpp) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+.PHONY: clean
+clean:
+	rm -f $(TARGET) $(OBJECTS)

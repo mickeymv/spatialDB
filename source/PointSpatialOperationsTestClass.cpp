@@ -1,5 +1,5 @@
 #include "SpatialOperations.h"
-#include "planesweep project/Topic2/Implementation/Point2D.h"
+#include "planesweep-project/Topic2/Implementation/Point2D.h"
 
 int main()
 {

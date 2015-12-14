@@ -1,4 +1,34 @@
-#include "MinHeap.h"
+//
+// Created by Mickey Vellukunnel on 11/25/15.
+//
+
+#ifndef PLANESWEEP_PROJECT_MINHEAP_H
+#define PLANESWEEP_PROJECT_MINHEAP_H
+
+#include "vector"
+#include "Topic1/RobustGeometricPrimitives2D.h"
+
+using namespace std;
+
+template<class T>
+class MinHeap {
+public:
+    MinHeap(int MinHeapSize = 10);
+    ~MinHeap() {delete [] heap;}
+    int Size() const {return CurrentSize;}
+    T GetMin();
+    T GetNext(T x);
+    MinHeap<T>& Insert(const T& x);
+    MinHeap<T>& DeleteMin();
+    void Initialize(T a[], int size, int ArraySize);
+    void Deactivate() {heap = 0;}
+    void Output() const;
+    bool isEmpty();
+private:
+    int CurrentSize, MaxSize;
+    T *heap; // element array
+};
+
 
 template<class T>
 MinHeap<T>::MinHeap(int MinHeapSize)
@@ -10,14 +40,16 @@ MinHeap<T>::MinHeap(int MinHeapSize)
 
 template<class T>
 MinHeap<T>& MinHeap<T>::Insert(const T& x)
-{// Insert x into the min heap.
+{
+    T temp = x;
+// Insert x into the min heap.
     if (CurrentSize == MaxSize)
         return *this; // TODO - find out what to do
 
     // find place for x
     // i starts at new leaf and moves up tree
     int i = ++CurrentSize;
-    while (i != 0 && x < heap[i/2]) {
+    while (i != 0 && temp < heap[i/2]) {
         // cannot put x in heap[i]
         heap[i] = heap[i/2]; // move element down
         i /= 2; // move to parent
@@ -104,10 +136,10 @@ void MinHeap<T>::Output() const
 
 template<class T>
 T MinHeap<T>::GetMin() {
-
-        if (CurrentSize == 0)
-            return nullptr;
-        return heap[0];//
+    AttrHalfSeg2D attrHalfSeg2D;
+    if (CurrentSize == 0)
+        return attrHalfSeg2D;
+    return heap[0];//
 
 }
 
@@ -132,14 +164,14 @@ T MinHeap<T>::GetNext(T x)
     {
         if((heap[i]>x)&&(result== nullptr))
         {
-            result = heap[i];
+            result = &heap[i];
         }
         else if((heap[i]>x)&&(result!= nullptr))
         {
-         if(heap[i]<result)
-         {
-             result = heap[i];
-         }
+            if(&heap[i]<result)
+            {
+                result = &heap[i];
+            }
         }
     }
     return *result;
@@ -179,3 +211,5 @@ T MinHeap<T>::GetNext(T x)
 //        return false;
 //    }
 //}
+
+#endif //PLANESWEEP_PROJECT_MINHEAP_H

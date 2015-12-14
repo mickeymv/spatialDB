@@ -34,8 +34,8 @@
 * Returns    : Poi2D 
 ******************************************************************************/
 
-#include "planesweep project/ParallelObjectTraversal.h"
-#include "planesweep project/PlaneSweep.h"
+#include "planesweep-project/ParallelObjectTraversal.h"
+#include "planesweep-project/PlaneSweep.h"
 
 Point2D spatialIntersection(const Point2D &pointLhs, const Point2D &pointRhs) {
     Point2D emptyPointObject;
