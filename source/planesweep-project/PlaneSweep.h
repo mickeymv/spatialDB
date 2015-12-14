@@ -9,7 +9,7 @@
 #include "Topic2/Implementation/Point2D.h"
 #include "Topic2/Implementation/Line2D.h"
 #include "Topic1/RobustGeometricPrimitives2D.h"
-#include "Topic2/Implementation/Number.h"
+#include "Topic1/Number.h"
 #include "Topic2/Implementation/Region2D.h"
 
 #include "Object2D.h"

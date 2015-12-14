@@ -3,7 +3,7 @@
 //
 
 #include "Object2D.h"
-#include "Topic2/Interfaces/Region2D.h"
+#include "Topic2/Implementation/Region2D.h"
 #include "Topic2/Implementation/Point2D.h"
 #include "Topic2/Implementation/Line2D.h"
 

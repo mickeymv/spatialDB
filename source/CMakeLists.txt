@@ -12,34 +12,19 @@ set(SOURCE_FILES
     planesweep-project/Topic1/Number.h
     planesweep-project/Topic1/RobustGeometricPrimitives2D.cpp
     planesweep-project/Topic1/RobustGeometricPrimitives2D.h
-    planesweep-project/Topic2/Implementation/BigInteger.cpp
-    planesweep-project/Topic2/Implementation/BigInteger.h
-    planesweep-project/Topic2/Implementation/BigRational.cpp
-    planesweep-project/Topic2/Implementation/BigRational.h
     planesweep-project/Topic2/Implementation/Line2D.cpp
     planesweep-project/Topic2/Implementation/Line2D.h
     planesweep-project/Topic2/Implementation/Line2DImpl.cpp
     planesweep-project/Topic2/Implementation/Line2DImpl.h
-    planesweep-project/Topic2/Implementation/Number.cpp
-    planesweep-project/Topic2/Implementation/Number.h
     planesweep-project/Topic2/Implementation/Point2D.cpp
     planesweep-project/Topic2/Implementation/Point2D.h
     planesweep-project/Topic2/Implementation/Region2D.cpp
     planesweep-project/Topic2/Implementation/Region2D.h
     planesweep-project/Topic2/Implementation/Region2DImpl.cpp
     planesweep-project/Topic2/Implementation/Region2DImpl.h
-    planesweep-project/Topic2/Implementation/RobustGeometricPrimitives2D.cpp
-    planesweep-project/Topic2/Implementation/RobustGeometricPrimitives2D.h
     planesweep-project/Topic2/Implementation/TestLine2D.cpp
     planesweep-project/Topic2/Implementation/TestPoint2D.cpp
     planesweep-project/Topic2/Implementation/TestRegion2D.cpp
-    planesweep-project/Topic2/Interfaces/Line2D.h
-    planesweep-project/Topic2/Interfaces/Number.h
-    planesweep-project/Topic2/Interfaces/Point2D.h
-    planesweep-project/Topic2/Interfaces/Region2D.h
-    planesweep-project/Topic2/Interfaces/Region2DImpl.h
-    planesweep-project/Topic2/Interfaces/RobustGeometricPrimitives2D.cpp
-    planesweep-project/Topic2/Interfaces/RobustGeometricPrimitives2D.h
     planesweep-project/Attribute.cpp
     planesweep-project/Attribute.h
     planesweep-project/AVLTree.h
