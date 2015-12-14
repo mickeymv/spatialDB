@@ -5,6 +5,7 @@ using namespace std;
 #include "TopologicalRelationships.h"
 //#include "Point2D.h"
 #include "Point2DPoint2D.h"
+#include "Point2DLine2D.h"
 
 //    Use this as template... to create your own Test Cases cpp file:
 //    1. Copy the content and use it as template, put it as your main.cpp.
@@ -220,7 +221,8 @@ int main() {
     cout << "   returns ==> ";
 
     printPoint2DPoint2DPredicate(tpred);
-    cout << endl;
+    cout << endl << endl;
+
     cout << "   contains() ==> " <<  contains(*a, *b) << endl;
     cout << "   inside() ==> " <<  inside(*a, *b) << endl;
     cout << endl;
@@ -238,6 +240,93 @@ int main() {
     // Case 2: Point2DLine2D
     // *****************************
 
+    Point2D *a;
+    Line2D *b;
+
+    a = new Point2D("((0,0),(3,3),(6,6))");
+    b = new Line2D("(((7,7),(8,8)),((8,8),(9,9)),((9,9),(10,10)))");
+
+   TopPredNumberPoint2DLine2D tplred;
+
+    tplred = getTopologicalRelationship(*a,*b);
+    cout<<tplred;
+
+    cout << "*****************************" << endl;
+    cout << "Case 1: Point2DLine2D" << endl;
+    cout << "*****************************" << endl;
+    cout << endl;
+    cout << "1. Test pl_disjoint "<< endl;
+    cout << "Point2D a(\"((0,0),(3,3),(6,6))\");" << endl;
+    cout << "Line2D b(\"(((7,7),(8,8)),((8,8),(9,9)),((9,9),(10,10)))\");" << endl;
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    cout<<tplred;
+    cout << endl;
+
+    cout << "   isTopologicalRelationship(a, b, pp_equal_m2) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   disjoint() ==> " <<  disjoint(*a, *b) << endl;
+    cout << "   overlap() ==> " <<  overlap(*a, *b) << endl;
+    cout << endl;
+
+    // don't forget to cleanup
+    delete a, b;
+
+    a = new Point2D("((0,0),(3,3),(6,6))");
+    b = new Line2D("(((7,7),(8,8)),((8,8),(9,9)),((9,9),(10,10)))");
+
+    TopPredNumberPoint2DLine2D tplred;
+
+    tplred = getTopologicalRelationship(*a,*b);
+    cout<<tplred;
+
+    cout << "*****************************" << endl;
+    cout << "Case 2: Point2DLine2D" << endl;
+    cout << "*****************************" << endl;
+    cout << endl;
+    cout << "1. Test pl_overlap "<< endl;
+    cout << "Point2D a(\"((0,0),(3,3),(6,6))\");" << endl;
+    cout << "Line2D b(\"(((5,5),(8,8)),((8,8),(9,9)),((9,9),(10,10)))\");" << endl;
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    cout<<tplred;
+    cout << endl;
+
+    cout << "   isTopologicalRelationship(a, b, pp_equal_m2) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   disjoint() ==> " <<  disjoint(*a, *b) << endl;
+    cout << "   overlap() ==> " <<  overlap(*a, *b) << endl;
+    cout << endl;
+
+    // don't forget to cleanup
+    delete a, b;
+
+    cout << "*****************************" << endl;
+    cout << "Case 3: Point2DLine2D" << endl;
+    cout << "*****************************" << endl;
+    cout << endl;
+    cout << "1. Test pl_overlap "<< endl;
+    cout << "Point2D a(\"((0,0),(3,3),(6,6))\");" << endl;
+    cout << "Line2D b(\"(((5,5),(8,8)),((8,8),(9,9)),((9,9),(10,10)))\");" << endl;
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    cout<<tplred;
+    cout << endl;
+
+    cout << "   isTopologicalRelationship(a, b, pp_equal_m2) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   disjoint() ==> " <<  disjoint(*a, *b) << endl;
+    cout << "   overlap() ==> " <<  overlap(*a, *b) << endl;
+    cout << endl;
+
+    // don't forget to cleanup
+    delete a, b;
 
 
     // *****************************

@@ -3,67 +3,64 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Line2DLine2D.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Line2DLine2D.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Line2DRegion2D.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Line2DRegion2D.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Point2DLine2D.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Point2DLine2D.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Point2DPoint2D.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Point2DPoint2D.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Point2DRegion2D.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Point2DRegion2D.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Region2D.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Region2DRegion2D.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/Region2DRegion2D.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/TopologicalRelationships.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/TopologicalRelationships.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/main.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/AVLTree.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/AVLTree.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/MinHeap.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/MinHeap.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/Object2D.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/Object2D.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/ParallelObjectTraversal.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/ParallelObjectTraversal.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/PlaneSweep.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/PlaneSweep.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/PlaneSweepLineStatusObject.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/PlaneSweepLineStatusObject.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/SegmentClass.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/SegmentClass.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/Topic1/RobustGeometricPrimitives2D.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/Topic1/RobustGeometricPrimitives2D.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/Topic2/Implementation/Line2D.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/Topic2/Implementation/Line2D.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/Topic2/Implementation/Line2DImpl.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/Topic2/Implementation/Line2DImpl.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/Topic2/Implementation/Number.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/Topic2/Implementation/Number.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/Topic2/Implementation/Point2D.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/Topic2/Implementation/Point2D.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topological_classes/planesweep_project/Topic2/Implementation/TestPoint2D.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/Point2DLine2D.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/Point2DLine2D.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/Point2DPoint2D.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/Point2DPoint2D.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/TopPredNumberEnums.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/TopologicalRelationships.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/TopologicalRelationships.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/main.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/AVLTree.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/AVLTree.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/MinHeap.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/MinHeap.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Object2D.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Object2D.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/ParallelObjectTraversal.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/ParallelObjectTraversal.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/PlaneSweepLineStatusObject.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/PlaneSweepLineStatusObject.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/SegmentClass.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/SegmentClass.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Topic1/RobustGeometricPrimitives2D.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Topic1/RobustGeometricPrimitives2D.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Topic2/Implementation/BigInteger.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Topic2/Implementation/BigInteger.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Topic2/Implementation/BigRational.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Topic2/Implementation/BigRational.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Topic2/Implementation/Line2D.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Topic2/Implementation/Line2D.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Topic2/Implementation/Line2DImpl.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Topic2/Implementation/Line2DImpl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Topic2/Implementation/Number.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Topic2/Implementation/Number.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Topic2/Implementation/Point2D.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Topic2/Implementation/Point2D.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Topic2/Implementation/Region2D.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Topic2/Implementation/Region2D.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Topic2/Implementation/Region2DImpl.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Topic2/Implementation/Region2DImpl.h" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library name="Header Search Paths">
         <CLASSES>
-          <root url="file://C:/Dev-Cpp/MinGW64/include" />
-          <root url="file://C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.6.1/include" />
-          <root url="file://C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.6.1/include-fixed" />
-          <root url="file://C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.6.1/include/c++" />
-          <root url="file://C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.6.1/include/ssp" />
-          <root url="file://C:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" />
+          <root url="file://C:/MinGW/include" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include-fixed" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include/c++" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include/objc" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include/ssp" />
         </CLASSES>
         <SOURCES>
-          <root url="file://C:/Dev-Cpp/MinGW64/include" />
-          <root url="file://C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.6.1/include" />
-          <root url="file://C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.6.1/include-fixed" />
-          <root url="file://C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.6.1/include/c++" />
-          <root url="file://C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.6.1/include/ssp" />
-          <root url="file://C:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" />
+          <root url="file://C:/MinGW/include" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include-fixed" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include/c++" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include/objc" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include/ssp" />
         </SOURCES>
       </library>
     </orderEntry>
