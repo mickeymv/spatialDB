@@ -45,7 +45,7 @@ public:
     AVLnode<T> *getSucc(const T val);
 
 private:
-    AVLnode<T> *root;
+    AVLnode<T> *root = NULL;
 
     AVLnode<T> *rotateLeft(AVLnode<T> *a);
 
@@ -130,6 +130,7 @@ int AVLTree<T>::sizeOfAVL() {
     int count = inOrderWithCount(n);
     return count;
 }
+
 /* AVL class definition */
 template<class T>
 void AVLTree<T>::rebalance(AVLnode<T> *n) {
@@ -254,7 +255,7 @@ void AVLTree<T>::inOrder(AVLnode<T> *n) {
 
 
 template<class T>
-int AVLTree<T>::inOrderWithCount(AVLnode<T> *n){
+int AVLTree<T>::inOrderWithCount(AVLnode<T> *n) {
     int count = 0;
     if (n != NULL) {
         ++count;
@@ -275,10 +276,7 @@ AVLTree<T>::~AVLTree(void) {
 
 template<class T>
 bool AVLTree<T>::insert(T key) {
-    if (root == NULL) {
-        root = new AVLnode<T>(key, NULL);
-    }
-    else {
+    if (root) {
         AVLnode<T>
                 *n = root,
                 *parent;
@@ -303,7 +301,11 @@ bool AVLTree<T>::insert(T key) {
                 rebalance(parent);
                 break;
             }
+
         }
+
+    } else {
+        root = new AVLnode<T>(key, NULL);
     }
 
     return true;

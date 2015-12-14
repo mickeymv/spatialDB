@@ -25,8 +25,6 @@ set(SOURCE_FILES
     planesweep-project/Topic2/Implementation/TestLine2D.cpp
     planesweep-project/Topic2/Implementation/TestPoint2D.cpp
     planesweep-project/Topic2/Implementation/TestRegion2D.cpp
-    planesweep-project/Attribute.cpp
-    planesweep-project/Attribute.h
     planesweep-project/AVLTree.h
     planesweep-project/main.cpp
     planesweep-project/MinHeap.h

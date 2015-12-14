@@ -27,7 +27,6 @@
 #include "Object2D.h"
 #include "ParallelObjectTraversal.h"
 #include "AVLTree.h"
-#include "Attribute.h"
 #include "PlaneSweepLineStatusObject.h"
 #include "MinHeap.h"
 
@@ -35,7 +34,7 @@ class PlaneSweep {
 
 
 public:
-    PlaneSweep(Object2D, Object2D);
+    PlaneSweep(const Object2D &, const Object2D &);
 
     ~PlaneSweep();
 
