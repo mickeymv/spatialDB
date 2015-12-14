@@ -682,8 +682,8 @@ void ParallelObjectTraversal::selectNext() {
     // otherwise, if object was equal to first (second), it only moves forward the logical pointer of the first (second) sequence.
     if (objF->isPoint2D()) {
 
-        // check whether the position of the iterator has not yet reached the end
-        if (*objFpoiIterator != ((Point2D *) objF)->cend()) {
+        // check whether the position of the iterator has not yet reached AFTER the end ( implies ctail )
+        if (*objFpoiIterator != ((Point2D *) objF)->ctail()) {
             // if object is equal to first or both, increment the F iterator
             if ((object_value == first) || (object_value == both))
                 (*objFpoiIterator)++;
@@ -694,8 +694,8 @@ void ParallelObjectTraversal::selectNext() {
     }
 
     if (objG->isPoint2D()) {
-        // check whether the position of the iterator has not yet reached the end
-        if (*objGpoiIterator != ((Point2D *) objG)->cend()) {
+        // check whether the position of the iterator has not yet reached AFTER the end ( implies ctail )
+        if (*objGpoiIterator != ((Point2D *) objG)->ctail()) {
             // if object is equal to second or both, increment the G iterator
             if ((object_value == second) || (object_value == both))
                 (*objGpoiIterator)++;
@@ -774,6 +774,19 @@ void ParallelObjectTraversal::selectNext() {
                 object_value = second;
             else if (currentFPoi() == currentGPoi())
                 object_value = both;
+
+            /*
+             * We need to check the case where one/both object(s) could
+             * have ended (ctail).
+             */
+
+            if (*objGpoiIterator == ((Point2D *) objG)->ctail() && *objFpoiIterator == ((Point2D *) objF)->ctail()) {
+                object_value = none;
+            } else if (*objGpoiIterator == ((Point2D *) objG)->ctail()) {
+                object_value = first;
+            } else if (*objFpoiIterator == ((Point2D *) objF)->ctail()) {
+                object_value = second;
+            }
         }
         if (objF->isPoint2D() && objG->isLine2D()) {
 

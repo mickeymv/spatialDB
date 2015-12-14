@@ -47,7 +47,9 @@ Point2D spatialIntersection(const Point2D &pointLhs, const Point2D &pointRhs) {
     ParallelObjectTraversal parallelObjectTraversal(pointLhs, pointRhs);
     //pot.selectFirst would be called implicitly in the pot constructor.
     while (parallelObjectTraversal.getObject() != ParallelObjectTraversal::none &&
-           parallelObjectTraversal.getStatus() == ParallelObjectTraversal::end_of_none) {
+           parallelObjectTraversal.getStatus() == ParallelObjectTraversal::end_of_none &&
+           parallelObjectTraversal.getStatus() != ParallelObjectTraversal::end_of_first &&
+           parallelObjectTraversal.getStatus() != ParallelObjectTraversal::end_of_second) {
         if (parallelObjectTraversal.getObject() == ParallelObjectTraversal::both) {
             intersectionPointsVector.push_back(parallelObjectTraversal.getPoiEvent(ParallelObjectTraversal::first));
             //The argument could be ParallelObjectTraversal::second as well since they're the same.
@@ -63,6 +65,10 @@ Point2D spatialUnion(const Point2D &pointLhs, const Point2D &pointRhs) {
     Point2D emptyPointObject;
     if (pointLhs.isEmptyPoint2D() && pointRhs.isEmptyPoint2D()) {
         return emptyPointObject;
+    } else if (pointLhs.isEmptyPoint2D()) {
+        return pointRhs;
+    } else if (pointRhs.isEmptyPoint2D()) {
+        return pointLhs;
     }
 
     vector<Poi2D> unionPointsVector;
@@ -90,13 +96,16 @@ Point2D spatialDifference(const Point2D &pointLhs, const Point2D &pointRhs) {
     Point2D emptyPointObject;
     if (pointLhs.isEmptyPoint2D()) {
         return emptyPointObject;
+    } else if (pointRhs.isEmptyPoint2D()) {
+        return pointLhs;
     }
 
     vector<Poi2D> differencePointsVector;
     ParallelObjectTraversal parallelObjectTraversal(pointLhs, pointRhs);
     //pot.selectFirst would be called implicitly in the pot constructor.
     while (parallelObjectTraversal.getObject() != ParallelObjectTraversal::none &&
-           parallelObjectTraversal.getStatus() == ParallelObjectTraversal::end_of_none) {
+           parallelObjectTraversal.getStatus() == ParallelObjectTraversal::end_of_none &&
+           parallelObjectTraversal.getStatus() != ParallelObjectTraversal::end_of_first) {
         if (parallelObjectTraversal.getObject() == ParallelObjectTraversal::first) {
             differencePointsVector.push_back(parallelObjectTraversal.getPoiEvent(ParallelObjectTraversal::first));
         }
@@ -325,7 +334,7 @@ Region2D spatialIntersection(Region2D &regionLhs,
            planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
         updateSweepLineForRegion(planeSweep);
         AttrHalfSeg2D attHsegCurr;
-        int lorCurr =0, uolCurr =0;
+        int lorCurr = 0, uolCurr = 0;
 
         if (planeSweep.getObject() == ParallelObjectTraversal::first) {
             attHsegCurr = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::first);
@@ -340,7 +349,7 @@ Region2D spatialIntersection(Region2D &regionLhs,
          * not having 2 in either lor or uol
          */
 
-        if (lorCurr ==2 || uolCurr ==2) {
+        if (lorCurr == 2 || uolCurr == 2) {
             intersectionRegionVector.push_back(attHsegCurr.hseg.seg);
         }
 
@@ -364,7 +373,7 @@ Region2D spatialUnion(Region2D &regionLhs, Region2D &regionRhs) {
            planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
         updateSweepLineForRegion(planeSweep);
         AttrHalfSeg2D attHsegCurr;
-        int lorCurr =0, uolCurr =0;
+        int lorCurr = 0, uolCurr = 0;
 
         if (planeSweep.getObject() == ParallelObjectTraversal::first) {
             attHsegCurr = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::first);
@@ -380,7 +389,7 @@ Region2D spatialUnion(Region2D &regionLhs, Region2D &regionRhs) {
          * Not 2/1 or 1/2
          */
 
-        if (lorCurr ==2 || uolCurr ==2) {
+        if (lorCurr == 2 || uolCurr == 2) {
             planeSweep.selectNext();
             continue;
         }
@@ -406,7 +415,7 @@ Region2D spatialDifference(Region2D &regionLhs,
            planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
         updateSweepLineForRegion(planeSweep);
         AttrHalfSeg2D attHsegCurr;
-        int lorCurr =0, uolCurr =0;
+        int lorCurr = 0, uolCurr = 0;
         /*
          * the diff region object adds the segments with segClass values
          * 1/0, 0/1 : if it belongs to the first region object
@@ -417,14 +426,14 @@ Region2D spatialDifference(Region2D &regionLhs,
             attHsegCurr = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::first);
             lorCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getLowerOrRight();
             uolCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getUpperOrLeft();
-            if((lorCurr==0 && uolCurr ==1) || (lorCurr==1 && uolCurr ==0))
+            if ((lorCurr == 0 && uolCurr == 1) || (lorCurr == 1 && uolCurr == 0))
                 diffRegionVector.push_back(attHsegCurr.hseg.seg);
 
         } else if (planeSweep.getObject() == ParallelObjectTraversal::second) {
             attHsegCurr = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::second);
             lorCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getLowerOrRight();
             uolCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getUpperOrLeft();
-            if((lorCurr==2 && uolCurr ==1) || (lorCurr==1 && uolCurr ==2))
+            if ((lorCurr == 2 && uolCurr == 1) || (lorCurr == 1 && uolCurr == 2))
                 diffRegionVector.push_back(attHsegCurr.hseg.seg);
         }
         planeSweep.selectNext();
