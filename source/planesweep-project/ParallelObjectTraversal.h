@@ -1,7 +1,3 @@
-//
-// Created by Djundi on 11/3/15.
-//
-
 /******************************************************************************
 * File: ParallelObjectTraversal.h
 *******************************************************************************
@@ -16,6 +12,7 @@
 * Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
 *
 * Authors: Group 3 (Amritesh Randhi, Arvindh Mani, Mickey Vellukunnel, Sarath Francis)
+*          Group 4 (Aswini Ramesh, Djundi Tjindra, Kyuseo Park, Michael Kemerer, Natasha Mandal)
 *
 * Date: Fall Semester 2015
 ******************************************************************************/
@@ -51,7 +48,7 @@ public:
     // Constructors and destructor
     //++++++++++++++++++++++++++++
     // Default constructor. It represents the empty ParallelObjectTraversal object
-    ParallelObjectTraversal(Object2D &, Object2D &);
+    ParallelObjectTraversal(const Object2D &, const Object2D &);
 
     // Destructor
     ~ParallelObjectTraversal();

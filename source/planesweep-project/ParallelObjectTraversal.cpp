@@ -1,11 +1,7 @@
-//
-// Created by Djundi on 11/3/15.
-//
-
 /******************************************************************************
 * File: ParallelObjectTraversal.cpp
 *******************************************************************************
-* Purpose: Interface to the class for Parallel Object Traversal
+* Purpose: Implementation for Parallel Object Traversal
 *
 * Description: Parallel Object Traversal (or POT) traverses the point or halfsegment
 * sequences of both operand objects in parallel. Hence, by employing a cursor on both
@@ -16,6 +12,7 @@
 * Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
 *
 * Authors: Group 3 (Amritesh Randhi, Arvindh Mani, Mickey Vellukunnel, Sarath Francis)
+*          Group 4 (Aswini Ramesh, Djundi Tjindra, Kyuseo Park, Michael Kemerer, Natasha Mandal)
 *
 * Date: Fall Semester 2015
 ******************************************************************************/
@@ -39,11 +36,6 @@ ParallelObjectTraversal::ParallelObjectTraversal(const Object2D &F, const Object
             objG = dynamic_cast<const Point2D *>(&G);
 
             // assign objG Poi Iterator
-            objGpoiIterator = new Point2D::ConstPoiIterator(((Point2D *) objG)->cbegin());
-        }
-
-        if (G.isPoint2D()) {
-            objG = dynamic_cast< const Point2D *>(&G);
             objGpoiIterator = new Point2D::ConstPoiIterator(((Point2D *) objG)->cbegin());
 
         } else if (G.isLine2D()) {
@@ -204,7 +196,6 @@ void ParallelObjectTraversal::selectFirst() {
     //     *objGIterator = objG->cbegin();
     // }
 
-
     // Dtj Dec 10, 2015
     // set all the iterators to the beginning of the vector
     if (objF->isPoint2D()) {
@@ -225,7 +216,8 @@ void ParallelObjectTraversal::selectFirst() {
         *objFregionIterator = ((Region2DImpl *) objF)->cbegin();
     }
     if (objG->isRegion2D()) {
-        *objGregionIterator = ((Region2DImpl *) objG)->cbegin();
+        if (*objGregionIterator != ((Region2DImpl *) objG)->cbegin())
+            *objGregionIterator = ((Region2DImpl *) objG)->cbegin();
     }
 
     // Dtj Dec 10, 2015
@@ -338,6 +330,7 @@ void ParallelObjectTraversal::selectFirst() {
 
     }
 
+    // Line2DLine2D
     if (objF->isLine2D() && objG->isLine2D()) {
 
         // TODO: check whether "isEmpty()" useful
@@ -480,7 +473,7 @@ void ParallelObjectTraversal::setNextMin() {
             HalfSeg2D obj21 = currentGSeg();
             HalfSeg2D obj22 = nextGSeg();
             if (object_value == first) {
-                if(obj12 < obj21) {
+                if (obj12 < obj21) {
                     *minPoi2DF = obj12;
                 }
                 else {
@@ -489,7 +482,7 @@ void ParallelObjectTraversal::setNextMin() {
             }
 //                (obj12 < obj21 ? *minPoi2DF = obj12 : *minHalfSeg2DG = obj21);
             if (object_value == second) {
-                if(obj11 < obj22) {
+                if (obj11 < obj22) {
                     *minPoi2DF = obj11;
                 }
                 else {
@@ -499,7 +492,7 @@ void ParallelObjectTraversal::setNextMin() {
             }
 //                (obj11 < obj22 ? *minPoi2DF = obj11 : *minHalfSeg2DG = obj22);
             if (object_value == both) {
-                if(obj12 < obj22) {
+                if (obj12 < obj22) {
                     *minPoi2DF = obj12;
                 }
                 else {
@@ -515,7 +508,7 @@ void ParallelObjectTraversal::setNextMin() {
             AttrHalfSeg2D obj22 = nextGASeg();
             minAttrHalfSeg2DG = new AttrHalfSeg2D();
             if (object_value == first) {
-                if(obj12 < obj21) {
+                if (obj12 < obj21) {
                     *minPoi2DF = obj12;
                 }
                 else {
@@ -524,7 +517,7 @@ void ParallelObjectTraversal::setNextMin() {
             }
 //                (obj12 < obj21 ? *minPoi2DF = obj12 : *minAttrHalfSeg2DG = obj21);
             if (object_value == second) {
-                if(obj11 < obj22) {
+                if (obj11 < obj22) {
                     *minPoi2DF = obj11;
                 }
                 else {
@@ -533,7 +526,7 @@ void ParallelObjectTraversal::setNextMin() {
             }
 //                (obj11 < obj22 ? *minPoi2DF = obj11 : *minAttrHalfSeg2DG = obj22);
             if (object_value == both) {
-                if(obj12 < obj22) {
+                if (obj12 < obj22) {
                     *minPoi2DF = obj12;
                 }
                 else {
@@ -553,7 +546,7 @@ void ParallelObjectTraversal::setNextMin() {
             HalfSeg2D obj22 = nextGSeg();
             minHalfSeg2DG = new HalfSeg2D();
             if (object_value == first) {
-                if(obj12 < obj21) {
+                if (obj12 < obj21) {
                     *minHalfSeg2DF = obj12;
                 }
                 else {
@@ -562,7 +555,7 @@ void ParallelObjectTraversal::setNextMin() {
             }
 //                (obj12 < obj21 ? *minHalfSeg2DF = obj12 : *minHalfSeg2DG = obj21);
             if (object_value == second) {
-                if(obj11 < obj22) {
+                if (obj11 < obj22) {
                     *minHalfSeg2DF = obj11;
                 }
                 else {
@@ -571,7 +564,7 @@ void ParallelObjectTraversal::setNextMin() {
             }
 //                (obj11 < obj22 ? *minHalfSeg2DF = obj11 : *minHalfSeg2DG = obj22);
             if (object_value == both) {
-                if(obj12 < obj22) {
+                if (obj12 < obj22) {
                     *minHalfSeg2DF = obj12;
                 }
                 else {
@@ -586,7 +579,7 @@ void ParallelObjectTraversal::setNextMin() {
             AttrHalfSeg2D obj22 = nextGASeg();
             minAttrHalfSeg2DG = new AttrHalfSeg2D();
             if (object_value == first) {
-                if(obj12 < obj21) {
+                if (obj12 < obj21) {
                     *minHalfSeg2DF = obj12;
                 }
                 else {
@@ -595,7 +588,7 @@ void ParallelObjectTraversal::setNextMin() {
             }
 //                (obj12 < obj21 ? *minHalfSeg2DF = obj12 : *minAttrHalfSeg2DG = obj21);
             if (object_value == second) {
-                if(obj11 < obj22) {
+                if (obj11 < obj22) {
                     *minHalfSeg2DF = obj11;
                 }
                 else {
@@ -604,7 +597,7 @@ void ParallelObjectTraversal::setNextMin() {
             }
 //                (obj11 < obj22 ? *minHalfSeg2DF = obj11 : *minAttrHalfSeg2DG = obj22);
             if (object_value == both) {
-                if(obj12 < obj22) {
+                if (obj12 < obj22) {
                     *minHalfSeg2DF = obj12;
                 }
                 else {
@@ -624,7 +617,7 @@ void ParallelObjectTraversal::setNextMin() {
             AttrHalfSeg2D obj22 = nextGASeg();
             minAttrHalfSeg2DG = new AttrHalfSeg2D();
             if (object_value == first) {
-                if(obj12 < obj21) {
+                if (obj12 < obj21) {
                     *minAttrHalfSeg2DF = obj12;
                 }
                 else {
@@ -633,7 +626,7 @@ void ParallelObjectTraversal::setNextMin() {
             }
 //                (obj12 < obj21 ? *minAttrHalfSeg2DF = obj12 : *minAttrHalfSeg2DG = obj21);
             if (object_value == second) {
-                if(obj11 < obj22) {
+                if (obj11 < obj22) {
                     *minAttrHalfSeg2DF = obj11;
                 }
                 else {
@@ -642,7 +635,7 @@ void ParallelObjectTraversal::setNextMin() {
             }
 //                (obj11 < obj22 ? *minAttrHalfSeg2DF = obj11 : *minAttrHalfSeg2DG = obj22);
             if (object_value == both) {
-                if(obj12 < obj22) {
+                if (obj12 < obj22) {
                     *minAttrHalfSeg2DF = obj12;
                 }
                 else {
