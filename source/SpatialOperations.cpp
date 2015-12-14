@@ -338,6 +338,10 @@ Region2D spatialIntersection(Region2D &regionLhs,
 
         lorCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getLowerOrRight();
         uolCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getUpperOrLeft();
+        /*
+         * the intersection region object adds the segments with segClass values
+         * not having 2 in either lor or uol
+         */
 
         if (lorCurr ==2 || uolCurr ==2) {
             intersectionRegionVector.push_back(attHsegCurr.hseg.seg);
@@ -350,17 +354,87 @@ Region2D spatialIntersection(Region2D &regionLhs,
     return intersectionRegionObject;
 }
 
-Region2D spatialUnion(const Region2D &regionLhs, const Region2D &regionRhs) {
-    Region2D region;
-    //implementation
-    return region;
+Region2D spatialUnion(Region2D &regionLhs, Region2D &regionRhs) {
+    Region2D emptyRegionObject;
+    if (regionLhs.isEmptyRegion2D() || regionRhs.isEmptyRegion2D()) {
+        return emptyRegionObject;
+    }
+
+    vector<Seg2D> unionRegionVector;
+    PlaneSweep planeSweep(regionLhs, regionRhs);
+
+    while (planeSweep.getObject() != ParallelObjectTraversal::none &&
+           planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
+        updateSweepLineForRegion(planeSweep);
+        AttrHalfSeg2D attHsegCurr;
+        int lorCurr =0, uolCurr =0;
+
+        if (planeSweep.getObject() == ParallelObjectTraversal::first) {
+            attHsegCurr = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::first);
+        } else if (planeSweep.getObject() == ParallelObjectTraversal::second) {
+            attHsegCurr = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::second);
+        }
+
+        lorCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getLowerOrRight();
+        uolCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getUpperOrLeft();
+        /*
+         * the union region object adds the segments with segClass values 1/0, 0/1,
+         * 2/0 and 0/2
+         * Not 2/1 or 1/2
+         */
+
+        if (lorCurr ==2 || uolCurr ==2) {
+            planeSweep.selectNext();
+            continue;
+        }
+        unionRegionVector.push_back(attHsegCurr.hseg.seg);
+        planeSweep.selectNext();
+    }
+
+    Region2D unionRegionObject(unionRegionVector);
+    return unionRegionObject;
 }
 
-Region2D spatialDifference(const Region2D &regionLhs,
-                           const Region2D &regionRhs) {
-    Region2D region;
-    //implementation
-    return region;
+Region2D spatialDifference(Region2D &regionLhs,
+                           Region2D &regionRhs) {
+    Region2D emptyRegionObject;
+    if (regionLhs.isEmptyRegion2D() || regionRhs.isEmptyRegion2D()) {
+        return emptyRegionObject;
+    }
+
+    vector<Seg2D> diffRegionVector;
+    PlaneSweep planeSweep(regionLhs, regionRhs);
+
+    while (planeSweep.getObject() != ParallelObjectTraversal::none &&
+           planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
+        updateSweepLineForRegion(planeSweep);
+        AttrHalfSeg2D attHsegCurr;
+        int lorCurr =0, uolCurr =0;
+        /*
+         * the diff region object adds the segments with segClass values
+         * 1/0, 0/1 : if it belongs to the first region object
+         * 2/1, 1/2 : if it belongs to the second region object
+         */
+
+        if (planeSweep.getObject() == ParallelObjectTraversal::first) {
+            attHsegCurr = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::first);
+            lorCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getLowerOrRight();
+            uolCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getUpperOrLeft();
+            if((lorCurr==0 && uolCurr ==1) || (lorCurr==1 && uolCurr ==0))
+                diffRegionVector.push_back(attHsegCurr.hseg.seg);
+
+        } else if (planeSweep.getObject() == ParallelObjectTraversal::second) {
+            attHsegCurr = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::second);
+            lorCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getLowerOrRight();
+            uolCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getUpperOrLeft();
+            if((lorCurr==2 && uolCurr ==1) || (lorCurr==1 && uolCurr ==2))
+                diffRegionVector.push_back(attHsegCurr.hseg.seg);
+        }
+        planeSweep.selectNext();
+    }
+
+    Region2D diffRegionObject(diffRegionVector);
+    return diffRegionObject;
 }
 
 
