@@ -68,6 +68,8 @@ private:
 
     void inOrder(AVLnode<T> *n);
 
+    int inOrderWithCount(AVLnode<T> *n);
+
     void inOrder1(AVLnode<T> *n, T **result, int *count);
 
 };
@@ -121,6 +123,13 @@ AVLnode<T> *AVLTree<T>::getPred(T val) {
     return (NULL);
 }
 
+template<class T>
+int AVLTree<T>::sizeOfAVL() {
+
+    AVLnode<T> *n = root;
+    int count = inOrderWithCount(n);
+    return count;
+}
 /* AVL class definition */
 template<class T>
 void AVLTree<T>::rebalance(AVLnode<T> *n) {
@@ -241,6 +250,19 @@ void AVLTree<T>::inOrder(AVLnode<T> *n) {
         inOrder(n->right);
     }
 
+}
+
+
+template<class T>
+int AVLTree<T>::inOrderWithCount(AVLnode<T> *n){
+    int count = 0;
+    if (n != NULL) {
+        ++count;
+        inOrderWithCount(n->left);
+        ++count;
+        inOrderWithCount(n->right);
+    }
+    return count;
 }
 
 template<class T>
