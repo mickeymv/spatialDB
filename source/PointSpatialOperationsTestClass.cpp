@@ -183,7 +183,7 @@ int main()
   //Case 1.II): Point Operations Case where both point object (7&8)
   // are non-empty with some common points.
 
-  Point2D point7("((1,2),(8,9),(2,3))"), point8("((8,9),(1,1),(2,2),(3,3),(3,4))"), pointIntersection78, pointUnion78, pointDifference78;
+  Point2D point7("((1,2),(2,3),(8,9))"), point8("((1,1),(2,2),(3,3),(3,4),(8,9))"), pointIntersection78, pointUnion78, pointDifference78;
 
   cout<<"---------------------------------------" << endl;
 
