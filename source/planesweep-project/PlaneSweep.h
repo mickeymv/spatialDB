@@ -34,11 +34,14 @@ class PlaneSweep {
 
 
 public:
+
+    // Constructor with two Object2D parameters
     PlaneSweep(Object2D, Object2D);
 
+    // Destructor
     ~PlaneSweep();
 
-
+    // Getter method for the POT object
     ParallelObjectTraversal *getPot() const {
         return pot;
     }
@@ -56,27 +59,29 @@ public:
      */
     void selectNext();
 
-    //Return the values of the object or status variables from the ParallelObjectTraversal Class
+    // Return the values of the object or status variables from the ParallelObjectTraversal Class
     ParallelObjectTraversal::object getObject();
-
     ParallelObjectTraversal::status getStatus();
 
+    // Setter methods for object and status variables
     void setObject(ParallelObjectTraversal::object);
-
     void setStatus(ParallelObjectTraversal::status);
 
+    /*
+     * This method creates a new sweep line status object, an AVL tree that
+     * maintains the state of the intersection of the sweep line with
+     * the geometric structure being swept at the current sweep line position.
+     */
     void newSweep();
 
     /*
-     * getEvent() functions would return the Poi, HalfSeg or
-     * AttrHalfSeg events from either of the two objects based on the
-     * 'object' variable's value. If object=first (second), it would return the
-     *  next event in the first (second) object.
+     * getEvent() functions would return the Poi, HalfSeg or AttrHalfSeg events
+     * from either of the two objects based on the 'object' variable's value.
+     * If object=first (second), it would return the next event in the first
+     * (second) object.
      */
     Poi2D getPoiEvent(ParallelObjectTraversal::object objectValue);
-
     HalfSeg2D getHalfSegEvent(ParallelObjectTraversal::object objectValue);
-
     AttrHalfSeg2D getAttrHalfSegEvent(ParallelObjectTraversal::object objectValue);
 
     /*
@@ -86,28 +91,34 @@ public:
      */
     void addLeft(PlaneSweepLineStatusObject &);
 
+    // The delRight function would remove a segment from the sweepLineStatus
+    // data structure.
     void delRight(PlaneSweepLineStatusObject &);
 
+    // Getter methods for the insideAbove flag and the segment class of a Seg2D object.
     bool getInsideAbove(Seg2D seg);
-
     SegmentClass getSegClass(Seg2D seg);
 
+    // Setter methods for the insideAbove flag and the segment class of a Seg2D object.
     void setInsideAbove(Seg2D seg, bool ia);
-
     void setSegClass(Seg2D seg, int lOrR, int uOrL);
 
+    // Method to check if the predecessor to a node in the sweep line status exists or not.
     bool predExists(Seg2D &);
 
+    // Method to obtain the segment class for the predecessor to a node in SLS.
     SegmentClass getPredSegmentClass(Seg2D);
 
+    // Method to obtain the insideAbove flag for the predecessor to a node in SLS.
     bool getPredInsideAbove(Seg2D);
 
+    // This method searches the nearest segment below a given point in the sweep line status.
     Seg2D predOfP(Poi2D &);
 
+    // This method tests whether the dominating points of a given halfsegment and the next
+    // halfsegment after the logical pointer of a given halfsegment sequence are equal.
     bool lookAhead(HalfSeg2D &, Line2D &);
-
-    //Look at region-region case for additional return type
-    bool lookAhead(AttrHalfSeg2D &, Region2D &);//Look at region-region case for additional return type
+    bool lookAhead(AttrHalfSeg2D &, Region2D &);
 
     bool coincident(Seg2D &);
 
@@ -122,7 +133,7 @@ private:
     ParallelObjectTraversal *pot;
 
     /* The state of the intersection of the sweep line with the geometric structure
-     * being swept at the current sweep line position is recorded in vertical order
+     * being swept at the current sw eep line position is recorded in vertical order
      * in a data structure called sweep line status.
      */
     AVLTree<PlaneSweepLineStatusObject> *sweepLineStatus;

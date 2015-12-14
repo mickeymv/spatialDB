@@ -1194,7 +1194,13 @@ bool ParallelObjectTraversal::isInObjG(Seg2D &seg2D) {
 }
 
 //TODO: DTj. commented out
-
+/**
+ * Method:      getNextObjIterator()
+ * Description: Returns the object that is logically next in the iterator status. This method
+ *              increments the object iterator by one position and returns the result.
+ * Paramters:   halfSeg2D, objectParam
+ * Returns:     Line2DImpl
+ */
 Line2DImpl::ConstHalfSegIterator *ParallelObjectTraversal::getNextObjIterator(HalfSeg2D halfSeg2D, object objectparam) {
     Line2DImpl::ConstHalfSegIterator *obji;
     if (objectparam == first) {
@@ -1232,6 +1238,13 @@ Line2DImpl::ConstHalfSegIterator *ParallelObjectTraversal::getNextObjIterator(Ha
 }
 
 //TODO: DTj. commented out
+/**
+ * Method:      getNextObjIterator()
+ * Description: Returns the object that is logically next in the iterator status. This method
+ *              increments the object iterator by one position and returns the result.
+ * Paramters:   attrHalfSeg2D, objectParam
+ * Returns:     Region2DImpl
+ */
 Region2DImpl::ConstAttributedHalfSegmentIterator *ParallelObjectTraversal::getNextObjIterator(
         AttrHalfSeg2D attrhalfSeg2D, object objectparam) {
     Region2DImpl::ConstAttributedHalfSegmentIterator *obji;
@@ -1269,6 +1282,13 @@ Region2DImpl::ConstAttributedHalfSegmentIterator *ParallelObjectTraversal::getNe
     }
 }
 
+/**
+ * Method:      isObjectF()
+ * Description: This method returns true if the current object is
+ *              the first object.
+ * Parameters:  object2D
+ * Returns:     bool
+ */
 bool ParallelObjectTraversal::isObjectF(const Object2D object2D) {
     if (object2D == (*objF)) {
         return true;
@@ -1278,6 +1298,13 @@ bool ParallelObjectTraversal::isObjectF(const Object2D object2D) {
     }
 }
 
+/**
+ * Method:      isObjectG()
+ * Description: This method returns true if the current object is
+ *              the second object.
+ * Parameters:  object2D
+ * Returns:     bool
+ */
 bool ParallelObjectTraversal::isObjectG(const Object2D object2D) {
     if (object2D == (*objG)) {
         return true;
