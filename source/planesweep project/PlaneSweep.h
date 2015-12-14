@@ -15,7 +15,6 @@
 #include "Object2D.h"
 #include "ParallelObjectTraversal.h"
 #include "AVLTree.h"
-#include "Attribute.h"
 #include "PlaneSweepLineStatusObject.h"
 #include "MinHeap.h"
 

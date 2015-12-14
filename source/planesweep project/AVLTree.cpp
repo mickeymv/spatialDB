@@ -1,4 +1,6 @@
 #import "AVLTree.h"
+#include <algorithm>
+#include <iostream>
 
 //
 //int main(void)
@@ -17,14 +19,12 @@
 
 
 template<class T>
-void AVLTree<T>::inOrder1(AVLnode<T> *n, T **result, int *count) { //TODO see if this is correct since the original code gave compilation error
+void AVLTree<T>::inOrder1(AVLnode<T> *n, T **result, int *count) {
     if (n != NULL) {
-        int i = *count;
-        *count = i++;
+        count++;
         inOrder1(n->left, result, count);
         *result[*count] = n->key;
-        int j = *count;
-        *count = j++;
+        count++;
         inOrder1(n->right, result, count);
         *result[*count] = n->key;
     }
@@ -42,9 +42,9 @@ void AVLTree<T>::getElements(T **result) {
 
 template<class T>
 AVLnode<T> *AVLTree<T>::getSucc(T val) {
-    AVLnode *valTemp = FindKey(val);
+    AVLnode<T> *valTemp = FindKey(val);
     if (valTemp != NULL && valTemp->right != NULL) {
-        AVLnode *temp = valTemp->right;
+        AVLnode<T> *temp = valTemp->right;
         while (temp->left != NULL) {
             temp = temp->left;
         }
@@ -55,9 +55,9 @@ AVLnode<T> *AVLTree<T>::getSucc(T val) {
 
 template<class T>
 AVLnode<T> *AVLTree<T>::getPred(T val) {
-    AVLnode *valTemp = FindKey(val);
+    AVLnode<T> *valTemp = FindKey(val);
     if (valTemp != NULL && valTemp->left != NULL) {
-        AVLnode *temp = valTemp->left;
+        AVLnode<T> *temp = valTemp->left;
         while (temp->right != NULL) {
             temp = temp->right;
         }
@@ -233,14 +233,15 @@ bool AVLTree<T>::insert(T key) {
 }
 
 template<class T>
-AVLnode *AVLTree<T>::FindKey(const T val) {
+AVLnode<T> *AVLTree<T>::FindKey(const T val) {
+    T tempVal = val;
     if (root != NULL) {
         AVLnode<T> *n = root;
 
         while (n) {
-            if (n->key == val)
+            if (n->key == tempVal)
                 return n;
-            if (n->key > val)
+            if (n->key > tempVal)
                 n = n->left;
             else
                 n = n->right;
@@ -251,6 +252,7 @@ AVLnode *AVLTree<T>::FindKey(const T val) {
 
 template<class T>
 void AVLTree<T>::deleteKey(const T delKey) {
+    T tempDelKey = delKey;
     if (root == NULL)
         return;
 
@@ -263,8 +265,8 @@ void AVLTree<T>::deleteKey(const T delKey) {
     while (child != NULL) {
         parent = n;
         n = child;
-        child = delKey >= n->key ? n->right : n->left;
-        if (delKey == n->key)
+        child = tempDelKey >= n->key ? n->right : n->left;
+        if (tempDelKey == n->key)
             delNode = n;
     }
 
@@ -273,7 +275,7 @@ void AVLTree<T>::deleteKey(const T delKey) {
 
         child = n->left != NULL ? n->left : n->right;
 
-        if (root->key == delKey) {
+        if (root->key == tempDelKey) {
             root = child;
         }
         else {

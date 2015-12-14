@@ -8,16 +8,6 @@ MinHeap<T>::MinHeap(int MinHeapSize)
     CurrentSize = 0;
 }
 
-MinHeap::~MinHeap()
-{
-    delete [] heap;
-}
-
-int MinHeap::Size() const
-{
-    return CurrentSize;
-}
-
 void MinHeap::Deactivate()
 {
     heap = nullptr;
