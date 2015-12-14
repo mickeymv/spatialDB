@@ -1980,7 +1980,7 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
         }
         else {
             halfsegStaticSucc = nullptr;
-        }
+        } // TODO the 'else' block is redundant code
 
         //Dynamic
 //        dynamicEPSObjF.DeleteMin();

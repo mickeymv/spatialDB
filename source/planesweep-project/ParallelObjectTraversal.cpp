@@ -2,13 +2,29 @@
 // Created by Djundi on 11/3/15.
 //
 
-
+/******************************************************************************
+* File: ParallelObjectTraversal.cpp
+*******************************************************************************
+* Purpose: Interface to the class for Parallel Object Traversal
+*
+* Description: Parallel Object Traversal (or POT) traverses the point or halfsegment
+* sequences of both operand objects in parallel. Hence, by employing a cursor on both
+* sequences, it is sufficient to check the point or halfsegment at the current cursor
+* positions of both sequences and to take the lower one with respect to the point order
+* or halfsegment order for further computation.
+*
+* Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
+*
+* Authors: Group 3 (Amritesh Randhi, Arvindh Mani, Mickey Vellukunnel, Sarath Francis)
+*
+* Date: Fall Semester 2015
+******************************************************************************/
 
 #include "ParallelObjectTraversal.h"
 
 using namespace std;
 
-
+// Default constructor. It represents the empty ParallelObjectTraversal object
 ParallelObjectTraversal::ParallelObjectTraversal(const Object2D &F, const Object2D &G) {
 
 
@@ -156,20 +172,29 @@ ParallelObjectTraversal::ParallelObjectTraversal(const Object2D &F, const Object
 
 }
 
+// Destructor
 ParallelObjectTraversal::~ParallelObjectTraversal() {
 
 }
 
+// Getter method for object variable
 ParallelObjectTraversal::object ParallelObjectTraversal::getObject() {
     return object_value;
 }
 
+// Getter method for status variable
 ParallelObjectTraversal::status ParallelObjectTraversal::getStatus() {
     return status_value;
 }
 
 //TODO selectFirst() and selectNext() should use the next min element based on setNextMin().Right now it is comparing just ObjectIterators. Where are we getting the nextMin value based on setMin()?
-
+/*
+ * Method:      selectFirst()
+ * Description: Method that selects first point or halfsegment of each of the operand objects
+ *              and positions a logical pointer on both of them
+ * Parameters:  none
+ * Returns:     void
+ */
 void ParallelObjectTraversal::selectFirst() {
     // to be deleted
     // if (!(objFIterator->isEmpty())) {
@@ -423,6 +448,14 @@ void ParallelObjectTraversal::selectFirst() {
 }
 
 //TODO - see if the return type should be AttrHalfSeg2D or check what it should be
+
+/*
+ * Method:      setNextMin()
+ * Description: This method compares the current point of one iterator with
+ *              the next point of the other, and sets the minimum of those two.
+ * Parameters:  none
+ * Returns:     void
+ */
 void ParallelObjectTraversal::setNextMin() {
 
     // TODO: DTj. commented out
@@ -639,6 +672,13 @@ void ParallelObjectTraversal::setNextMin() {
 
 }
 
+/*
+ * Method:      selectNext()
+ * Description: This method selects the next smallest point (or halfsegment)
+ *              according to the lexicographical (or halfsegment) order.
+ * Parameters:  none
+ * Returns:     void
+ */
 void ParallelObjectTraversal::selectNext() {
     // increments the iterators for objects F and G
     // depending on the value of 'object' variable
@@ -884,6 +924,13 @@ void ParallelObjectTraversal::selectNext() {
 //    }
 }
 
+/*
+ * Method:      getNextPoi2DMin()
+ * Description: This method returns the next minimum point according to the
+ *              iterator.
+ * Parameters:  none
+ * Returns:     Poi2D
+ */
 Poi2D *ParallelObjectTraversal::getNextPoi2DMin() {
     if (minPoi2DF != nullptr && minPoi2DG != nullptr) {
         if (*minPoi2DF < *minPoi2DG) {
@@ -902,6 +949,13 @@ Poi2D *ParallelObjectTraversal::getNextPoi2DMin() {
     return nullptr;
 }
 
+/*
+ * Method:      getNextHalfSeg2DMin()
+ * Description: This method returns the next minimum halfsegment according to
+ *              the iterator.
+ * Parameters:  none
+ * Returns:     HalfSeg2D
+ */
 HalfSeg2D *ParallelObjectTraversal::getNextHalfSeg2DMin() {
     if (minHalfSeg2DF != nullptr && minHalfSeg2DG != nullptr) {
         if (*minHalfSeg2DF < *minHalfSeg2DG) {
@@ -920,6 +974,13 @@ HalfSeg2D *ParallelObjectTraversal::getNextHalfSeg2DMin() {
     return nullptr;
 }
 
+/*
+ * Method:      getNextAttrHalfSeg2DMin()
+ * Description: This method returns the next minimum attributed halfsegment according to
+ *              the iterator.
+ * Parameters:  none
+ * Returns:     AttrHalfSeg2D
+ */
 AttrHalfSeg2D *ParallelObjectTraversal::getNextAttrHalfSeg2DMin() {
     if (minAttrHalfSeg2DF != nullptr && minAttrHalfSeg2DG != nullptr) {
         if (*minAttrHalfSeg2DF < *minAttrHalfSeg2DG) {
@@ -938,6 +999,13 @@ AttrHalfSeg2D *ParallelObjectTraversal::getNextAttrHalfSeg2DMin() {
     return nullptr;
 }
 
+/**
+ * Method:      getPoiEvent()
+ * Description: This method returns the Poi2D object corresponding to a
+ *              given enum value.
+ * Parameters:  objectEnumVal
+ * Returns:     Poi2D
+ */
 Poi2D ParallelObjectTraversal::getPoiEvent(object objectEnumVal) {
     if (objectEnumVal == object::first) {
 
@@ -949,6 +1017,13 @@ Poi2D ParallelObjectTraversal::getPoiEvent(object objectEnumVal) {
     }
 }
 
+/**
+ * Method:      getHalfSegEvent()
+ * Description: This method returns the HalfSeg2D object corresponding to a
+ *              given enum value.
+ * Parameters:  objectEnumVal
+ * Returns:     HalfSeg2D
+ */
 HalfSeg2D ParallelObjectTraversal::getHalfSegEvent(object objectEnumVal) {
     if (objectEnumVal == object::first) {
 
@@ -960,6 +1035,13 @@ HalfSeg2D ParallelObjectTraversal::getHalfSegEvent(object objectEnumVal) {
     }
 }
 
+/**
+ * Method:      getAttrHalfSegEvent()
+ * Description: This method returns the AttrHalfSeg2D object corresponding to a
+ *              given enum value.
+ * Parameters:  objectEnumVal
+ * Returns:     AttrHalfSeg2D
+ */
 AttrHalfSeg2D ParallelObjectTraversal::getAttrHalfSegEvent(object objectEnumVal) {
     if (objectEnumVal == object::first) {
 
@@ -972,6 +1054,13 @@ AttrHalfSeg2D ParallelObjectTraversal::getAttrHalfSegEvent(object objectEnumVal)
 }
 
 //TODO: DTj. commented out
+/**
+ * Method:      getPoiObjIterator()
+ * Description: This method returns the Point2D object iterator corresponding to a
+ *              given enum value.
+ * Parameters:  objectEnumVal
+ * Returns:     Point2D
+ */
 Point2D::ConstPoiIterator *ParallelObjectTraversal::getPoiObjIterator(object objectparam) {
     if (objectparam == first) {
         return objFpoiIterator;
@@ -983,6 +1072,13 @@ Point2D::ConstPoiIterator *ParallelObjectTraversal::getPoiObjIterator(object obj
 }
 
 //TODO: DTj. commented out
+/**
+ * Method:      getHalfSegIterator()
+ * Description: This method returns the Line2DImpl object iterator corresponding to a
+ *              given enum value.
+ * Parameters:  objectparam
+ * Returns:     Line2DImpl
+ */
 Line2DImpl::ConstHalfSegIterator *ParallelObjectTraversal::getHalfSegIterator(object objectparam) {
     if (objectparam == first) {
         return objFsegIterator;
@@ -994,6 +1090,13 @@ Line2DImpl::ConstHalfSegIterator *ParallelObjectTraversal::getHalfSegIterator(ob
 }
 
 //TODO: DTj. commented out
+/**
+ * Method:      getAttrHalfSegIterator()
+ * Description: This method returns the Region2DImpl object iterator corresponding to a
+ *              given enum value.
+ * Parameters:  objectparam
+ * Returns:     Region2DImpl
+ */
 Region2DImpl::ConstAttributedHalfSegmentIterator *ParallelObjectTraversal::getAttrHalfSegIterator(object objectparam) {
     if (objectparam == first) {
         return objFregionIterator;
@@ -1008,6 +1111,13 @@ Region2DImpl::ConstAttributedHalfSegmentIterator *ParallelObjectTraversal::getAt
 //TODO: for next 6 functions- get ideal iterators
 ////TODO obji does not work with simple ++ for next 6 functions
 
+/**
+ * Method:      isInObjF()
+ * Description: This method returns true if a segment (seg2D) belongs
+ *              to either a Line2D or a Region2D object.
+ * Parameters:  seg2D
+ * Returns:     bool
+ */
 bool ParallelObjectTraversal::isInObjF(Seg2D &seg2D) {
     //ObjectIterator obji;
     if (objF->isLine2D()) {
@@ -1035,6 +1145,13 @@ bool ParallelObjectTraversal::isInObjF(Seg2D &seg2D) {
     return false;
 }
 
+/**
+ * Method:      isInObjG()
+ * Description: This method returns true if a segment (seg2D) belongs
+ *              to either a Line2D or a Region2D object.
+ * Parameters:  seg2D
+ * Returns:     bool
+ */
 bool ParallelObjectTraversal::isInObjG(Seg2D &seg2D) {
     //ObjectIterator obji;
     if (objG->isLine2D()) {
@@ -1060,8 +1177,8 @@ bool ParallelObjectTraversal::isInObjG(Seg2D &seg2D) {
     return false;
 }
 
-
 //TODO: DTj. commented out
+
 Line2DImpl::ConstHalfSegIterator *ParallelObjectTraversal::getNextObjIterator(HalfSeg2D halfSeg2D, object objectparam) {
     Line2DImpl::ConstHalfSegIterator *obji;
     if (objectparam == first) {
@@ -1154,30 +1271,37 @@ bool ParallelObjectTraversal::isObjectG(const Object2D object2D) {
     }
 }
 
+// Getter method for objF
 Object2D ParallelObjectTraversal::getObjF() {
     return *objF;
 }
 
+// Getter method for objG
 Object2D ParallelObjectTraversal::getObjG() {
     return *objG;
 }
 
+// Getter method for minPoi2DF
 Poi2D *ParallelObjectTraversal::getMinPoi2DF() {
     return minPoi2DF;
 }
 
+// Getter method for minPoi2DG
 Poi2D *ParallelObjectTraversal::getMinPoi2DG() {
     return minPoi2DG;
 }
 
+// Getter method for minHalfSeg2DF
 HalfSeg2D *ParallelObjectTraversal::getMinHalfSeg2DF() {
     return minHalfSeg2DF;
 }
 
+// Getter method for minHalfSeg2DG
 HalfSeg2D *ParallelObjectTraversal::getMinHalfSeg2DG() {
     return minHalfSeg2DG;
 }
 
+// Getter method for minAttrHalfSeg2DG
 AttrHalfSeg2D *ParallelObjectTraversal::getMinAttrHalfSeg2DF() {
     return minAttrHalfSeg2DF;
 }
