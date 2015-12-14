@@ -148,7 +148,9 @@ Line2D spatialIntersection(const Line2D &lineLhs, const Line2D &lineRhs) {
 
     //planesweep.selectFirst would be called implicitly in the planesweep constructor.
     while (planeSweep.getObject() != ParallelObjectTraversal::none &&
-           planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
+           planeSweep.getStatus() == ParallelObjectTraversal::end_of_none &&
+           planeSweep.getStatus() != ParallelObjectTraversal::end_of_first &&
+           planeSweep.getStatus() != ParallelObjectTraversal::end_of_second) {
         updateSweepLineForLine(planeSweep);
         /*
          * Start of intersection implementation.
@@ -178,8 +180,12 @@ Line2D spatialIntersection(const Line2D &lineLhs, const Line2D &lineRhs) {
 
 Line2D spatialUnion(const Line2D &lineLhs, const Line2D &lineRhs) {
     Line2D emptyLineObject;
-    if (lineLhs.isEmptyLine2D() || lineRhs.isEmptyLine2D()) {
+    if (lineLhs.isEmptyLine2D() && lineRhs.isEmptyLine2D()) {
         return emptyLineObject;
+    } else if (lineLhs.isEmptyLine2D()) {
+        return lineRhs;
+    } else if (lineRhs.isEmptyLine2D()) {
+        return lineLhs;
     }
 
     vector<Seg2D> unionLinesVector;
@@ -210,8 +216,10 @@ Line2D spatialUnion(const Line2D &lineLhs, const Line2D &lineRhs) {
 
 Line2D spatialDifference(const Line2D &lineLhs, const Line2D &lineRhs) {
     Line2D emptyLineObject;
-    if (lineLhs.isEmptyLine2D() || lineRhs.isEmptyLine2D()) {
+    if (lineLhs.isEmptyLine2D()) {
         return emptyLineObject;
+    } else if (lineRhs.isEmptyLine2D()) {
+        return lineLhs;
     }
 
     vector<Seg2D> differenceLinesVector;
@@ -222,7 +230,8 @@ Line2D spatialDifference(const Line2D &lineLhs, const Line2D &lineRhs) {
 
     //planesweep.selectFirst would be called implicitly in the planesweep constructor.
     while (planeSweep.getObject() != ParallelObjectTraversal::none &&
-           planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
+           planeSweep.getStatus() == ParallelObjectTraversal::end_of_none &&
+           planeSweep.getStatus() != ParallelObjectTraversal::end_of_first) {
         updateSweepLineForLine(planeSweep);
         if (
                 ((planeSweep.getObject() == ParallelObjectTraversal::first ||
@@ -331,7 +340,9 @@ Region2D spatialIntersection(Region2D &regionLhs,
     PlaneSweep planeSweep(regionLhs, regionRhs);
 
     while (planeSweep.getObject() != ParallelObjectTraversal::none &&
-           planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
+           planeSweep.getStatus() == ParallelObjectTraversal::end_of_none &&
+           planeSweep.getStatus() != ParallelObjectTraversal::end_of_first &&
+           planeSweep.getStatus() != ParallelObjectTraversal::end_of_second) {
         updateSweepLineForRegion(planeSweep);
         AttrHalfSeg2D attHsegCurr;
         int lorCurr = 0, uolCurr = 0;
@@ -362,8 +373,12 @@ Region2D spatialIntersection(Region2D &regionLhs,
 
 Region2D spatialUnion(Region2D &regionLhs, Region2D &regionRhs) {
     Region2D emptyRegionObject;
-    if (regionLhs.isEmptyRegion2D() || regionRhs.isEmptyRegion2D()) {
+    if (regionLhs.isEmptyRegion2D() && regionRhs.isEmptyRegion2D()) {
         return emptyRegionObject;
+    } else if (regionLhs.isEmptyRegion2D()) {
+        return regionRhs;
+    } else if (regionRhs.isEmptyRegion2D()) {
+        return regionLhs;
     }
 
     vector<Seg2D> unionRegionVector;
@@ -404,15 +419,18 @@ Region2D spatialUnion(Region2D &regionLhs, Region2D &regionRhs) {
 Region2D spatialDifference(Region2D &regionLhs,
                            Region2D &regionRhs) {
     Region2D emptyRegionObject;
-    if (regionLhs.isEmptyRegion2D() || regionRhs.isEmptyRegion2D()) {
+    if (regionLhs.isEmptyRegion2D()) {
         return emptyRegionObject;
+    } else if (regionRhs.isEmptyRegion2D()) {
+        return regionLhs;
     }
 
     vector<Seg2D> diffRegionVector;
     PlaneSweep planeSweep(regionLhs, regionRhs);
 
     while (planeSweep.getObject() != ParallelObjectTraversal::none &&
-           planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
+           planeSweep.getStatus() == ParallelObjectTraversal::end_of_none &&
+           planeSweep.getStatus() != ParallelObjectTraversal::end_of_first) {
         updateSweepLineForRegion(planeSweep);
         AttrHalfSeg2D attHsegCurr;
         int lorCurr = 0, uolCurr = 0;
