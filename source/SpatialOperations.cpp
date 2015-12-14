@@ -324,32 +324,25 @@ Region2D spatialIntersection(Region2D &regionLhs,
     vector<Seg2D> intersectionRegionVector;
     PlaneSweep planeSweep(regionLhs, regionRhs);
 
-    ParallelObjectTraversal::object previousObjectHistory = planeSweep.getObject();
-
     while (planeSweep.getObject() != ParallelObjectTraversal::none &&
            planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
         updateSweepLineForRegion(planeSweep);
-        if (planeSweep.getObject() == ParallelObjectTraversal::both &&
-            previousObjectHistory == ParallelObjectTraversal::both) {
-            AttrHalfSeg2D attrHalfSeg2D = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::first);
-            Seg2D seg2D = attrHalfSeg2D.hseg.seg;
-            SegmentClass segClass = planeSweep.getSegClass(seg2D);
-            int lor = segClass.getLowerOrRight();
-            int uol = segClass.getUpperOrLeft();
-            if (lor == 2 && uol == 2) {
-                intersectionRegionVector.push_back(seg2D);
-            }
-//The argument could be ParallelObjectTraversal::second as well since they're the same.
-        } else if (planeSweep.getObject() == ParallelObjectTraversal::both) {
-            //update previous event's object with this event
-            AttrHalfSeg2D firstAttrHalfSeg2D = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::first);
-            AttrHalfSeg2D secondAttrHalfSeg2D = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::second);
-            if (firstAttrHalfSeg2D.hseg.isLeft == secondAttrHalfSeg2D.hseg.isLeft) {
-                previousObjectHistory = ParallelObjectTraversal::both;
-            }
-        } else if (planeSweep.getObject() != ParallelObjectTraversal::both) {
-            previousObjectHistory = ParallelObjectTraversal::none;
+        AttrHalfSeg2D attHsegCurr;
+        int lorCurr =0, uolCurr =0;
+
+        if (planeSweep.getObject() == ParallelObjectTraversal::first) {
+            attHsegCurr = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::first);
+        } else if (planeSweep.getObject() == ParallelObjectTraversal::second) {
+            attHsegCurr = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::second);
         }
+
+        lorCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getLowerOrRight();
+        uolCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getUpperOrLeft();
+
+        if (lorCurr ==2 || uolCurr ==2) {
+            intersectionRegionVector.push_back(attHsegCurr.hseg.seg);
+        }
+
         planeSweep.selectNext();
     }
 
