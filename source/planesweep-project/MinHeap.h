@@ -3,7 +3,7 @@
 *******************************************************************************
 * Purpose: Interface to the class MinHeap
 *
-* Description: The AVLnode class creates a min-heap, a tree data structure.
+* Description: The MinHeap class creates a min-heap, a tree data structure.
 * This data structure is used to store data in the dynamic event point schedule.
 *
 * Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
