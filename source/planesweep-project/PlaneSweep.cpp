@@ -1,9 +1,18 @@
-//
-// Created by Djundi on 11/3/15.
-//
-
-//test edit
-
+/******************************************************************************
+* File: PlaneSweep.cpp
+*******************************************************************************
+* Purpose: Implementation of the class PlaneSweep
+*
+* Description: Plane sweep scans a given configuration of two spatial objects, detects
+* all topological events (like intersections), and records them in data structures.
+*
+* Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
+*
+* Authors: Group 3 (Amritesh Randhi, Arvindh Mani, Mickey Vellukunnel, Sarath Francis)
+*          Group 4 (Aswini Ramesh, Djundi Tjindra, Kyuseo Park, Michael Kemerer, Natasha Mandal)
+*
+* Date: Fall Semester 2015
+******************************************************************************/
 
 #include "PlaneSweep.h"
 

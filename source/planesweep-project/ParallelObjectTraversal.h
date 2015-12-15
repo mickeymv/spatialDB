@@ -1,7 +1,7 @@
 /******************************************************************************
 * File: ParallelObjectTraversal.h
 *******************************************************************************
-* Purpose: Interface to the class for Parallel Object Traversal
+* Purpose: Interface to the class ParallelObjectTraversal
 *
 * Description: Parallel Object Traversal (or POT) traverses the point or halfsegment
 * sequences of both operand objects in parallel. Hence, by employing a cursor on both

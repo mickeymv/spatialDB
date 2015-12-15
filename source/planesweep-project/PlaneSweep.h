@@ -1,7 +1,7 @@
 /******************************************************************************
 * File: PlaneSweep.h
 *******************************************************************************
-* Purpose: Interface to the class for Plane Sweep
+* Purpose: Interface to the class PlaneSweep
 *
 * Description: Plane sweep scans a given configuration of two spatial objects, detects
 * all topological events (like intersections), and records them in data structures.
@@ -122,10 +122,12 @@ public:
 
     bool coincident(Seg2D &);
 
-    bool currentExists(Poi2D &); // Adding Poi2D to make our life easier
+    bool currentExists(Poi2D &);
 
+    // This method returns true if a Poi2D object lies on a segment.
     bool poiOnSeg(Poi2D &);
 
+    // This method returns true if a Poi2D object lies in a segment.
     bool poiInSeg(Poi2D &);
 
 private:

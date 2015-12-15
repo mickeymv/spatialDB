@@ -1,3 +1,19 @@
+/******************************************************************************
+* File: AVLTree.h
+*******************************************************************************
+* Purpose: Interface to the class AVLnode
+*
+* Description: The AVLnode class creates an AVL tree, a data structure in the form
+* of a balanced binary-search tree. This data structure is used to store data in
+* the sweep line status.
+*
+* Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
+*
+* Authors: Group 3 (Amritesh Randhi, Arvindh Mani, Mickey Vellukunnel, Sarath Francis)
+*
+* Date: Fall Semester 2015
+******************************************************************************/
+
 #include <algorithm>
 #include <iostream>
 

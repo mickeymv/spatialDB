@@ -1,6 +1,17 @@
-//
-// Created by Mickey Vellukunnel on 11/25/15.
-//
+/******************************************************************************
+* File: MinHeap.h
+*******************************************************************************
+* Purpose: Interface to the class MinHeap
+*
+* Description: The AVLnode class creates a min-heap, a tree data structure.
+* This data structure is used to store data in the dynamic event point schedule.
+*
+* Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
+*
+* Authors: Group 3 (Amritesh Randhi, Arvindh Mani, Mickey Vellukunnel, Sarath Francis)
+*
+* Date: Fall Semester 2015
+******************************************************************************/
 
 #ifndef PLANESWEEP_PROJECT_MINHEAP_H
 #define PLANESWEEP_PROJECT_MINHEAP_H
@@ -176,40 +187,5 @@ T MinHeap<T>::GetNext(T x)
     }
     return *result;
 }
-
-
-
-//AttrHalfSeg2D MinHeap::GetNext(AttrHalfSeg2D attrHalfSeg2D)
-//{
-//    vector<AttrHalfSeg2D>::iterator val;
-//    AttrHalfSeg2D next = nullptr;
-//    for(val=_vector.begin();val<=_vector.end();val++)
-//    {
-//        if(*(val)>attrHalfSeg2D && next== nullptr)
-//        {
-//            next = *(val);
-//        }
-//        else if(*(val)>attrHalfSeg2D && next!= nullptr)
-//        {
-//            if(*(val)<next)
-//            {
-//                next = *(val);
-//            }
-//        }
-//    }
-//    return next;
-//}
-//
-//bool MinHeap::isEmpty()
-//{
-//    if(_vector.size()==0)
-//    {
-//        return true;
-//    }
-//    else
-//    {
-//        return false;
-//    }
-//}
 
 #endif //PLANESWEEP_PROJECT_MINHEAP_H
