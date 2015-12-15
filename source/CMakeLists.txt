@@ -39,7 +39,7 @@ set(SOURCE_FILES
     planesweep-project/SegmentClass.cpp
     planesweep-project/SegmentClass.h
     LineSpatialOperationsTestClass.cpp
-    PointSpatialOperationsTestClass.cpp
+        SpatialOperationsTestClass.cpp
     RegionSpatialOperationsTestClass.cpp
     SpatialOperations.cpp
     SpatialOperations.h)

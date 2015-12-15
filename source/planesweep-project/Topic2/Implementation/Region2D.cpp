@@ -977,7 +977,7 @@ using namespace std;
 
   //copy constructor that constructs a new Region2D object with the same 
   //properties as the inputted Region2D object.
-  Region2D::Region2D(Region2D& source) 
+  Region2D::Region2D(const Region2D& source)
    { 
      
     handle = new Region2DImplementation;

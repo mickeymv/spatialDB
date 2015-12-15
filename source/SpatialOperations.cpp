@@ -328,8 +328,8 @@ void updateSweepLineForLine(PlaneSweep &planeSweep) {
 
 void updateSweepLineForRegion(PlaneSweep &planeSweep);
 
-Region2D spatialIntersection(Region2D &regionLhs,
-                             Region2D &regionRhs) {
+Region2D spatialIntersection(const Region2D &regionLhs,
+                             const Region2D &regionRhs) {
     //Region2D region;
     Region2D emptyRegionObject;
     if (regionLhs.isEmptyRegion2D() || regionRhs.isEmptyRegion2D()) {
@@ -371,14 +371,14 @@ Region2D spatialIntersection(Region2D &regionLhs,
     return intersectionRegionObject;
 }
 
-Region2D spatialUnion(Region2D &regionLhs, Region2D &regionRhs) {
+Region2D spatialUnion(const Region2D &regionLhs, const Region2D &regionRhs) {
     Region2D emptyRegionObject;
     if (regionLhs.isEmptyRegion2D() && regionRhs.isEmptyRegion2D()) {
         return emptyRegionObject;
     } else if (regionLhs.isEmptyRegion2D()) {
-        return regionRhs;
+        return Region2D(regionRhs);
     } else if (regionRhs.isEmptyRegion2D()) {
-        return regionLhs;
+        return Region2D(regionLhs);
     }
 
     vector<Seg2D> unionRegionVector;
@@ -416,13 +416,13 @@ Region2D spatialUnion(Region2D &regionLhs, Region2D &regionRhs) {
     return unionRegionObject;
 }
 
-Region2D spatialDifference(Region2D &regionLhs,
-                           Region2D &regionRhs) {
+Region2D spatialDifference(const Region2D &regionLhs,
+                           const Region2D &regionRhs) {
     Region2D emptyRegionObject;
     if (regionLhs.isEmptyRegion2D()) {
         return emptyRegionObject;
     } else if (regionRhs.isEmptyRegion2D()) {
-        return regionLhs;
+        return Region2D(regionLhs);
     }
 
     vector<Seg2D> diffRegionVector;

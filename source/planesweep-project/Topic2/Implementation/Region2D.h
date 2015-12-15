@@ -57,7 +57,7 @@ class Region2D : public Object2D
 
     //copy constructor that constructs a new Region2D object with the same 
     //properties as the inputted Region2D object.
-    Region2D(Region2D& source);
+    Region2D(const Region2D& source);
 
     // Move constructor that moves the inputted Region2D object to a
     // Region2D object. The inputted Region2D object gets the empty Region2D

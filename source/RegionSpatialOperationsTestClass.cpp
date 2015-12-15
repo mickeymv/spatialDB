@@ -15,8 +15,6 @@
 //int main() {
 //
 //
-////    Region2D region;
-//
 //    /* We need three test cases
 //     *  1. a) Region-Region intersection.
 //     *     b) Region-Region union.
