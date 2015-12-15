@@ -11,14 +11,13 @@ typedef std::chrono::high_resolution_clock Clock;
 
 int checkOrientation(poi2D p1, poi2D p2, poi2D p3)
 {
-    int calc = (p2.y - p1.y) * (p3.x - p2.x) -
-               (p2.x - p1.x) * (p3.y - p2.y);
+    Number calc = (p2.y - p1.y) * (p3.x - p2.x) - (p2.x - p1.x) * (p3.y - p2.y);
 
-    if (calc == 0)
+    if (calc == Number("0"))
     {
         return 0;  // colinear
     }
-    else if(calc > 0)
+    else if(calc > Number("0"))
     {
         return 1;  // clockwise
     }
@@ -26,12 +25,12 @@ int checkOrientation(poi2D p1, poi2D p2, poi2D p3)
 }
 
 // Prints convex hull of a set of n points.
-void computeJarvis(vector<poi2D> points)
+vector<poi2D> computeJarvis(vector<poi2D> points)
 {
 
     int n = points.size();
     // There should be minimum 3 points
-    if (n < 3) return;
+    if (n < 3) return points;
 
 
     vector<poi2D> hull;
@@ -71,9 +70,10 @@ void computeJarvis(vector<poi2D> points)
     } while (p != l);  // While we don't come to initial point
 
     // Print Result
-    for (int i = 0; i < hull.size(); i++)
-        cout << "(" << hull[i].x << ", "
-        << hull[i].y << ")\n";
+    // for (int i = 0; i < hull.size(); i++)
+    //     cout << "(" << hull[i].x << ", "
+    //     << hull[i].y << ")\n";
+    return hull;
 }
 
 // int main(){

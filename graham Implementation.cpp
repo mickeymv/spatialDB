@@ -7,13 +7,16 @@
 #include <stack>
 #include <chrono>
 #include <time.h>
+
 #include "poi2D.h"
+#include "Number.h"
+
 typedef std::chrono::high_resolution_clock Clock;
 
 poi2D p0;
 
 // A utility function to swap two points
-int swap(poi2D &p1, poi2D &p2)
+Number swap(poi2D &p1, poi2D &p2)
 {
     poi2D temp = p1;
     p1 = p2;
@@ -22,7 +25,7 @@ int swap(poi2D &p1, poi2D &p2)
 
 // A utility function to return square of distance
 // between p1 and p2
-int distSq(poi2D p1, poi2D p2)
+Number distSq(poi2D p1, poi2D p2)
 {
     return (p1.x - p2.x)*(p1.x - p2.x) +
            (p1.y - p2.y)*(p1.y - p2.y);
@@ -45,13 +48,20 @@ poi2D nextToTop(stack<poi2D> &S)
 // 2 --> Counter-clockwise
 int checkOrientation(poi2D p1, poi2D p2, poi2D p3)
 {
-    int value = (p2.y - p1.y) * (p3.x - p2.x) -
-              (p2.x - p1.x) * (p3.y - p2.y);
+    Number calc = (p2.y - p1.y) * (p3.x - p2.x) - (p2.x - p1.x) * (p3.y - p2.y);
 
-    if (value == 0) return 0;  // co-linear
-    if (value > 0) return 1;   // clockwise
-    else return 2;             // counter-clockwise
+    if (calc == Number("0"))
+    {
+        return 0;  // colinear
+    }
+    else if(calc > Number("0"))
+    {
+        return 1;  // clockwise
+    }
+    else return 2; // counter-clockwise
 }
+
+
 
 // A function used by library function qsort() to sort an array of
 // points with respect to the first point
@@ -73,15 +83,15 @@ int compare(const void *vp1, const void *vp2)
 }
 
 // Prints convex hull of a set of n points
-void computeGraham(vector<poi2D> points)
+vector<poi2D> computeGraham(vector<poi2D> points)
 {
     // Find the bottommost point
     int min = 0;
     int n = points.size();
-    double ymin = points[0].y;
+    Number ymin = points[0].y;
     for (int i = 1; i < n; i++)
     {
-        double y = points[i].y;
+        Number y = points[i].y;
 
         // Pick the bottom-most or chose the left
         // most point in case of tie
@@ -121,7 +131,7 @@ void computeGraham(vector<poi2D> points)
 
     // If modified array of points has less than 3 points,
     // convex hull is not possible
-    if (m < 3) return;
+    if (m < 3) return points;
 
     // Create an empty stack and push first three points
     // to it.

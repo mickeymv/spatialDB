@@ -4,10 +4,14 @@
 #include <vector>
 #include <stack>
 #include <fstream>
-#include "poi2D.h"
 #include <cmath>
 #include <time.h>
 #include <chrono>
+#include <sstream>
+#include <string>
+
+#include "Number.h"
+#include "poi2D.h"
 
 #define PI 3.14159265
 typedef std::chrono::high_resolution_clock Clock;
@@ -19,11 +23,13 @@ using namespace std;
 
 //comparator function
 bool compareX(const poi2D &poi1, const poi2D &poi2){
-    return poi1.x < poi2.x;
+    Number x1 = poi1.x;
+    Number x2 = poi2.x;
+    return x1 < x2;
 }
 
 //sees if the slope has increases from p2 to p3 when connected to p1
-bool slopeIncreased(const poi2D &p1, const poi2D &p2, const poi2D &p3){
+bool slopeIncreased(poi2D &p1, poi2D &p2, poi2D &p3){
     //if p1 to p3 has greater slope return true
     return (((p3.y - p1.y)/(p3.x - p1.x)) > ((p2.y - p1.y)/(p2.x - p1.x)));
 }
@@ -47,8 +53,8 @@ vector<poi2D> orderHullClockwise(vector<poi2D> &hull){
 }
 
 //Function to find if a point is above or below the line
-bool isAbove(const poi2D &a, const poi2D &b, poi2D &c ) {
-    return ((b.x-a.x)*(c.y-a.y)-(b.y-a.y)*(c.x-a.x))>0;
+bool isAbove(poi2D &a, poi2D &b, poi2D &c ) {
+    return ((b.x-a.x)*(c.y-a.y)-(b.y-a.y)*(c.x-a.x))>Number("0");
 }
 
 
@@ -69,9 +75,7 @@ void checkAngle(std::stack<poi2D> &stack, int &b) {
     poi2D one;
     poi2D two;
     poi2D three;
-    /*vector<poi2D> onef;
-    vector<poi2D> twof;
-    vector<poi2D> threef;*/
+
     poi2D onetwo;
     poi2D twothree;
     double dot, pcross, angle;
@@ -81,15 +85,19 @@ void checkAngle(std::stack<poi2D> &stack, int &b) {
     stack.pop();
     three = stack.top();
     stack.pop();
-    /*onef.push_back(one);
-    twof.push_back(two);
-    threef.push_back(three);*/
+
     onetwo.x= one.x - two.x;
     onetwo.y= one.y - two.y;
     twothree.x= three.x- two.x;
     twothree.y= three.y- two.y;
-    dot=    twothree.x * onetwo.x + twothree.y * onetwo.y;
-    pcross= twothree.x * onetwo.y - twothree.y * onetwo.x;
+
+    stringstream ss;
+    ss << twothree.x * onetwo.x + twothree.y * onetwo.y;
+    dot = stod(ss.str());
+
+    ss.str("");
+    ss <<  twothree.x * onetwo.y - twothree.y * onetwo.x;
+    pcross = stod(ss.str());
     angle= (atan2(pcross, dot))* 180/ PI;
     //cout<< "The angle is "<<angle<<endl;
     if(b==1){
@@ -294,6 +302,10 @@ vector<poi2D> newalgo(vector<poi2D> &vec) {
     return finalhull;
    // cout<<"after calling printvec function "<<endl;
 
+}
+
+int main(){
+    return 0;
 }
 
 
