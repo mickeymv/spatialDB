@@ -38,7 +38,7 @@ public:
 //
 //    ObjectIterator ctail() const;
 
-    bool operator == (const Object2D& operand) const;
+    bool operator == (const Object2D& operand) const ;
 
     virtual bool isPoint2D() const;
 

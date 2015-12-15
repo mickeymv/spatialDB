@@ -58,14 +58,14 @@ void Point2DLine2D::exploreTopoPred() {
         if(object_value==ParallelObjectTraversal::first)
         {
             Poi2D p = S.getPoiEvent(ParallelObjectTraversal::first);
-            if(S.poiInSeg(p))
-            {
-                vF[poi_on_interior]= true;
-            }
-            else
-            {
-                vF[poi_disjoint]=true;
-            }
+//            if(S.poiInSeg(p))
+//            {
+//                vF[poi_on_interior]= true;
+//            }
+//            else
+//            {
+//                vF[poi_disjoint]=true;
+//            }
         }
         else if(object_value==ParallelObjectTraversal::second)
         {

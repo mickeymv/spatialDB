@@ -16,7 +16,6 @@
 #define POINT2D_H_
 
 #include <vector>
-
 #include "../../Topic1/RobustGeometricPrimitives2D.h"
 #include "../../Object2D.h"
 

@@ -21,7 +21,6 @@
 
 #include "../../Topic1/RobustGeometricPrimitives2D.h"
 #include "../../Object2D.h"
-
 #include <vector>
 #include <map>
 #include <iostream>

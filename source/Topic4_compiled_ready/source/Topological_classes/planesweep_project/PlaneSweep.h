@@ -1,6 +1,18 @@
-//
-// Created by Djundi on 11/3/15.
-//
+/******************************************************************************
+* File: PlaneSweep.h
+*******************************************************************************
+* Purpose: Interface to the class for Plane Sweep
+*
+* Description: Plane sweep scans a given configuration of two spatial objects, detects
+* all topological events (like intersections), and records them in data structures.
+*
+* Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
+*
+* Authors: Group 3 (Amritesh Randhi, Arvindh Mani, Mickey Vellukunnel, Sarath Francis)
+*          Group 4 (Aswini Ramesh, Djundi Tjindra, Kyuseo Park, Michael Kemerer, Natasha Mandal)
+*
+* Date: Fall Semester 2015
+******************************************************************************/
 
 #ifndef PLANESWEEP_PROJECT_PLANESWEEP_H
 #define PLANESWEEP_PROJECT_PLANESWEEP_H
@@ -9,13 +21,12 @@
 #include "Topic2/Implementation/Point2D.h"
 #include "Topic2/Implementation/Line2D.h"
 #include "Topic1/RobustGeometricPrimitives2D.h"
-#include "Topic2/Implementation/Number.h"
+#include "Topic1/Number.h"
 #include "Topic2/Implementation/Region2D.h"
 
 #include "Object2D.h"
 #include "ParallelObjectTraversal.h"
 #include "AVLTree.h"
-//#include "Attribute.h"
 #include "PlaneSweepLineStatusObject.h"
 #include "MinHeap.h"
 
@@ -23,11 +34,14 @@ class PlaneSweep {
 
 
 public:
-    PlaneSweep(Object2D, Object2D);
 
+    // Constructor with two Object2D parameters
+    PlaneSweep(const Object2D &, const Object2D &);
+
+    // Destructor
     ~PlaneSweep();
 
-
+    // Getter method for the POT object
     ParallelObjectTraversal *getPot() const {
         return pot;
     }
@@ -38,33 +52,36 @@ public:
      * increment the static EPS (objects themselves) or the dynamic EPS
      * (the min-heaps for the objects).
 	 * for any intersection point between 2 attrib half-segments,
-	 * there are two dynamic attrib half segments associated with each of
-	 * two region objects. Even though the cardinal coordinates are same,
+	 * there are two dynamic attrib half segments associated with each of 
+	 * two region objects. Even though the cardinal coordinates are same, 
 	 * it takes 4 iterations of selectNext to move ahead from the intersection
 	 * point, as each attrib half seg is distinct.
      */
     void selectNext();
 
-    //Return the values of the object or status variables from the ParallelObjectTraversal Class
+    // Return the values of the object or status variables from the ParallelObjectTraversal Class
     ParallelObjectTraversal::object getObject();
-
     ParallelObjectTraversal::status getStatus();
 
+    // Setter methods for object and status variables
     void setObject(ParallelObjectTraversal::object);
     void setStatus(ParallelObjectTraversal::status);
 
+    /*
+     * This method creates a new sweep line status object, an AVL tree that
+     * maintains the state of the intersection of the sweep line with
+     * the geometric structure being swept at the current sweep line position.
+     */
     void newSweep();
 
     /*
-     * getEvent() functions would return the Poi, HalfSeg or
-     * AttrHalfSeg events from either of the two objects based on the
-     * 'object' variable's value. If object=first (second), it would return the
-     *  next event in the first (second) object.
+     * getEvent() functions would return the Poi, HalfSeg or AttrHalfSeg events
+     * from either of the two objects based on the 'object' variable's value.
+     * If object=first (second), it would return the next event in the first
+     * (second) object.
      */
     Poi2D getPoiEvent(ParallelObjectTraversal::object objectValue);
-
     HalfSeg2D getHalfSegEvent(ParallelObjectTraversal::object objectValue);
-
     AttrHalfSeg2D getAttrHalfSegEvent(ParallelObjectTraversal::object objectValue);
 
     /*
@@ -74,24 +91,34 @@ public:
      */
     void addLeft(PlaneSweepLineStatusObject &);
 
+    // The delRight function would remove a segment from the sweepLineStatus
+    // data structure.
     void delRight(PlaneSweepLineStatusObject &);
 
+    // Getter methods for the insideAbove flag and the segment class of a Seg2D object.
     bool getInsideAbove(Seg2D seg);
     SegmentClass getSegClass(Seg2D seg);
+
+    // Setter methods for the insideAbove flag and the segment class of a Seg2D object.
     void setInsideAbove(Seg2D seg, bool ia);
     void setSegClass(Seg2D seg, int lOrR, int uOrL);
 
+    // Method to check if the predecessor to a node in the sweep line status exists or not.
     bool predExists(Seg2D &);
 
+    // Method to obtain the segment class for the predecessor to a node in SLS.
     SegmentClass getPredSegmentClass(Seg2D);
+
+    // Method to obtain the insideAbove flag for the predecessor to a node in SLS.
     bool getPredInsideAbove(Seg2D);
 
+    // This method searches the nearest segment below a given point in the sweep line status.
     Seg2D predOfP(Poi2D &);
 
+    // This method tests whether the dominating points of a given halfsegment and the next
+    // halfsegment after the logical pointer of a given halfsegment sequence are equal.
     bool lookAhead(HalfSeg2D &, Line2D &);
-
-    //Look at region-region case for additional return type
-    bool lookAhead(AttrHalfSeg2D &, Region2D &);//Look at region-region case for additional return type
+    bool lookAhead(AttrHalfSeg2D &, Region2D &);
 
     bool coincident(Seg2D &);
 
@@ -106,7 +133,7 @@ private:
     ParallelObjectTraversal *pot;
 
     /* The state of the intersection of the sweep line with the geometric structure
-     * being swept at the current sweep line position is recorded in vertical order
+     * being swept at the current sw eep line position is recorded in vertical order
      * in a data structure called sweep line status.
      */
     AVLTree<PlaneSweepLineStatusObject> *sweepLineStatus;
@@ -120,13 +147,13 @@ private:
     MinHeap<AttrHalfSeg2D> dynamicEPSObjF;
     MinHeap<AttrHalfSeg2D> dynamicEPSObjG;
 
-    Object2D objF,objG;
+    Object2D objF, objG;
 
 
     /*
      *  This function would be called from within the selectNext() function.
-     *  What this would do is find if the next least poi2D for the
-     *  PlaneSweepLineStatus to stop next, belongs to the static EPS of the
+     *  What this would do is find if the next least poi2D for the 
+     *  PlaneSweepLineStatus to stop next, belongs to the static EPS of the 
 	 *  dynamic EPS.
      *  If the next point is from the static Event Point schedule (EPS) (which
      *  is either of the two objects (objF/objG) ), we update the iterator of the
@@ -139,7 +166,6 @@ private:
     int findLeast();
 
 
-
     /*
      *  This function which is called from within the calculateRelation functions,
      *  it would split the two passed segments into more segments based on the relation between them and
@@ -147,25 +173,26 @@ private:
      *  The insertIntoDynamicEPS() function is just the insert() function for the
      *  two different min-heaps for the objects under consideration.
      */
-    void splitLines(Seg2D& firstSegment, Seg2D& secondSegment);
+    void splitLines(Seg2D &firstSegment, Seg2D &secondSegment);
 
     /*
      * This function is called within the splitLines function and would update the
      * sweepLineStatus data structure with the new updated split segment.
      */
-    void updateSweepLineStatus(Seg2D& segmentToBeReplaced, Seg2D& segmentToReplaceWith);
+    void updateSweepLineStatus(Seg2D &segmentToBeReplaced, Seg2D &segmentToReplaceWith);
 
 
     /*
      * Functions for getting predecessor and getting successor
      */
-    PlaneSweepLineStatusObject getPredecessor(PlaneSweepLineStatusObject&);
-    PlaneSweepLineStatusObject getSuccessor(PlaneSweepLineStatusObject&);
+    PlaneSweepLineStatusObject getPredecessor(PlaneSweepLineStatusObject &);
+
+    PlaneSweepLineStatusObject getSuccessor(PlaneSweepLineStatusObject &);
 
     /*
      * Function for checking if a relation exists between two segments
      */
-    bool isRelation(Seg2D&, Seg2D&);
+    bool isRelation(Seg2D &, Seg2D &);
 
     void updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject &sweepLineStatusObject);
 

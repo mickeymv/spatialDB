@@ -4,8 +4,11 @@
  *  Purpose:  This file specifies interfaces to the class Region2D and to
  *  all the nested iterator classes that enable access to components (that is,
  *  faces and cycles) of Region2D objects.
+
  *  Created on: Oct 8, 2015
+
  *  Authors: Ahmed Khaled, Revathi Kadari, Namrata Choudhury, Deepa Narain
+
  *  Date: Fall Semester 2015
 *******************************************************************************/
 
@@ -17,14 +20,12 @@
 #include <vector>
 #include <algorithm>
 #include <map>
-
 #include "../../Topic1/RobustGeometricPrimitives2D.h"
 #include "../../Object2D.h"
 
-
 class Region2D : public Object2D
 {
-public:
+  public:
 
     //++++++++++++++++++++++++++++
     // Constructors and destructor
@@ -54,7 +55,7 @@ public:
     // example input: "(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))"
     Region2D(std::string textualRegionList);
 
-    //copy constructor that constructs a new Region2D object with the same
+    //copy constructor that constructs a new Region2D object with the same 
     //properties as the inputted Region2D object.
     Region2D(Region2D& source);
 
@@ -95,22 +96,22 @@ public:
     bool operator != (Region2D& operand);
 
     // less than operator that compares 2 Region2D objects through comparing their sorted attributed half segments in lexicographic order.
-    // Eg: Region1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) < Region2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns true since
+    // Eg: Region1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) < Region2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns true since 
     // ((0,0),(1,1)) < ((5,5),(6,6))
     bool operator < (Region2D& operand);
 
-    // less than or equal operator that compares 2 Region2D objects through comparing their sorted attributed half segments in lexicographic
-    //order. Eg: Region1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) <= Region2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns true since
+    // less than or equal operator that compares 2 Region2D objects through comparing their sorted attributed half segments in lexicographic 
+    //order. Eg: Region1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) <= Region2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns true since 
     // ((0,0),(1,1)) <= ((5,5),(6,6))
     bool operator <= (Region2D& operand);
 
     // greater than operator that compares 2 Region2D objects through comparing their sorted attributed half segments in lexicographic order.
-    // Eg: Region1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) > Region2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns false since
+    // Eg: Region1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) > Region2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns false since 
     // ((0,0),(1,1)) < ((5,5),(6,6)).
     bool operator > (Region2D& operand);
 
-    // greater than or equal operator that compares 2 Region2D objects through comparing their sorted attributed half segments in lexicographic
-    //order. Eg: Region1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) >= Region2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns false since
+    // greater than or equal operator that compares 2 Region2D objects through comparing their sorted attributed half segments in lexicographic 
+    //order. Eg: Region1(((0,0),(1,1)),((0,0),(2,0)),((1,1),(2,0))) >= Region2(((5,5),(6,6)),((5,5),(7,5)),((6,6),(7,5))) returns false since 
     // ((0,0),(1,1)) <= ((5,5),(6,6))
     bool operator >= (Region2D& operand);
 
@@ -118,7 +119,7 @@ public:
     // Unary predicates and operations
     //++++++++++++++++++++++++++++++++
 
-    // Predicate that checks whether the inputted Region2D object is an
+    // Predicate that checks whether the inputted Region2D object is an 
     //empty Region2D object.
     bool isEmptyRegion2D() const;
 
@@ -180,62 +181,62 @@ public:
     // faces is not possible.
     class ConstFaceIterator
     {
-        friend class Region2D;
+    friend class Region2D;
 
     public:
-        // Default constructor that creates an empty constant face iterator.
-        ConstFaceIterator();
+      // Default constructor that creates an empty constant face iterator.
+      ConstFaceIterator();
 
-        // Copy constructor that constructs a constant face iterator from a
-        // given constant face iterator "source".
-        ConstFaceIterator(const ConstFaceIterator& source);
+      // Copy constructor that constructs a constant face iterator from a
+      // given constant face iterator "source".
+      ConstFaceIterator(const ConstFaceIterator& source);
 
-        // Move constructor that moves a given constant face iterator "source"
-        // to a constant face iterator. The constant face iterator "source"
-        // gets the empty constant face iterator as its value.
-        ConstFaceIterator(const ConstFaceIterator&& source);
+      // Move constructor that moves a given constant face iterator "source"
+      // to a constant face iterator. The constant face iterator "source"
+      // gets the empty constant face iterator as its value.
+      ConstFaceIterator(const ConstFaceIterator&& source);
 
-        // Destructor that frees the main memory space allocated for a constant
-        // face iterator.
-        ~ConstFaceIterator();
+      // Destructor that frees the main memory space allocated for a constant
+      // face iterator.
+      ~ConstFaceIterator();
 
-        // Assignment operator that assigns another constant face iterator
-        // "rhs" to the constant face iterator.
-        ConstFaceIterator& operator = (const ConstFaceIterator& rhs);
+      // Assignment operator that assigns another constant face iterator
+      // "rhs" to the constant face iterator.
+      ConstFaceIterator& operator = (const ConstFaceIterator& rhs);
 
-        // Predicate that tests whether a constant face iterator is empty.
-        bool isEmpty() const;
+      // Predicate that tests whether a constant face iterator is empty.
+      bool isEmpty() const;
 
-        // Increment/decrement operators '++', '--'
-        ConstFaceIterator& operator ++ ();   // prefix
-        ConstFaceIterator operator ++ (int postfix); // postfix
-        ConstFaceIterator& operator -- ();   // prefix
-        ConstFaceIterator operator -- (int postfix); // postfix
+      // Increment/decrement operators '++', '--'
+      ConstFaceIterator& operator ++ ();   // prefix
+      ConstFaceIterator operator ++ (int postfix); // postfix
+      ConstFaceIterator& operator -- ();   // prefix
+      ConstFaceIterator operator -- (int postfix); // postfix
 
-        // Dereferencing operators that return the value at the constant face
-        // iterator position. Dereferencing is only allowed if the iterator
-        // points to a face. The dereferenced value cannot be changed.
-        const Region2D operator *() const;
-        const Region2D operator ->() const;
+      // Dereferencing operators that return the value at the constant face
+      // iterator position. Dereferencing is only allowed if the iterator
+      // points to a face. The dereferenced value cannot be changed.
+      const Region2D operator *() const;
+      const Region2D operator ->() const;
 
-        // Comparison operators that compare a constant face iterator position
-        // with another const face iterator position "rhs"
-        bool operator == (const ConstFaceIterator& rhs) const;
-        bool operator != (const ConstFaceIterator& rhs) const;
-        bool operator <  (const ConstFaceIterator& rhs) const;
-        bool operator <= (const ConstFaceIterator& rhs) const;
-        bool operator >  (const ConstFaceIterator& rhs) const;
-        bool operator >= (const ConstFaceIterator& rhs) const;
-
-        friend std::ostream&operator<<(std::ostream& os, const ConstFaceIterator& output);
+      // Comparison operators that compare a constant face iterator position
+      // with another const face iterator position "rhs"
+      bool operator == (const ConstFaceIterator& rhs) const;
+      bool operator != (const ConstFaceIterator& rhs) const;
+      bool operator <  (const ConstFaceIterator& rhs) const;
+      bool operator <= (const ConstFaceIterator& rhs) const;
+      bool operator >  (const ConstFaceIterator& rhs) const;
+      bool operator >= (const ConstFaceIterator& rhs) const;
+     
+      friend std::ostream&operator<<(std::ostream& os, const ConstFaceIterator& output);
 
     protected:
-        // Forward struct declaration for the hidden implementation of a
-        // constant face iterator
-        struct ConstFaceIteratorImplementation;
+      // Forward struct declaration for the hidden implementation of a
+      // constant face iterator
+      struct ConstFaceIteratorImplementation;
 
-        // Declaration of an opaque pointer
-        ConstFaceIteratorImplementation* handlei;
+      // Declaration of an opaque pointer
+      ConstFaceIteratorImplementation* handlei;
     }; // class ConstFaceIterator
 
     // Method that returns a constant face iterator to the first face of a
@@ -259,65 +260,65 @@ public:
 
     // Constant cycle iterator type that allows to navigate through the cycles of
     // a Region2D object in forward and reverse direction. A change of the
-    // holes is not possible.
+    // holes is not possible. 
     class ConstCycleIterator
     {
-        friend class Region2D;
+    friend class Region2D;
 
     public:
-        // Default constructor that creates an empty constant cycle iterator.
-        ConstCycleIterator();
+      // Default constructor that creates an empty constant cycle iterator.
+      ConstCycleIterator();
 
-        // Copy constructor that constructs a constant cycle iterator from a
-        // given constant cycle iterator "source".
-        ConstCycleIterator(const ConstCycleIterator& source);
+      // Copy constructor that constructs a constant cycle iterator from a
+      // given constant cycle iterator "source".
+      ConstCycleIterator(const ConstCycleIterator& source);
 
-        // Move constructor that moves a given constant cycle iterator "source"
-        // to a constant cycle iterator. The constant cycle iterator "source"
-        // gets the empty constant cycle iterator as its value.
-        ConstCycleIterator(const ConstCycleIterator&& source);
+      // Move constructor that moves a given constant cycle iterator "source"
+      // to a constant cycle iterator. The constant cycle iterator "source"
+      // gets the empty constant cycle iterator as its value.
+      ConstCycleIterator(const ConstCycleIterator&& source);
 
-        // Destructor that frees the main memory space allocated for a constant
-        // cycle iterator.
-        ~ConstCycleIterator();
+      // Destructor that frees the main memory space allocated for a constant
+      // cycle iterator.
+      ~ConstCycleIterator();
 
-        // Assignment operator that assigns another constant cycle iterator
-        // "rhs" to the constant face iterator.
-        ConstCycleIterator& operator = (const ConstCycleIterator& rhs);
+      // Assignment operator that assigns another constant cycle iterator
+      // "rhs" to the constant face iterator.
+      ConstCycleIterator& operator = (const ConstCycleIterator& rhs);
 
-        // Predicate that tests whether a constant Cycle iterator is empty.
-        bool isEmpty() const;
+      // Predicate that tests whether a constant Cycle iterator is empty.
+      bool isEmpty() const;
 
-        // Increment/decrement operators '++', '--'
-        ConstCycleIterator& operator ++ ();   // prefix
-        ConstCycleIterator operator ++ (int postfix); // postfix
-        ConstCycleIterator& operator -- ();   // prefix
-        ConstCycleIterator operator -- (int postfix); // postfix
+      // Increment/decrement operators '++', '--'
+      ConstCycleIterator& operator ++ ();   // prefix
+      ConstCycleIterator operator ++ (int postfix); // postfix
+      ConstCycleIterator& operator -- ();   // prefix
+      ConstCycleIterator operator -- (int postfix); // postfix
 
-        // Dereferencing operators that return the value at the constant Cycle
-        // iterator position. Dereferencing is only allowed if the iterator
-        // points to a cycle. The dereferenced value cannot be changed.
-        const Region2D operator *() const;
-        const Region2D operator ->() const;
+      // Dereferencing operators that return the value at the constant Cycle
+      // iterator position. Dereferencing is only allowed if the iterator
+      // points to a cycle. The dereferenced value cannot be changed.
+      const Region2D operator *() const;
+      const Region2D operator ->() const;
 
-        // Comparison operators that compare a constant Cycle iterator position
-        // with another const Cycle iterator position "rhs"
-        bool operator == (const ConstCycleIterator& rhs) const;
-        bool operator != (const ConstCycleIterator& rhs) const;
-        bool operator <  (const ConstCycleIterator& rhs) const;
-        bool operator <= (const ConstCycleIterator& rhs) const;
-        bool operator >  (const ConstCycleIterator& rhs) const;
-        bool operator >= (const ConstCycleIterator& rhs) const;
+      // Comparison operators that compare a constant Cycle iterator position
+      // with another const Cycle iterator position "rhs"
+      bool operator == (const ConstCycleIterator& rhs) const;
+      bool operator != (const ConstCycleIterator& rhs) const;
+      bool operator <  (const ConstCycleIterator& rhs) const;
+      bool operator <= (const ConstCycleIterator& rhs) const;
+      bool operator >  (const ConstCycleIterator& rhs) const;
+      bool operator >= (const ConstCycleIterator& rhs) const;
 
-        friend std::ostream&operator<<(std::ostream& os, const ConstCycleIterator& output);
+      friend std::ostream&operator<<(std::ostream& os, const ConstCycleIterator& output);
 
     protected:
-        // Forward struct declaration for the hidden implementation of a
-        // constant Cycle iterator
-        struct ConstCycleIteratorImplementation;
+      // Forward struct declaration for the hidden implementation of a
+      // constant Cycle iterator
+      struct ConstCycleIteratorImplementation;
 
-        // Declaration of an opaque pointer
-        ConstCycleIteratorImplementation* handlei;
+      // Declaration of an opaque pointer
+      ConstCycleIteratorImplementation* handlei;
     }; // class ConstCycleIterator
 
     // Method that returns a constant Cycle iterator to the first Cycle of a
