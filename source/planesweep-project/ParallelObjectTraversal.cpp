@@ -179,7 +179,6 @@ ParallelObjectTraversal::status ParallelObjectTraversal::getStatus() {
     return status_value;
 }
 
-//TODO selectFirst() and selectNext() should use the next min element based on setNextMin().Right now it is comparing just ObjectIterators. Where are we getting the nextMin value based on setMin()?
 /*
  * Method:      selectFirst()
  * Description: Method that selects first point or halfsegment of each of the operand objects
@@ -220,37 +219,11 @@ void ParallelObjectTraversal::selectFirst() {
             *objGregionIterator = ((Region2DImpl *) objG)->cbegin();
     }
 
-    // Dtj Dec 10, 2015
-//     TODO:
-//     I have not changed this part yet. This oart need to be changed,
-//     so please look at the old codes and adjust them to the new changes:
-
-
-    // Point2DPoint2D
-//    if (objF->isPoint2D()  && objG->isPoint2D()) {
-//        if (objFpoiIterator->isEmpty() && objGpoiIterator->isEmpty()) {
-//            object_value = none;
-//            status_value = end_of_both;
-//        } else {
-//            if (objGpoiIterator->isEmpty())
-//                object_value = first;
-//            else if (objFpoiIterator->isEmpty())
-//                object_value = second;
-//            else {
-//                if (*objFpoiIterator == *objGpoiIterator) {
-//                    object_value = both;
-//                }
-//                status_value = end_of_none;
-//            }
-//        }
-//
-//    }
 
 
 
     if (objF->isPoint2D() && objG->isPoint2D()) {
 
-        // TODO: check whether "isEmpty()" useful
         if (objFpoiIterator->isEmpty() && objGpoiIterator->isEmpty()) {
             object_value = none;
             status_value = end_of_both;
@@ -275,7 +248,6 @@ void ParallelObjectTraversal::selectFirst() {
 
     if (objF->isPoint2D() && objG->isLine2D()) {
 
-        // TODO: check whether "isEmpty()" useful
         if (objFpoiIterator->isEmpty() && objGsegIterator->isEmpty()) {
             object_value = none;
             status_value = end_of_both;
@@ -304,7 +276,7 @@ void ParallelObjectTraversal::selectFirst() {
 
     if (objF->isPoint2D() && objG->isRegion2D()) {
 
-        // TODO: check whether "isEmpty()" useful
+
         if (objFpoiIterator->isEmpty() && objGregionIterator->isEmpty()) {
             object_value = none;
             status_value = end_of_both;
@@ -333,7 +305,6 @@ void ParallelObjectTraversal::selectFirst() {
     // Line2DLine2D
     if (objF->isLine2D() && objG->isLine2D()) {
 
-        // TODO: check whether "isEmpty()" useful
         if (objFsegIterator->isEmpty() && objGsegIterator->isEmpty()) {
             object_value = none;
             status_value = end_of_both;
@@ -358,7 +329,6 @@ void ParallelObjectTraversal::selectFirst() {
 
     if (objF->isLine2D() && objG->isRegion2D()) {
 
-        // TODO: check whether "isEmpty()" useful
         if (objFsegIterator->isEmpty() && objGregionIterator->isEmpty()) {
             object_value = none;
             status_value = end_of_both;
@@ -385,7 +355,6 @@ void ParallelObjectTraversal::selectFirst() {
 
     if (objF->isRegion2D() && objG->isRegion2D()) {
 
-        // TODO: check whether "isEmpty()" useful
         if (objFregionIterator->isEmpty() && objGregionIterator->isEmpty()) {
             object_value = none;
             status_value = end_of_both;
@@ -407,40 +376,9 @@ void ParallelObjectTraversal::selectFirst() {
         }
 
     }
-    // DTj TODO: can we take out objFpoiIterator and objGpoiIterator? Like below?
-    //    if (objFsegIterator->isEmpty() &&
-    //        objGsegIterator->isEmpty() && objFregionIterator->isEmpty() && objGregionIterator->isEmpty()) {
-
-//    if (objFpoiIterator->isEmpty() && objGpoiIterator->isEmpty() && objFsegIterator->isEmpty() &&
-//        objGsegIterator->isEmpty() && objFregionIterator->isEmpty() && objGregionIterator->isEmpty()) {
-//
-//        object_value = none;
-//        status_value = end_of_both;
-//    }
-//    else {
-//        if (objGpoiIterator->isEmpty() && objGsegIterator->isEmpty() && objGregionIterator->isEmpty())
-//            object_value = first;
-//        else if (objFpoiIterator->isEmpty() && objFsegIterator->isEmpty() && objFregionIterator->isEmpty())
-//            object_value = second;
-//        else
-//            object_value = both;
-
-    //TODO: DTj. commented out
-//        if ((objFpoiIterator->getCurrent() == ((Point2D *) objF)->cend()||objFsegIterator->getCurrent()== ((Line2DImpl *) objF)->hEnd()||objFregionIterator->getCurrent()==((Region2DImpl *)objF)->cend())
-//            && ((objGpoiIterator->getCurrent() == ((Point2D *)objG)->cend()||objGsegIterator->getCurrent()== ((Line2DImpl *)objG)->hEnd()||objGregionIterator->getCurrent()==((Region2DImpl *)objG)->cend())))
-//            status_value = end_of_both;
-//        else if (objFpoiIterator->getCurrent() == ((Point2D *) objF)->cend()||objFsegIterator->getCurrent()== ((Line2DImpl *) objF)->hEnd()||objFregionIterator->getCurrent()==((Region2DImpl *)objF)->cend())
-//            status_value = end_of_first;
-//        else if (objGpoiIterator->getCurrent() == ((Point2D *)objG)->cend()||objGsegIterator->getCurrent()== ((Line2DImpl *)objG)->hEnd()||objGregionIterator->getCurrent()==((Region2DImpl *)objG)->cend())
-//            status_value = end_of_second;
-//        else
-//            status_value = end_of_none;
-//    }
-
 
 }
 
-//TODO - see if the return type should be AttrHalfSeg2D or check what it should be
 
 /*
  * Method:      setNextMin()
@@ -451,7 +389,6 @@ void ParallelObjectTraversal::selectFirst() {
  */
 void ParallelObjectTraversal::setNextMin() {
 
-    // TODO: DTj. commented out
     if (objF->isPoint2D()) {
         Poi2D obj11 = currentFPoi();
         Poi2D obj12 = nextFPoi();
@@ -646,22 +583,7 @@ void ParallelObjectTraversal::setNextMin() {
             return;
         }
     }
-    // //TODO: end DTj. commented out
 
-
-
-
-//    obj11 = objFIterator->getCurrent();
-//    obj21 = objGIterator->getCurrent();
-//    obj12 = objFIterator->getNext();
-//    obj22 = objGIterator->getNext();
-//    if (object_value == first)
-//        return (obj12 < obj21 ? obj12 : obj21);
-//    if (object_value == second)
-//        return (obj11 < obj22 ? obj11 : obj22);
-//    if (object_value == both)
-//        return (obj12 < obj22 ? obj12 : obj22);
-//    return nullptr;
 
 }
 
@@ -880,82 +802,6 @@ void ParallelObjectTraversal::selectNext() {
         }
     }
 
-
-    //TODO: DTj. commented out, to be deleted later
-//    if (object_value == both) {
-//        if (objF->isPoint2D()) {
-//            objFpoiIterator++;
-//        }
-//        else if (objF->isLine2D()) {
-//            objFsegIterator++;
-//        }
-//        else if (objF->isRegion2D()) {
-//            objFregionIterator++;
-//        }
-//        if (objG->isPoint2D()) {
-//            objGpoiIterator++;
-//        }
-//        else if (objG->isLine2D()) {
-//            objGsegIterator++;
-//        }
-//        else if (objG->isRegion2D()) {
-//            objGregionIterator++;
-//        }
-////        objFIterator++;
-////        objGIterator++;
-//    } else if (object_value == first) {
-//        if (objF->isPoint2D()) {
-//            objFpoiIterator++;
-//        }
-//        else if (objF->isLine2D()) {
-//            objFsegIterator++;
-//        }
-//        else if (objF->isRegion2D()) {
-//            objFregionIterator++;
-//        }
-//        // objFIterator++;
-//    } else if (object_value == second) {
-//        if (objG->isPoint2D()) {
-//            objGpoiIterator++;
-//        }
-//        else if (objG->isLine2D()) {
-//            objGsegIterator++;
-//        }
-//        else if (objG->isRegion2D()) {
-//            objGregionIterator++;
-//        }
-//        // objGIterator++;
-//    } else if (object_value == none) {
-//        // Because if both objects elements are over, don't update object and
-//        // status variables or object pointers.
-//        return;
-//    }
-
-    //TODO: DTj. commented out
-////TODO define getCurrent() and getNext() for ObjectIterators
-//    if ((objFpoiIterator->getCurrent() == ((Point2D *) objF)->cend()||objFsegIterator->getCurrent()== ((Line2DImpl *) objF)->hEnd()||objFregionIterator->getCurrent()==((Region2DImpl *)objF)->cend())) {
-//        if ((objGpoiIterator->getCurrent() == ((Point2D *)objG)->cend()||objGsegIterator->getCurrent()== ((Line2DImpl *)objG)->hEnd()||objGregionIterator->getCurrent()==((Region2DImpl *)objG)->cend())) {
-//            status_value = end_of_both;
-//        }
-//        else {
-//            status_value = end_of_first;
-//        }
-//    } else if ((objGpoiIterator->getCurrent() == ((Point2D *)objG)->cend()||objGsegIterator->getCurrent()== ((Line2DImpl *)objG)->hEnd()||objGregionIterator->getCurrent()==((Region2DImpl *)objG)->cend())) {
-//        status_value = end_of_second;
-//    } else {
-//        status_value = end_of_none;
-//    }
-//
-//
-//    if ((objFpoiIterator->getCurrent() == ((Point2D *) objF)->ctail()||objFsegIterator->getCurrent()== ((Line2DImpl *) objF)->hTail()||objFregionIterator->getCurrent()==((Region2DImpl *)objF)->ctail()) && ((objGpoiIterator->getCurrent() == ((Point2D *)objG)->ctail()||objGsegIterator->getCurrent()== ((Line2DImpl *)objG)->hTail()||objGregionIterator->getCurrent()==((Region2DImpl *)objG)->ctail()))) {
-//        object_value = none;
-//    } else if ((objFpoiIterator->getCurrent() == objGpoiIterator->getCurrent())||(objFsegIterator->getCurrent()==objGsegIterator->getCurrent())||(objFregionIterator->getCurrent()==objGregionIterator->getCurrent())) {
-//        object_value = both;
-//    } else if ((objFpoiIterator->getCurrent() < objGpoiIterator->getCurrent())||(objFsegIterator->getCurrent()<objGsegIterator->getCurrent())||(objFregionIterator->getCurrent()<objGregionIterator->getCurrent())) {
-//        object_value = first;
-//    } else if ((objFpoiIterator->getCurrent() > objGpoiIterator->getCurrent())||(objFsegIterator->getCurrent()>objGsegIterator->getCurrent())||(objFregionIterator->getCurrent()>objGregionIterator->getCurrent())) {
-//        object_value = second;
-//    }
 }
 
 /*
@@ -1087,7 +933,6 @@ AttrHalfSeg2D ParallelObjectTraversal::getAttrHalfSegEvent(object objectEnumVal)
     }
 }
 
-//TODO: DTj. commented out
 /**
  * Method:      getPoiObjIterator()
  * Description: This method returns the Point2D object iterator corresponding to a
@@ -1105,7 +950,6 @@ Point2D::ConstPoiIterator *ParallelObjectTraversal::getPoiObjIterator(object obj
     return nullptr;
 }
 
-//TODO: DTj. commented out
 /**
  * Method:      getHalfSegIterator()
  * Description: This method returns the Line2DImpl object iterator corresponding to a
@@ -1123,7 +967,6 @@ Line2DImpl::ConstHalfSegIterator *ParallelObjectTraversal::getHalfSegIterator(ob
     return nullptr;
 }
 
-//TODO: DTj. commented out
 /**
  * Method:      getAttrHalfSegIterator()
  * Description: This method returns the Region2DImpl object iterator corresponding to a
@@ -1141,9 +984,6 @@ Region2DImpl::ConstAttributedHalfSegmentIterator *ParallelObjectTraversal::getAt
     return nullptr;
 }
 
-
-//TODO: for next 6 functions- get ideal iterators
-////TODO obji does not work with simple ++ for next 6 functions
 
 /**
  * Method:      isInObjF()
@@ -1211,7 +1051,6 @@ bool ParallelObjectTraversal::isInObjG(Seg2D &seg2D) {
     return false;
 }
 
-//TODO: DTj. commented out
 /**
  * Method:      getNextObjIterator()
  * Description: Returns the object that is logically next in the iterator status. This method
@@ -1255,7 +1094,6 @@ Line2DImpl::ConstHalfSegIterator *ParallelObjectTraversal::getNextObjIterator(Ha
     }
 }
 
-//TODO: DTj. commented out
 /**
  * Method:      getNextObjIterator()
  * Description: Returns the object that is logically next in the iterator status. This method

@@ -92,7 +92,6 @@ public:
     bool isInObjF(Seg2D&);
     bool isInObjG(Seg2D&);
     
-    // TODO Are these methods needed?
     Poi2D getPoiEvent(object objectEnumVal);
     HalfSeg2D getHalfSegEvent(object objectEnumVal);
     AttrHalfSeg2D getAttrHalfSegEvent(object objectEnumVal);
@@ -153,9 +152,6 @@ private:
     Poi2D *minPoi2DF = nullptr,*minPoi2DG = nullptr;
     HalfSeg2D *minHalfSeg2DF = nullptr, *minHalfSeg2DG= nullptr;
     AttrHalfSeg2D *minAttrHalfSeg2DF= nullptr, *minAttrHalfSeg2DG= nullptr;
-    // TODO
-    // define the rest of the inlined currentFXXX and currentGxxx below
-    ///
 
 };
 

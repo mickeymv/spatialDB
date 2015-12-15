@@ -31,9 +31,8 @@
 * Point2D objects and yielding a Point2D object
 *******************************************************************************
 * The spatial intersection operation returns those single points in a Point2D
-* object that belong to both argument Point2D objects.
-*
-* The spatial intersection operation returns a Point2D object that is the
+* object that belong to both argument Point2D objects. i.e. The spatial intersection
+* operation returns a Point2D object that is the
 *  intersection  of two Point2D objects. 
 * The spatial union operation returns a Point2D object that is the 
 * union  of two Point2D objects.

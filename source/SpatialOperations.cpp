@@ -132,6 +132,14 @@ Point2D spatialDifference(const Point2D &pointLhs, const Point2D &pointRhs) {
 * Returns    : Line2D
 ******************************************************************************/
 
+
+/*
+ * As a helper function for the Line operations, we have the updateSweepLineForLine()
+ * function. This function would update the sweepLineStatus data structure (AVL tree)
+ * (add left half-segments to the sweepLine when encountered and remove right-half
+ * segments from the sweepLine when encountered).
+ */
+
 void updateSweepLineForLine(PlaneSweep &planeSweep);
 
 Line2D spatialIntersection(const Line2D &lineLhs, const Line2D &lineRhs) {
@@ -201,7 +209,6 @@ Line2D spatialUnion(const Line2D &lineLhs, const Line2D &lineRhs) {
         }
         HalfSeg2D halfSeg2D = planeSweep.getHalfSegEvent(objectValue);
         if (halfSeg2D.isLeft == false) {
-            //TODO: Should test whether we need to add the segment when sweepLine status encounters it or after it is done with it.
             Seg2D seg2D = halfSeg2D.seg;
             unionLinesVector.push_back(seg2D);
         }
@@ -460,7 +467,12 @@ Region2D spatialDifference(const Region2D &regionLhs,
     Region2D diffRegionObject(diffRegionVector);
     return diffRegionObject;
 }
-
+/*
+ * As a helper function for the Region operations, we have the updateSweepLineForLine()
+ * function. This function would update the sweepLineStatus data structure (AVL tree)
+ * (add left half-segments to the sweepLine when encountered and remove right-half
+ * segments from the sweepLine when encountered).
+ */
 
 void updateSweepLineForRegion(PlaneSweep &planeSweep) {
     /*

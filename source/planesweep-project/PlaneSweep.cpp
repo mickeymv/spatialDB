@@ -57,7 +57,6 @@ bool PlaneSweep::getInsideAbove(Seg2D seg) {
     return ia;
 }
 
-//TODO try to store halfsegments in Minheap
 int PlaneSweep::findLeast() {
     //AttrHalfSeg2D objS, objD1, objD2, objD;
     getPot()->setNextMin();
@@ -362,6 +361,13 @@ ParallelObjectTraversal::status PlaneSweep::getStatus() {
     return getPot()->getStatus();
 }
 
+/*
+ * This function is to update the segment class of the currently added
+ * segment to the sweepLine as well as modify the segment class
+ * of current segment's predecessor or successor if required based
+ * on the various cases which could occur.
+ */
+
 void PlaneSweep::updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject &sweepLineStatusObject) {
     /*
      * We assume that the segment is already added to the sweepLineStatus.
@@ -657,7 +663,6 @@ void PlaneSweep::delRight(PlaneSweepLineStatusObject &planeSweepLineStatusObject
     }
 }
 
-//TODO change type of getElements() from AVLtree
 bool PlaneSweep::coincident(Seg2D &givenSeg) {
     int itr = 0;
     int const treeSize = sweepLineStatus->sizeOfAVL();
@@ -740,11 +745,6 @@ bool PlaneSweep::isRelation(Seg2D &firstSegment, Seg2D &secondSegment) {
     return false;
 }
 
-/*TODO Need to see how ConstSegIterator can be used for pot->isInObjF(Seg2D) and pot->isInObjG(seg2D) and ConstHalsegInterator, ConstAttrHalfsegIterator for getNextObjIterator
- * TODO see how Attributed half segments can be generated from segments
- * TODO see what to insert for ia since attributed halfsegment iterators can consider ia for comparison
- * VERY IMPORTANT
- * */
 void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
     if (Intersects(firstSegment, secondSegment)) {
         if ((pot->isInObjF(firstSegment) && pot->isInObjG(secondSegment)) ||
@@ -1989,8 +1989,7 @@ AttrHalfSeg2D PlaneSweep::getAttrHalfSegEvent(ParallelObjectTraversal::object ob
     AttrHalfSeg2D attrHalfSeg2D, attrHalfSeg2DStatic, attrHalfSeg2DDynamic;
 //Get static HalfSeg2D
     Region2DImpl::ConstAttributedHalfSegmentIterator *pos = getPot()->getAttrHalfSegIterator(objectValue);
-    attrHalfSeg2DStatic = *(*pos); //TODO: Group2 need to correct the return type from RegionImpl to AttrHalfSeg2D
-
+    attrHalfSeg2DStatic = *(*pos);
 
     //Get Dynamic point
     if (objectValue == ParallelObjectTraversal::first) {
@@ -2019,10 +2018,6 @@ AttrHalfSeg2D PlaneSweep::getAttrHalfSegEvent(ParallelObjectTraversal::object ob
     return attrHalfSeg2D;
 }
 
-/* TODO Need to update attrHalfSeg implementation after group 2 changes it
- * TODO Need to update code to get next object after a given object in an AVL tree to get dynSucc
- */
-
 bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
     Seg2D &seg2D = halfseg2D.seg;
     if (pot->isObjectF(line2D)) {
@@ -2036,17 +2031,8 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
         }
         else {
             halfsegStaticSucc = nullptr;
-        } // TODO the 'else' block is redundant code
+        }
 
-        //Dynamic
-//        dynamicEPSObjF.DeleteMin();
-//        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjF.GetMin();
-//        AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
-//        dynamicEPSObjF.Insert(attrhalfsegReinsert);
-//        HalfSeg2D halfsegDynSucc = attrhalfsegDynSucc.halfsegment; //change later
-
-        //AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
-        //AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjF.GetNext(attrhalfsegReinsert);
         HalfSeg2D *halfsegDynSucc = nullptr;
         if (!dynamicEPSObjF.isEmpty()) {
             halfsegDynSucc = new HalfSeg2D(); //change later
@@ -2199,9 +2185,6 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
     }
 }
 
-/* TODO Need to update attrHalfSeg implementation after group 2 changes it
- * TODO Need to update code to get next object after a given object in an AVL tree to get dynSucc
- */
 
 bool PlaneSweep::lookAhead(AttrHalfSeg2D &attrhalfseg2D, Region2D &region2D) {
     Seg2D &seg2D = attrhalfseg2D.hseg.seg;
