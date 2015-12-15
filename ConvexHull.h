@@ -1,9 +1,7 @@
 #ifndef CONVEXHULL_H
 #define CONVEXHULL_H
 
-#include "ConvexHull.h"
-#include "Point2D.h"
-#include "Region2D.h"
+#include "poi2D.h"
 
 #include <vector>
 
@@ -11,15 +9,15 @@
 
 
 
-Region2D computeJarvis(const vector<Poi2D> &point_list);
+vector<poi2D> computeJarvis(const vector<poi2D> &point_list);
 
-Region2D computeGraham(const vector<Poi2D> &point_list);
+vector<poi2D> computeGraham(const vector<poi2D> &point_list);
 
-Region2D computeQuick(const vector<Poi2D> &point_list);
+vector<poi2D> computeQuick(const vector<poi2D> &point_list);
 
-Region2D computeDivideConquer(const vector<Poi2D> &point_list);
+vector<poi2D> computeDivideConquer(vector<poi2D> &point_list);
 
-Region2D computeNewAlgo(const vector<Poi2D> &point_list);
+vector<poi2D> computeNewAlgo(const vector<poi2D> &point_list);
 
 //to be implemented later:
 //Region 2D computeHull(const Point2D &complex_point);

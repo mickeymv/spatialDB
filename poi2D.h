@@ -3,14 +3,15 @@
 
 #include <iostream>
 #include <sstream>
+#include "Number.h"
 
 using namespace std;
 
 
 struct poi2D
 {
-	double x;
-	double y;
+	Number x;
+	Number y;
 
 	string toString(){
 		ostringstream strs;
