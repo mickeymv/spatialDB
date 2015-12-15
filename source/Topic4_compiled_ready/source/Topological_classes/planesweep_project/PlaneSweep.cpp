@@ -7,7 +7,7 @@
 
 #include "PlaneSweep.h"
 
-PlaneSweep::PlaneSweep(Object2D objF, Object2D objG) {
+PlaneSweep::PlaneSweep(const Object2D &objF, const Object2D &objG) {
     pot = new ParallelObjectTraversal(objF, objG);
     this->objF = objF;
     this->objG = objG;
@@ -342,13 +342,12 @@ void PlaneSweep::selectNext() {
 
 }
 
-ParallelObjectTraversal::object  PlaneSweep::getObject() {
+ParallelObjectTraversal::object PlaneSweep::getObject() {
     // temporary, to be replaced
     return getPot()->getObject();
-
 }
 
-ParallelObjectTraversal::status  PlaneSweep::getStatus() {
+ParallelObjectTraversal::status PlaneSweep::getStatus() {
     // temporary, to be replaced
     return getPot()->getStatus();
 }
@@ -1980,7 +1979,7 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
         }
         else {
             halfsegStaticSucc = nullptr;
-        }
+        } // TODO the 'else' block is redundant code
 
         //Dynamic
 //        dynamicEPSObjF.DeleteMin();

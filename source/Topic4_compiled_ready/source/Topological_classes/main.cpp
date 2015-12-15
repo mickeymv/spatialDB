@@ -23,7 +23,26 @@ using namespace std;
 //            Line2DLine2D, Line2DRegion2D, Region2DRegion2D
 //
 
-void printPoint2DPoint2DPredicate(TopPredNumberPoint2DPoint2D tpred);
+//void printPoint2DPoint2DPredicate(TopPredNumberPoint2DPoint2D tpred);
+
+
+
+
+inline void printPoint2DPoint2DPredicate(TopPredNumberPoint2DPoint2D tpred) {
+
+    switch(tpred) {
+        case TopPredNumberPoint2DPoint2D::pp_disjoint_m1 : cout << "pp_disjoint_m1 <===";
+            break;
+        case TopPredNumberPoint2DPoint2D::pp_equal_m2 : cout << "pp_equal_m2 <===";
+            break;
+        case TopPredNumberPoint2DPoint2D::pp_inside_m3 : cout << "pp_inside_m3 <===";
+            break;
+        case TopPredNumberPoint2DPoint2D::pp_contains_m4 : cout << "pp_contains_m4 <===";
+            break;
+        case TopPredNumberPoint2DPoint2D::pp_overlap_m5 : cout << "pp_overlap_m5 <===";
+            break;
+    }
+};
 
 
 int main() {
@@ -66,7 +85,8 @@ int main() {
     cout << endl;
 
     // don't forget to cleanup
-    delete a, b;
+    delete a;
+    delete b;
 
 
     // 2. Test pp_overlap_m5, F and G same number of elements
@@ -92,7 +112,8 @@ int main() {
     cout << "   returns ==> " << result << endl << endl;
 
     // don't forget to cleanup
-    delete a, b;
+    delete a;
+    delete b;
 
 
     // 3. Test pp_inside_m3, F and G uneven number of elements
@@ -117,7 +138,8 @@ int main() {
 
 
     // don't forget to cleanup
-    delete a, b;
+    delete a;
+    delete b;
 
     // 4. Test pp_equal_m2
     a = new Point2D("((1,1),(2,2))");
@@ -143,7 +165,8 @@ int main() {
     cout << "   returns ==> " << result << endl << endl;
 
     // don't forget to cleanup
-    delete a, b;
+    delete a;
+    delete b;
 
     // 5. Test pp_inside_m3
     a = new Point2D("((1,1))");
@@ -177,34 +200,40 @@ int main() {
     cout << endl;
 
     // don't forget to cleanup
-    delete a, b;
+    delete a;
+    delete b;
 
 
     // 6. Test pp_disjoint_m1, F and G uneven number of elements
     a = new Point2D("((0,0),(3,3),(6,6))");
     b = new Point2D("((1,1))");
+    tpred = getTopologicalRelationship(*a, *b);
 
-//    for ( Point2D::ConstPoiIterator it = a->cbegin(); it < a->ctail(); it++ )
+
+//    for ( Point2D::ConstPoiIterator it = c->cbegin(); it < c->ctail(); it++ )
 //        cout << " output a:  " << it << endl;
-//    for ( Point2D::ConstPoiIterator it = b->cbegin(); it < b->ctail(); it++ )
+//    for ( Point2D::ConstPoiIterator it = d->cbegin(); it < d->ctail(); it++ )
 //        cout << " output b:  " << it << endl;
 
 
-    tpred = getTopologicalRelationship(*a, *b);
+
 
     cout << "6. Test pp_disjoint_m1, F and G uneven number of elements." << endl;
     cout << "Point2D a(\"((0,0),(3,3),(6,6))\");" << endl;
     cout << "Point2D b(\"((1,1))\");" << endl;
 
     cout << "   getTopologicalRelationship(a, b) :" << endl;
-    cout << "   returns ==> ";
+//    cout << "   returns ==> " << (int) tpred << endl;
+    cout << "   returns ==> " ;
+
 
     printPoint2DPoint2DPredicate(tpred);
     cout << endl << endl;
 
 
-    // don't forget to cleanup
-    delete a, b;
+//    // don't forget to cleanup
+    delete a;
+    delete b;
 
     // 7. Test pp_contains_m4
     a = new Point2D("((2,2),(3,3))");
@@ -226,9 +255,13 @@ int main() {
     cout << endl;
 
     // don't forget to cleanup
-    delete a, b;
+    delete a;
+    delete b;
 
     cout << "----" << endl;
+
+
+
 
     // ... still many test cases to write here
     // I haven't finished yet with my own test cases...
@@ -270,20 +303,3 @@ int main() {
     cout << "Test succesfully ended." << endl;
     return 0;
 }
-
-
-void printPoint2DPoint2DPredicate(TopPredNumberPoint2DPoint2D tpred) {
-
-    switch(tpred) {
-        case TopPredNumberPoint2DPoint2D::pp_disjoint_m1 : cout << "pp_disjoint_m1 <===";
-            break;
-        case TopPredNumberPoint2DPoint2D::pp_equal_m2 : cout << "pp_equal_m2 <===";
-            break;
-        case TopPredNumberPoint2DPoint2D::pp_inside_m3 : cout << "pp_inside_m3 <===";
-            break;
-        case TopPredNumberPoint2DPoint2D::pp_contains_m4 : cout << "pp_contains_m4 <===";
-            break;
-        case TopPredNumberPoint2DPoint2D::pp_overlap_m5 : cout << "pp_overlap_m5 <===";
-            break;
-    }
-};

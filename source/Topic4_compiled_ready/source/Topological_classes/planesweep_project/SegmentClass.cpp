@@ -19,22 +19,22 @@ SegmentClass::SegmentClass(int lOrR, int uOrL)
 
 int SegmentClass::getLowerOrRight()
 {
-  return lowerOrRight;
+    return lowerOrRight;
 }
 
 int SegmentClass::getUpperOrLeft()
 {
-  return upperOrLeft;
+    return upperOrLeft;
 }
 
 void SegmentClass::setLowerOrRight(int lOrR)
 {
-  lowerOrRight = lOrR;
+    lowerOrRight = lOrR;
 }
 
 void SegmentClass::setUpperOrLeft(int uOrL)
 {
-  upperOrLeft = uOrL;
+    upperOrLeft = uOrL;
 }
 
 SegmentClass::~SegmentClass()

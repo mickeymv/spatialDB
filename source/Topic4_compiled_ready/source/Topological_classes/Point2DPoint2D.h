@@ -55,7 +55,7 @@ private:
 
     enum  vG_Predicates {
         // the same as 'poi_disjoint", but we named it differently so it has no conflict with the same enum in vF_Predicates
-        poi_disjoint_g
+                poi_disjoint_g
     };
 
     Point2D objF, objG;

@@ -16,7 +16,7 @@ class PlaneSweepLineStatusObject {
     Seg2D segment2D;
     bool insideAbove;
 
-    //To determine which object this segment is from.
+    //To determine which object this segment is from. Only have first/second (NOT none/both)
     ParallelObjectTraversal::object objectValue;
 
 public:
@@ -32,6 +32,11 @@ public:
     bool operator==(PlaneSweepLineStatusObject &operand);
 
     SegmentClass getSegmentClass();
+    bool operator>=(PlaneSweepLineStatusObject &operand);
+
+    bool operator<=(PlaneSweepLineStatusObject &operand);
+
+    PlaneSweepLineStatusObject operator=(PlaneSweepLineStatusObject &operand);
 
     void setSegmentClass(int lOrR, int uOrL);
 

@@ -37,10 +37,10 @@ PlaneSweepLineStatusObject::PlaneSweepLineStatusObject() {
 }
 
 PlaneSweepLineStatusObject::PlaneSweepLineStatusObject(Seg2D& seg2D) {
-setSegment2D(seg2D);
+    setSegment2D(seg2D);
 //default behaviour for ia and segmentClass
-setInsideAbove(false);
-setSegmentClass(0,0);
+    setInsideAbove(false);
+    setSegmentClass(0,0);
 }
 
 
@@ -75,4 +75,33 @@ void PlaneSweepLineStatusObject::setObject(ParallelObjectTraversal::object objec
 
 ParallelObjectTraversal::object PlaneSweepLineStatusObject::getObject() {
     return objectValue;
+}
+
+bool PlaneSweepLineStatusObject::operator>=(PlaneSweepLineStatusObject &operand) {
+    if (this->segment2D >= operand.segment2D) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool PlaneSweepLineStatusObject::operator<=(PlaneSweepLineStatusObject &operand) {
+    if (this->segment2D <= operand.segment2D) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+PlaneSweepLineStatusObject PlaneSweepLineStatusObject::operator = (PlaneSweepLineStatusObject& obj)
+{
+    if (this != &obj)
+    {
+        this->objectValue = obj.getObject();
+        this->segmentClass = obj.segmentClass;
+        this->insideAbove = obj.insideAbove;
+        this->segment2D = obj.segment2D;
+    }
+    return *this;
 }
