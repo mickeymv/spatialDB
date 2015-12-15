@@ -5,6 +5,7 @@ using namespace std;
 #include "TopologicalRelationships.h"
 //#include "Point2D.h"
 #include "Point2DPoint2D.h"
+#include "Point2DLine2D.h"
 
 //    Use this as template... to create your own Test Cases cpp file:
 //    1. Copy the content and use it as template, put it as your main.cpp.
@@ -220,7 +221,8 @@ int main() {
     cout << "   returns ==> ";
 
     printPoint2DPoint2DPredicate(tpred);
-    cout << endl;
+    cout << endl << endl;
+
     cout << "   contains() ==> " <<  contains(*a, *b) << endl;
     cout << "   inside() ==> " <<  inside(*a, *b) << endl;
     cout << endl;
@@ -237,6 +239,151 @@ int main() {
     // *****************************
     // Case 2: Point2DLine2D
     // *****************************
+
+    Point2D * a;
+    Line2D * b;
+    TopPredNumberPoint2DLine2D tplred;
+    bool result = false;
+
+    cout << "Test begins..." << endl << endl;
+
+
+    // 1. Test pl_disjoint, F and G same number of elements
+    a = new Point2D("((1,1),(2,2),(3,3))");
+    b = new Line2D("(((4,4),(5,5)),((5,5),(6,6)),((6,6),(7,7)))");
+
+    tplred = getTopologicalRelationship(*a, *b);
+    //result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_equal_m2);
+
+    cout << "*****************************" << endl;
+    cout << "Case 1: Point2DLine2D" << endl;
+    cout << "*****************************" << endl;
+    cout << endl;
+    cout << "1. Test pl_disjoint, F and G same number of elements." << endl;
+    cout << "Point2D a(\"((1,1),(2,2),(3,3))\");" << endl;
+    cout << "Line2D b(\"(((4,4),(5,5)),((5,5),(6,6)),((6,6),(7,7)))\");" << endl;
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    cout<<tplred;
+    cout << endl;
+
+    result = isTopologicalRelationship(a, b, pl_disjoint_m2);
+
+    cout << "   isTopologicalRelationship(a, b, pl_disjoint_m2) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   disjoint() ==> " <<  disjoint(*a, *b) << endl;
+    cout << "   overlap() ==> " <<  overlap(*a, *b) << endl;
+    cout << endl;
+
+    // don't forget to cleanup
+    delete a, b;
+    result = false;
+
+    cout << "Test begins..." << endl << endl;
+
+
+    // 2. Test pl_meet, F and G same number of elements
+    a = new Point2D("((1,1),(2,2),(3,3))");
+    b = new Line2D("(((3,3),(5,5)),((5,5),(6,6)),((6,6),(7,7)))");
+
+    tplred = getTopologicalRelationship(*a, *b);
+    //result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_equal_m2);
+
+    cout << "*****************************" << endl;
+    cout << "Case 2: Point2DLine2D" << endl;
+    cout << "*****************************" << endl;
+    cout << endl;
+    cout << "2. Test pl_meet, F and G same number of elements." << endl;
+    cout << "Point2D a(\"((1,1),(2,2),(3,3))\");" << endl;
+    cout << "Line2D b(\"(((3,3),(5,5)),((5,5),(6,6)),((6,6),(7,7)))\");" << endl;
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    cout<<tplred;
+    cout << endl;
+
+    result = isTopologicalRelationship(a, b, pl_meet_m4);
+
+    cout << "   isTopologicalRelationship(a, b, pl_meet_m4) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   disjoint() ==> " <<  meet(*a, *b) << endl;
+    cout << "   overlap() ==> " <<  overlap(*a, *b) << endl;
+    cout << endl;
+
+    // don't forget to cleanup
+    delete a, b;
+    result = false;
+
+    // 3. Test pl_inside, F and G same number of elements
+    a = new Point2D("((1,1),(3,3))");
+    b = new Line2D("(((1,1),(3,3)),((3,3),(6,6)))");
+
+    tplred = getTopologicalRelationship(*a, *b);
+    //result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_equal_m2);
+
+    cout << "*****************************" << endl;
+    cout << "Case 3: Point2DLine2D" << endl;
+    cout << "*****************************" << endl;
+    cout << endl;
+    cout << "1. Test pl_inside, F and G same number of elements." << endl;
+    cout << "Point2D a(\"((1,1),(3,3))\");" << endl;
+    cout << "Line2D b(\"(((1,1),(3,3)),((3,3),(6,6)))\");" << endl;
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    cout<<tplred;
+    cout << endl;
+
+    result = isTopologicalRelationship(a, b, pl_inside_m8);
+
+    cout << "   isTopologicalRelationship(a, b, pl_inside_m8) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   disjoint() ==> " <<  inside(*a, *b) << endl;
+    cout << "   overlap() ==> " <<  overlap(*a, *b) << endl;
+    cout << endl;
+
+    // don't forget to cleanup
+    delete a, b;
+    result = false;
+
+    // 4. Test pl_overlap, F and G same number of elements
+    a = new Point2D("((1,1),(2,2),(3,3))");
+    b = new Line2D("(((2,2),(3,3)),((3,3),(6,6)),((3,3),(6,6)))");
+
+    tplred = getTopologicalRelationship(*a, *b);
+    //result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_equal_m2);
+
+    cout << "*****************************" << endl;
+    cout << "Case 4: Point2DLine2D" << endl;
+    cout << "*****************************" << endl;
+    cout << endl;
+    cout << "1. Test pl_overlap, F and G same number of elements." << endl;
+    cout << "Point2D a(\"((1,1),(2,2),(3,3))\");" << endl;
+    cout << "Line2D b(\"(((2,2),(3,3)),((3,3),(6,6)),((3,3),(6,6)))\");" << endl;
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    cout<<tplred;
+    cout << endl;
+
+    result = isTopologicalRelationship(a, b, pl_overlap_m10);
+
+    cout << "   isTopologicalRelationship(a, b, pl_overlap_m10) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   overlap() ==> " <<  overlap(*a, *b) << endl;
+    cout << "   disjoint() ==> " <<  inside(*a, *b) << endl;
+    cout << endl;
+
+    // don't forget to cleanup
+    delete a, b;
+    result = false;
+
+
 
 
 

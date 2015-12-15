@@ -73,12 +73,14 @@ void Point2DLine2D::exploreTopoPred() {
             Poi2D dp;
             if(h.isLeft)
             {
-                S.addLeft(h.seg);
+                PlaneSweepLineStatusObject psso(h.seg);
+                S.addLeft(psso);
                 dp=h.seg.p1;
             }
             else
             {
-                S.delRight(h.seg);
+                PlaneSweepLineStatusObject psso(h.seg);
+                S.delRight(psso);
                 dp=h.seg.p2;
             }
             if(dp!=last_dp)
@@ -96,12 +98,14 @@ void Point2DLine2D::exploreTopoPred() {
             Poi2D dp;
             if(h.isLeft)
             {
-                S.addLeft(h.seg);
+                PlaneSweepLineStatusObject psso(h.seg);
+                S.addLeft(psso);
                 dp=h.seg.p1;
             }
             else
             {
-                S.delRight(h.seg);
+                PlaneSweepLineStatusObject psso(h.seg);
+                S.delRight(psso);
                 dp=h.seg.p2;
             }
             last_dp=dp;
