@@ -11,14 +11,14 @@
       <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/TopologicalRelationships.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/TopologicalRelationships.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/main.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/AVLTree.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/AVLTree.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/MinHeap.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/MinHeap.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Object2D.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/Object2D.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/ParallelObjectTraversal.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/ParallelObjectTraversal.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/PlaneSweep.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/PlaneSweep.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/PlaneSweepLineStatusObject.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/PlaneSweepLineStatusObject.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/planesweep_project/SegmentClass.cpp" isTestSource="false" />
@@ -47,20 +47,18 @@
     <orderEntry type="module-library">
       <library name="Header Search Paths">
         <CLASSES>
-          <root url="file://C:/MinGW/include" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include-fixed" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include/c++" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include/objc" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include/ssp" />
+          <root url="file://C:/Program Files (x86)/mingw-w64/i686-5.2.0-posix-dwarf-rt_v4-rev1/mingw32/i686-w64-mingw32/include" />
+          <root url="file://C:/Program Files (x86)/mingw-w64/i686-5.2.0-posix-dwarf-rt_v4-rev1/mingw32/lib/gcc/i686-w64-mingw32/5.2.0/include" />
+          <root url="file://C:/Program Files (x86)/mingw-w64/i686-5.2.0-posix-dwarf-rt_v4-rev1/mingw32/lib/gcc/i686-w64-mingw32/5.2.0/include-fixed" />
+          <root url="file://C:/Program Files (x86)/mingw-w64/i686-5.2.0-posix-dwarf-rt_v4-rev1/mingw32/lib/gcc/i686-w64-mingw32/5.2.0/include/objc" />
+          <root url="file://C:/Program Files (x86)/mingw-w64/i686-5.2.0-posix-dwarf-rt_v4-rev1/mingw32/lib/gcc/i686-w64-mingw32/5.2.0/include/ssp" />
         </CLASSES>
         <SOURCES>
-          <root url="file://C:/MinGW/include" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include-fixed" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include/c++" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include/objc" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/4.6.2/include/ssp" />
+          <root url="file://C:/Program Files (x86)/mingw-w64/i686-5.2.0-posix-dwarf-rt_v4-rev1/mingw32/i686-w64-mingw32/include" />
+          <root url="file://C:/Program Files (x86)/mingw-w64/i686-5.2.0-posix-dwarf-rt_v4-rev1/mingw32/lib/gcc/i686-w64-mingw32/5.2.0/include" />
+          <root url="file://C:/Program Files (x86)/mingw-w64/i686-5.2.0-posix-dwarf-rt_v4-rev1/mingw32/lib/gcc/i686-w64-mingw32/5.2.0/include-fixed" />
+          <root url="file://C:/Program Files (x86)/mingw-w64/i686-5.2.0-posix-dwarf-rt_v4-rev1/mingw32/lib/gcc/i686-w64-mingw32/5.2.0/include/objc" />
+          <root url="file://C:/Program Files (x86)/mingw-w64/i686-5.2.0-posix-dwarf-rt_v4-rev1/mingw32/lib/gcc/i686-w64-mingw32/5.2.0/include/ssp" />
         </SOURCES>
       </library>
     </orderEntry>
