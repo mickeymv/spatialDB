@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <vector>
 #include <ctime>
+#include <string.h>
 
 
 #include "poi2D.h"
@@ -161,6 +162,8 @@ gen [int n] [double r] <s> <o>
 
 int main(int argc, char* argv[]) {
 	srand ( time(0) );	//seed rand using time
+	if(argc < 4)
+		cout << "not enough arguments" << endl;
 	vector<poi2D> input;
 	if(argc == 4){
 		input = generateInSquare(atoi(argv[2]), atof(argv[3]));
@@ -186,16 +189,28 @@ int main(int argc, char* argv[]) {
 	vector<poi2D> result;
 	clock_t begin = clock(); //start clock
 
-	if(argv[1] == "divideconquer")
+	if(string(argv[1]) == "divideconquer"){
+		cout << "you choose computeDivideConquer" << endl;
 		result = computeDivideConquer(input);
-	// if(argv[1] == "jarvis")
+	}
+	// else if(argv[1] == "jarvis"){
+	// 	cout << "you chose computeJarvis" << endl;
 	// 	result = computeJarvis(input);
-	// if(argv[1] == "graham")
+	// }
+	// else if(argv[1] == "graham"){
+	// 	cout << "you chose computeGraham" << endl;
 	// 	result = computeGraham(input);
-	// if(argv[1] == "quick")
+	// }
+	// else if(argv[1] == "quick"){
+	// 	cout << "you chose computeQuick" << endl;
 	// 	result = computeQuick(input);
-	// if(argv[1] == "newalgo")
+	// }
+	// else if(argv[1] == "newalgo"){
+	// 	cout << "you chose computeNewAlgo" << endl;
 	// 	result = computeNewAlgo(input);
+	// }
+	else
+		cout << "algorithm not found" << endl;
 
 	clock_t end = clock(); //end clock
 
