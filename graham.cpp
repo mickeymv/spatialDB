@@ -46,7 +46,7 @@ poi2D nextToTop(stack<poi2D> &S)
 // 0 --> p1, p2 and p3 are co-linear
 // 1 --> Clockwise
 // 2 --> Counter-clockwise
-int checkOrientation(poi2D p1, poi2D p2, poi2D p3)
+int checkOrientations(poi2D p1, poi2D p2, poi2D p3)
 {
     Number calc = (p2.y - p1.y) * (p3.x - p2.x) - (p2.x - p1.x) * (p3.y - p2.y);
 
@@ -71,7 +71,7 @@ int compare(const void *vp1, const void *vp2)
     poi2D *p2 = (poi2D *)vp2;
 
     // Find orientation
-    int o = checkOrientation(p0, *p1, *p2);
+    int o = checkOrientations(p0, *p1, *p2);
     if (o == 0)
         if(distSq(p0, *p2) >= distSq(p0, *p1))
             return -1;
@@ -83,7 +83,7 @@ int compare(const void *vp1, const void *vp2)
 }
 
 // Prints convex hull of a set of n points
-vector<poi2D> computeGraham(vector<poi2D> points)
+vector<poi2D> computeGraham(vector<poi2D> &points)
 {
     // Find the bottommost point
     int min = 0;
@@ -120,7 +120,7 @@ vector<poi2D> computeGraham(vector<poi2D> points)
     {
         // Keep removing i while angle of i and i+1 is same
         // with respect to p0
-        while (i < n-1 && checkOrientation(p0, points[i],
+        while (i < n-1 && checkOrientations(p0, points[i],
                                       points[i+1]) == 0)
             i++;
 
@@ -146,7 +146,7 @@ vector<poi2D> computeGraham(vector<poi2D> points)
         // Keep removing top while the angle formed by
         // points next-to-top, top, and points[i] makes
         // a right turn
-        while (checkOrientation(nextToTop(S), S.top(), points[i]) != 2)
+        while (checkOrientations(nextToTop(S), S.top(), points[i]) != 2)
             S.pop();
         S.push(points[i]);
     }

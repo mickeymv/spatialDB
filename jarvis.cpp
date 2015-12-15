@@ -25,7 +25,7 @@ int checkOrientation(poi2D p1, poi2D p2, poi2D p3)
 }
 
 // Prints convex hull of a set of n points.
-vector<poi2D> computeJarvis(vector<poi2D> points)
+vector<poi2D> computeJarvis(vector<poi2D> &points)
 {
 
     int n = points.size();

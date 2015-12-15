@@ -22,24 +22,24 @@ using namespace std;
 
 
 //comparator function
-bool compareX(const poi2D &poi1, const poi2D &poi2){
+bool compareXOrder(const poi2D &poi1, const poi2D &poi2){
     Number x1 = poi1.x;
     Number x2 = poi2.x;
     return x1 < x2;
 }
 
 //sees if the slope has increases from p2 to p3 when connected to p1
-bool slopeIncreased(poi2D &p1, poi2D &p2, poi2D &p3){
+bool slopeIncre(poi2D &p1, poi2D &p2, poi2D &p3){
     //if p1 to p3 has greater slope return true
     return (((p3.y - p1.y)/(p3.x - p1.x)) > ((p2.y - p1.y)/(p2.x - p1.x)));
 }
 
 //used to order hulls of 3 points
-vector<poi2D> orderHullClockwise(vector<poi2D> &hull){
+vector<poi2D> orderClockwise(vector<poi2D> &hull){
     if(hull.size() == 3){
         //orders the points by x and then determines the correct order of the last 2 points
-        sort(hull.begin(), hull.end(), compareX);
-        if(slopeIncreased(hull[0], hull[1], hull[2])){
+        sort(hull.begin(), hull.end(), compareXOrder);
+        if(slopeIncre(hull[0], hull[1], hull[2])){
             poi2D temp;
             temp = hull[1];
             hull[1] = hull[2];
@@ -164,8 +164,8 @@ void printVec(vector<poi2D> & vec){
 
 
 //New Algorithm function
-vector<poi2D> newalgo(vector<poi2D> &vec) {
-   // cout<<"Calling Charlie! Inside newalgo"<<endl;
+vector<poi2D> computeNewAlgo(vector<poi2D> &vec) {
+   // cout<<"Calling Charlie! Inside computeNewAlgo"<<endl;
     bool compare;
    // std::vector<poi2D>::iterator blah;
 //    std::stack<vector<poi2D>::iterator> above;
@@ -180,11 +180,11 @@ vector<poi2D> newalgo(vector<poi2D> &vec) {
     if (size < 3) { //base case of 2 points
         finalhull= vec;
     } else if (size < 4) { //base case of 3 points
-        finalhull= orderHullClockwise(vec);
+        finalhull= orderClockwise(vec);
     }
     else {
         //cout<<"Calling Charlie! Size is"<<" "<<size<<endl;
-        sort(vec.begin(), vec.end(), compareX);
+        sort(vec.begin(), vec.end(), compareXOrder);
 //        std::vector<poi2D>::iterator min = vec.begin();
 //        std::vector<poi2D>::iterator max = vec.end() -1;
         poi2D min = vec.at(0);
@@ -201,7 +201,7 @@ vector<poi2D> newalgo(vector<poi2D> &vec) {
                 if (above.size() > 2) {
                   // cout<<"before calling checkangle when stack size more than 2 for above"<<endl;
                     checkAngle(above,a);
-                   // cout<<"back in newalgo after iteration "<<i<<endl;
+                   // cout<<"back in computeNewAlgo after iteration "<<i<<endl;
                 }
             }
             else {
@@ -211,7 +211,7 @@ vector<poi2D> newalgo(vector<poi2D> &vec) {
                 if (below.size() > 2) {
                    //cout<<"before calling checkangle when stack size more than 2 for below"<<endl;
                     checkAngle(below,a);
-                  // cout<<"back in newalgo after iteration "<<i<<endl;
+                  // cout<<"back in computeNewAlgo after iteration "<<i<<endl;
                 }
             }
         }
@@ -304,10 +304,6 @@ vector<poi2D> newalgo(vector<poi2D> &vec) {
 
 }
 
-int main(){
-    return 0;
-}
-
 
 
 // int main(){
@@ -327,7 +323,7 @@ int main(){
     
 //     //clock_t begin = clock();
 //     //cout<<input.size();
-//     newalgo(input);
+//     computeNewAlgo(input);
 //     auto t2 = Clock::now();
 //     std::cout << "Delta t2-t1: " 
 //               << std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count()

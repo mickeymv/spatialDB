@@ -8,12 +8,17 @@
 
 using namespace std;
 
+#ifndef COMPAREX
+#define COMPAREX
+
 //comparator function
 bool compareX(const poi2D &poi1, const poi2D &poi2){
 	Number x1 = poi1.x;
 	Number x2 = poi2.x;
 	return x1 < x2;
 }
+
+#endif
 
 //sees if the slope has increases from p2 to p3 when connected to p1
 bool slopeIncreased(poi2D &p1, poi2D &p2, poi2D &p3){

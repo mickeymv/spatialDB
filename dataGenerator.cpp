@@ -13,6 +13,7 @@
 #include "Number.h"
 #include "ConvexHull.h"
 
+
 using namespace std;
 
 //prints vector of poi2D's
@@ -193,22 +194,22 @@ int main(int argc, char* argv[]) {
 		cout << "you choose computeDivideConquer" << endl;
 		result = computeDivideConquer(input);
 	}
-	// else if(argv[1] == "jarvis"){
-	// 	cout << "you chose computeJarvis" << endl;
-	// 	result = computeJarvis(input);
-	// }
-	// else if(argv[1] == "graham"){
-	// 	cout << "you chose computeGraham" << endl;
-	// 	result = computeGraham(input);
-	// }
-	// else if(argv[1] == "quick"){
+	else if(string(argv[1]) == "jarvis"){
+		cout << "you chose computeJarvis" << endl;
+		result = computeJarvis(input);
+	}
+	else if(string(argv[1]) == "graham"){
+		cout << "you chose computeGraham" << endl;
+		result = computeGraham(input);
+	}
+	// else if(string(argv[1]) == "quick"){
 	// 	cout << "you chose computeQuick" << endl;
 	// 	result = computeQuick(input);
 	// }
-	// else if(argv[1] == "newalgo"){
-	// 	cout << "you chose computeNewAlgo" << endl;
-	// 	result = computeNewAlgo(input);
-	// }
+	else if(string(argv[1]) == "newalgo"){
+		cout << "you chose computeNewAlgo" << endl;
+		result = computeNewAlgo(input);
+	}
 	else
 		cout << "algorithm not found" << endl;
 
