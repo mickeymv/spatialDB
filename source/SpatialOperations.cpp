@@ -165,10 +165,20 @@ Line2D spatialIntersection(const Line2D &lineLhs, const Line2D &lineRhs) {
          */
         if (planeSweep.getObject() == ParallelObjectTraversal::both &&
             previousObjectHistory == ParallelObjectTraversal::both) {
-            HalfSeg2D halfSeg2D = planeSweep.getHalfSegEvent(ParallelObjectTraversal::first);
-            Seg2D seg2D = halfSeg2D.seg;
-            intersectionLinesVector.push_back(seg2D);
-//The argument could be ParallelObjectTraversal::second as well since they're the same.
+            HalfSeg2D firstHalfSeg2D = planeSweep.getHalfSegEvent(ParallelObjectTraversal::first);
+            HalfSeg2D secondHalfSeg2D = planeSweep.getHalfSegEvent(ParallelObjectTraversal::second);
+            if (firstHalfSeg2D.isLeft == secondHalfSeg2D.isLeft) {
+                /*Only if the left and right end points of the segments
+                 * match should it be added to the intersection.
+                */
+                Seg2D seg2D = firstHalfSeg2D.seg;
+                intersectionLinesVector.push_back(seg2D);
+                //The argument could be ParallelObjectTraversal::second as well since they're the same.
+                previousObjectHistory = ParallelObjectTraversal::both;
+
+            } else {
+                previousObjectHistory = ParallelObjectTraversal::none;
+            }
         } else if (planeSweep.getObject() == ParallelObjectTraversal::both) {
             //update previous event's object with this event
             HalfSeg2D firstHalfSeg2D = planeSweep.getHalfSegEvent(ParallelObjectTraversal::first);
@@ -467,6 +477,7 @@ Region2D spatialDifference(const Region2D &regionLhs,
     Region2D diffRegionObject(diffRegionVector);
     return diffRegionObject;
 }
+
 /*
  * As a helper function for the Region operations, we have the updateSweepLineForLine()
  * function. This function would update the sweepLineStatus data structure (AVL tree)
