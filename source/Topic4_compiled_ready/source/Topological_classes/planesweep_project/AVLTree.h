@@ -77,19 +77,24 @@ private:
 
 template<class T>
 void AVLTree<T>::inOrder1(AVLnode<T> *n, T **result, int *count) {
+    //cout<<"Inside inorder1"<<endl;
     if (n != NULL) {
-        count++;
+//        (*count)++;
+//        cout<<(*count)<<"(*count)"<<endl;
         inOrder1(n->left, result, count);
+        //cout<<(*count)<<"(*count)"<<endl;
         *result[*count] = n->key;
-        count++;
+        (*count)++;
+        //cout<<(*count)<<"(*count)"<<endl;
         inOrder1(n->right, result, count);
-        *result[*count] = n->key;
+        //*result[*count] = n->key;
     }
 
 }
 
 template<class T>
 void AVLTree<T>::getElements(T **result) {
+    //cout<<"Inside get Elements"<<endl;
     AVLnode<T> *n = root;
     int size = sizeOfAVL();
     int count = 0;

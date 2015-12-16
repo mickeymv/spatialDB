@@ -26,6 +26,14 @@ bool Object2D::isPoint2D() const
  {
      return false;
  }
+//    if(typeid(*this)== typeid(const Point2D))
+//    {
+//        return true;
+//    }
+//    else
+//    {
+//        return false;
+//    }
 }
 
 bool Object2D::isLine2D() const
@@ -39,6 +47,14 @@ bool Object2D::isLine2D() const
     {
         return false;
     }
+//    if(typeid(*this)== typeid(const Line2D))
+//    {
+//        return true;
+//    }
+//    else
+//    {
+//        return false;
+//    }
 }
 
 bool Object2D::isRegion2D() const
@@ -51,4 +67,12 @@ bool Object2D::isRegion2D() const
     {
         return false;
     }
+//    if(typeid(*this)== typeid(const Region2D))
+//    {
+//        return true;
+//    }
+//    else
+//    {
+//        return false;
+//    }
 }

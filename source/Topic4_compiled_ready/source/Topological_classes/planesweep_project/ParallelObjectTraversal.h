@@ -72,16 +72,16 @@ public:
     void setNextMin();
 
     // Methods that return a true if the object parameter is the first or second object
-    bool isObjectF(Object2D);
-    bool isObjectG(Object2D);
+    bool isObjectF( const Object2D);
+    bool isObjectG(const Object2D);
 
     // Method that returns the simple halfsegment of 'object' that is next in the logical
     // order. Does not include the dynamic EPS
-    Line2DImpl::ConstHalfSegIterator *  getNextObjIterator(HalfSeg2D,object);
+    Line2DImpl::ConstHalfSegIterator  getNextObjIterator(HalfSeg2D,object);
 
     // Method that returns the simple attributed halfsegment of 'object' that is next in
     // the logical order. Does not include the dynamic EPS
-    Region2DImpl::ConstAttributedHalfSegmentIterator *  getNextObjIterator(AttrHalfSeg2D,object);
+    Region2DImpl::ConstAttributedHalfSegmentIterator  getNextObjIterator(AttrHalfSeg2D,object);
 
     // Method that checks whether the given segments are within an object
     bool isInObjF(Seg2D&);
@@ -93,7 +93,7 @@ public:
     status getStatus();
     Object2D getObjF();
     Object2D getObjG();
-    
+
     // TODO Are these methods needed?
     Poi2D getPoiEvent(object objectEnumVal);
     HalfSeg2D getHalfSegEvent(object objectEnumVal);
@@ -111,6 +111,14 @@ public:
     HalfSeg2D* getMinHalfSeg2DG();
     AttrHalfSeg2D* getMinAttrHalfSeg2DF();
     AttrHalfSeg2D* getMinAttrHalfSeg2DG();
+
+    //To get types of objects
+    bool isFPoint();
+    bool isFLine();
+    bool isFRegion();
+    bool isGPoint();
+    bool isGLine();
+    bool isGRegion();
 
     // Setter methods
     void setObject(const object &object_value);
@@ -138,6 +146,7 @@ private:
     status status_value = end_of_both;
 
     const Object2D *objF, *objG;
+     bool isFP, isGP, isFL, isGL, isFR, isGR;
 
     Point2D::ConstPoiIterator * objFpoiIterator = nullptr, * objGpoiIterator = nullptr; // DTj Dec 5, 2015
     Line2DImpl::ConstHalfSegIterator * objFsegIterator = nullptr, * objGsegIterator = nullptr;

@@ -117,8 +117,8 @@ public:
 
     // This method tests whether the dominating points of a given halfsegment and the next
     // halfsegment after the logical pointer of a given halfsegment sequence are equal.
-    bool lookAhead(HalfSeg2D &, Line2D &);
-    bool lookAhead(AttrHalfSeg2D &, Region2D &);
+    bool lookAhead(HalfSeg2D &, ParallelObjectTraversal::object objectValue);
+    bool lookAhead(AttrHalfSeg2D &, ParallelObjectTraversal::object objectValue);
 
     bool coincident(Seg2D &);
 
@@ -148,6 +148,7 @@ private:
     MinHeap<AttrHalfSeg2D> dynamicEPSObjG;
 
     Object2D objF, objG;
+    const Object2D *objFpointer, *objGpointer;
 
 
     /*
@@ -188,6 +189,9 @@ private:
     PlaneSweepLineStatusObject getPredecessor(PlaneSweepLineStatusObject &);
 
     PlaneSweepLineStatusObject getSuccessor(PlaneSweepLineStatusObject &);
+
+    bool ifPredecessor(PlaneSweepLineStatusObject &);
+    bool ifSuccessor(PlaneSweepLineStatusObject &);
 
     /*
      * Function for checking if a relation exists between two segments

@@ -10,7 +10,29 @@
 PlaneSweep::PlaneSweep(const Object2D &objF, const Object2D &objG) {
     pot = new ParallelObjectTraversal(objF, objG);
     this->objF = objF;
+    //*objFpointer = objF;
     this->objG = objG;
+    //*objGpointer = objG;
+    if (objF.isPoint2D()) {
+        objFpointer = dynamic_cast<const Point2D *>(&objF);
+    }
+    else if (objF.isLine2D()) {
+        objFpointer = dynamic_cast<const Line2D *>(&objF);
+    }
+    else if (objF.isRegion2D()) {
+        objFpointer = dynamic_cast<const Region2D *>(&objF);
+    }
+
+    if (objG.isPoint2D()) {
+        objGpointer = dynamic_cast<const Point2D *>(&objG);
+    }
+    else if (objG.isLine2D()) {
+        objGpointer = dynamic_cast<const Line2D *>(&objG);
+    }
+    else if (objF.isRegion2D()) {
+        objGpointer = dynamic_cast<const Region2D *>(&objG);
+    }
+
 }
 
 PlaneSweep::~PlaneSweep() {
@@ -50,8 +72,9 @@ bool PlaneSweep::getInsideAbove(Seg2D seg) {
 //TODO try to store halfsegments in Minheap
 int PlaneSweep::findLeast() {
     //AttrHalfSeg2D objS, objD1, objD2, objD;
+    //cout<<"Inside findLeast"<<endl;
     getPot()->setNextMin();
-
+    //cout<<"After setNextMin"<<endl;
     Poi2D *objSP = nullptr;
     objSP = getPot()->getNextPoi2DMin();
 
@@ -62,125 +85,161 @@ int PlaneSweep::findLeast() {
     objAHS = getPot()->getNextAttrHalfSeg2DMin();
 
     if (objSP != nullptr) {
-        if (getPot()->getObjF().isPoint2D() && (*(getPot()->getMinPoi2DF()) == *objSP)) {
-            if (getPot()->getObjG().isPoint2D()) {
-                return 1;
-            }
-            else if (getPot()->getObjG().isLine2D()) {
-                if (dynamicEPSObjG.isEmpty()) {
+       //cout<<"Inside objSP"<<endl;
+        Poi2D checkp = *objSP;
+        //Poi2D checkppF=*(getPot()->getMinPoi2DF());
+       // Poi2D checkppG;
+
+        //Poi2D checkppG = *(getPot()->getMinPoi2DG());
+      //cout<<*objSP<<"*objSP"<<endl;
+        //cout<<getPot()->isFPoint()<<" Point"<<endl;
+        //cout<<(checkp==*(getPot()->getMinPoi2DF()))<<" Equality"<<endl;
+
+        //cout<<*(getPot()->getMinPoi2DF());
+        //if (getPot()->getObjF().isPoint2D() && (*(getPot()->getMinPoi2DF()) == *objSP)) {
+        if (getPot()->isFPoint()) {
+            //cout<<"ObjF"<<endl;
+            Poi2D checkppF=*(getPot()->getMinPoi2DF());
+            //cout<<checkppF<<"checkpp"<<endl;
+            if(checkp==checkppF) {
+                if (getPot()->isGPoint()) {
                     return 1;
                 }
-                HalfSeg2D objD2 = dynamicEPSObjG.GetMin().hseg;
-
-                if (*objSP < objD2)
-                    return 1;
-                return 2;
-            }
-            else if (getPot()->getObjG().isRegion2D()) {
-                if (dynamicEPSObjG.isEmpty()) {
-                    return 1;
-                }
-                AttrHalfSeg2D objD2 = dynamicEPSObjG.GetMin();
-                if (*objSP < objD2)
-                    return 1;
-                return 2;
-            }
-        }
-        else if (getPot()->getObjG().isPoint2D() && (*(getPot()->getMinPoi2DG()) == *objSP)) {
-            return 1;
-        }
-    }
-    else if (objHS != nullptr) {
-
-        if (getPot()->getObjF().isLine2D() && (*(getPot()->getMinHalfSeg2DF()) == *objHS)) {
-            HalfSeg2D objD1;
-            if (!dynamicEPSObjF.isEmpty()) {
-                objD1 = dynamicEPSObjF.GetMin().hseg;
-            }
-            if (getPot()->getObjG().isLine2D()) {
-                if ((!dynamicEPSObjF.isEmpty()) && (!dynamicEPSObjG.isEmpty())) {
+                else if (getPot()->isGLine()) {
+                    //cout<<"G is a line"<<endl;
+                    if (dynamicEPSObjG.isEmpty()) {
+                        //cout<<"Returned 1 from G = line2D"<<endl;
+                        return 1;
+                    }
                     HalfSeg2D objD2 = dynamicEPSObjG.GetMin().hseg;
-                    if (objD1 < objD2) {
-                        HalfSeg2D objD = objD1;
-                        if (*objHS < objD)
-                            return 1;
-                        return 2;
-                    }
-                    else {
-                        HalfSeg2D objD = objD2;
-                        if (*objHS < objD)
-                            return 1;
-                        return 2;
-                    }
-                }
-                else if (dynamicEPSObjF.isEmpty() && dynamicEPSObjG.isEmpty()) {
-                    return 1;
-                }
 
-
-            }
-            else if (getPot()->getObjG().isRegion2D()) {
-                if ((!dynamicEPSObjF.isEmpty()) && (!dynamicEPSObjG.isEmpty())) {
+                    if (*objSP < objD2)
+                        return 1;
+                    return 2;
+                }
+                else if (getPot()->isGRegion()) {
+                    if (dynamicEPSObjG.isEmpty()) {
+                        return 1;
+                    }
                     AttrHalfSeg2D objD2 = dynamicEPSObjG.GetMin();
-                    if (objD1 < objD2) {
-                        HalfSeg2D objD = objD1;
-                        if (*objHS < objD)
-                            return 1;
-                        return 2;
-                    }
-                    else {
-                        AttrHalfSeg2D objD = objD2;
-                        if (*objHS < objD)
-                            return 1;
-                        return 2;
-                    }
-                }
-                else if (dynamicEPSObjF.isEmpty() && dynamicEPSObjG.isEmpty()) {
-                    return 1;
-                }
-            }
-        }
-        else if (getPot()->getObjG().isLine2D() && (*(getPot()->getMinHalfSeg2DG()) == *objHS)) {
-            HalfSeg2D objD1;
-            if (!dynamicEPSObjG.isEmpty()) {
-                objD1 = dynamicEPSObjG.GetMin().hseg;
-            }
-            if (getPot()->getObjF().isLine2D()) {
-                if ((!dynamicEPSObjF.isEmpty()) && (!dynamicEPSObjG.isEmpty())) {
-                    HalfSeg2D objD2 = dynamicEPSObjF.GetMin().hseg;
-                    if (objD1 < objD2) {
-                        HalfSeg2D objD = objD1;
-                        if (*objHS < objD)
-                            return 1;
-                        return 2;
-                    }
-                    else {
-                        HalfSeg2D objD = objD2;
-                        if (*objHS < objD)
-                            return 1;
-                        return 2;
-                    }
-                }
-                else if (dynamicEPSObjF.isEmpty() && dynamicEPSObjG.isEmpty()) {
-                    return 1;
-                }
-
-
-            }
-            else if (getPot()->getObjF().isPoint2D()) {
-                if (dynamicEPSObjG.isEmpty()) {
-                    return 1;
-                }
-                else {
-                    if (*objHS < objD1)
+                    if (*objSP < objD2)
                         return 1;
                     return 2;
                 }
             }
+        }
+        else if (getPot()->isGPoint()) {
+        //else if (getPot()->getObjG().isPoint2D() && ((checkp.x==checkppG.x)&&(checkp.y==checkppG.y))) {
+           // cout<<"InObjectG"<<endl;
+            Poi2D checkppG=*(getPot()->getMinPoi2DG());
+            if(checkp == checkppG) {
+                return 1;
+            }
+        }
+    }
+    else if (objHS != nullptr) {
+       // cout<<"Inside objHS"<<endl;
+        HalfSeg2D checkh = *objHS;
 
+
+        //if (getPot()->getObjF().isLine2D() && (*(getPot()->getMinHalfSeg2DF()) == *objHS)) {
+        if (getPot()->getObjF().isLine2D()) {
+            HalfSeg2D checkhhF = *(getPot()->getMinHalfSeg2DF());
+
+            if((checkh.isLeft==checkhhF.isLeft)&&(checkh.seg.p1.x==checkhhF.seg.p1.x)&&(checkh.seg.p1.y==checkhhF.seg.p1.y)&&(checkh.seg.p2.x==checkhhF.seg.p2.x)&&(checkh.seg.p2.y==checkhhF.seg.p2.y)) {
+                HalfSeg2D objD1;
+                if (!dynamicEPSObjF.isEmpty()) {
+                    objD1 = dynamicEPSObjF.GetMin().hseg;
+                }
+                if (getPot()->getObjG().isLine2D()) {
+                    if ((!dynamicEPSObjF.isEmpty()) && (!dynamicEPSObjG.isEmpty())) {
+                        HalfSeg2D objD2 = dynamicEPSObjG.GetMin().hseg;
+                        if (objD1 < objD2) {
+                            HalfSeg2D objD = objD1;
+                            if (*objHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                        else {
+                            HalfSeg2D objD = objD2;
+                            if (*objHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                    }
+                    else if (dynamicEPSObjF.isEmpty() && dynamicEPSObjG.isEmpty()) {
+                        return 1;
+                    }
+
+
+                }
+                else if (getPot()->getObjG().isRegion2D()) {
+                    if ((!dynamicEPSObjF.isEmpty()) && (!dynamicEPSObjG.isEmpty())) {
+                        AttrHalfSeg2D objD2 = dynamicEPSObjG.GetMin();
+                        if (objD1 < objD2) {
+                            HalfSeg2D objD = objD1;
+                            if (*objHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                        else {
+                            AttrHalfSeg2D objD = objD2;
+                            if (*objHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                    }
+                    else if (dynamicEPSObjF.isEmpty() && dynamicEPSObjG.isEmpty()) {
+                        return 1;
+                    }
+                }
+            }
+        }
+        //else if (getPot()->getObjG().isLine2D() && (*(getPot()->getMinHalfSeg2DG()) == *objHS)) {
+        else if (getPot()->getObjG().isLine2D()) {
+            HalfSeg2D checkhhG = *(getPot()->getMinHalfSeg2DG());
+            if((checkh.isLeft==checkhhG.isLeft)&&(checkh.seg.p1.x==checkhhG.seg.p1.x)&&(checkh.seg.p1.y==checkhhG.seg.p1.y)&&(checkh.seg.p2.x==checkhhG.seg.p2.x)&&(checkh.seg.p2.y==checkhhG.seg.p2.y)) {
+                HalfSeg2D objD1;
+                if (!dynamicEPSObjG.isEmpty()) {
+                    objD1 = dynamicEPSObjG.GetMin().hseg;
+                }
+                if (getPot()->getObjF().isLine2D()) {
+                    if ((!dynamicEPSObjF.isEmpty()) && (!dynamicEPSObjG.isEmpty())) {
+                        HalfSeg2D objD2 = dynamicEPSObjF.GetMin().hseg;
+                        if (objD1 < objD2) {
+                            HalfSeg2D objD = objD1;
+                            if (*objHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                        else {
+                            HalfSeg2D objD = objD2;
+                            if (*objHS < objD)
+                                return 1;
+                            return 2;
+                        }
+                    }
+                    else if (dynamicEPSObjF.isEmpty() && dynamicEPSObjG.isEmpty()) {
+                        return 1;
+                    }
+
+
+                }
+                else if (getPot()->getObjF().isPoint2D()) {
+                    if (dynamicEPSObjG.isEmpty()) {
+                        return 1;
+                    }
+                    else {
+                        if (*objHS < objD1)
+                            return 1;
+                        return 2;
+                    }
+                }
+            }
         }
     }
     else if (objAHS != nullptr) {
+        //cout<<"Inside objAHS"<<endl;
         if (getPot()->getObjF().isRegion2D() && (*(getPot()->getMinAttrHalfSeg2DF()) == *objAHS)) {
             AttrHalfSeg2D objD1;
             if (!dynamicEPSObjF.isEmpty()) {
@@ -279,7 +338,9 @@ int PlaneSweep::findLeast() {
 }
 
 void PlaneSweep::selectNext() {
+    //cout<<"Inside selectNext"<<endl;
     if (findLeast() == 1) {
+        //cout<<"FindLeast = 1"<<endl;
         getPot()->selectNext();
     }
     else {
@@ -605,11 +666,21 @@ void PlaneSweep::addLeft(PlaneSweepLineStatusObject &planeSweepLineStatusObject)
      * it should update the segmentClass for the added segment
      * as well as it's predecessor and successor.
      */
+    //cout<<"After insert"<<endl;
+    //updateSegmentClassWhileAddingSegment(planeSweepLineStatusObject);
+    //cout<<"After group 3 function"<<endl;
+    Seg2D pred,succ;
+    if(ifPredecessor(planeSweepLineStatusObject))
+    {
+        pred = getPredecessor(planeSweepLineStatusObject).getSegment2D();
+        //cout<<"After getPred function"<<endl;
+    }
 
-    updateSegmentClassWhileAddingSegment(planeSweepLineStatusObject);
-
-    Seg2D pred = getPredecessor(planeSweepLineStatusObject).getSegment2D();
-    Seg2D succ = getSuccessor(planeSweepLineStatusObject).getSegment2D();
+    if(ifSuccessor(planeSweepLineStatusObject))
+    {
+        succ = getSuccessor(planeSweepLineStatusObject).getSegment2D();
+        //cout<<"After get Successor function"<<endl;
+    }
 
     Seg2D seg2D = planeSweepLineStatusObject.getSegment2D();
 
@@ -625,8 +696,18 @@ void PlaneSweep::addLeft(PlaneSweepLineStatusObject &planeSweepLineStatusObject)
 
 void PlaneSweep::delRight(PlaneSweepLineStatusObject &planeSweepLineStatusObject) {
 
-    Seg2D pred = getPredecessor(planeSweepLineStatusObject).getSegment2D();
-    Seg2D succ = getSuccessor(planeSweepLineStatusObject).getSegment2D();
+    Seg2D pred,succ;
+    if(ifPredecessor(planeSweepLineStatusObject))
+    {
+        pred = getPredecessor(planeSweepLineStatusObject).getSegment2D();
+        //cout<<"After getPred function"<<endl;
+    }
+
+    if(ifSuccessor(planeSweepLineStatusObject))
+    {
+        succ = getSuccessor(planeSweepLineStatusObject).getSegment2D();
+        //cout<<"After get Successor function"<<endl;
+    }
 
     Seg2D seg2D = planeSweepLineStatusObject.getSegment2D();
     sweepLineStatus->deleteKey(seg2D);
@@ -1922,6 +2003,11 @@ HalfSeg2D PlaneSweep::getHalfSegEvent(ParallelObjectTraversal::object objectValu
         halfSeg2D = halfSeg2DStatic;
         return halfSeg2D;
     }
+//    if(dynamicEPSObjF.isEmpty()&&dynamicEPSObjG.isEmpty())
+//    {
+//        halfSeg2D = halfSeg2DStatic;
+//        return halfSeg2D;
+//    }
 
     halfSeg2D = (halfSeg2DDynamic <= halfSeg2DStatic) ? halfSeg2DDynamic : halfSeg2DStatic;
     return halfSeg2D;
@@ -1966,16 +2052,18 @@ AttrHalfSeg2D PlaneSweep::getAttrHalfSegEvent(ParallelObjectTraversal::object ob
  * TODO Need to update code to get next object after a given object in an AVL tree to get dynSucc
  */
 
-bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
+bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, ParallelObjectTraversal::object objectValue) {
     Seg2D &seg2D = halfseg2D.seg;
-    if (pot->isObjectF(line2D)) {
+    //cout<<"Inside lookAhead"<<endl;
+    if ((getPot()->isFLine())&&(objectValue==ParallelObjectTraversal::first)) {
         //Static
+        //cout<<"Inside pot->isObjectF(line2D)"<<endl;
         ParallelObjectTraversal::object objf = ParallelObjectTraversal::first;
-        Line2DImpl::ConstHalfSegIterator *val = getPot()->getNextObjIterator(halfseg2D, objf);
+        Line2DImpl::ConstHalfSegIterator val = getPot()->getNextObjIterator(halfseg2D, objf);
         HalfSeg2D *halfsegStaticSucc = nullptr;
-        if (val != nullptr) {
+        if (!val.isEmpty()) {
             halfsegStaticSucc = new HalfSeg2D();
-            *halfsegStaticSucc = *(*val);
+            *halfsegStaticSucc = *(val);
         }
         else {
             halfsegStaticSucc = nullptr;
@@ -2002,8 +2090,11 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
         }
 
         if ((halfsegStaticSucc != nullptr && halfsegDynSucc == nullptr) || (*halfsegStaticSucc < *halfsegDynSucc)) {
+
             bool isDirGiven = halfseg2D.isLeft;
             bool isDirSucc = (*halfsegStaticSucc).isLeft;
+
+
             Poi2D dpGiven, dpSucc;
 
             if (isDirGiven) {
@@ -2054,16 +2145,32 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
 
 
     }
-    else if (pot->isObjectG(line2D)) {
+    else if ((getPot()->isGLine())&&(objectValue==ParallelObjectTraversal::second)) {
         //Static
+       // cout<<"Inside pot->isObjectG(line2D)"<<endl;
         ParallelObjectTraversal::object objg = ParallelObjectTraversal::second;
-        Line2DImpl::ConstHalfSegIterator *val = getPot()->getNextObjIterator(halfseg2D, objg);
+        Line2DImpl::ConstHalfSegIterator val = getPot()->getNextObjIterator(halfseg2D, objg);
+       // cout<<"After getPot()->getNextObjIterator(halfseg2D, objg)"<<endl;
+
+        Line2DImpl::ConstHalfSegIterator cval = ((Line2DImpl *) objGpointer)->hBegin();
+        HalfSeg2D check2 = *cval;
+        //cout<<"After check2"<<endl;
+
+        HalfSeg2D check1 = *val;
+        //cout<<"After check1"<<endl;
+       // cout<<(!(check1 == check2))<<" (!(val==(((Line2DImpl *) objGpointer)->hBegin())))";
         HalfSeg2D *halfsegStaticSucc = nullptr;
-        if (val != nullptr) {
+        if ((!val.isEmpty())&&(!(check1==check2))) {
+           // cout<<"val is not a null ptr"<<endl;
             halfsegStaticSucc = new HalfSeg2D();
-            *halfsegStaticSucc = *(*val);
+           // cout<<"made halfsegStaticSucc not null"<<endl;
+           // cout<<val<<" val";
+           // cout<<*val<<" *val";
+            *halfsegStaticSucc = *val;
+           // cout<<"stored halfsegStaticSucc successfully"<<endl;
         }
         else {
+           // cout<<"val is a null ptr"<<endl;
             halfsegStaticSucc = nullptr;
         }
 
@@ -2088,6 +2195,7 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
         }
 
         if ((halfsegStaticSucc != nullptr && halfsegDynSucc == nullptr) || (*halfsegStaticSucc <= (*halfsegDynSucc))) {
+            //cout<<"In good loop"<<endl;
             bool isDirGiven = halfseg2D.isLeft;
             bool isDirSucc = (*halfsegStaticSucc).isLeft;
             Poi2D dpGiven, dpSucc;
@@ -2113,7 +2221,7 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
             }
         }
         else if ((halfsegStaticSucc == nullptr && halfsegDynSucc != nullptr) ||
-                 (*halfsegDynSucc > *halfsegStaticSucc)) {
+                 (*halfsegDynSucc < *halfsegStaticSucc)) {
             bool isDirGiven = halfseg2D.isLeft;
             bool isDirSucc = (*halfsegDynSucc).isLeft;
             Poi2D dpGiven, dpSucc;
@@ -2146,16 +2254,16 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, Line2D &line2D) {
  * TODO Need to update code to get next object after a given object in an AVL tree to get dynSucc
  */
 
-bool PlaneSweep::lookAhead(AttrHalfSeg2D &attrhalfseg2D, Region2D &region2D) {
+bool PlaneSweep::lookAhead(AttrHalfSeg2D &attrhalfseg2D,ParallelObjectTraversal::object objectValue) {
     Seg2D &seg2D = attrhalfseg2D.hseg.seg;
-    if (pot->isObjectF(region2D)) {
+    if ((getPot()->isFRegion())&&(objectValue==ParallelObjectTraversal::first)) {
         //Static
         ParallelObjectTraversal::object objf = ParallelObjectTraversal::first;
-        Region2DImpl::ConstAttributedHalfSegmentIterator *val = getPot()->getNextObjIterator(attrhalfseg2D, objf);
+        Region2DImpl::ConstAttributedHalfSegmentIterator val = getPot()->getNextObjIterator(attrhalfseg2D, objf);
         AttrHalfSeg2D *attrhalfsegStaticSucc = nullptr;
-        if (val != nullptr) {
+        if (!val.isEmpty()) {
             attrhalfsegStaticSucc = new AttrHalfSeg2D();
-            *attrhalfsegStaticSucc = *(*val);
+            *attrhalfsegStaticSucc = *(val);
 
         }
         else {
@@ -2232,14 +2340,14 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D &attrhalfseg2D, Region2D &region2D) {
 
 
     }
-    else if (pot->isObjectG(region2D)) {
+    else if ((getPot()->isGRegion())&&(objectValue==ParallelObjectTraversal::second)) {
         //Static
         ParallelObjectTraversal::object objg = ParallelObjectTraversal::second;
-        Region2DImpl::ConstAttributedHalfSegmentIterator *val = getPot()->getNextObjIterator(attrhalfseg2D, objg);
+        Region2DImpl::ConstAttributedHalfSegmentIterator val = getPot()->getNextObjIterator(attrhalfseg2D, objg);
         AttrHalfSeg2D *attrhalfsegStaticSucc = nullptr;
-        if (val != nullptr) {
+        if (!val.isEmpty()) {
             attrhalfsegStaticSucc = new AttrHalfSeg2D();
-            *attrhalfsegStaticSucc = *(*val);
+            *attrhalfsegStaticSucc = *(val);
         }
         else {
             attrhalfsegStaticSucc = nullptr;
@@ -2334,17 +2442,49 @@ void PlaneSweep::updateSweepLineStatus(Seg2D &segmentToBeReplaced, Seg2D &segmen
 }
 
 bool PlaneSweep::poiOnSeg(Poi2D &poi2D) {
+    //cout<<"Inseide poiOnSeg"<<endl;
     int itr = 0;
     int treeSize = sweepLineStatus->sizeOfAVL();
-
+    //cout<<treeSize<<" treeSize"<<endl;
     //AVLnode<PlaneSweepLineStatusObject> *segArray[treeSize] = {};
     PlaneSweepLineStatusObject **segArray;
+    segArray = new PlaneSweepLineStatusObject*[treeSize];
+    for(itr = 0; itr < treeSize; itr++)
+    {
+        segArray[itr]= new PlaneSweepLineStatusObject();
+    }
     sweepLineStatus->getElements(segArray);
-
+    //cout<<"After getElements"<<endl;
     for (itr = 0; itr < treeSize; itr++) {
 
         Seg2D seg2D = segArray[itr]->getSegment2D();
+        //cout<<seg2D<<endl;
         if (PointLiesOnSegment(poi2D, seg2D)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool PlaneSweep::poiInSeg(Poi2D &poi2D) {
+    //cout<<"Inseide poiInSeg"<<endl;
+    int itr = 0;
+    int treeSize = sweepLineStatus->sizeOfAVL();
+    //cout<<treeSize<<" treeSize"<<endl;
+    //AVLnode<PlaneSweepLineStatusObject> *segArray[treeSize] = {};
+    PlaneSweepLineStatusObject **segArray;
+    segArray = new PlaneSweepLineStatusObject*[treeSize];
+    for(itr = 0; itr < treeSize; itr++)
+    {
+        segArray[itr]= new PlaneSweepLineStatusObject();
+    }
+    sweepLineStatus->getElements(segArray);
+    //cout<<"After getElements"<<endl;
+    for (itr = 0; itr < treeSize; itr++) {
+
+        Seg2D seg2D = segArray[itr]->getSegment2D();
+        //cout<<seg2D<<endl;
+        if (PointLiesOnSegmentAndNotEndpoints(poi2D,seg2D)) {
             return true;
         }
     }
@@ -2357,9 +2497,9 @@ PlaneSweepLineStatusObject PlaneSweep::getPredecessor(PlaneSweepLineStatusObject
     if (predecessor != NULL) {
         return predecessor->key;
     }
-    else {
-        return planeSweepLineStatusObject;
-    }
+//    else {
+//        return planeSweepLineStatusObject;
+//    }
 }
 
 PlaneSweepLineStatusObject PlaneSweep::getSuccessor(PlaneSweepLineStatusObject &s) {
@@ -2368,9 +2508,9 @@ PlaneSweepLineStatusObject PlaneSweep::getSuccessor(PlaneSweepLineStatusObject &
     if (successor != NULL) {
         return successor->key;
     }
-    else {
-        return planeSweepLineStatusObject;
-    }
+//    else {
+//        return planeSweepLineStatusObject;
+//    }
 }
 
 void PlaneSweep::newSweep() {
@@ -2385,4 +2525,24 @@ void PlaneSweep::setObject(ParallelObjectTraversal::object object_value) {
 void PlaneSweep::setStatus(ParallelObjectTraversal::status status_value) {
 
     getPot()->setStatus(status_value);
+}
+
+bool PlaneSweep::ifPredecessor(PlaneSweepLineStatusObject &s)
+{
+    PlaneSweepLineStatusObject planeSweepLineStatusObject;
+    AVLnode<PlaneSweepLineStatusObject> *predecessor = sweepLineStatus->getPred(s);
+    if (predecessor != NULL) {
+        return true;
+    }
+    return false;
+}
+
+bool PlaneSweep::ifSuccessor(PlaneSweepLineStatusObject &s)
+{
+    PlaneSweepLineStatusObject planeSweepLineStatusObject;
+    AVLnode<PlaneSweepLineStatusObject> *successor = sweepLineStatus->getSucc(s);
+    if (successor != NULL) {
+        return true;
+    }
+    return false;
 }

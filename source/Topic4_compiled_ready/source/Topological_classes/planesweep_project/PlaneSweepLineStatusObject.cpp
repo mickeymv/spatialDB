@@ -37,10 +37,10 @@ PlaneSweepLineStatusObject::PlaneSweepLineStatusObject() {
 }
 
 PlaneSweepLineStatusObject::PlaneSweepLineStatusObject(Seg2D& seg2D) {
-setSegment2D(seg2D);
+    setSegment2D(seg2D);
 //default behaviour for ia and segmentClass
-setInsideAbove(false);
-setSegmentClass(0,0);
+    setInsideAbove(false);
+    setSegmentClass(0,0);
 }
 
 
