@@ -191,15 +191,15 @@ int main(int argc, char* argv[]) {
 	clock_t begin = clock(); //start clock
 
 	if(string(argv[1]) == "divideconquer"){
-		cout << "you choose computeDivideConquer" << endl;
+		// cout << "you choose computeDivideConquer" << endl;
 		result = computeDivideConquer(input);
 	}
 	else if(string(argv[1]) == "jarvis"){
-		cout << "you choose computeJarvis" << endl;
+		// cout << "you choose computeJarvis" << endl;
 		result = computeJarvis(input);
 	}
 	else if(string(argv[1]) == "graham"){
-		cout << "you choose computeGraham" << endl;
+		// cout << "you choose computeGraham" << endl;
 		result = computeGraham(input);
 	}
 	// else if(string(argv[1]) == "quick"){
@@ -207,7 +207,7 @@ int main(int argc, char* argv[]) {
 	// 	result = computeQuick(input);
 	// }
 	else if(string(argv[1]) == "newalgo"){
-		cout << "you choose computeNewAlgo" << endl;
+		// cout << "you choose computeNewAlgo" << endl;
 		result = computeNewAlgo(input);
 	}
 	else
@@ -216,10 +216,10 @@ int main(int argc, char* argv[]) {
 	clock_t end = clock(); //end clock
 
 	double elapsed_secs = double(end - begin);
-	cout << "time elapsed: " << elapsed_secs / (CLOCKS_PER_SEC / 1000) << "ms"  << endl;
-	// cout << elapsed_secs / (CLOCKS_PER_SEC / 1000) << endl;
+	// cout << "time elapsed: " << elapsed_secs / (CLOCKS_PER_SEC / 1000) << "ms"  << endl;
+	cout << elapsed_secs / (CLOCKS_PER_SEC / 1000) << endl;
 
-	saveVec(input, (char*)"test_in");
-	saveVec(result, (char*)"test_out");
+	// saveVec(input, (char*)"test_in");
+	// saveVec(result, (char*)"test_out");
     return 0;
 }
