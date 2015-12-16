@@ -195,19 +195,19 @@ int main(int argc, char* argv[]) {
 		result = computeDivideConquer(input);
 	}
 	else if(string(argv[1]) == "jarvis"){
-		cout << "you chose computeJarvis" << endl;
+		cout << "you choose computeJarvis" << endl;
 		result = computeJarvis(input);
 	}
 	else if(string(argv[1]) == "graham"){
-		cout << "you chose computeGraham" << endl;
+		cout << "you choose computeGraham" << endl;
 		result = computeGraham(input);
 	}
 	// else if(string(argv[1]) == "quick"){
-	// 	cout << "you chose computeQuick" << endl;
+	// 	cout << "you choose computeQuick" << endl;
 	// 	result = computeQuick(input);
 	// }
 	else if(string(argv[1]) == "newalgo"){
-		cout << "you chose computeNewAlgo" << endl;
+		cout << "you choose computeNewAlgo" << endl;
 		result = computeNewAlgo(input);
 	}
 	else
@@ -216,7 +216,8 @@ int main(int argc, char* argv[]) {
 	clock_t end = clock(); //end clock
 
 	double elapsed_secs = double(end - begin);
-	cout << "time elapsed: " << elapsed_secs << endl;
+	cout << "time elapsed: " << elapsed_secs / (CLOCKS_PER_SEC / 1000) << "ms"  << endl;
+	// cout << elapsed_secs / (CLOCKS_PER_SEC / 1000) << endl;
 
 	saveVec(input, (char*)"test_in");
 	saveVec(result, (char*)"test_out");

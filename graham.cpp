@@ -16,7 +16,7 @@ typedef std::chrono::high_resolution_clock Clock;
 poi2D p0;
 
 // A utility function to swap two points
-Number swap(poi2D &p1, poi2D &p2)
+void swap(poi2D &p1, poi2D &p2)
 {
     poi2D temp = p1;
     p1 = p2;
@@ -151,41 +151,13 @@ vector<poi2D> computeGraham(vector<poi2D> &points)
         S.push(points[i]);
     }
 
-    // print contents of stack
-    while (!S.empty())
-    {
-        poi2D p = S.top();
-        cout << "(" << p.x << ", " << p.y <<")" << endl;
-        S.pop();
-    }
+    // // print contents of stack
+    // while (!S.empty())
+    // {
+    //     poi2D p = S.top();
+    //     cout << "(" << p.x << ", " << p.y <<")" << endl;
+    //     S.pop();
+    // }
+    vector<poi2D> result(&S.top() + 1  - S.size(), &S.top() + 1);
+    return result;
 }
-
-// int main(){
-//     vector<poi2D> input;
-//     ifstream infile;
-//     infile.open("points.bin",ios::binary|ios::in);
-
-//     poi2D fileRead;
-
-//     while(infile.read((char *)&fileRead,sizeof(poi2D)))
-//     {
-//         input.push_back(fileRead);
-//     }
-//     // cout<<input.size();
-//     infile.close();
-//     auto t1= Clock ::now();
-
-//     //clock_t begin = clock();
-//     //cout<<input.size();
-//     computeGraham(input);
-//     auto t2 = Clock ::now();
-//     std::cout << "Delta t2-t1: "
-//     << std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count()
-//     << " nanoseconds" << std::endl;
-//     //clock_t end = clock();
-//     //clock_t clockticks=end-begin;
-//     //double elapsed_secs = clockticks/ double CLOCKS_PER_SEC;
-
-//     //cout << elapsed_secs << endl;
-
-// }
