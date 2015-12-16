@@ -64,9 +64,9 @@ void Point2DLine2D::exploreTopoPred() {
         ParallelObjectTraversal::object object_value = S.getObject();
         if(object_value==ParallelObjectTraversal::first)
         {
-            //cout<<"In object_value in first\n";
+            cout<<"In object_value in first\n";
             Poi2D p = S.getPoiEvent(ParallelObjectTraversal::first);
-            //cout<<p<<endl;
+            cout<<p<<endl;
             //cout<<"After getPoiEvent\n";
             if(S.poiInSeg(p))//poi_inSeg
             {
@@ -77,13 +77,14 @@ void Point2DLine2D::exploreTopoPred() {
             {
                 vF[poi_disjoint]=true;
                 //cout<<"After poiOnSeg\n";
-               // cout<<"vF[poi_disjoint] set in poiInSeg\n";
+                //cout<<"vF[poi_disjoint] set in poiInSeg\n";
             }
         }
         else if(object_value==ParallelObjectTraversal::second)
         {
-           // cout<<"In object_value in second\n";
+            cout<<"In object_value in second\n";
             HalfSeg2D h = S.getHalfSegEvent(ParallelObjectTraversal::second);
+            cout<<h<<endl;
             //cout<<"After getHalfSegEvent\n";
             Poi2D dp;
             if(h.isLeft)
@@ -111,8 +112,9 @@ void Point2DLine2D::exploreTopoPred() {
         }
         else if(object_value==ParallelObjectTraversal::both)
         {
-            //cout<<"In object_value in both\n";
+            cout<<"In object_value in both\n";
             HalfSeg2D h = S.getHalfSegEvent(ParallelObjectTraversal::second);
+            cout<<h<<endl;
             //cout<<"After getHalfSegEvent\n";
             Poi2D dp;
             if(h.isLeft)
@@ -149,7 +151,7 @@ void Point2DLine2D::exploreTopoPred() {
     if(S.getStatus()==ParallelObjectTraversal::end_of_second)
     {
         vF[poi_disjoint]=true;
-        //cout<<"End of second\n";
+        cout<<"poi_disjoint set in End of second\n";
     }
     return; // return true if no error, else false
 }

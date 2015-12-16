@@ -149,7 +149,15 @@ private:
 
     Object2D objF, objG;
     const Object2D *objFpointer, *objGpointer;
+    bool isFP, isGP, isFL, isGL, isFR, isGR;
 
+    //To get types of objects
+    bool isFPoint();
+    bool isFLine();
+    bool isFRegion();
+    bool isGPoint();
+    bool isGLine();
+    bool isGRegion();
 
     /*
      *  This function would be called from within the selectNext() function.

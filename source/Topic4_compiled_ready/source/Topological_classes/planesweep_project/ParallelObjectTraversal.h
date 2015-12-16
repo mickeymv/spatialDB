@@ -71,10 +71,6 @@ public:
     // other, and sets the minimum of those two.
     void setNextMin();
 
-    // Methods that return a true if the object parameter is the first or second object
-    bool isObjectF( const Object2D);
-    bool isObjectG(const Object2D);
-
     // Method that returns the simple halfsegment of 'object' that is next in the logical
     // order. Does not include the dynamic EPS
     Line2DImpl::ConstHalfSegIterator  getNextObjIterator(HalfSeg2D,object);
@@ -91,8 +87,6 @@ public:
     // Getter methods for objF, objG, object, status
     object getObject();
     status getStatus();
-    Object2D getObjF();
-    Object2D getObjG();
 
     // TODO Are these methods needed?
     Poi2D getPoiEvent(object objectEnumVal);
