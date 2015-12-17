@@ -47,8 +47,9 @@
     // Line2D that holds the different variables of the line2D structure
     struct Line2D::Line2DSImpl
 	{
-	  std::map<int, std::vector<HalfSeg2D *> > mapHseg; //map of vectors holding pointers for the blocks' halfsegments within segments
+	  std::map<int, std::vector<HalfSeg2D *>> mapHseg; //map of vectors holding pointers for the blocks' halfsegments within segments 
       std::vector<HalfSeg2D> segments;                 //ordered set of all HalfSegments regarding the full Line2D structure
+      std::vector<HalfSeg2D> halfSegs;   //added in fix
       Line2D::ConstBlockIterator::ConstBlockIteratorImplementation firstBlock;  //pointer to the segments vector
       Line2D::ConstBlockIterator::ConstBlockIteratorImplementation lastBlock;   //pointer to the segments vector
     };
@@ -205,11 +206,13 @@
         // points to a halfsegment. The dereferenced value cannot be changed.
         const HalfSeg2D& Line2DImpl::ConstHalfSegIterator::operator *() const
         {
-            return(this->handlei->current->segments.at(this->handlei->iteratorIndex));   
+            //return(this->handlei->current->segments.at(this->handlei->iteratorIndex));  
+              return(this->handlei->current->halfSegs.at(this->handlei->iteratorIndex));   //changed in fix
         }
         const HalfSeg2D* Line2DImpl::ConstHalfSegIterator::operator ->() const
         {
-            return(&this->handlei->current->segments.at(this->handlei->iteratorIndex));  
+            //return(&this->handlei->current->segments.at(this->handlei->iteratorIndex));
+              return(&this->handlei->current->halfSegs.at(this->handlei->iteratorIndex));       //changed in fix
         }
 
         // Comparison operators that compare a constant halfsegment iterator position
@@ -242,7 +245,8 @@
 	  std::ostream&operator<<(std::ostream& os, const Line2DImpl::ConstHalfSegIterator& output)
 	  {
 		os << "index Value:" << output.handlei->iteratorIndex<<" ";
-		os << "point Value:" << output.handlei->current->segments.at(output.handlei->iteratorIndex)<<" ";
+		//os << "point Value:" << output.handlei->current->segments.at(output.handlei->iteratorIndex)<<" ";
+                os << "point Value:" << output.handlei->current->halfSegs.at(output.handlei->iteratorIndex)<<" ";
 		return os;
 	  }
 
@@ -261,9 +265,16 @@
     // Line2DImpl object.
     Line2DImpl::ConstHalfSegIterator Line2DImpl::hEnd() const
     {
-	   ConstHalfSegIterator last;
+	/*   ConstHalfSegIterator last;
        if(handle->segments.size() >= 2)
          last.handlei->iteratorIndex = handle->segments.size()-2;
+       else 
+         last.handlei->iteratorIndex = 0;
+	   last.handlei->current = handle;
+  	   return last; */
+          ConstHalfSegIterator last;
+       if(handle->halfSegs.size() >= 2)
+         last.handlei->iteratorIndex = handle->halfSegs.size()-2;
        else 
          last.handlei->iteratorIndex = 0;
 	   last.handlei->current = handle;
@@ -288,11 +299,19 @@
     //Currently gives default values instead of empty iterator
     Line2DImpl::ConstHalfSegIterator Line2DImpl::hTail() const
     {
-		 ConstHalfSegIterator t;
+		/* ConstHalfSegIterator t;
 		 if(handle->segments.size() >= 1)
 			t.handlei->iteratorIndex = handle->segments.size()-1;
 		 else 
 			t.handlei->iteratorIndex = 0;
 		 t.handlei->current = handle;
+		 return t;  */
+                 ConstHalfSegIterator t;
+		 if(handle->halfSegs.size() >= 1)
+			t.handlei->iteratorIndex = handle->halfSegs.size()-1;
+		 else 
+			t.handlei->iteratorIndex = 0;
+		 t.handlei->current = handle;
 		 return t;
+                
     }
