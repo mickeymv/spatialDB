@@ -85,6 +85,17 @@ private:
 
     // properties
     ParallelObjectTraversal * pot;
+    
+    
+    // DTj: Refer to paper Topological Relationships Between
+    // Complex Spatial Objects p. 57
+    string matrix[5] = {
+            // "001000101", "100000001", "100000101", "101000001", "101000101",  //  Since the entire row 2 of the 3x3 matrix is not used, we simplify it as below
+            //  Since the entire row 2 of the 3x3 matrix above is not used, we simplify it as below,
+            // so instead of the first row and the last row are used for comparison
+            "001101", "100001", "100101", "101001", "101101",  //  1-5
+    };
+
 };
 
 
