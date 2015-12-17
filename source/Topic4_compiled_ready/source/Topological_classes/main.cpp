@@ -28,6 +28,8 @@ using namespace std;
 void printPoint2DPoint2DPredicate(TopPredNumberPoint2DPoint2D tpred);
 void printPoint2DLine2DPredicate(TopPredNumberPoint2DLine2D tpred);
 
+void printRegion2DRegion2DPredicate(TopPredNumberRegion2DRegion2D tpred);
+
 
 int main() {
 
@@ -432,7 +434,42 @@ int main() {
     // Case 6: Region2DRegion2D
     // *****************************
 
+    Region2D *arr, *brr;
+    TopPredNumberRegion2DRegion2D trrred;
+    result = false;
 
+    cout << "Test begins..." << endl << endl;
+
+    arr = new Region2D("(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))");
+    brr = new Region2D("(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))");
+
+    cout << "*****************************" << endl;
+    cout << "Case 1: Region2DRegion2D" << endl;
+    cout << "*****************************" << endl;
+    cout << endl;
+    cout << "1. Test rr_equal, F and G same number of elements." << endl;
+    cout << "Region2D a(\"(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))\");" << endl;
+    cout << "Region2D b(\"(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))\");" << endl;
+
+    trrred = getTopologicalRelationship(*arr, *brr);
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    printRegion2DRegion2DPredicate(trrred);
+    cout << endl;
+
+    result = isTopologicalRelationship(*arr, *brr, TopPredNumberRegion2DRegion2D::rr_equal_m5);
+
+    cout << "   isTopologicalRelationship(a, b, pl_disjoint_m2) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   equal() ==> " << equal(*arr, *brr) << endl;
+    cout << "   overlap() ==> " << overlap(*arr, *brr) << endl;
+    cout << endl;
+
+    // don't forget to cleanup
+    delete arr, brr;
+    result = false;
 
 
     cout << "Test succesfully ended." << endl;
@@ -489,3 +526,107 @@ void printPoint2DLine2DPredicate(TopPredNumberPoint2DLine2D tpred) {
             break;
     }
 };
+
+void printRegion2DRegion2DPredicate(TopPredNumberRegion2DRegion2D tpred) {
+    switch (tpred) {
+        case TopPredNumberRegion2DRegion2D::rr_disjoint_m1 :
+            cout << "rr_disjoint_m1 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_meet_m2 :
+            cout << "rr_meet_m2 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_meet_m3 :
+            cout << "rr_meet_m3 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_meet_m4 :
+            cout << "rr_meet_m4 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_equal_m5 :
+            cout << "rr_equal_m5 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_coveredby_m6 :
+            cout << "rr_coveredby_m6 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_inside_m7 :
+            cout << "rr_inside_m7 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_coveredby_m8 :
+            cout << "rr_coveredby_m8 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_coveredby_m9 :
+            cout << "rr_coveredby_m9 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m10 :
+            cout << "rr_overlap_m10 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_covers_m11 :
+            cout << "rr_covers_m11 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m12 :
+            cout << "rr_overlap_m12 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m13 :
+            cout << "rr_overlap_m13 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m14 :
+            cout << "rr_overlap_m14 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m15 :
+            cout << "rr_overlap_m15 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m16 :
+            cout << "rr_overlap_m16 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m17 :
+            cout << "rr_overlap_m17 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m18 :
+            cout << "rr_overlap_m18 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_contains_m19 :
+            cout << "rr_contains_m19 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m20 :
+            cout << "rr_overlap_m20 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_covers_m21 :
+            cout << "rr_covers_m21 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m22 :
+            cout << "rr_overlap_m22 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m23 :
+            cout << "rr_overlap_m23 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_covers_m24 :
+            cout << "rr_covers_m24 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m25 :
+            cout << "rr_overlap_m25 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m26 :
+            cout << "rr_overlap_m26 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m27 :
+            cout << "rr_overlap_m27 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m28 :
+            cout << "rr_overlap_m28 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m29 :
+            cout << "rr_overlap_m29 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m30 :
+            cout << "rr_overlap_m30 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m31 :
+            cout << "rr_overlap_m31 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m32 :
+            cout << "rr_overlap_m32 <===";
+            break;
+        case TopPredNumberRegion2DRegion2D::rr_overlap_m33 :
+            cout << "rr_overlap_m33 <===";
+            break;
+    }
+}

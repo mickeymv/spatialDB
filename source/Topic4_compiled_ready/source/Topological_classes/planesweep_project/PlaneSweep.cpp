@@ -725,7 +725,11 @@ bool PlaneSweep::coincident(Seg2D &givenSeg) { // TODO what does partially colli
     int itr = 0;
     int const treeSize = sweepLineStatus->sizeOfAVL();
 
-    PlaneSweepLineStatusObject **segArray = (PlaneSweepLineStatusObject **) malloc(treeSize);
+    PlaneSweepLineStatusObject **segArray;
+    segArray = new PlaneSweepLineStatusObject *[treeSize];
+    for (itr = 0; itr < treeSize; itr++) {
+        segArray[itr] = new PlaneSweepLineStatusObject();
+    }
     sweepLineStatus->getElements(segArray);
 
     for (itr = 0; itr < treeSize; itr++) {
@@ -2225,6 +2229,197 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, ParallelObjectTraversal::object
     }
 }
 
+Poi2D *PlaneSweep::lookAheadPoi(HalfSeg2D &halfseg2D, ParallelObjectTraversal::object objectValue) {
+    Seg2D &seg2D = halfseg2D.seg;
+    Number zero("0");
+    Poi2D *p = nullptr;
+    if ((getPot()->isFLine()) && (objectValue == ParallelObjectTraversal::first)) {
+        //Static
+        Line2DImpl::ConstHalfSegIterator val = getPot()->getNextObjIterator(halfseg2D, objectValue);
+        Line2DImpl::ConstHalfSegIterator cval = ((Line2DImpl *) objFpointer)->hBegin();
+        HalfSeg2D check2 = *cval;
+        HalfSeg2D check1 = *val;
+        HalfSeg2D *halfsegStaticSucc = nullptr;
+        if ((!val.isEmpty()) && (!(check1 == check2))) {
+            halfsegStaticSucc = new HalfSeg2D();
+            *halfsegStaticSucc = *(val);
+        }
+        else {
+            halfsegStaticSucc = nullptr;
+        } // TODO the 'else' block is redundant code
+
+        //Dynamic
+//        dynamicEPSObjF.DeleteMin();
+//        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjF.GetMin();
+//        AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
+//        dynamicEPSObjF.Insert(attrhalfsegReinsert);
+//        HalfSeg2D halfsegDynSucc = attrhalfsegDynSucc.halfsegment; //change later
+
+        //AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
+        //AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjF.GetNext(attrhalfsegReinsert);
+        HalfSeg2D *halfsegDynSucc = nullptr;
+        if (!dynamicEPSObjF.isEmpty()) {
+            halfsegDynSucc = new HalfSeg2D(); //change later
+            *halfsegDynSucc = dynamicEPSObjF.GetNext(AttrHalfSeg2D(false, halfseg2D.isLeft, halfseg2D.seg)).hseg;
+        }
+        //*halfsegDynSucc = attrhalfsegDynSucc.hseg;
+
+        if (halfsegStaticSucc == nullptr && halfsegDynSucc == nullptr) {
+            return p;
+        }
+
+        if ((halfsegStaticSucc != nullptr && halfsegDynSucc == nullptr) || (*halfsegStaticSucc <= *halfsegDynSucc)) {
+
+            bool isDirGiven = halfseg2D.isLeft;
+            bool isDirSucc = (*halfsegStaticSucc).isLeft;
+
+
+            Poi2D dpGiven, dpSucc;
+
+            if (isDirGiven) {
+                dpGiven = halfseg2D.seg.p1;
+            }
+            else {
+                dpGiven = halfseg2D.seg.p2;
+            }
+            if (isDirSucc) {
+                dpSucc = (*halfsegStaticSucc).seg.p1;
+            }
+            else {
+                dpSucc = (*halfsegStaticSucc).seg.p2;
+            }
+
+            if (dpGiven == dpSucc) {
+                *p = dpSucc;
+                return p;
+            }
+            else {
+
+                return p;
+            }
+        }
+        else if ((halfsegStaticSucc == nullptr && halfsegDynSucc != nullptr) ||
+                 (*halfsegDynSucc < *halfsegStaticSucc)) {
+            bool isDirGiven = halfseg2D.isLeft;
+            bool isDirSucc = (*halfsegDynSucc).isLeft;
+            Poi2D dpGiven, dpSucc;
+
+            if (isDirGiven) {
+                dpGiven = halfseg2D.seg.p1;
+            }
+            else {
+                dpGiven = halfseg2D.seg.p2;
+            }
+            if (isDirSucc) {
+                dpSucc = (*halfsegDynSucc).seg.p1;
+            }
+            else {
+                dpSucc = (*halfsegDynSucc).seg.p2;
+            }
+            if (dpGiven == dpSucc) {
+                *p = dpSucc;
+                return p;
+            }
+            else {
+                return p;
+            }
+        }
+
+
+    }
+    else if ((getPot()->isGLine()) && (objectValue == ParallelObjectTraversal::second)) {
+        //Static
+        Line2DImpl::ConstHalfSegIterator val = getPot()->getNextObjIterator(halfseg2D, objectValue);
+        Line2DImpl::ConstHalfSegIterator cval = ((Line2DImpl *) objGpointer)->hBegin();
+        HalfSeg2D check2 = *cval;
+        HalfSeg2D check1 = *val;
+        HalfSeg2D *halfsegStaticSucc = nullptr;
+        if ((!val.isEmpty()) && (!(check1 == check2))) {
+            halfsegStaticSucc = new HalfSeg2D();
+            *halfsegStaticSucc = *val;
+        }
+        else {
+            halfsegStaticSucc = nullptr;
+        }
+
+        //Dynamic
+//        dynamicEPSObjG.DeleteMin();
+//        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjG.GetMin();
+//        AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
+//        dynamicEPSObjG.Insert(attrhalfsegReinsert);
+//        HalfSeg2D halfsegDynSucc = attrhalfsegDynSucc.halfsegment; //change later
+
+        //AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
+        //AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjG.GetNext(attrhalfsegReinsert);
+        HalfSeg2D *halfsegDynSucc = nullptr; //change later
+        if (!dynamicEPSObjG.isEmpty()) {
+            halfsegDynSucc = new HalfSeg2D();
+            *halfsegDynSucc = dynamicEPSObjG.GetNext(AttrHalfSeg2D(false, halfseg2D.isLeft, halfseg2D.seg)).hseg;
+        }
+        //*halfsegDynSucc = attrhalfsegDynSucc.hseg;
+
+        if (halfsegStaticSucc == nullptr && halfsegDynSucc == nullptr) {
+            return p;
+        }
+
+        if ((halfsegStaticSucc != nullptr && halfsegDynSucc == nullptr) || (*halfsegStaticSucc <= (*halfsegDynSucc))) {
+            //cout<<"In good loop"<<endl;
+            bool isDirGiven = halfseg2D.isLeft;
+            bool isDirSucc = (*halfsegStaticSucc).isLeft;
+            Poi2D dpGiven, dpSucc;
+
+            if (isDirGiven) {
+                dpGiven = halfseg2D.seg.p1;
+            }
+            else {
+                dpGiven = halfseg2D.seg.p2;
+            }
+            if (isDirSucc) {
+                dpSucc = (*halfsegStaticSucc).seg.p1;
+            }
+            else {
+                dpSucc = (*halfsegStaticSucc).seg.p2;
+            }
+
+            if (dpGiven == dpSucc) {
+                *p = dpSucc;
+                return p;
+            }
+            else {
+                return p;
+            }
+        }
+        else if ((halfsegStaticSucc == nullptr && halfsegDynSucc != nullptr) ||
+                 (*halfsegDynSucc < *halfsegStaticSucc)) {
+            bool isDirGiven = halfseg2D.isLeft;
+            bool isDirSucc = (*halfsegDynSucc).isLeft;
+            Poi2D dpGiven, dpSucc;
+
+            if (isDirGiven) {
+                dpGiven = halfseg2D.seg.p1;
+            }
+            else {
+                dpGiven = halfseg2D.seg.p2;
+            }
+            if (isDirSucc) {
+                dpSucc = (*halfsegDynSucc).seg.p1;
+            }
+            else {
+                dpSucc = (*halfsegDynSucc).seg.p2;
+            }
+
+            if (dpGiven == dpSucc) {
+                *p = dpSucc;
+                return p;
+            }
+            else {
+                return p;
+            }
+        }
+
+    }
+}
+
 /* TODO Need to update attrHalfSeg implementation after group 2 changes it
  * TODO Need to update code to get next object after a given object in an AVL tree to get dynSucc
  */
@@ -2397,6 +2592,185 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D &attrhalfseg2D,ParallelObjectTraversal:
             }
             else {
                 return false;
+            }
+        }
+
+    }
+}
+
+Poi2D *PlaneSweep::lookAheadPoi(AttrHalfSeg2D &attrhalfseg2D, ParallelObjectTraversal::object objectValue) {
+    Seg2D &seg2D = attrhalfseg2D.hseg.seg;
+    Poi2D *p = nullptr;
+    if ((getPot()->isFRegion()) && (objectValue == ParallelObjectTraversal::first)) {
+        //Static
+        Region2DImpl::ConstAttributedHalfSegmentIterator val = getPot()->getNextObjIterator(attrhalfseg2D, objectValue);
+        Region2DImpl::ConstAttributedHalfSegmentIterator cval = ((Region2DImpl *) objFpointer)->cbegin();
+        AttrHalfSeg2D check2 = *cval;
+        AttrHalfSeg2D check1 = *val;
+        AttrHalfSeg2D *attrhalfsegStaticSucc = nullptr;
+        if ((!val.isEmpty()) && (!(check1 == check2))) {
+            attrhalfsegStaticSucc = new AttrHalfSeg2D();
+            *attrhalfsegStaticSucc = *val;
+
+        }
+        else {
+            attrhalfsegStaticSucc = nullptr;
+        }
+
+        //Dynamic
+//        dynamicEPSObjF.DeleteMin();
+//        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjF.GetMin();
+//        //AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
+//        dynamicEPSObjF.Insert(attrhalfseg2D);
+        //AttrHalfSeg2D attrhalfsegDynSucc = attrhalfsegDynSucc.halfsegment //change later
+        AttrHalfSeg2D *attrhalfsegDynSucc = nullptr;
+        if (!dynamicEPSObjF.isEmpty()) {
+            attrhalfsegDynSucc = new AttrHalfSeg2D();
+            *attrhalfsegDynSucc = dynamicEPSObjF.GetNext(attrhalfseg2D);
+        }
+
+        if (attrhalfsegStaticSucc == nullptr && attrhalfsegDynSucc == nullptr) {
+            return p;
+        }
+
+        if ((attrhalfsegStaticSucc != nullptr && attrhalfsegDynSucc == nullptr) ||
+            (*attrhalfsegStaticSucc <= *attrhalfsegDynSucc)) {
+            bool isDirGiven = attrhalfseg2D.hseg.isLeft;
+            bool isDirSucc = (*attrhalfsegStaticSucc).hseg.isLeft;
+            Poi2D dpGiven, dpSucc;
+
+            if (isDirGiven) {
+                dpGiven = attrhalfseg2D.hseg.seg.p1;
+            }
+            else {
+                dpGiven = attrhalfseg2D.hseg.seg.p2;
+            }
+            if (isDirSucc) {
+                dpSucc = (*attrhalfsegStaticSucc).hseg.seg.p1;
+            }
+            else {
+                dpSucc = (*attrhalfsegStaticSucc).hseg.seg.p2;
+            }
+
+            if (dpGiven == (dpSucc)) {
+                *p = dpSucc;
+                return p;
+            }
+            else {
+                return p;
+            }
+        }
+        else if ((attrhalfsegStaticSucc == nullptr && attrhalfsegDynSucc != nullptr) ||
+                 (*attrhalfsegDynSucc < *attrhalfsegStaticSucc)) {
+            bool isDirGiven = attrhalfseg2D.hseg.isLeft;
+            bool isDirSucc = (*attrhalfsegDynSucc).hseg.isLeft;
+            Poi2D dpGiven, dpSucc;
+
+            if (isDirGiven) {
+                dpGiven = attrhalfseg2D.hseg.seg.p1;
+            }
+            else {
+                dpGiven = attrhalfseg2D.hseg.seg.p2;
+            }
+            if (isDirSucc) {
+                dpSucc = (*attrhalfsegDynSucc).hseg.seg.p1;
+            }
+            else {
+                dpSucc = (*attrhalfsegDynSucc).hseg.seg.p2;
+            }
+            if (dpGiven == (dpSucc)) {
+                *p = dpSucc;
+                return p;
+            }
+            else {
+                return p;
+            }
+        }
+    }
+    else if ((getPot()->isGRegion()) && (objectValue == ParallelObjectTraversal::second)) {
+        //Static
+        Region2DImpl::ConstAttributedHalfSegmentIterator val = getPot()->getNextObjIterator(attrhalfseg2D, objectValue);
+        Region2DImpl::ConstAttributedHalfSegmentIterator cval = ((Region2DImpl *) objGpointer)->cbegin();
+
+        AttrHalfSeg2D check2 = *cval;
+        AttrHalfSeg2D check1 = *val;
+        AttrHalfSeg2D *attrhalfsegStaticSucc = nullptr;
+        if ((!val.isEmpty()) && (!(check1 == check2))) {
+            attrhalfsegStaticSucc = new AttrHalfSeg2D();
+            *attrhalfsegStaticSucc = *val;
+        }
+        else {
+            attrhalfsegStaticSucc = nullptr;
+        }
+
+        //Dynamic
+//        dynamicEPSObjG.DeleteMin();
+//        AttrHalfSeg2D attrhalfsegDynSucc = dynamicEPSObjG.GetMin();
+//        //AttrHalfSeg2D attrhalfsegReinsert(halfseg2D);
+//        dynamicEPSObjG.Insert(attrhalfseg2D);
+        //AttrHalfSeg2D attrhalfsegDynSucc = attrhalfsegDynSucc.halfsegment //change later
+        AttrHalfSeg2D *attrhalfsegDynSucc = nullptr;
+        if (!dynamicEPSObjG.isEmpty()) {
+            attrhalfsegDynSucc = new AttrHalfSeg2D();
+            *attrhalfsegDynSucc = dynamicEPSObjG.GetNext(attrhalfseg2D);
+        }
+
+        if (attrhalfsegStaticSucc == nullptr && attrhalfsegDynSucc == nullptr) {
+            return p;
+        }
+
+        if ((attrhalfsegStaticSucc != nullptr && attrhalfsegDynSucc == nullptr) ||
+            (*attrhalfsegStaticSucc <= *attrhalfsegDynSucc)) {
+            bool isDirGiven = attrhalfseg2D.hseg.isLeft;
+            bool isDirSucc = (*attrhalfsegStaticSucc).hseg.isLeft;
+            Poi2D dpGiven, dpSucc;
+
+            if (isDirGiven) {
+                dpGiven = attrhalfseg2D.hseg.seg.p1;
+            }
+            else {
+                dpGiven = attrhalfseg2D.hseg.seg.p2;
+            }
+            if (isDirSucc) {
+                dpSucc = (*attrhalfsegStaticSucc).hseg.seg.p1;
+            }
+            else {
+                dpSucc = (*attrhalfsegStaticSucc).hseg.seg.p2;
+            }
+
+            if (dpGiven == (dpSucc)) {
+                *p = dpSucc;
+                return p;
+            }
+            else {
+                return p;
+            }
+        }
+        else if ((attrhalfsegStaticSucc == nullptr && attrhalfsegDynSucc != nullptr) ||
+                 (*attrhalfsegDynSucc > *attrhalfsegStaticSucc)) {
+            bool isDirGiven = attrhalfseg2D.hseg.isLeft;
+            bool isDirSucc = (*attrhalfsegDynSucc).hseg.isLeft;
+            Poi2D dpGiven, dpSucc;
+
+            if (isDirGiven) {
+                dpGiven = attrhalfseg2D.hseg.seg.p1;
+            }
+            else {
+                dpGiven = attrhalfseg2D.hseg.seg.p2;
+            }
+            if (isDirSucc) {
+                dpSucc = (*attrhalfsegDynSucc).hseg.seg.p1;
+            }
+            else {
+                dpSucc = (*attrhalfsegDynSucc).hseg.seg.p2;
+            }
+
+            if (dpGiven == (dpSucc)) {
+                *p = dpSucc;
+                return p;
+            }
+            else {
+                return p;
             }
         }
 

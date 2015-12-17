@@ -75,7 +75,7 @@ class Region2D : public Object2D
 
     //copy assignment operator that copies the inputted object
     //to the Region2D object
-    Region2D& operator = (Region2D& source);
+    Region2D &operator=(const Region2D &source);
 
     // Move assignment operator that moves the inputted Region2D object to the
     // Region2D object. The inputted object gets the empty Region2D

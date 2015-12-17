@@ -50,18 +50,21 @@ bool *Region2DRegion2D::getVG()
 
 void Region2DRegion2D::exploreTopoPred()
 {
+    cout << "Inside exploreTopoPred" << endl;
     PlaneSweep S(objF,objG);
     S.newSweep();
-
+    cout << "after newSweep" << endl;
     Poi2D last_dp_in_F, last_dp_in_G;
 
     while((S.getStatus()==ParallelObjectTraversal::end_of_none)&&(!(vF[zero_one]&&vF[one_zero]&&vF[one_two]&&vF[two_one]&&vF[zero_two]&&vF[two_zero]&&vF[one_one]&&vF[bound_poi_shared]&&vG[zero_one_g]&&vG[one_zero_g]&&vG[one_two_g]&&vG[two_one_g])))
     {
-
+        cout << "Inside while loop" << endl;
         AttrHalfSeg2D h;
         if(S.getObject()==ParallelObjectTraversal::first)
         {
+            cout << "Inside first" << endl;
             h = S.getAttrHalfSegEvent(ParallelObjectTraversal::first);
+            cout << "After getAttrHalfSegEvent" << endl;
             if(h.hseg.isLeft)
             {
                 last_dp_in_F = h.hseg.seg.p1;
@@ -73,7 +76,9 @@ void Region2DRegion2D::exploreTopoPred()
         }
         else if(S.getObject()==ParallelObjectTraversal::second)
         {
+            cout << "Inside second" << endl;
             h = S.getAttrHalfSegEvent(ParallelObjectTraversal::second);
+            cout << "After getAttrHalfSegEvent" << endl;
             if(h.hseg.isLeft)
             {
                 last_dp_in_G = h.hseg.seg.p1;
@@ -85,7 +90,9 @@ void Region2DRegion2D::exploreTopoPred()
         }
         else // object = both
         {
+            cout << "Inside both" << endl;
             h = S.getAttrHalfSegEvent(ParallelObjectTraversal::first);
+            cout << "After getAttrHalfSegEvent" << endl;
             if(h.hseg.isLeft)
             {
                 last_dp_in_F = h.hseg.seg.p1;
@@ -99,14 +106,20 @@ void Region2DRegion2D::exploreTopoPred()
 
         }
 
-        if((last_dp_in_F==last_dp_in_G)||(last_dp_in_F==S.lookAhead(h,objG))||(last_dp_in_G==S.lookAhead(h,objF)))
+        if ((last_dp_in_F == last_dp_in_G) || ((S.lookAheadPoi(h, ParallelObjectTraversal::second) != nullptr) &&
+                                               (last_dp_in_F ==
+                                                *(S.lookAheadPoi(h, ParallelObjectTraversal::second)))) ||
+            ((S.lookAheadPoi(h, ParallelObjectTraversal::first) !=
+              nullptr) && (last_dp_in_G == *(S.lookAheadPoi(h, ParallelObjectTraversal::first)))))
         {
+            cout << "Could perform lookAheadpoi" << endl;
             vF[bound_poi_shared]=true;
         }
 
         if(!h.hseg.isLeft) // h is a right half segment
         {
             SegmentClass overlapNumber = S.getSegClass(h.hseg.seg);
+            cout << "After getSegClass" << endl;
             if(S.getObject()==ParallelObjectTraversal::first)
             {
                 if((overlapNumber.getUpperOrLeft()==0)&&(overlapNumber.getLowerOrRight()==1))
@@ -192,14 +205,23 @@ void Region2DRegion2D::exploreTopoPred()
                     vF[one_one]=true;
                 }
             }
-            S.delRight(h.hseg.seg);
+            PlaneSweepLineStatusObject psso(h.hseg.seg);
+            S.delRight(psso);
+            cout << "After delRight" << endl;
         }
         else // h is a left segment
         {
-            S.addLeft(h.hseg.seg);
+            PlaneSweepLineStatusObject psso(h.hseg.seg);
+            S.addLeft(psso);
+            cout << "After addLeft" << endl;
             if(S.coincident(h.hseg.seg))
             {
+                cout << "After coincident" << endl;
                 S.setObject(ParallelObjectTraversal::both);
+                cout << "After setObject" << endl;
+            }
+            else {
+                cout << "Not coincident" << endl;
             }
             int upperP;
             int lowerP;
@@ -207,12 +229,15 @@ void Region2DRegion2D::exploreTopoPred()
             int lowerS;
             if(!S.predExists(h.hseg.seg))
             {
+                cout << "Pred does not exist" << endl;
                 upperP = -1; // undefined and doesn't matter
                 lowerP = 0;
             }
             else // Predecessor exists
             {
+                cout << "Pred exists" << endl;
              SegmentClass pred = S.getPredSegmentClass(h.hseg.seg);
+                cout << "After getPredSegmentClass" << endl;
                 upperP = pred.getUpperOrLeft();
                 lowerP = pred.getLowerOrRight();
             }
@@ -248,6 +273,7 @@ void Region2DRegion2D::exploreTopoPred()
         }
 
         S.selectNext();
+        cout << "After select next" << endl;
     }
 
     if(S.getStatus()==ParallelObjectTraversal::end_of_first)
@@ -300,6 +326,334 @@ void Region2DRegion2D::evaluateTopoPred()
         IMC[0][2]=1;
         IMC[2][0]=1;
     }
+    IMC[2][2] = true;
+
+    if (IMC[0][1]) {
+        if (IMC[1][0]) {
+            if (IMC[1][1]) {
+                if (IMC[0][2]) {
+                    if (IMC[2][1]) {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m33;
+                        isPredSet = true;
+                    }
+                    else {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m32;
+                        isPredSet = true;
+                    }
+                }
+                else {
+                    if (IMC[2][1]) {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m31;
+                        isPredSet = true;
+                    }
+                    else {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m30;
+                        isPredSet = true;
+                    }
+                }
+            }
+            else {
+                if (IMC[0][2]) {
+                    if (IMC[2][1]) {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m29;
+                        isPredSet = true;
+                    }
+                    else {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m28;
+                        isPredSet = true;
+                    }
+                }
+                else {
+                    topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m27;
+                    isPredSet = true;
+                }
+            }
+        }
+        else {
+            if (IMC[0][2]) {
+                if (IMC[1][1]) {
+                    if (IMC[2][0]) {
+                        if (IMC[2][1]) {
+                            topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m26;
+                            isPredSet = true;
+                        }
+                        else {
+                            topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m25;
+                            isPredSet = true;
+                        }
+                    }
+                    else {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_covers_m24;
+                        isPredSet = true;
+                    }
+                }
+                else {
+                    if (IMC[2][0]) {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m20;
+                        isPredSet = true;
+                    }
+                    else {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_contains_m19;
+                        isPredSet = true;
+                    }
+                }
+            }
+            else {
+                if (IMC[2][0]) {
+                    if (IMC[2][1]) {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m23;
+                        isPredSet = true;
+                    }
+                    else {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m22;
+                        isPredSet = true;
+                    }
+                }
+                else {
+                    topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_covers_m21;
+                    isPredSet = true;
+                }
+            }
+        }
+    }
+    else {
+        if (IMC[1][0]) {
+            if (IMC[0][2]) {
+                if (IMC[0][2]) {
+                    if (IMC[1][1]) {
+                        if (IMC[2][1]) {
+                            topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m18;
+                            isPredSet = true;
+                        }
+                        else {
+                            topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m17;
+                            isPredSet = true;
+                        }
+                    }
+                    else {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m14;
+                        isPredSet = true;
+                    }
+                }
+                else {
+                    if (IMC[2][1]) {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m16;
+                        isPredSet = true;
+                    }
+                    else {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m15;
+                        isPredSet = true;
+                    }
+                }
+            }
+            else {
+                if (IMC[1][1]) {
+                    if (IMC[2][1]) {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_coveredby_m9;
+                        isPredSet = true;
+                    }
+                    else {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_coveredby_m8;
+                        isPredSet = true;
+                    }
+                }
+                else {
+                    topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_inside_m7;
+                    isPredSet = true;
+                }
+            }
+        }
+        else {
+            if (IMC[0][2]) {
+                if (IMC[0][0]) {
+                    if (IMC[2][0]) {
+                        if (IMC[2][1]) {
+                            topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m13;
+                            isPredSet = true;
+                        }
+                        else {
+                            topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m12;
+                            isPredSet = true;
+                        }
+                    }
+                    else {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_covers_m11;
+                        isPredSet = true;
+                    }
+                }
+                else {
+                    if (IMC[1][1]) {
+                        if (IMC[2][1]) {
+                            topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_meet_m4;
+                            isPredSet = true;
+                        }
+                        else {
+                            topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_meet_m3;
+                            isPredSet = true;
+                        }
+                    }
+                    else {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_disjoint_m1;
+                        isPredSet = true;
+                    }
+                }
+            }
+            else {
+                if (IMC[0][2]) {
+                    if (IMC[0][0]) {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_overlap_m10;
+                        isPredSet = true;
+                    }
+                    else {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_meet_m2;
+                        isPredSet = true;
+                    }
+                }
+                else {
+                    if (IMC[2][0]) {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_coveredby_m6;
+                        isPredSet = true;
+                    }
+                    else {
+                        topPredNumberRegion2DRegion2D = TopPredNumberRegion2DRegion2D::rr_equal_m5;
+                        isPredSet = true;
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+TopPredNumberRegion2DRegion2D Region2DRegion2D::getTopologicalRelationship() {
+    if (!isPredSet) {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    return topPredNumberRegion2DRegion2D;
+}
 
 
+bool Region2DRegion2D::isTopologicalRelationship(TopPredNumberRegion2DRegion2D predicate) {
+    if (!isPredSet) {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    if (topPredNumberRegion2DRegion2D == predicate) {
+        return true;
+    }
+    return false;
+}
+
+bool Region2DRegion2D::disjoint() {
+    if (!isPredSet) {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    if (topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_disjoint_m1) {
+        return true;
+    }
+    return false;
+}
+
+bool Region2DRegion2D::meet() {
+    if (!isPredSet) {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    if (topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_meet_m2 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_meet_m3 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_meet_m4) {
+        return true;
+    }
+    return false;
+}
+
+bool Region2DRegion2D::equal() {
+    if (!isPredSet) {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    if (topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_equal_m5) {
+        return true;
+    }
+    return false;
+}
+
+bool Region2DRegion2D::coveredBy() {
+    if (!isPredSet) {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    if (topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_coveredby_m6 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_coveredby_m8 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_coveredby_m9) {
+        return true;
+    }
+    return false;
+}
+
+bool Region2DRegion2D::inside() {
+    if (!isPredSet) {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    if (topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_inside_m7) {
+        return true;
+    }
+    return false;
+}
+
+bool Region2DRegion2D::covers() {
+    if (!isPredSet) {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    if (topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_covers_m11 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_covers_m21 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_covers_m24) {
+        return true;
+    }
+    return false;
+}
+
+bool Region2DRegion2D::overlap() {
+    if (!isPredSet) {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    if (topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m10 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m12 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m13 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m14 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m15 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m16 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m17 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m18 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m20 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m22 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m23 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m25 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m26 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m27 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m28 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m29 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m30 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m31 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m32 ||
+        topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_overlap_m33) {
+        return true;
+    }
+    return false;
+}
+
+bool Region2DRegion2D::contains() {
+    if (!isPredSet) {
+        exploreTopoPred();
+        evaluateTopoPred();
+    }
+    if (topPredNumberRegion2DRegion2D == TopPredNumberRegion2DRegion2D::rr_contains_m19) {
+        return true;
+    }
+    return false;
 }

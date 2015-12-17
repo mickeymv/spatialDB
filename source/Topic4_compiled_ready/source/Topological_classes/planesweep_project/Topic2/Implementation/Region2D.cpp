@@ -1017,7 +1017,7 @@ using namespace std;
 
   //copy assignment operator that copies the inputted object
   //to the Region2D object
-  Region2D& Region2D::operator = (Region2D& source)
+  Region2D &Region2D::operator=(const Region2D &source)
   {
     handle = new Region2DImplementation;
     handle->segments.clear();

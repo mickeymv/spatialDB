@@ -120,6 +120,10 @@ public:
     bool lookAhead(HalfSeg2D &, ParallelObjectTraversal::object objectValue);
     bool lookAhead(AttrHalfSeg2D &, ParallelObjectTraversal::object objectValue);
 
+    Poi2D *lookAheadPoi(HalfSeg2D &, ParallelObjectTraversal::object objectValue);
+
+    Poi2D *lookAheadPoi(AttrHalfSeg2D &, ParallelObjectTraversal::object objectValue);
+
     bool coincident(Seg2D &);
 
     bool currentExists(Poi2D &); // Adding Poi2D to make our life easier

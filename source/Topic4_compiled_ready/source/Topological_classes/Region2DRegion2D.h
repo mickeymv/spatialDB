@@ -21,7 +21,7 @@
 #include "planesweep_project/Object2D.h"
 #include "TopPredNumberEnums.h"
 #include "planesweep_project/PlaneSweep.h"
-#include "planesweep_project/Topic2/Implementation/"
+#include "planesweep_project/Topic2/Implementation/Region2D.h"
 
 
 class Region2DRegion2D{
@@ -59,6 +59,9 @@ private:
     enum vG_Predicates{
         zero_one_g,one_zero_g,one_two_g,two_one_g
     };
+
+    TopPredNumberRegion2DRegion2D topPredNumberRegion2DRegion2D;
+    bool isPredSet = false;
 
     // get vector array vF
     bool *getVF();
