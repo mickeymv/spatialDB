@@ -75,7 +75,7 @@ Point2D spatialUnion(const Point2D &pointLhs, const Point2D &pointRhs) {
     ParallelObjectTraversal parallelObjectTraversal(pointLhs, pointRhs);
     //pot.selectFirst would be called implicitly in the pot constructor.
     while (parallelObjectTraversal.getObject() != ParallelObjectTraversal::none &&
-           parallelObjectTraversal.getStatus() == ParallelObjectTraversal::end_of_none) {
+           parallelObjectTraversal.getStatus() != ParallelObjectTraversal::end_of_both) {
         if (parallelObjectTraversal.getObject() == ParallelObjectTraversal::both) {
             unionPointsVector.push_back(parallelObjectTraversal.getPoiEvent(ParallelObjectTraversal::first));
             //The argument could be ParallelObjectTraversal::second as well since they're the same.
@@ -156,7 +156,7 @@ Line2D spatialIntersection(const Line2D &lineLhs, const Line2D &lineRhs) {
 
     //planesweep.selectFirst would be called implicitly in the planesweep constructor.
     while (planeSweep.getObject() != ParallelObjectTraversal::none &&
-           planeSweep.getStatus() == ParallelObjectTraversal::end_of_none &&
+           planeSweep.getStatus() != ParallelObjectTraversal::end_of_both &&
            planeSweep.getStatus() != ParallelObjectTraversal::end_of_first &&
            planeSweep.getStatus() != ParallelObjectTraversal::end_of_second) {
         updateSweepLineForLine(planeSweep);
@@ -211,7 +211,7 @@ Line2D spatialUnion(const Line2D &lineLhs, const Line2D &lineRhs) {
 
     //planesweep.selectFirst would be called implicitly in the planesweep constructor.
     while (planeSweep.getObject() != ParallelObjectTraversal::none &&
-           planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
+           planeSweep.getStatus() != ParallelObjectTraversal::end_of_both) {
         updateSweepLineForLine(planeSweep);
         ParallelObjectTraversal::object objectValue = planeSweep.getObject();
         if (objectValue == ParallelObjectTraversal::both) {
@@ -227,8 +227,7 @@ Line2D spatialUnion(const Line2D &lineLhs, const Line2D &lineRhs) {
     }
 
     Line2D unionLineObject(unionLinesVector);
-    return
-            unionLineObject;
+    return unionLineObject;
 }
 
 Line2D spatialDifference(const Line2D &lineLhs, const Line2D &lineRhs) {
@@ -402,7 +401,7 @@ Region2D spatialUnion(const Region2D &regionLhs, const Region2D &regionRhs) {
     PlaneSweep planeSweep(regionLhs, regionRhs);
 
     while (planeSweep.getObject() != ParallelObjectTraversal::none &&
-           planeSweep.getStatus() == ParallelObjectTraversal::end_of_none) {
+           planeSweep.getStatus() != ParallelObjectTraversal::end_of_both) {
         updateSweepLineForRegion(planeSweep);
         AttrHalfSeg2D attHsegCurr;
         int lorCurr = 0, uolCurr = 0;

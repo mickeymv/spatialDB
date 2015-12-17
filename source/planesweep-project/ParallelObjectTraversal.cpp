@@ -752,8 +752,8 @@ void ParallelObjectTraversal::selectNext() {
         }
         if (objF->isLine2D() && objG->isLine2D()) {
 
-            // set the object to the smaller Poi2D, if both equal then set object to both
-            if (currentFSeg() < (currentGSeg()))
+            // set the object to the smaller HalfSeg2D, if both equal then set object to both
+            if (currentFSeg() < currentGSeg())
                 object_value = first;
             else if (currentFSeg() > currentGSeg())
                 object_value = second;
