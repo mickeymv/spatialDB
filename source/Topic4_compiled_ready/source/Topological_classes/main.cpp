@@ -3,8 +3,10 @@
 using namespace std;
 
 #include "TopologicalRelationships.h"
-#include "Point2DPoint2D.h"
-#include "Point2DLine2D.h"
+//#include "Point2DPoint2D.h"
+//#include "Point2DLine2D.h"
+//#include "Line2DLine2D.h"
+//#include "Point2DRegion2D.h"
 #include "vector"
 //#include "planesweep project/Topic2/Implementation/Point2D.h"
 
@@ -28,6 +30,8 @@ using namespace std;
 void printPoint2DPoint2DPredicate(TopPredNumberPoint2DPoint2D tpred);
 void printPoint2DLine2DPredicate(TopPredNumberPoint2DLine2D tpred);
 void printLine2DLine2DPredicate(TopPredNumberLine2DLine2D tpred);
+
+void printPoint2DRegion2DPredicate(TopPredNumberPoint2DRegion2D tpred);
 void printRegion2DRegion2DPredicate(TopPredNumberRegion2DRegion2D tpred);
 
 
@@ -66,8 +70,8 @@ int main() {
 
     cout << "   isTopologicalRelationship(a, b, pp_equal_m2) :" << endl;
     cout << "   returns ==> " << result << endl;
-    cout << "   disjoint() ==> " <<  disjoint(*a, *b) << endl;
-    cout << "   overlap() ==> " <<  overlap(*a, *b) << endl;
+    cout << "   disjoint() ==> " << disjoint(*a, *b) << endl;
+    cout << "   overlap() ==> " << overlap(*a, *b) << endl;
     cout << endl;
 
     // don't forget to cleanup
@@ -90,8 +94,8 @@ int main() {
 
     printPoint2DPoint2DPredicate(tpred);
     cout << endl;
-    cout << "   disjoint() ==> " <<  disjoint(*a, *b) << endl;
-    cout << "   overlap() ==> " <<  overlap(*a, *b) << endl;
+    cout << "   disjoint() ==> " << disjoint(*a, *b) << endl;
+    cout << "   overlap() ==> " << overlap(*a, *b) << endl;
     cout << endl;
     cout << "   isTopologicalRelationship(a, b, pp_disjoint_m1) :" << endl;
     cout << "   returns ==> " << result << endl << endl;
@@ -118,7 +122,7 @@ int main() {
     cout << endl;
     cout << "   isTopologicalRelationship(a, b, pp_equal_m2) :" << endl;
     cout << "   returns ==> " << result << endl;
-    cout << "   inside() ==> " <<  inside(*a, *b) << endl << endl;
+    cout << "   inside() ==> " << inside(*a, *b) << endl << endl;
 
 
     // don't forget to cleanup
@@ -140,8 +144,8 @@ int main() {
 
     printPoint2DPoint2DPredicate(tpred);
     cout << endl;
-    cout << "   disjoint() ==> " <<  disjoint(*a, *b) << endl;
-    cout << "   equal() ==> " <<  equal(*a, *b) << endl;
+    cout << "   disjoint() ==> " << disjoint(*a, *b) << endl;
+    cout << "   equal() ==> " << equal(*a, *b) << endl;
     cout << endl;
 
     cout << "   isTopologicalRelationship(a, b, pp_equal_m2) :" << endl;
@@ -177,8 +181,8 @@ int main() {
     result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_contains_m4);
     cout << "   isTopologicalRelationship(a, b, pp_contains_m4) :" << endl;
     cout << "   returns ==> " << result << endl;
-    cout << "   contains() ==> " <<  contains(*a, *b) << endl;
-    cout << "   overlap() ==> " <<  overlap(*a, *b) << endl;
+    cout << "   contains() ==> " << contains(*a, *b) << endl;
+    cout << "   overlap() ==> " << overlap(*a, *b) << endl;
     cout << endl;
 
     // don't forget to cleanup
@@ -226,8 +230,8 @@ int main() {
 
     printPoint2DPoint2DPredicate(tpred);
     cout << endl;
-    cout << "   contains() ==> " <<  contains(*a, *b) << endl;
-    cout << "   inside() ==> " <<  inside(*a, *b) << endl;
+    cout << "   contains() ==> " << contains(*a, *b) << endl;
+    cout << "   inside() ==> " << inside(*a, *b) << endl;
     cout << endl;
 
     // don't forget to cleanup
@@ -243,8 +247,8 @@ int main() {
     // Case 2: Point2DLine2D
     // *****************************
 
-    Point2D * apl;
-    Line2D * bpl;
+    Point2D *apl;
+    Line2D *bpl;
     TopPredNumberPoint2DLine2D tplred;
     result = false;
 
@@ -288,16 +292,16 @@ int main() {
     printPoint2DLine2DPredicate(tplred);
     cout << endl;
 
-    result = isTopologicalRelationship(*apl, *bpl, TopPredNumberPoint2DLine2D:: pl_disjoint_m2);
+    result = isTopologicalRelationship(*apl, *bpl, TopPredNumberPoint2DLine2D::pl_disjoint_m2);
 
     cout << "   isTopologicalRelationship(a, b, pl_disjoint_m2) :" << endl;
     cout << "   returns ==> " << result << endl;
-    cout << "   disjoint() ==> " <<  disjoint(*apl, *bpl) << endl;
-    cout << "   overlap() ==> " <<  overlap(*apl, *bpl) << endl;
+    cout << "   disjoint() ==> " << disjoint(*apl, *bpl) << endl;
+    cout << "   overlap() ==> " << overlap(*apl, *bpl) << endl;
     cout << endl;
 
     // don't forget to cleanup
-   delete apl, bpl;
+    delete apl, bpl;
     result = false;
 
     cout << "Test begins..." << endl << endl;
@@ -326,12 +330,12 @@ int main() {
     printPoint2DLine2DPredicate(tplred);
     cout << endl;
 
-    result = isTopologicalRelationship(*apl, *bpl, TopPredNumberPoint2DLine2D:: pl_meet_m4);
+    result = isTopologicalRelationship(*apl, *bpl, TopPredNumberPoint2DLine2D::pl_meet_m4);
 
     cout << "   isTopologicalRelationship(a, b, pl_meet_m4) :" << endl;
     cout << "   returns ==> " << result << endl;
-    cout << "   meet() ==> " <<  touch(*apl, *bpl) << endl;
-    cout << "   overlap() ==> " <<  overlap(*apl, *bpl) << endl;
+    cout << "   meet() ==> " << touch(*apl, *bpl) << endl;
+    cout << "   overlap() ==> " << overlap(*apl, *bpl) << endl;
     cout << endl;
 
     // don't forget to cleanup
@@ -361,12 +365,12 @@ int main() {
     printPoint2DLine2DPredicate(tplred);
     cout << endl;
 
-    result = isTopologicalRelationship(*apl, *bpl, TopPredNumberPoint2DLine2D:: pl_inside_m8);
+    result = isTopologicalRelationship(*apl, *bpl, TopPredNumberPoint2DLine2D::pl_inside_m8);
 
     cout << "   isTopologicalRelationship(a, b, pl_inside_m8) :" << endl;
     cout << "   returns ==> " << result << endl;
-    cout << "   inside() ==> " <<  inside(*apl, *bpl) << endl;
-    cout << "   overlap() ==> " <<  overlap(*apl, *bpl) << endl;
+    cout << "   inside() ==> " << inside(*apl, *bpl) << endl;
+    cout << "   overlap() ==> " << overlap(*apl, *bpl) << endl;
     cout << endl;
 
     // don't forget to cleanup
@@ -396,12 +400,12 @@ int main() {
     printPoint2DLine2DPredicate(tplred);
     cout << endl;
 
-    result = isTopologicalRelationship(*apl, *bpl, TopPredNumberPoint2DLine2D:: pl_overlap_m10);
+    result = isTopologicalRelationship(*apl, *bpl, TopPredNumberPoint2DLine2D::pl_overlap_m10);
 
     cout << "   isTopologicalRelationship(a, b, pl_overlap_m10) :" << endl;
     cout << "   returns ==> " << result << endl;
-    cout << "   overlap() ==> " <<  overlap(*apl, *bpl) << endl;
-    cout << "   disjoint() ==> " <<  inside(*apl, *bpl) << endl;
+    cout << "   overlap() ==> " << overlap(*apl, *bpl) << endl;
+    cout << "   disjoint() ==> " << inside(*apl, *bpl) << endl;
     cout << endl;
 
     // don't forget to cleanup
@@ -410,9 +414,124 @@ int main() {
 
 
 
+
     // *****************************
     // Case 3: Point2DRegion2D
     // *****************************
+
+
+    Point2D *p1;
+    Region2D *r1;
+    TopPredNumberPoint2DRegion2D tpredpr;
+    bool resultpr = false;
+
+    cout << "Test begins..." << endl << endl;
+
+
+    // 1. Test pr_disjoint_m1, F and G same number of elements
+    p1 = new Point2D("((0,0),(3,3),(2,2))");
+    r1 = new Region2D("(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))");
+
+    tpredpr = getTopologicalRelationship(*p1, *r1);
+    resultpr = isTopologicalRelationship(*p1, *r1, TopPredNumberPoint2DRegion2D::pr_disjoint_m1);
+
+    cout << "*****************************" << endl;
+    cout << "Point2DRegion2D" << endl;
+    cout << "*****************************" << endl;
+    cout << endl;
+    cout << "1. Test pr_disjoint_m1" << endl;
+    cout << "Point2D(\"((0,0),(3,3),(2,2))\")" << endl;
+    cout << "Region2D(\"(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))\")" << endl;
+
+    cout << "   getTopologicalRelationship(p1, r1) :" << endl;
+    cout << "   returns ==> ";
+
+    printPoint2DRegion2DPredicate(tpredpr);
+    cout << endl;
+
+    cout << "   isTopologicalRelationship(a, b, pr_disjoint_m1) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   disjoint() ==> " << disjoint(*p1, *r1) << endl;
+
+    cout << endl;
+
+    // don't forget to cleanup
+    delete p1, r1;
+
+
+    // 2. Test pr_overlap_m7
+    p1 = new Point2D("((0,0),(1,1),(2,5))");
+    r1 = new Region2D("(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))");
+
+    tpredpr = getTopologicalRelationship(*p1, *r1);
+    resultpr = isTopologicalRelationship(*p1, *r1, TopPredNumberPoint2DRegion2D::pr_overlap_m7);
+
+    cout << "2. pr_overlap_m7" << endl;
+    cout << "Point2D(\"((0,0),(3,3),(2,5))\")" << endl;
+    cout << "Region2D(\"(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))\")" << endl;
+    cout << "   getTopologicalRelationship(p1, r1) :" << endl;
+    cout << "   returns ==> ";
+
+    printPoint2DRegion2DPredicate(tpredpr);
+    cout << endl;
+
+    cout << "   overlap() ==> " << overlap(*p1, *r1) << endl;
+    cout << endl;
+    cout << "   isTopologicalRelationship(p1, r1, pr_overlap_m7) :" << endl;
+    cout << "   returns ==> " << result << endl << endl;
+
+    // don't forget to cleanup
+    delete p1, r1;
+
+
+    // 3. pr_meet_m2
+    p1 = new Point2D("((4,3))");
+    r1 = new Region2D("(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))");
+
+    tpredpr = getTopologicalRelationship(*p1, *r1);
+    resultpr = isTopologicalRelationship(*p1, *r1, TopPredNumberPoint2DRegion2D::pr_meet_m2);
+
+    cout << "3. Test pr_meet_m2" << endl;
+    cout << "Point2D(\"((4,3))\")" << endl;
+    cout << "Region2D(\"(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))\")" << endl;
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    printPoint2DRegion2DPredicate(tpredpr);
+    cout << endl;
+    cout << "   isTopologicalRelationship(a, b, pr_meet_m2) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   meet() ==> " << touch(*a, *b) << endl << endl;
+
+
+    // don't forget to cleanup
+    delete p1, r1;
+
+    // 4. Test pr_inside_m4
+    p1 = new Point2D("((2,5))");
+    r1 = new Region2D("(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))");
+
+    tpredpr = getTopologicalRelationship(*p1, *r1);
+    result = isTopologicalRelationship(*p1, *r1, TopPredNumberPoint2DRegion2D::pr_inside_m4);
+
+    cout << "4. Test pr_inside_m4" << endl;
+    cout << "Point2D(\"((0,0),(3,3),(6,6))\")" << endl;
+    cout << "Region2D(\"(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))\")" << endl;
+
+    cout << "   getTopologicalRelationship(p1, r1) :" << endl;
+    cout << "   returns ==> ";
+
+    printPoint2DRegion2DPredicate(tpredpr);
+    cout << endl;
+    cout << "   inside() ==> " << inside(*p1, *r1) << endl;
+    cout << endl;
+
+    cout << "   isTopologicalRelationship(p1, r1,pr_inside_m4) :" << endl;
+    cout << "   returns ==> " << result << endl << endl;
+
+    // don't forget to cleanup
+    delete p1, r1;
 
 
 
@@ -461,9 +580,42 @@ int main() {
 
     result = isTopologicalRelationship(*arr, *brr, TopPredNumberRegion2DRegion2D::rr_equal_m5);
 
-    cout << "   isTopologicalRelationship(a, b, pl_disjoint_m2) :" << endl;
+    cout << "   isTopologicalRelationship(a, b, rr_equal_m5) :" << endl;
     cout << "   returns ==> " << result << endl;
     cout << "   equal() ==> " << equal(*arr, *brr) << endl;
+    cout << "   overlap() ==> " << overlap(*arr, *brr) << endl;
+    cout << endl;
+
+    // don't forget to cleanup
+    delete arr, brr;
+    result = false;
+
+    cout << "Test begins..." << endl << endl;
+
+    arr = new Region2D("(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))");
+    brr = new Region2D("(((10,8),(11,10)),((10,8),(11,7)),((11,7),(11,10)))");
+
+    cout << "*****************************" << endl;
+    cout << "Case 2: Region2DRegion2D" << endl;
+    cout << "*****************************" << endl;
+    cout << endl;
+    cout << "1. Test rr_disjoint, F and G same number of elements." << endl;
+    cout << "Region2D a(\"(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))\");" << endl;
+    cout << "Region2D b(\"(((10,8),(11,10)),((10,8),(11,7)),((11,7),(11,10)))\");" << endl;
+
+    trrred = getTopologicalRelationship(*arr, *brr);
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    printRegion2DRegion2DPredicate(trrred);
+    cout << endl;
+
+    result = isTopologicalRelationship(*arr, *brr, TopPredNumberRegion2DRegion2D::rr_disjoint_m1);
+
+    cout << "   isTopologicalRelationship(a, b, rr_disjoint_m1) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   disjoint() ==> " << disjoint(*arr, *brr) << endl;
     cout << "   overlap() ==> " << overlap(*arr, *brr) << endl;
     cout << endl;
 
@@ -490,8 +642,14 @@ string topPredNumberPoint2DLine2D[14] =
         "pl_inside_m11", "pl_inside_m12", "pl_overlap_m13", "pl_overlap_m14"
 };
 
+string topPredNumberPoint2DRegion2D[7] =
+        {
+                "pr_disjoint_m1", "pr_meet_m2", "pr_meet_m3", "pr_inside_m4", "pr_overlap_m5",
+                "pr_inside_m6", "pr_overlap_m7"
+        };
 
-string topPredLine2DLine2D[82] =
+
+string topPredNumberLine2DLine2D[82] =
 {
         "ll_disjoint_m1", "ll_disjoint_m2", "ll_disjoint_m3", "ll_disjoint_m4",
         "ll_meet_m5", "ll_meet_m6", "ll_meet_m7", "ll_meet_m8", "ll_meet_m9",
@@ -515,6 +673,18 @@ string topPredLine2DLine2D[82] =
 
 };
 
+string topPredNumberRegion2DRegion2D[33] =
+        {
+                "rr_disjoint_m1", "rr_meet_m2", "rr_meet_m3", "rr_meet_m4", "rr_equal_m5",
+                "rr_coveredby_m6", "rr_inside_m7", "rr_coveredby_m8", "rr_coveredby_m9",
+                "rr_overlap_m10", "rr_covers_m11", "rr_overlap_m12", "rr_overlap_m13",
+                "rr_overlap_m14", "rr_overlap_m15", "rr_overlap_m16", "rr_overlap_m17",
+                "rr_overlap_m18", "rr_contains_m19", "rr_overlap_m20", "rr_covers_m21",
+                "rr_overlap_m22", "rr_overlap_m23", "rr_covers_m24", "rr_overlap_m25",
+                "rr_overlap_m26", "rr_overlap_m27", "rr_overlap_m28", "rr_overlap_m29",
+                "rr_overlap_m30", "rr_overlap_m31", "rr_overlap_m32", "rr_overlap_m33"
+        };
+
 inline void printPoint2DPoint2DPredicate(TopPredNumberPoint2DPoint2D tpred) {
 
     cout << topPredNumberPoint2DPoint2D[(unsigned int) tpred] << " <===";
@@ -529,111 +699,15 @@ inline void printPoint2DLine2DPredicate(TopPredNumberPoint2DLine2D tpred) {
 
 inline void printLine2DLine2DPredicate(TopPredNumberLine2DLine2D tpred) {
 
-    cout << topPredLine2DLine2D[(unsigned int) tpred] << " <===";
+    cout << topPredNumberLine2DLine2D[(unsigned int) tpred] << " <===";
 
 };
 
+inline void printRegion2DRegion2DPredicate(TopPredNumberRegion2DRegion2D tpred) {
+    cout << topPredNumberRegion2DRegion2D[(unsigned int) tpred] << " <===";
+};
 
-void printRegion2DRegion2DPredicate(TopPredNumberRegion2DRegion2D tpred) {
-    switch (tpred) {
-        case TopPredNumberRegion2DRegion2D::rr_disjoint_m1 :
-            cout << "rr_disjoint_m1 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_meet_m2 :
-            cout << "rr_meet_m2 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_meet_m3 :
-            cout << "rr_meet_m3 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_meet_m4 :
-            cout << "rr_meet_m4 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_equal_m5 :
-            cout << "rr_equal_m5 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_coveredby_m6 :
-            cout << "rr_coveredby_m6 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_inside_m7 :
-            cout << "rr_inside_m7 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_coveredby_m8 :
-            cout << "rr_coveredby_m8 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_coveredby_m9 :
-            cout << "rr_coveredby_m9 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m10 :
-            cout << "rr_overlap_m10 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_covers_m11 :
-            cout << "rr_covers_m11 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m12 :
-            cout << "rr_overlap_m12 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m13 :
-            cout << "rr_overlap_m13 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m14 :
-            cout << "rr_overlap_m14 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m15 :
-            cout << "rr_overlap_m15 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m16 :
-            cout << "rr_overlap_m16 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m17 :
-            cout << "rr_overlap_m17 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m18 :
-            cout << "rr_overlap_m18 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_contains_m19 :
-            cout << "rr_contains_m19 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m20 :
-            cout << "rr_overlap_m20 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_covers_m21 :
-            cout << "rr_covers_m21 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m22 :
-            cout << "rr_overlap_m22 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m23 :
-            cout << "rr_overlap_m23 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_covers_m24 :
-            cout << "rr_covers_m24 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m25 :
-            cout << "rr_overlap_m25 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m26 :
-            cout << "rr_overlap_m26 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m27 :
-            cout << "rr_overlap_m27 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m28 :
-            cout << "rr_overlap_m28 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m29 :
-            cout << "rr_overlap_m29 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m30 :
-            cout << "rr_overlap_m30 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m31 :
-            cout << "rr_overlap_m31 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m32 :
-            cout << "rr_overlap_m32 <===";
-            break;
-        case TopPredNumberRegion2DRegion2D::rr_overlap_m33 :
-            cout << "rr_overlap_m33 <===";
-            break;
-    }
-}
+inline void printPoint2DRegion2DPredicate(TopPredNumberPoint2DRegion2D tpred) {
+    cout << topPredNumberPoint2DRegion2D[(unsigned int) tpred] << " <===";
+};
+

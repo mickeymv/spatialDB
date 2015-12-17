@@ -106,20 +106,34 @@ void Region2DRegion2D::exploreTopoPred()
 
         }
 
+        cout << "Before lookAheadPoi" << endl;
+
+        cout << (S.lookAheadPoi(h, ParallelObjectTraversal::second)) <<
+        "S.lookAheadPoi(h, ParallelObjectTraversal::second) != nullptr" << endl;
+        cout << (S.lookAheadPoi(h, ParallelObjectTraversal::first)) <<
+        "(S.lookAheadPoi(h, ParallelObjectTraversal::first) != nullptr)" << endl;
+
+        // Doesn't handle the case when the Poi2D(0,0) is used
         if ((last_dp_in_F == last_dp_in_G) || ((S.lookAheadPoi(h, ParallelObjectTraversal::second) != nullptr) &&
-                                               (last_dp_in_F ==
-                                                *(S.lookAheadPoi(h, ParallelObjectTraversal::second)))) ||
-            ((S.lookAheadPoi(h, ParallelObjectTraversal::first) !=
-              nullptr) && (last_dp_in_G == *(S.lookAheadPoi(h, ParallelObjectTraversal::first)))))
+                (last_dp_in_F == *(S.lookAheadPoi(h, ParallelObjectTraversal::second))) &&
+                (last_dp_in_F != Poi2D(Number("0"), Number("0")))) ||
+                                              ((S.lookAheadPoi(h, ParallelObjectTraversal::first) != nullptr) &&
+                                               (last_dp_in_G == *(S.lookAheadPoi(h, ParallelObjectTraversal::first))) &&
+                                               (last_dp_in_G != Poi2D(Number("0"), Number("0")))))
         {
             cout << "Could perform lookAheadpoi" << endl;
             vF[bound_poi_shared]=true;
+        }
+        else {
+            cout << "Could not perform lookAheadpoi" << endl;
         }
 
         if(!h.hseg.isLeft) // h is a right half segment
         {
             SegmentClass overlapNumber = S.getSegClass(h.hseg.seg);
             cout << "After getSegClass" << endl;
+            cout << overlapNumber.getUpperOrLeft() << "UpperOrLeft" << endl;
+            cout << overlapNumber.getLowerOrRight() << "LowerOrRight" << endl;
             if(S.getObject()==ParallelObjectTraversal::first)
             {
                 if((overlapNumber.getUpperOrLeft()==0)&&(overlapNumber.getLowerOrRight()==1))
@@ -269,7 +283,7 @@ void Region2DRegion2D::exploreTopoPred()
                 }
             }
             S.setSegClass(h.hseg.seg,lowerS,upperS);
-
+            cout << "After setSegClass" << endl;
         }
 
         S.selectNext();
@@ -299,32 +313,62 @@ void Region2DRegion2D::evaluateTopoPred()
         }
     }
 
-    if(vF[zero_one]||vF[one_zero])
+//    if(vF[zero_one]||vF[one_zero])
+//    {
+//        IMC[1][2]=1;
+//    }
+//    if(vG[zero_one_g]||vG[one_zero_g])
+//    {
+//        IMC[2][1]=1;
+//    }
+//    if(vF[one_two]||vF[two_one])
+//    {
+//        IMC[1][0]=1;
+//    }
+//    if(vG[one_two_g]||vG[two_one_g])
+//    {
+//        IMC[0][1]=1;
+//    }
+//    if(vF[zero_two]||vF[two_zero])
+//    {
+//        IMC[1][1]=1;
+//        IMC[0][0]=1;
+//    }
+//    if(vF[one_one])
+//    {
+//        IMC[1][1]=1;
+//        IMC[0][2]=1;
+//        IMC[2][0]=1;
+//    }
+    if (vF[zero_one] || vF[two_zero] || vF[one_two] || vF[two_one] || vG[one_two_g] || vG[two_one_g])
     {
-        IMC[1][2]=1;
+        IMC[0][0] = 1;
     }
-    if(vG[zero_one_g]||vG[one_zero_g])
+    if (vG[one_two_g] || vG[two_one_g])
     {
-        IMC[2][1]=1;
+        IMC[0][1] = 1;
+    }
+    if (vF[zero_one] || vF[one_zero] || vF[one_one] || vG[one_two_g] || vG[two_one_g]) {
+        IMC[0][2] = 1;
     }
     if(vF[one_two]||vF[two_one])
     {
         IMC[1][0]=1;
     }
-    if(vG[one_two_g]||vG[two_one_g])
+    if (vF[zero_two] || vF[two_zero] || vF[one_one] || vF[bound_poi_shared])
     {
-        IMC[0][1]=1;
+        IMC[1][1] = 1;
     }
-    if(vF[zero_two]||vF[two_zero])
+    if (vF[zero_one] || vF[one_zero])
     {
-        IMC[1][1]=1;
-        IMC[0][0]=1;
+        IMC[1][2] = 1;
     }
-    if(vF[one_one])
+    if (vF[one_two] || vF[two_one] || vF[one_one] || vG[zero_one_g] || vG[one_zero_g])
     {
-        IMC[1][1]=1;
-        IMC[0][2]=1;
         IMC[2][0]=1;
+    }
+    if (vG[zero_one_g] || vG[one_zero_g]) {
+        IMC[2][1] = 1;
     }
     IMC[2][2] = true;
 

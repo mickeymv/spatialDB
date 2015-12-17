@@ -734,7 +734,7 @@ bool PlaneSweep::coincident(Seg2D &givenSeg) { // TODO what does partially colli
 
     for (itr = 0; itr < treeSize; itr++) {
         Seg2D seg2D = segArray[itr]->getSegment2D();
-        if (SegmentIsCollinear(seg2D, givenSeg))
+        if (isRelation(seg2D, givenSeg))
             return true;
     }
     return false;
@@ -2599,8 +2599,9 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D &attrhalfseg2D,ParallelObjectTraversal:
 }
 
 Poi2D *PlaneSweep::lookAheadPoi(AttrHalfSeg2D &attrhalfseg2D, ParallelObjectTraversal::object objectValue) {
+    cout << "Inside lookAheadPoi" << endl;
     Seg2D &seg2D = attrhalfseg2D.hseg.seg;
-    Poi2D *p = nullptr;
+    Poi2D *p = new Poi2D(Number("0"), Number("0"));
     if ((getPot()->isFRegion()) && (objectValue == ParallelObjectTraversal::first)) {
         //Static
         Region2DImpl::ConstAttributedHalfSegmentIterator val = getPot()->getNextObjIterator(attrhalfseg2D, objectValue);

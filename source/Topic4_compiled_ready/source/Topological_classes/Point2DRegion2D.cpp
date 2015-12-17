@@ -56,7 +56,8 @@ void Point2DRegion2D::exploreTopoPred() {
             {
 
                 Seg2D s= S.predOfP(p);
-                if(s!= NULL)
+                Seg2D s1;
+                if (s != s1)
                 {
                     //check whether interior of G is above the segment
                     bool ia = S.getInsideAbove(s);
@@ -88,12 +89,15 @@ void Point2DRegion2D::exploreTopoPred() {
             bool ia = S.getInsideAbove(h.hseg.seg);
 
             if(h.hseg.isLeft) {
-                S.addLeft(h.hseg.seg);
+
+                PlaneSweepLineStatusObject psso(h.hseg.seg);
+                S.addLeft(psso);
                 S.setInsideAbove(h.hseg.seg,ia);
             }
             else
             {
-                S.delRight(h.hseg.seg);
+                PlaneSweepLineStatusObject psso(h.hseg.seg);
+                S.delRight(psso);
             }
             if(object_value==ParallelObjectTraversal::both)
             {
@@ -142,78 +146,71 @@ void Point2DRegion2D::evaluateTopoPred() {
 
 
 //Evaluation phase
-if(IMC[0][0])
-{
-
-    if(IMC[0][1])
+    if (IMC[0][0])
     {
 
-        if(IMC[0][2])
+        if (IMC[0][1])
         {
-        //overlap
-            topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_overlap_m5;
-            isPredSet=true;
+
+            if (IMC[0][2]) {
+                //overlap
+                topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_overlap_m5;
+                isPredSet = true;
+            }
+            else {
+                //inside
+                topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_inside_m6;
+                isPredSet = true;
+
+            }
+
+
         }
         else
         {
-         //inside
-            topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_inside_m6;
-            isPredSet=true;
+            if (IMC[0][2]) {
+                //overlap
+                topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_overlap_m7;
+                isPredSet = true;
+            }
+            else {
+                //inside
+                topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_inside_m4;
+                isPredSet = true;
 
-        }
-
-
-    }
-    else
-    {
-        if(IMC[0][2])
-        {
-        //overlap
-            topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_overlap_m7;
-            isPredSet=true;
-        }
-        else
-        {
-          //inside
-            topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_inside_m4;
-            isPredSet=true;
-
-        }
-    }
-}
-else
-{
-    if(IMC[0][1])
-    {
-        if(IMC[0][2])
-        {
-            topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_meet_m2;
-            isPredSet=true;
-        }
-        else
-        {
-            topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_meet_m3;
-            isPredSet=true;
+            }
         }
     }
     else
     {
-        if(IMC[0][2])
+        if (IMC[0][1])
         {
-   //disjoint
-            topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_disjoint_m1;
-            isPredSet=true;
+            if (IMC[0][2]) {
+                topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_meet_m2;
+                isPredSet = true;
+            }
+            else {
+                topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_meet_m3;
+                isPredSet = true;
+            }
         }
         else
         {
-    //disjoint
-            topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_disjoint_m1;
-            isPredSet=true;
+            if (IMC[0][2]) {
+                //disjoint
+                topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_disjoint_m1;
+                // cout<< "disjount here";
+                isPredSet = true;
+            }
+            else {
+                //disjoint
+                topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_disjoint_m1;
+                isPredSet = true;
+            }
         }
+
+
     }
-
-
-}
 
 
 
@@ -299,22 +296,22 @@ bool Point2DRegion2D::disjoint()
     return false;
 }
 
-bool Point2DLine2D::contains()
+bool Point2DRegion2D::contains()
 {
     return false;
 }
 
-bool Point2DLine2D::coveredBy()
+bool Point2DRegion2D::coveredBy()
 {
     return false;
 }
 
-bool Point2DLine2D::covers()
+bool Point2DRegion2D::covers()
 {
     return false;
 }
 
-bool Point2DLine2D::equal()
+bool Point2DRegion2D::equal()
 {
     return false;
 }
