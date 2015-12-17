@@ -47,8 +47,9 @@
   // Line2D that holds the different variables of the line2D structure
   struct Line2D::Line2DSImpl
   {
-	 std::map<int, std::vector<HalfSeg2D *> > mapHseg; //map of vectors holding pointers for the blocks' halfsegments within segments
+	 std::map<int, std::vector<HalfSeg2D *>> mapHseg; //map of vectors holding pointers for the blocks' halfsegments within segments 
      std::vector<HalfSeg2D> segments;                 //ordered set of all HalfSegments regarding the full Line2D structure
+     std::vector<HalfSeg2D> halfSegs;   //added in fix
      Line2D::ConstBlockIterator::ConstBlockIteratorImplementation firstBlock;  //pointer to the segments vector
      Line2D::ConstBlockIterator::ConstBlockIteratorImplementation lastBlock;   //pointer to the segments vector
   };
@@ -72,6 +73,9 @@
 		handle->mapHseg[1] = currentVector;
         handle->segments.push_back(he);
         handle->segments.push_back(he);
+        handle->halfSegs.push_back(he);//added in  fix
+        handle->halfSegs.push_back(he);
+
     }
 
     // Constructor that takes a collection (vector) of segments (Seg2D objects)
@@ -135,7 +139,8 @@
 			  }
 			}
 		}
-		
+	
+      	
 		//creating our segments vector
         HalfSeg2D he;
         handle->segments.push_back(he); //empty segment for head
@@ -148,10 +153,34 @@
 	    }
         handle->segments.push_back(he); //empty segment for tail
         
+        // adding in fix from here
+          handle->halfSegs.push_back(he);
+          for (int i = 0 ; i < halfsegments.size(); i++)
+		{   
+		  handle->halfSegs.push_back(halfsegments.at(i));
+	        }
+          handle->halfSegs.push_back(he);       
+   
+        //till here
+        /*
+        //checking output for both 
+        cout << " --------------------------------------------------------------\n-------------------------------------------"<<endl;
+        for (int i = 0 ; i < handle->segments.size(); i++)
+		{   
+		  cout << " Segments are \n : " << handle->segments.at(i) << endl;
+	        }
+
+       for (int i = 0 ; i < handle->halfSegs.size(); i++)
+		{   
+		  cout << " Half Segments are \n : " << handle->halfSegs.at(i) << endl;
+	        }
+        cout << " --------------------------------------------------------------\n-------------------------------------------"<<endl; */
         //loop on the halfsegments and build the block map up
         int size = handle->segments.size();
 		std::vector<HalfSeg2D *> currentVector;
+                std::vector<HalfSeg2D *> currentVector1; //added for fix
 		std::vector<HalfSeg2D *> tempVector;
+                std::vector<HalfSeg2D *> tempVector1;
 		int mbc = 0;
 		handle->mapHseg[mbc++] = currentVector; //null head block
 		int flags[size];
@@ -164,7 +193,9 @@
 			if (flags[k] == 0)
 			{
 				currentVector.clear();
-				currentVector.push_back(&handle->segments.at(k));
+                                currentVector1.clear();
+				  currentVector.push_back(&handle->segments.at(k));   
+                                  currentVector1.push_back(&handle->halfSegs.at(k));  //added for fix
 				flags[k]=1;
 				for (int m = 1; m<size-1; m++)
 				{
@@ -173,12 +204,13 @@
 						if (flags[i] == 0)
 						{
 							for (int j = 0; j<currentVector.size(); j++)
-							{     
+							{       
 								if (Meet(currentVector.at(j)->seg, handle->segments.at(i).seg))
 								{
 									tempVector.push_back(&handle->segments.at(i));
 									flags[i] = 1;
-								}
+								}  
+                                                                //changed above for fix
 							}
 							for (int c = 0; c<tempVector.size(); c++)
 							{
@@ -319,6 +351,17 @@
         handle->segments.push_back(he); //empty segment for tail
         
         
+        // adding in fix from here
+          handle->halfSegs.push_back(he);
+          for (int i = 0 ; i < halfsegments.size(); i++)
+		{   
+		  handle->halfSegs.push_back(halfsegments.at(i));
+	        }
+          handle->halfSegs.push_back(he);       
+   
+        //till here
+
+
         //building up the line blocks from the individual halfsegments
         int size = handle->segments.size();
 		std::vector<HalfSeg2D *> currentVector;
