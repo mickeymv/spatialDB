@@ -79,9 +79,9 @@ public:
 
     bool isObjectG(Object2D);
 
-    Object2D getObjF();
+    Object2D const *getObjF();
 
-    Object2D getObjG();
+    Object2D const *getObjG();
 
     // Method that returns the simple halfsegment of 'object' that is next in the logical
     // order. Does not include the dynamic EPS

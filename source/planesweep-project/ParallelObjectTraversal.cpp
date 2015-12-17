@@ -483,30 +483,42 @@ void ParallelObjectTraversal::setNextMin() {
             HalfSeg2D obj22 = nextGSeg();
             minHalfSeg2DG = new HalfSeg2D();
             if (object_value == first) {
-                if (obj12 < obj21) {
-                    *minHalfSeg2DF = obj12;
-                }
-                else {
-                    *minHalfSeg2DG = obj21;
-                }
+//                if (obj12 < obj21) {
+//                    *minHalfSeg2DF = obj12;
+//                    cout<<"minHalfSeg2DF is: "<<*minHalfSeg2DF<<endl;
+//                }
+//                else {
+//                    *minHalfSeg2DG = obj21;
+//                    cout<<"minHalfSeg2DG is: "<<*minHalfSeg2DG<<endl;
+//                }
+                *minHalfSeg2DF=obj12;
+                *minHalfSeg2DG = obj21;
             }
 //                (obj12 < obj21 ? *minHalfSeg2DF = obj12 : *minHalfSeg2DG = obj21);
             if (object_value == second) {
-                if (obj11 < obj22) {
-                    *minHalfSeg2DF = obj11;
-                }
-                else {
-                    *minHalfSeg2DG = obj22;
-                }
+//                if (obj11 < obj22) {
+//                    *minHalfSeg2DF = obj11;
+//                    cout<<"minHalfSeg2DF is: "<<*minHalfSeg2DF<<endl;
+//                }
+//                else {
+//                    *minHalfSeg2DG = obj22;
+//                    cout<<"minHalfSeg2DG is: "<<*minHalfSeg2DG<<endl;
+//                }
+                *minHalfSeg2DF=obj11;
+                *minHalfSeg2DG = obj22;
             }
 //                (obj11 < obj22 ? *minHalfSeg2DF = obj11 : *minHalfSeg2DG = obj22);
             if (object_value == both) {
-                if (obj12 < obj22) {
-                    *minHalfSeg2DF = obj12;
-                }
-                else {
-                    *minHalfSeg2DG = obj22;
-                }
+//                if (obj12 < obj22) {
+//                    *minHalfSeg2DF = obj12;
+//                    cout<<"minHalfSeg2DF is: "<<minHalfSeg2DF<<endl;
+//                }
+//                else {
+//                    *minHalfSeg2DG = obj22;
+//                    cout<<"minHalfSeg2DG is: "<<minHalfSeg2DG<<endl;
+//                }
+                *minHalfSeg2DF=obj12;
+                *minHalfSeg2DG = obj22;
             }
 //                (obj12 < obj22 ? *minHalfSeg2DF = obj12 : *minHalfSeg2DG = obj22);
             return;
@@ -1171,13 +1183,13 @@ bool ParallelObjectTraversal::isObjectG(const Object2D object2D) {
 }
 
 // Getter method for objF
-Object2D ParallelObjectTraversal::getObjF() {
-    return *objF;
+Object2D const *ParallelObjectTraversal::getObjF() {
+    return objF;
 }
 
 // Getter method for objG
-Object2D ParallelObjectTraversal::getObjG() {
-    return *objG;
+Object2D const *ParallelObjectTraversal::getObjG() {
+    return objG;
 }
 
 // Getter method for minPoi2DF

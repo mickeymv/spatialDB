@@ -18,8 +18,6 @@
 
 PlaneSweep::PlaneSweep(const Object2D &objF, const Object2D &objG) {
     pot = new ParallelObjectTraversal(objF, objG);
-    this->objF = objF;
-    this->objG = objG;
     newSweep();
 }
 
@@ -57,6 +55,10 @@ bool PlaneSweep::getInsideAbove(Seg2D seg) {
     return ia;
 }
 
+
+/*
+ * Return 1 if the least is a static element, 2 if it's dynamic.
+ */
 int PlaneSweep::findLeast() {
     //AttrHalfSeg2D objS, objD1, objD2, objD;
     getPot()->setNextMin();
@@ -71,11 +73,11 @@ int PlaneSweep::findLeast() {
     objAHS = getPot()->getNextAttrHalfSeg2DMin();
 
     if (objSP != nullptr) {
-        if (getPot()->getObjF().isPoint2D() && (*(getPot()->getMinPoi2DF()) == *objSP)) {
-            if (getPot()->getObjG().isPoint2D()) {
+        if (getPot()->getObjF()->isPoint2D() && (*(getPot()->getMinPoi2DF()) == *objSP)) {
+            if (getPot()->getObjG()->isPoint2D()) {
                 return 1;
             }
-            else if (getPot()->getObjG().isLine2D()) {
+            else if (getPot()->getObjG()->isLine2D()) {
                 if (dynamicEPSObjG.isEmpty()) {
                     return 1;
                 }
@@ -85,7 +87,7 @@ int PlaneSweep::findLeast() {
                     return 1;
                 return 2;
             }
-            else if (getPot()->getObjG().isRegion2D()) {
+            else if (getPot()->getObjG()->isRegion2D()) {
                 if (dynamicEPSObjG.isEmpty()) {
                     return 1;
                 }
@@ -95,18 +97,21 @@ int PlaneSweep::findLeast() {
                 return 2;
             }
         }
-        else if (getPot()->getObjG().isPoint2D() && (*(getPot()->getMinPoi2DG()) == *objSP)) {
+        else if (getPot()->getObjG()->isPoint2D() && (*(getPot()->getMinPoi2DG()) == *objSP)) {
             return 1;
         }
     }
     else if (objHS != nullptr) {
+        HalfSeg2D nextHalfSeg = *objHS;
+        HalfSeg2D nextFHalfSeg = *(getPot()->getMinHalfSeg2DF());
+        HalfSeg2D nextGHalfSeg = *(getPot()->getMinHalfSeg2DG());
 
-        if (getPot()->getObjF().isLine2D() && (*(getPot()->getMinHalfSeg2DF()) == *objHS)) {
+        if (getPot()->getObjF()->isLine2D() && (nextHalfSeg == nextFHalfSeg)) {
             HalfSeg2D objD1;
             if (!dynamicEPSObjF.isEmpty()) {
                 objD1 = dynamicEPSObjF.GetMin().hseg;
             }
-            if (getPot()->getObjG().isLine2D()) {
+            if (getPot()->getObjG()->isLine2D()) {
                 if ((!dynamicEPSObjF.isEmpty()) && (!dynamicEPSObjG.isEmpty())) {
                     HalfSeg2D objD2 = dynamicEPSObjG.GetMin().hseg;
                     if (objD1 < objD2) {
@@ -128,7 +133,7 @@ int PlaneSweep::findLeast() {
 
 
             }
-            else if (getPot()->getObjG().isRegion2D()) {
+            else if (getPot()->getObjG()->isRegion2D()) {
                 if ((!dynamicEPSObjF.isEmpty()) && (!dynamicEPSObjG.isEmpty())) {
                     AttrHalfSeg2D objD2 = dynamicEPSObjG.GetMin();
                     if (objD1 < objD2) {
@@ -149,12 +154,12 @@ int PlaneSweep::findLeast() {
                 }
             }
         }
-        else if (getPot()->getObjG().isLine2D() && (*(getPot()->getMinHalfSeg2DG()) == *objHS)) {
+        else if (getPot()->getObjG()->isLine2D() && (nextGHalfSeg == nextHalfSeg)) {
             HalfSeg2D objD1;
             if (!dynamicEPSObjG.isEmpty()) {
                 objD1 = dynamicEPSObjG.GetMin().hseg;
             }
-            if (getPot()->getObjF().isLine2D()) {
+            if (getPot()->getObjF()->isLine2D()) {
                 if ((!dynamicEPSObjF.isEmpty()) && (!dynamicEPSObjG.isEmpty())) {
                     HalfSeg2D objD2 = dynamicEPSObjF.GetMin().hseg;
                     if (objD1 < objD2) {
@@ -176,7 +181,7 @@ int PlaneSweep::findLeast() {
 
 
             }
-            else if (getPot()->getObjF().isPoint2D()) {
+            else if (getPot()->getObjF()->isPoint2D()) {
                 if (dynamicEPSObjG.isEmpty()) {
                     return 1;
                 }
@@ -190,12 +195,12 @@ int PlaneSweep::findLeast() {
         }
     }
     else if (objAHS != nullptr) {
-        if (getPot()->getObjF().isRegion2D() && (*(getPot()->getMinAttrHalfSeg2DF()) == *objAHS)) {
+        if (getPot()->getObjF()->isRegion2D() && (*(getPot()->getMinAttrHalfSeg2DF()) == *objAHS)) {
             AttrHalfSeg2D objD1;
             if (!dynamicEPSObjF.isEmpty()) {
                 objD1 = dynamicEPSObjF.GetMin();
             }
-            if (getPot()->getObjF().isRegion2D()) {
+            if (getPot()->getObjF()->isRegion2D()) {
                 if ((!dynamicEPSObjF.isEmpty()) && (!dynamicEPSObjG.isEmpty())) {
                     AttrHalfSeg2D objD2 = dynamicEPSObjF.GetMin();
                     if (objD1 < objD2) {
@@ -216,12 +221,12 @@ int PlaneSweep::findLeast() {
                 }
             }
         }
-        else if (getPot()->getObjG().isRegion2D() && (*(getPot()->getMinAttrHalfSeg2DG()) == *objAHS)) {
+        else if (getPot()->getObjG()->isRegion2D() && (*(getPot()->getMinAttrHalfSeg2DG()) == *objAHS)) {
             AttrHalfSeg2D objD1;
             if (!dynamicEPSObjG.isEmpty()) {
                 objD1 = dynamicEPSObjG.GetMin();
             }
-            if (getPot()->getObjF().isLine2D()) {
+            if (getPot()->getObjF()->isLine2D()) {
                 if ((!dynamicEPSObjF.isEmpty()) && (!dynamicEPSObjG.isEmpty())) {
                     HalfSeg2D objD2 = dynamicEPSObjF.GetMin().hseg;
                     if (objD1 < objD2) {
@@ -243,7 +248,7 @@ int PlaneSweep::findLeast() {
 
 
             }
-            else if (getPot()->getObjF().isRegion2D()) {
+            else if (getPot()->getObjF()->isRegion2D()) {
                 if ((!dynamicEPSObjF.isEmpty()) && (!dynamicEPSObjG.isEmpty())) {
                     AttrHalfSeg2D objD2 = dynamicEPSObjF.GetMin();
                     if (objD1 < objD2) {
@@ -263,7 +268,7 @@ int PlaneSweep::findLeast() {
                     return 1;
                 }
             }
-            else if (getPot()->getObjF().isPoint2D()) {
+            else if (getPot()->getObjF()->isPoint2D()) {
                 if (dynamicEPSObjG.isEmpty()) {
                     return 1;
                 }
@@ -295,9 +300,9 @@ void PlaneSweep::selectNext() {
         HalfSeg2D objD1H, objD2H;
         AttrHalfSeg2D objD, objD1AH, objD2AH;
 
-        if (objF.isLine2D()) {
+        if (getPot()->getObjF()->isLine2D()) {
             if (!dynamicEPSObjF.isEmpty()) { objD1H = dynamicEPSObjF.GetMin().hseg; }
-            if (objG.isLine2D()) {
+            if (getPot()->getObjG()->isLine2D()) {
                 if (!dynamicEPSObjG.isEmpty()) {
                     objD2H = dynamicEPSObjG.GetMin().hseg;
                     if (objD1H < objD2H) {
@@ -308,7 +313,7 @@ void PlaneSweep::selectNext() {
                 }
                 return;
             }
-            else if (objG.isRegion2D()) {
+            else if (getPot()->getObjG()->isRegion2D()) {
                 if (!dynamicEPSObjG.isEmpty()) {
                     objD2AH = dynamicEPSObjG.GetMin();
                     if (objD1H < objD2AH) {
@@ -320,11 +325,11 @@ void PlaneSweep::selectNext() {
                 return;
             }
         }
-        else if (objF.isRegion2D()) {
+        else if (getPot()->getObjF()->isRegion2D()) {
             if (!dynamicEPSObjF.isEmpty()) {
                 objD1AH = dynamicEPSObjF.GetMin();
             }
-            if (objG.isLine2D()) {
+            if (getPot()->getObjG()->isLine2D()) {
                 if (!dynamicEPSObjG.isEmpty()) {
                     objD2H = dynamicEPSObjG.GetMin().hseg;
                     if (objD1AH < objD2H) {
@@ -335,7 +340,7 @@ void PlaneSweep::selectNext() {
                 }
                 return;
             }
-            else if (objG.isRegion2D()) {
+            else if (getPot()->getObjG()->isRegion2D()) {
                 if (!dynamicEPSObjG.isEmpty()) {
                     objD2AH = dynamicEPSObjG.GetMin();
                     if (objD1AH < objD2AH) {
@@ -609,7 +614,7 @@ void PlaneSweep::addLeft(PlaneSweepLineStatusObject &planeSweepLineStatusObject)
     * We need to (re)calculate overlap numbers for the segments
     * in the sweepLine in the region case.
     */
-    if (objF.isRegion2D() && objG.isRegion2D()) {
+    if (getPot()->getObjF()->isRegion2D() && getPot()->getObjG()->isRegion2D()) {
         /*
          * Add the updateSegmentClass code here.
          * it should update the segmentClass for the added segment
@@ -624,12 +629,12 @@ void PlaneSweep::addLeft(PlaneSweepLineStatusObject &planeSweepLineStatusObject)
 
     Seg2D seg2D = planeSweepLineStatusObject.getSegment2D();
 
-    if (((objF.isLine2D() && objG.isLine2D()) || (objF.isLine2D() && objG.isRegion2D()) ||
-         (objF.isRegion2D() && objG.isRegion2D())) && isRelation(seg2D, pred)) {
+    if (((getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isLine2D()) || (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isRegion2D()) ||
+         (getPot()->getObjF()->isRegion2D() && getPot()->getObjG()->isRegion2D())) && isRelation(seg2D, pred)) {
         splitLines(seg2D, pred);
     }
-    else if (((objF.isLine2D() && objG.isLine2D()) || (objF.isLine2D() && objG.isRegion2D()) ||
-              (objF.isRegion2D() && objG.isRegion2D())) && isRelation(seg2D, succ)) {
+    else if (((getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isLine2D()) || (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isRegion2D()) ||
+              (getPot()->getObjF()->isRegion2D() && getPot()->getObjG()->isRegion2D())) && isRelation(seg2D, succ)) {
         splitLines(seg2D, succ);
     }
 }
@@ -640,8 +645,8 @@ void PlaneSweep::delRight(PlaneSweepLineStatusObject &planeSweepLineStatusObject
     Seg2D succ = getSuccessor(planeSweepLineStatusObject).getSegment2D();
 
     sweepLineStatus->deleteKey(planeSweepLineStatusObject);
-    if (((objF.isLine2D() && objG.isLine2D()) || (objF.isLine2D() && objG.isRegion2D()) ||
-         (objF.isRegion2D() && objG.isRegion2D())) && isRelation(pred, succ)) {
+    if (((getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isLine2D()) || (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isRegion2D()) ||
+         (getPot()->getObjF()->isRegion2D() && getPot()->getObjG()->isRegion2D())) && isRelation(pred, succ)) {
         splitLines(pred, succ);
     }
 }
@@ -762,7 +767,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             AttrHalfSeg2D *attrHalfSeg22GLeft;
             AttrHalfSeg2D *attrHalfSeg22GRight;
 
-            if (objF.isLine2D() || objG.isLine2D()) {
+            if (getPot()->getObjF()->isLine2D() || getPot()->getObjG()->isLine2D()) {
                 halfSeg11Right = new HalfSeg2D(S11, false);
                 halfSeg12Left = new HalfSeg2D(S12, true);
                 halfSeg12Right = new HalfSeg2D(S12, false);
@@ -770,8 +775,8 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                 halfSeg22Left = new HalfSeg2D(S22, true);
                 halfSeg22Right = new HalfSeg2D(S22, false);
             }
-            if (objF.isRegion2D() || objG.isRegion2D()) {
-                if (objF.isRegion2D()) {
+            if (getPot()->getObjF()->isRegion2D() || getPot()->getObjG()->isRegion2D()) {
+                if (getPot()->getObjF()->isRegion2D()) {
                     AttrHalfSeg2D temp = getPot()->currentFASeg();
                     attrHalfSeg11FRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                     attrHalfSeg12FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
@@ -780,7 +785,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     attrHalfSeg22FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
                     attrHalfSeg22FRight = new AttrHalfSeg2D(temp.insideAbove, false, S22);
                 }
-                if (objG.isRegion2D()) {
+                if (getPot()->getObjG()->isRegion2D()) {
                     AttrHalfSeg2D temp = getPot()->currentGASeg();
                     attrHalfSeg11GRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                     attrHalfSeg12GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
@@ -795,7 +800,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
             if (pot->isInObjF(firstSegment) && pot->isInObjG(secondSegment)) {
 
-                if (objF.isLine2D() && objG.isLine2D()) {
+                if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isLine2D()) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
@@ -803,7 +808,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
                 }
-                else if (objF.isLine2D() && objG.isRegion2D()) {
+                else if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isRegion2D()) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
@@ -811,7 +816,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjG.Insert(*attrHalfSeg22GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg22GRight);
                 }
-                else if (objF.isRegion2D() && objG.isRegion2D()) {
+                else if (getPot()->getObjF()->isRegion2D() && getPot()->getObjG()->isRegion2D()) {
                     dynamicEPSObjF.Insert(*attrHalfSeg11FRight);
                     dynamicEPSObjF.Insert(*attrHalfSeg12FLeft);
                     dynamicEPSObjF.Insert(*attrHalfSeg12FRight);
@@ -822,7 +827,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
             }
             else if (pot->isInObjG(firstSegment) && pot->isInObjF(secondSegment)) {
-                if (objG.isLine2D() && objF.isLine2D()) {
+                if (getPot()->getObjG()->isLine2D() && getPot()->getObjF()->isLine2D()) {
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
@@ -830,7 +835,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
                 }
-                else if (objG.isRegion2D() && objF.isLine2D()) {
+                else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isLine2D()) {
                     dynamicEPSObjG.Insert(*attrHalfSeg11GRight);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GRight);
@@ -838,7 +843,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
                 }
-                else if (objG.isRegion2D() && objF.isRegion2D()) {
+                else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isRegion2D()) {
                     dynamicEPSObjG.Insert(*attrHalfSeg11GRight);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GRight);
@@ -879,21 +884,21 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                 AttrHalfSeg2D *attrHalfSeg12GRight;
                 AttrHalfSeg2D *attrHalfSeg21GRight;
 
-                if (objF.isLine2D() || objG.isLine2D()) {
+                if (getPot()->getObjF()->isLine2D() || getPot()->getObjG()->isLine2D()) {
                     halfSeg11Right = new HalfSeg2D(S11, false);
                     halfSeg12Left = new HalfSeg2D(S12, true);
                     halfSeg12Right = new HalfSeg2D(S12, false);
                     halfSeg21Right = new HalfSeg2D(S21, false);
                 }
-                if (objF.isRegion2D() || objG.isRegion2D()) {
-                    if (objF.isRegion2D()) {
+                if (getPot()->getObjF()->isRegion2D() || getPot()->getObjG()->isRegion2D()) {
+                    if (getPot()->getObjF()->isRegion2D()) {
                         AttrHalfSeg2D temp = getPot()->currentFASeg();
                         attrHalfSeg11FRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                         attrHalfSeg12FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
                         attrHalfSeg12FRight = new AttrHalfSeg2D(temp.insideAbove, false, S12);
                         attrHalfSeg21FRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                     }
-                    if (objG.isRegion2D()) {
+                    if (getPot()->getObjG()->isRegion2D()) {
                         AttrHalfSeg2D temp = getPot()->currentGASeg();
                         attrHalfSeg11GRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                         attrHalfSeg12GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
@@ -905,19 +910,19 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
                 if (pot->isInObjF(firstSegment) && pot->isInObjG(secondSegment)) {
 
-                    if (objF.isLine2D() && objG.isLine2D()) {
+                    if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isLine2D()) {
                         dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                         dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                         dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
                         dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft, halfSeg21Right->seg));
                     }
-                    else if (objF.isLine2D() && objG.isRegion2D()) {
+                    else if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isRegion2D()) {
                         dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                         dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                         dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
                         dynamicEPSObjG.Insert(*attrHalfSeg21GRight);
                     }
-                    else if (objF.isRegion2D() && objG.isRegion2D()) {
+                    else if (getPot()->getObjF()->isRegion2D() && getPot()->getObjG()->isRegion2D()) {
                         dynamicEPSObjF.Insert(*attrHalfSeg11FRight);
                         dynamicEPSObjF.Insert(*attrHalfSeg12FLeft);
                         dynamicEPSObjF.Insert(*attrHalfSeg12FRight);
@@ -927,19 +932,19 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                 }
                 else if (pot->isInObjG(firstSegment) && pot->isInObjF(secondSegment)) {
 
-                    if (objG.isLine2D() && objG.isLine2D()) {
+                    if (getPot()->getObjG()->isLine2D() && getPot()->getObjG()->isLine2D()) {
                         dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                         dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                         dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
                         dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft, halfSeg21Right->seg));
                     }
-                    else if (objG.isRegion2D() && objF.isLine2D()) {
+                    else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isLine2D()) {
                         dynamicEPSObjG.Insert(*attrHalfSeg11GRight);
                         dynamicEPSObjG.Insert(*attrHalfSeg12GLeft);
                         dynamicEPSObjG.Insert(*attrHalfSeg12GRight);
                         dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft, halfSeg21Right->seg));
                     }
-                    else if (objG.isRegion2D() && objF.isRegion2D()) {
+                    else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isRegion2D()) {
                         dynamicEPSObjG.Insert(*attrHalfSeg11GRight);
                         dynamicEPSObjG.Insert(*attrHalfSeg12GLeft);
                         dynamicEPSObjG.Insert(*attrHalfSeg12GRight);
@@ -962,21 +967,21 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                 AttrHalfSeg2D *attrHalfSeg21GRight;
                 AttrHalfSeg2D *attrHalfSeg22GLeft;
                 AttrHalfSeg2D *attrHalfSeg22GRight;
-                if (objF.isLine2D() && objG.isLine2D()) {
+                if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isLine2D()) {
                     halfSeg11Right = new HalfSeg2D(S11, false);
                     halfSeg21Right = new HalfSeg2D(S21, false);
                     halfSeg22Left = new HalfSeg2D(S22, true);
                     halfSeg22Right = new HalfSeg2D(S22, false);
                 }
-                if (objF.isRegion2D() || objG.isRegion2D()) {
-                    if (objF.isRegion2D()) {
+                if (getPot()->getObjF()->isRegion2D() || getPot()->getObjG()->isRegion2D()) {
+                    if (getPot()->getObjF()->isRegion2D()) {
                         AttrHalfSeg2D temp = getPot()->currentFASeg();
                         attrHalfSeg11FRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                         attrHalfSeg21FRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                         attrHalfSeg22FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
                         attrHalfSeg22FRight = new AttrHalfSeg2D(temp.insideAbove, false, S22);
                     }
-                    if (objG.isRegion2D()) {
+                    if (getPot()->getObjG()->isRegion2D()) {
                         AttrHalfSeg2D temp = getPot()->currentGASeg();
                         attrHalfSeg11GRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                         attrHalfSeg21GRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
@@ -986,19 +991,19 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                 }
 
                 if (pot->isInObjF(firstSegment) && pot->isInObjG(secondSegment)) {
-                    if (objF.isLine2D() && objG.isLine2D()) {
+                    if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isLine2D()) {
                         dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft, halfSeg21Right->seg));
                         dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                         dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
                         dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                     }
-                    else if (objF.isLine2D() && objG.isRegion2D()) {
+                    else if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isRegion2D()) {
                         dynamicEPSObjG.Insert(*attrHalfSeg21GRight);
                         dynamicEPSObjG.Insert(*attrHalfSeg22GLeft);
                         dynamicEPSObjG.Insert(*attrHalfSeg22GRight);
                         dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                     }
-                    else if (objF.isRegion2D() && objG.isRegion2D()) {
+                    else if (getPot()->getObjF()->isRegion2D() && getPot()->getObjG()->isRegion2D()) {
                         dynamicEPSObjG.Insert(*attrHalfSeg21GRight);
                         dynamicEPSObjG.Insert(*attrHalfSeg22GLeft);
                         dynamicEPSObjG.Insert(*attrHalfSeg22GRight);
@@ -1007,19 +1012,19 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
                 }
                 else if (pot->isInObjG(firstSegment) && pot->isInObjF(secondSegment)) {
-                    if (objG.isLine2D() && objF.isLine2D()) {
+                    if (getPot()->getObjG()->isLine2D() && getPot()->getObjF()->isLine2D()) {
                         dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft, halfSeg21Right->seg));
                         dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                         dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
                         dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                     }
-                    else if (objG.isRegion2D() && objF.isLine2D()) {
+                    else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isLine2D()) {
                         dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft, halfSeg21Right->seg));
                         dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                         dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
                         dynamicEPSObjG.Insert(*attrHalfSeg11GRight);
                     }
-                    else if (objG.isRegion2D() && objG.isRegion2D()) {
+                    else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjG()->isRegion2D()) {
                         dynamicEPSObjF.Insert(*attrHalfSeg21FRight);
                         dynamicEPSObjF.Insert(*attrHalfSeg22FLeft);
                         dynamicEPSObjF.Insert(*attrHalfSeg22FRight);
@@ -1049,19 +1054,19 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             AttrHalfSeg2D *attrHalfSeg12GLeft;
             AttrHalfSeg2D *attrHalfSeg12GRight;
 
-            if (objF.isLine2D() || objG.isLine2D()) {
+            if (getPot()->getObjF()->isLine2D() || getPot()->getObjG()->isLine2D()) {
                 halfSeg11Right = new HalfSeg2D(S11, false);
                 halfSeg12Left = new HalfSeg2D(S12, true);
                 halfSeg12Right = new HalfSeg2D(S12, false);
             }
-            if (objF.isRegion2D() || objG.isRegion2D()) {
-                if (objF.isRegion2D()) {
+            if (getPot()->getObjF()->isRegion2D() || getPot()->getObjG()->isRegion2D()) {
+                if (getPot()->getObjF()->isRegion2D()) {
                     AttrHalfSeg2D temp = getPot()->currentFASeg();
                     attrHalfSeg11FRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                     attrHalfSeg12FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
                     attrHalfSeg12FRight = new AttrHalfSeg2D(temp.insideAbove, false, S12);
                 }
-                if (objG.isRegion2D()) {
+                if (getPot()->getObjG()->isRegion2D()) {
                     AttrHalfSeg2D temp = getPot()->currentGASeg();
                     attrHalfSeg11GRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                     attrHalfSeg12GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
@@ -1070,20 +1075,20 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             }
 
             if (pot->isInObjF(firstSegment) && pot->isInObjG(secondSegment)) {
-                if (objF.isLine2D() && objG.isLine2D()) {
+                if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isLine2D()) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft,
                                                         halfSeg11Right->seg)); // Is it required?? Should it be S21??
                 }
-                else if (objF.isLine2D() && objG.isRegion2D()) {
+                else if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isRegion2D()) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
                     dynamicEPSObjG.Insert(*attrHalfSeg11GRight); // Is it required?? Should it be S21??
                 }
-                else if (objF.isRegion2D() && objG.isRegion2D()) {
+                else if (getPot()->getObjF()->isRegion2D() && getPot()->getObjG()->isRegion2D()) {
                     dynamicEPSObjF.Insert(*attrHalfSeg11FRight);
                     dynamicEPSObjF.Insert(*attrHalfSeg12FLeft);
                     dynamicEPSObjF.Insert(*attrHalfSeg12FRight);
@@ -1092,21 +1097,21 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
             }
             else if (pot->isInObjG(firstSegment) && pot->isInObjF(secondSegment)) {
-                if (objG.isLine2D() && objF.isLine2D()) {
+                if (getPot()->getObjG()->isLine2D() && getPot()->getObjF()->isLine2D()) {
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft,
                                                         halfSeg11Right->seg)); // Is it required?? Should it be S21??
                 }
-                else if (objG.isRegion2D() && objF.isLine2D()) {
+                else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isLine2D()) {
                     dynamicEPSObjG.Insert(*attrHalfSeg11GRight);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GRight);
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft,
                                                         halfSeg11Right->seg)); // Is it required?? Should it be S21??
                 }
-                else if (objG.isRegion2D() && objF.isRegion2D()) {
+                else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isRegion2D()) {
                     dynamicEPSObjG.Insert(*attrHalfSeg11GRight);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GRight);
@@ -1137,19 +1142,19 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             AttrHalfSeg2D *attrHalfSeg22GLeft;
             AttrHalfSeg2D *attrHalfSeg22GRight;
 
-            if (objF.isLine2D() || objG.isLine2D()) {
+            if (getPot()->getObjF()->isLine2D() || getPot()->getObjG()->isLine2D()) {
                 halfSeg21Right = new HalfSeg2D(S21, false);
                 halfSeg22Left = new HalfSeg2D(S22, true);
                 halfSeg22Right = new HalfSeg2D(S22, false);
             }
-            if (objF.isRegion2D() || objG.isRegion2D()) {
-                if (objF.isRegion2D()) {
+            if (getPot()->getObjF()->isRegion2D() || getPot()->getObjG()->isRegion2D()) {
+                if (getPot()->getObjF()->isRegion2D()) {
                     AttrHalfSeg2D temp = getPot()->currentFASeg();
                     attrHalfSeg21FRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                     attrHalfSeg22FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
                     attrHalfSeg22FRight = new AttrHalfSeg2D(temp.insideAbove, false, S22);
                 }
-                if (objG.isRegion2D()) {
+                if (getPot()->getObjG()->isRegion2D()) {
                     AttrHalfSeg2D temp = getPot()->currentGASeg();
                     attrHalfSeg21GRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                     attrHalfSeg22GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
@@ -1158,20 +1163,20 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             }
 
             if (pot->isInObjF(secondSegment) && pot->isInObjG(firstSegment)) {
-                if (objF.isLine2D() && objG.isLine2D()) {
+                if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isLine2D()) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft, halfSeg21Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft,
                                                         halfSeg21Right->seg)); // Is it required?? Should it be S11??
                 }
-                else if (objF.isLine2D() && objG.isRegion2D()) {
+                else if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isRegion2D()) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft, halfSeg21Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
                     dynamicEPSObjG.Insert(*attrHalfSeg21GRight);
                 }
-                else if (objF.isRegion2D() && objG.isRegion2D()) {
+                else if (getPot()->getObjF()->isRegion2D() && getPot()->getObjG()->isRegion2D()) {
                     dynamicEPSObjF.Insert(*attrHalfSeg21FRight);
                     dynamicEPSObjF.Insert(*attrHalfSeg22FLeft);
                     dynamicEPSObjF.Insert(*attrHalfSeg22FRight);
@@ -1179,21 +1184,21 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                 }
             }
             else if (pot->isInObjG(secondSegment) && pot->isInObjF(firstSegment)) {
-                if (objG.isLine2D() && objF.isLine2D()) {
+                if (getPot()->getObjG()->isLine2D() && getPot()->getObjF()->isLine2D()) {
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft, halfSeg21Right->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft,
                                                         halfSeg21Right->seg)); // Is it required?? Should it be S11??
                 }
-                else if (objG.isRegion2D() && objF.isLine2D()) {
+                else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isLine2D()) {
                     dynamicEPSObjG.Insert(*attrHalfSeg21GRight);
                     dynamicEPSObjG.Insert(*attrHalfSeg22GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg22GRight);
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft,
                                                         halfSeg21Right->seg)); // Is it required?? Should it be S11??
                 }
-                else if (objG.isRegion2D() && objF.isRegion2D()) {
+                else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isRegion2D()) {
                     dynamicEPSObjG.Insert(*attrHalfSeg21GRight);
                     dynamicEPSObjG.Insert(*attrHalfSeg22GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg22GRight);
@@ -1234,15 +1239,15 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             AttrHalfSeg2D *attrHalfSeg13GLeft;
             AttrHalfSeg2D *attrHalfSeg13GRight;
 
-            if (objF.isLine2D() || objG.isLine2D()) {
+            if (getPot()->getObjF()->isLine2D() || getPot()->getObjG()->isLine2D()) {
                 halfSeg11Right = new HalfSeg2D(S11, false);
                 halfSeg12Left = new HalfSeg2D(S12, true);
                 halfSeg12Right = new HalfSeg2D(S12, false);
                 halfSeg13Left = new HalfSeg2D(S13, true);
                 halfSeg13Right = new HalfSeg2D(S13, false);
             }
-            if (objF.isRegion2D() || objG.isRegion2D()) {
-                if (objF.isRegion2D()) {
+            if (getPot()->getObjF()->isRegion2D() || getPot()->getObjG()->isRegion2D()) {
+                if (getPot()->getObjF()->isRegion2D()) {
                     AttrHalfSeg2D temp = getPot()->currentFASeg();
                     attrHalfSeg11FRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                     attrHalfSeg12FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
@@ -1250,7 +1255,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     attrHalfSeg13FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S13);
                     attrHalfSeg13FRight = new AttrHalfSeg2D(temp.insideAbove, false, S13);
                 }
-                if (objG.isRegion2D()) {
+                if (getPot()->getObjG()->isRegion2D()) {
                     AttrHalfSeg2D temp = getPot()->currentGASeg();
                     attrHalfSeg11GRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                     attrHalfSeg12GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
@@ -1262,7 +1267,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
 
             if (pot->isInObjF(firstSegment) && pot->isInObjG(secondSegment)) {
-                if (objF.isLine2D() && objG.isLine2D()) {
+                if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isLine2D()) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
@@ -1273,7 +1278,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft,
                                                         halfSeg12Right->seg)); // Is it required?? Should it be S22??
                 }
-                else if (objF.isLine2D() && objG.isRegion2D()) {
+                else if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isRegion2D()) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
@@ -1282,7 +1287,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjG.Insert(*attrHalfSeg12GLeft); // Is it required?? Should it be S22??
                     dynamicEPSObjG.Insert(*attrHalfSeg12GRight); // Is it required?? Should it be S22??
                 }
-                else if (objF.isRegion2D() && objG.isRegion2D()) {
+                else if (getPot()->getObjF()->isRegion2D() && getPot()->getObjG()->isRegion2D()) {
                     dynamicEPSObjF.Insert(*attrHalfSeg11FRight);
                     dynamicEPSObjF.Insert(*attrHalfSeg12FLeft);
                     dynamicEPSObjF.Insert(*attrHalfSeg12FRight);
@@ -1293,7 +1298,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                 }
             }
             else if (pot->isInObjG(firstSegment) && pot->isInObjF(secondSegment)) {
-                if (objG.isLine2D() && objF.isLine2D()) {
+                if (getPot()->getObjG()->isLine2D() && getPot()->getObjF()->isLine2D()) {
 
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
@@ -1305,7 +1310,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft,
                                                         halfSeg12Right->seg)); // Is it required?? Should it be S22??
                 }
-                else if (objG.isRegion2D() && objF.isLine2D()) {
+                else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isLine2D()) {
                     dynamicEPSObjG.Insert(*attrHalfSeg11GRight);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GRight);
@@ -1316,7 +1321,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft,
                                                         halfSeg12Right->seg)); // Is it required?? Should it be S22??
                 }
-                else if (objG.isRegion2D() && objF.isRegion2D()) {
+                else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isRegion2D()) {
                     dynamicEPSObjG.Insert(*attrHalfSeg11GRight);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GRight);
@@ -1360,15 +1365,15 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             AttrHalfSeg2D *attrHalfSeg23GLeft;
             AttrHalfSeg2D *attrHalfSeg23GRight;
 
-            if (objF.isLine2D() || objG.isLine2D()) {
+            if (getPot()->getObjF()->isLine2D() || getPot()->getObjG()->isLine2D()) {
                 halfSeg21Right = new HalfSeg2D(S21, false);
                 halfSeg22Left = new HalfSeg2D(S22, true);
                 halfSeg22Right = new HalfSeg2D(S22, false);
                 halfSeg23Left = new HalfSeg2D(S23, true);
                 halfSeg23Right = new HalfSeg2D(S23, false);
             }
-            if (objF.isRegion2D() || objG.isRegion2D()) {
-                if (objF.isRegion2D()) {
+            if (getPot()->getObjF()->isRegion2D() || getPot()->getObjG()->isRegion2D()) {
+                if (getPot()->getObjF()->isRegion2D()) {
                     AttrHalfSeg2D temp = getPot()->currentFASeg();
                     attrHalfSeg21FRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                     attrHalfSeg22FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
@@ -1376,7 +1381,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     attrHalfSeg23FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S23);
                     attrHalfSeg23FRight = new AttrHalfSeg2D(temp.insideAbove, false, S23);
                 }
-                if (objG.isRegion2D()) {
+                if (getPot()->getObjG()->isRegion2D()) {
                     AttrHalfSeg2D temp = getPot()->currentGASeg();
                     attrHalfSeg21GRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                     attrHalfSeg22GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
@@ -1388,7 +1393,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
             if (pot->isInObjF(secondSegment) && pot->isInObjG(firstSegment)) {
 
-                if (objF.isLine2D() && objG.isLine2D()) {
+                if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isLine2D()) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft, halfSeg21Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
@@ -1399,7 +1404,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft,
                                                         halfSeg22Right->seg)); // Is it required?? Should it be S12??
                 }
-                else if (objF.isLine2D() && objG.isRegion2D()) {
+                else if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isRegion2D()) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft, halfSeg21Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
@@ -1408,7 +1413,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjG.Insert(*attrHalfSeg22GLeft); // Is it required?? Should it be S12??
                     dynamicEPSObjG.Insert(*attrHalfSeg22GRight); // Is it required?? Should it be S12??
                 }
-                else if (objF.isRegion2D() && objG.isRegion2D()) {
+                else if (getPot()->getObjF()->isRegion2D() && getPot()->getObjG()->isRegion2D()) {
                     dynamicEPSObjF.Insert(*attrHalfSeg21FRight);
                     dynamicEPSObjF.Insert(*attrHalfSeg22FLeft);
                     dynamicEPSObjF.Insert(*attrHalfSeg22FRight);
@@ -1420,7 +1425,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
             }
             else if (pot->isInObjG(secondSegment) && pot->isInObjF(firstSegment)) {
-                if (objG.isLine2D() && objF.isLine2D()) {
+                if (getPot()->getObjG()->isLine2D() && getPot()->getObjF()->isLine2D()) {
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft, halfSeg21Right->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
@@ -1431,7 +1436,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft,
                                                         halfSeg22Right->seg)); // Is it required?? Should it be S12??
                 }
-                else if (objG.isRegion2D() && objF.isLine2D()) {
+                else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isLine2D()) {
                     dynamicEPSObjG.Insert(*attrHalfSeg21GRight);
                     dynamicEPSObjG.Insert(*attrHalfSeg22GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg22GRight);
@@ -1442,7 +1447,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft,
                                                         halfSeg22Right->seg)); // Is it required?? Should it be S12??
                 }
-                else if (objG.isRegion2D() && objF.isRegion2D()) {
+                else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isRegion2D()) {
                     dynamicEPSObjG.Insert(*attrHalfSeg21GRight);
                     dynamicEPSObjG.Insert(*attrHalfSeg22GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg22GRight);
@@ -1477,19 +1482,19 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             AttrHalfSeg2D *attrHalfSeg12GLeft;
             AttrHalfSeg2D *attrHalfSeg12GRight;
 
-            if (objF.isLine2D() || objG.isLine2D()) {
+            if (getPot()->getObjF()->isLine2D() || getPot()->getObjG()->isLine2D()) {
                 halfSeg11Right = new HalfSeg2D(S11, false);
                 halfSeg12Left = new HalfSeg2D(S12, true);
                 halfSeg12Right = new HalfSeg2D(S12, false);
             }
-            if (objF.isRegion2D() || objG.isRegion2D()) {
-                if (objF.isRegion2D()) {
+            if (getPot()->getObjF()->isRegion2D() || getPot()->getObjG()->isRegion2D()) {
+                if (getPot()->getObjF()->isRegion2D()) {
                     AttrHalfSeg2D temp = getPot()->currentFASeg();
                     attrHalfSeg11FRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                     attrHalfSeg12FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
                     attrHalfSeg12FRight = new AttrHalfSeg2D(temp.insideAbove, false, S12);
                 }
-                if (objG.isRegion2D()) {
+                if (getPot()->getObjG()->isRegion2D()) {
                     AttrHalfSeg2D temp = getPot()->currentGASeg();
                     attrHalfSeg11GRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                     attrHalfSeg12GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
@@ -1499,7 +1504,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
             if (pot->isInObjF(firstSegment) && pot->isInObjG(secondSegment)) {
 
-                if (objF.isLine2D() && objG.isLine2D()) {
+                if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isLine2D()) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
@@ -1508,14 +1513,14 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft,
                                                         halfSeg12Right->seg)); // Is it required?? Should it be S22??
                 }
-                else if (objF.isLine2D() && objG.isRegion2D()) {
+                else if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isRegion2D()) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
                     dynamicEPSObjG.Insert(*attrHalfSeg12GLeft); // Is it required?? Should it be S22??
                     dynamicEPSObjG.Insert(*attrHalfSeg12GRight); // Is it required?? Should it be S22??
                 }
-                else if (objF.isRegion2D() && objG.isRegion2D()) {
+                else if (getPot()->getObjF()->isRegion2D() && getPot()->getObjG()->isRegion2D()) {
                     dynamicEPSObjF.Insert(*attrHalfSeg11FRight);
                     dynamicEPSObjF.Insert(*attrHalfSeg12FLeft);
                     dynamicEPSObjF.Insert(*attrHalfSeg12FRight);
@@ -1525,7 +1530,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
             }
             else if (pot->isInObjG(firstSegment) && pot->isInObjF(secondSegment)) {
-                if (objG.isLine2D() && objF.isLine2D()) {
+                if (getPot()->getObjG()->isLine2D() && getPot()->getObjF()->isLine2D()) {
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
@@ -1534,7 +1539,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft,
                                                         halfSeg12Right->seg)); // Is it required?? Should it be S22??
                 }
-                else if (objG.isRegion2D() && objF.isLine2D()) {
+                else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isLine2D()) {
                     dynamicEPSObjG.Insert(*attrHalfSeg11GRight);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GRight);
@@ -1543,7 +1548,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft,
                                                         halfSeg12Right->seg)); // Is it required?? Should it be S22??
                 }
-                else if (objG.isRegion2D() && objF.isRegion2D()) {
+                else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isRegion2D()) {
                     dynamicEPSObjG.Insert(*attrHalfSeg11GRight);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GRight);
@@ -1577,19 +1582,19 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             AttrHalfSeg2D *attrHalfSeg22GLeft;
             AttrHalfSeg2D *attrHalfSeg22GRight;
 
-            if (objF.isLine2D() || objG.isLine2D()) {
+            if (getPot()->getObjF()->isLine2D() || getPot()->getObjG()->isLine2D()) {
                 halfSeg21Right = new HalfSeg2D(S21, false);
                 halfSeg22Left = new HalfSeg2D(S22, true);
                 halfSeg22Right = new HalfSeg2D(S22, false);
             }
-            if (objF.isRegion2D() || objG.isRegion2D()) {
-                if (objF.isRegion2D()) {
+            if (getPot()->getObjF()->isRegion2D() || getPot()->getObjG()->isRegion2D()) {
+                if (getPot()->getObjF()->isRegion2D()) {
                     AttrHalfSeg2D temp = getPot()->currentFASeg();
                     attrHalfSeg21FRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                     attrHalfSeg22FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
                     attrHalfSeg22FRight = new AttrHalfSeg2D(temp.insideAbove, false, S22);
                 }
-                if (objG.isRegion2D()) {
+                if (getPot()->getObjG()->isRegion2D()) {
                     AttrHalfSeg2D temp = getPot()->currentGASeg();
                     attrHalfSeg21GRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                     attrHalfSeg22GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
@@ -1599,7 +1604,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
             if (pot->isInObjF(secondSegment) && pot->isInObjG(firstSegment)) {
 
-                if (objF.isLine2D() && objG.isLine2D()) {
+                if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isLine2D()) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft, halfSeg21Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
@@ -1608,7 +1613,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft,
                                                         halfSeg22Right->seg)); // Is it required?? Should it be S12??
                 }
-                else if (objF.isLine2D() && objG.isRegion2D()) {
+                else if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isRegion2D()) {
 
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft, halfSeg21Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
@@ -1616,7 +1621,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjG.Insert(*attrHalfSeg22GLeft); // Is it required?? Should it be S12??
                     dynamicEPSObjG.Insert(*attrHalfSeg22GRight); // Is it required?? Should it be S12??
                 }
-                else if (objF.isRegion2D() && objG.isRegion2D()) {
+                else if (getPot()->getObjF()->isRegion2D() && getPot()->getObjG()->isRegion2D()) {
 
                     dynamicEPSObjF.Insert(*attrHalfSeg21FRight);
                     dynamicEPSObjF.Insert(*attrHalfSeg22FLeft);
@@ -1628,7 +1633,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             }
             else if (pot->isInObjG(secondSegment) && pot->isInObjF(firstSegment)) {
 
-                if (objG.isLine2D() && objF.isLine2D()) {
+                if (getPot()->getObjG()->isLine2D() && getPot()->getObjF()->isLine2D()) {
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft, halfSeg21Right->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
@@ -1637,7 +1642,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft,
                                                         halfSeg22Right->seg)); // Is it required?? Should it be S12??
                 }
-                else if (objG.isRegion2D() && objF.isLine2D()) {
+                else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isLine2D()) {
                     dynamicEPSObjG.Insert(*attrHalfSeg21GRight);
                     dynamicEPSObjG.Insert(*attrHalfSeg22GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg22GRight);
@@ -1646,7 +1651,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft,
                                                         halfSeg22Right->seg)); // Is it required?? Should it be S12??
                 }
-                else if (objG.isRegion2D() && objF.isRegion2D()) {
+                else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isRegion2D()) {
                     dynamicEPSObjG.Insert(*attrHalfSeg21GRight);
                     dynamicEPSObjG.Insert(*attrHalfSeg22GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg22GRight);
@@ -1689,7 +1694,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             AttrHalfSeg2D *attrHalfSeg22GLeft;
             AttrHalfSeg2D *attrHalfSeg22GRight;
 
-            if (objF.isLine2D() || objG.isLine2D()) {
+            if (getPot()->getObjF()->isLine2D() || getPot()->getObjG()->isLine2D()) {
                 halfSeg11Right = new HalfSeg2D(S11, false);
                 halfSeg12Left = new HalfSeg2D(S12, true);
                 halfSeg12Right = new HalfSeg2D(S12, false);
@@ -1697,8 +1702,8 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                 halfSeg22Right = new HalfSeg2D(S22, false);
             }
 
-            if (objF.isRegion2D() || objG.isRegion2D()) {
-                if (objF.isRegion2D()) {
+            if (getPot()->getObjF()->isRegion2D() || getPot()->getObjG()->isRegion2D()) {
+                if (getPot()->getObjF()->isRegion2D()) {
                     AttrHalfSeg2D temp = getPot()->currentFASeg();
                     attrHalfSeg11FRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                     attrHalfSeg12FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
@@ -1706,7 +1711,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     attrHalfSeg22FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
                     attrHalfSeg22FRight = new AttrHalfSeg2D(temp.insideAbove, false, S22);
                 }
-                if (objG.isRegion2D()) {
+                if (getPot()->getObjG()->isRegion2D()) {
                     AttrHalfSeg2D temp = getPot()->currentGASeg();
                     attrHalfSeg11GRight = new AttrHalfSeg2D(temp.insideAbove, false, S11);
                     attrHalfSeg12GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
@@ -1718,7 +1723,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
             if (pot->isInObjF(firstSegment) && pot->isInObjG(secondSegment)) {
 
-                if (objF.isLine2D() && objG.isLine2D()) {
+                if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isLine2D()) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
@@ -1729,7 +1734,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
                 }
-                else if (objF.isLine2D() && objG.isRegion2D()) {
+                else if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isRegion2D()) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
@@ -1738,7 +1743,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjG.Insert(*attrHalfSeg22GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg22GRight);
                 }
-                else if (objF.isRegion2D() && objG.isRegion2D()) {
+                else if (getPot()->getObjF()->isRegion2D() && getPot()->getObjG()->isRegion2D()) {
                     dynamicEPSObjF.Insert(*attrHalfSeg11FRight);
                     dynamicEPSObjF.Insert(*attrHalfSeg12FLeft);
                     dynamicEPSObjF.Insert(*attrHalfSeg12FRight);
@@ -1750,7 +1755,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
             }
             else if (pot->isInObjG(firstSegment) && pot->isInObjF(secondSegment)) {
-                if (objG.isLine2D() && objF.isLine2D()) {
+                if (getPot()->getObjG()->isLine2D() && getPot()->getObjF()->isLine2D()) {
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg11Right->isLeft, halfSeg11Right->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
@@ -1761,7 +1766,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
                 }
-                else if (objG.isRegion2D() && objF.isLine2D()) {
+                else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isLine2D()) {
                     dynamicEPSObjG.Insert(*attrHalfSeg11GRight);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GRight);
@@ -1772,7 +1777,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
                 }
-                else if (objG.isRegion2D() && objF.isRegion2D()) {
+                else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isRegion2D()) {
                     dynamicEPSObjG.Insert(*attrHalfSeg11GRight);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GRight);
@@ -1819,15 +1824,15 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             AttrHalfSeg2D *attrHalfSeg12GLeft;
             AttrHalfSeg2D *attrHalfSeg12GRight;
 
-            if (objF.isLine2D() || objG.isLine2D()) {
+            if (getPot()->getObjF()->isLine2D() || getPot()->getObjG()->isLine2D()) {
                 halfSeg21Right = new HalfSeg2D(S21, false);
                 halfSeg22Left = new HalfSeg2D(S22, true);
                 halfSeg22Right = new HalfSeg2D(S22, false);
                 halfSeg12Left = new HalfSeg2D(S12, true);
                 halfSeg12Right = new HalfSeg2D(S12, false);
             }
-            else if (objF.isRegion2D() || objG.isRegion2D()) {
-                if (objF.isRegion2D()) {
+            else if (getPot()->getObjF()->isRegion2D() || getPot()->getObjG()->isRegion2D()) {
+                if (getPot()->getObjF()->isRegion2D()) {
                     AttrHalfSeg2D temp = getPot()->currentFASeg();
                     attrHalfSeg21FRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                     attrHalfSeg22FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
@@ -1835,7 +1840,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     attrHalfSeg12FLeft = new AttrHalfSeg2D(temp.insideAbove, true, S12);
                     attrHalfSeg12FRight = new AttrHalfSeg2D(temp.insideAbove, false, S12);
                 }
-                if (objG.isRegion2D()) {
+                if (getPot()->getObjG()->isRegion2D()) {
                     AttrHalfSeg2D temp = getPot()->currentGASeg();
                     attrHalfSeg21GRight = new AttrHalfSeg2D(temp.insideAbove, false, S21);
                     attrHalfSeg22GLeft = new AttrHalfSeg2D(temp.insideAbove, true, S22);
@@ -1847,7 +1852,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
 
             if (pot->isInObjF(secondSegment) && pot->isInObjG(firstSegment)) {
 
-                if (objF.isLine2D() && objG.isLine2D()) {
+                if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isLine2D()) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft, halfSeg21Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
@@ -1858,7 +1863,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
                 }
-                else if (objF.isLine2D() && objG.isRegion2D()) {
+                else if (getPot()->getObjF()->isLine2D() && getPot()->getObjG()->isRegion2D()) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft, halfSeg21Right->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
@@ -1867,7 +1872,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjG.Insert(*attrHalfSeg12GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg12GRight);
                 }
-                else if (objF.isRegion2D() && objG.isRegion2D()) {
+                else if (getPot()->getObjF()->isRegion2D() && getPot()->getObjG()->isRegion2D()) {
                     dynamicEPSObjF.Insert(*attrHalfSeg21FRight);
                     dynamicEPSObjF.Insert(*attrHalfSeg22FLeft);
                     dynamicEPSObjF.Insert(*attrHalfSeg22FRight);
@@ -1880,7 +1885,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
             }
             else if (pot->isInObjG(secondSegment) && pot->isInObjF(firstSegment)) {
 
-                if (objG.isLine2D() && objF.isLine2D()) {
+                if (getPot()->getObjG()->isLine2D() && getPot()->getObjF()->isLine2D()) {
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg21Right->isLeft, halfSeg21Right->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg22Left->isLeft, halfSeg22Left->seg));
                     dynamicEPSObjG.Insert(AttrHalfSeg2D(false, halfSeg22Right->isLeft, halfSeg22Right->seg));
@@ -1891,7 +1896,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
                 }
-                else if (objG.isRegion2D() && objF.isLine2D()) {
+                else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isLine2D()) {
                     dynamicEPSObjG.Insert(*attrHalfSeg21GRight);
                     dynamicEPSObjG.Insert(*attrHalfSeg22GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg22GRight);
@@ -1902,7 +1907,7 @@ void PlaneSweep::splitLines(Seg2D &firstSegment, Seg2D &secondSegment) {
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Left->isLeft, halfSeg12Left->seg));
                     dynamicEPSObjF.Insert(AttrHalfSeg2D(false, halfSeg12Right->isLeft, halfSeg12Right->seg));
                 }
-                else if (objG.isRegion2D() && objF.isRegion2D()) {
+                else if (getPot()->getObjG()->isRegion2D() && getPot()->getObjF()->isRegion2D()) {
                     dynamicEPSObjG.Insert(*attrHalfSeg21GRight);
                     dynamicEPSObjG.Insert(*attrHalfSeg22GLeft);
                     dynamicEPSObjG.Insert(*attrHalfSeg22GRight);
