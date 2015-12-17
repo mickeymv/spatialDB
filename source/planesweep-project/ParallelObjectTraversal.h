@@ -62,13 +62,13 @@ public:
     status getStatus();
 
     // Method which returns the Point2D iterator based on the value of the object variable
-    Point2D::ConstPoiIterator * getPoiObjIterator(object);
+    Point2D::ConstPoiIterator *getPoiObjIterator(object);
 
     // Method which returns the Line2D iterator based on the value of the object variable
-    Line2DImpl::ConstHalfSegIterator * getHalfSegIterator(object);
+    Line2DImpl::ConstHalfSegIterator *getHalfSegIterator(object);
 
     // Method which returns the Region2D iterator based on the value of the object variable
-    Region2DImpl::ConstAttributedHalfSegmentIterator * getAttrHalfSegIterator(object);
+    Region2DImpl::ConstAttributedHalfSegmentIterator *getAttrHalfSegIterator(object);
 
     // Method that compares the current point of one iterator with the next point of the
     // other, and sets the minimum of those two.
@@ -76,52 +76,70 @@ public:
 
     // Methods that return a true if the object parameter is the first or second object
     bool isObjectF(Object2D);
+
     bool isObjectG(Object2D);
 
     Object2D getObjF();
+
     Object2D getObjG();
+
     // Method that returns the simple halfsegment of 'object' that is next in the logical
     // order. Does not include the dynamic EPS
-    Line2DImpl::ConstHalfSegIterator *  getNextObjIterator(HalfSeg2D,object);
+    Line2DImpl::ConstHalfSegIterator *getNextObjIterator(HalfSeg2D, object);
 
     // Method that returns the simple attributed halfsegment of 'object' that is next in
     // the logical order. Does not include the dynamic EPS
-    Region2DImpl::ConstAttributedHalfSegmentIterator *  getNextObjIterator(AttrHalfSeg2D,object);
+    Region2DImpl::ConstAttributedHalfSegmentIterator *getNextObjIterator(AttrHalfSeg2D, object);
 
     // Method that checks whether the given segments are within an object
-    bool isInObjF(Seg2D&);
-    bool isInObjG(Seg2D&);
-    
+    bool isInObjF(Seg2D &);
+
+    bool isInObjG(Seg2D &);
+
     Poi2D getPoiEvent(object objectEnumVal);
+
     HalfSeg2D getHalfSegEvent(object objectEnumVal);
+
     AttrHalfSeg2D getAttrHalfSegEvent(object objectEnumVal);
 
     // Methods that return the next minimum point (or (attributed) halfsegment) iterator
-    Poi2D* getNextPoi2DMin();
-    HalfSeg2D* getNextHalfSeg2DMin();
-    AttrHalfSeg2D* getNextAttrHalfSeg2DMin();
+    Poi2D *getNextPoi2DMin();
+
+    HalfSeg2D *getNextHalfSeg2DMin();
+
+    AttrHalfSeg2D *getNextAttrHalfSeg2DMin();
 
     // Getter methods for minimum point, halfsegment and attributed halfsegment
-    Poi2D* getMinPoi2DF();
-    Poi2D* getMinPoi2DG();
-    HalfSeg2D* getMinHalfSeg2DF();
-    HalfSeg2D* getMinHalfSeg2DG();
-    AttrHalfSeg2D* getMinAttrHalfSeg2DF();
-    AttrHalfSeg2D* getMinAttrHalfSeg2DG();
+    Poi2D *getMinPoi2DF();
+
+    Poi2D *getMinPoi2DG();
+
+    HalfSeg2D *getMinHalfSeg2DF();
+
+    HalfSeg2D *getMinHalfSeg2DG();
+
+    AttrHalfSeg2D *getMinAttrHalfSeg2DF();
+
+    AttrHalfSeg2D *getMinAttrHalfSeg2DG();
 
     // Setter methods
     void setObject(const object &object_value);
+
     void setStatus(const status &status_value);
+
     // below are inline codes to get the current simple object from the iterator
     // Dtj. Dec 12, 2015
-    inline Poi2D currentFPoi() {return (Poi2D)(**objFpoiIterator); }
-    inline Poi2D currentGPoi() {return (Poi2D)(**objGpoiIterator); }
+    inline Poi2D currentFPoi() { return (Poi2D) (**objFpoiIterator); }
 
-    inline HalfSeg2D currentFSeg() {return (HalfSeg2D)(**objFsegIterator); }
-    inline HalfSeg2D currentGSeg() {return (HalfSeg2D)(**objGsegIterator); }
+    inline Poi2D currentGPoi() { return (Poi2D) (**objGpoiIterator); }
 
-    inline AttrHalfSeg2D currentFASeg() {return (AttrHalfSeg2D)(**objFregionIterator); }
-    inline AttrHalfSeg2D currentGASeg() {return (AttrHalfSeg2D)(**objGregionIterator); }
+    inline HalfSeg2D currentFSeg() { return (HalfSeg2D) (**objFsegIterator); }
+
+    inline HalfSeg2D currentGSeg() { return (HalfSeg2D) (**objGsegIterator); }
+
+    inline AttrHalfSeg2D currentFASeg() { return (AttrHalfSeg2D) (**objFregionIterator); }
+
+    inline AttrHalfSeg2D currentGASeg() { return (AttrHalfSeg2D) (**objGregionIterator); }
 
 private:
     // Method that selects first point or halfsegment of each of the operand objects
@@ -136,22 +154,43 @@ private:
 
     const Object2D *objF, *objG;
 
-    Point2D::ConstPoiIterator * objFpoiIterator = nullptr, * objGpoiIterator = nullptr; // DTj Dec 5, 2015
-    Line2DImpl::ConstHalfSegIterator * objFsegIterator = nullptr, * objGsegIterator = nullptr;
-    Region2DImpl::ConstAttributedHalfSegmentIterator * objFregionIterator = nullptr, * objGregionIterator = nullptr;
+    Point2D::ConstPoiIterator *objFpoiIterator = nullptr, *objGpoiIterator = nullptr; // DTj Dec 5, 2015
+    Line2DImpl::ConstHalfSegIterator *objFsegIterator = nullptr, *objGsegIterator = nullptr;
+    Region2DImpl::ConstAttributedHalfSegmentIterator *objFregionIterator = nullptr, *objGregionIterator = nullptr;
 
-    inline Poi2D nextFPoi() { Point2D::ConstPoiIterator nextobjFpoiIterator = (*objFpoiIterator)++;(*objFpoiIterator)--;return (Poi2D)(*nextobjFpoiIterator); }
-    inline Poi2D nextGPoi() {Point2D::ConstPoiIterator nextobjGpoiIterator = (*objGpoiIterator)++;(*objGpoiIterator)--;return (Poi2D)(*nextobjGpoiIterator); }
+    inline Poi2D nextFPoi() {
+        Point2D::ConstPoiIterator nextobjFpoiIterator = ++(*objFpoiIterator);
+        return (Poi2D) (*nextobjFpoiIterator);
+    }
 
-    inline HalfSeg2D nextFSeg() {Line2DImpl::ConstHalfSegIterator nextobjFsegIterator = (*objFsegIterator)++;(*objFsegIterator)--;return (HalfSeg2D)(*nextobjFsegIterator);  }
-    inline HalfSeg2D nextGSeg() {Line2DImpl::ConstHalfSegIterator nextobjGsegIterator = (*objGsegIterator)++;(*objGsegIterator)--;return (HalfSeg2D)(*nextobjGsegIterator);  }
+    inline Poi2D nextGPoi() {
+        Point2D::ConstPoiIterator nextobjGpoiIterator = ++(*objGpoiIterator);
+        return (Poi2D) (*nextobjGpoiIterator);
+    }
 
-    inline AttrHalfSeg2D nextFASeg() {Region2DImpl::ConstAttributedHalfSegmentIterator nextobjFregionIterator = (*objFregionIterator)++;(*objFregionIterator)--;return (AttrHalfSeg2D)(*nextobjFregionIterator);  }
-    inline AttrHalfSeg2D nextGASeg() {Region2DImpl::ConstAttributedHalfSegmentIterator nextobjGregionIterator = (*objGregionIterator)++;(*objGregionIterator)--;return (AttrHalfSeg2D)(*nextobjGregionIterator);  }
+    inline HalfSeg2D nextFSeg() {
+        Line2DImpl::ConstHalfSegIterator nextobjFsegIterator = ++(*objFsegIterator);
+        return (HalfSeg2D) (*nextobjFsegIterator);
+    }
 
-    Poi2D *minPoi2DF = nullptr,*minPoi2DG = nullptr;
-    HalfSeg2D *minHalfSeg2DF = nullptr, *minHalfSeg2DG= nullptr;
-    AttrHalfSeg2D *minAttrHalfSeg2DF= nullptr, *minAttrHalfSeg2DG= nullptr;
+    inline HalfSeg2D nextGSeg() {
+        Line2DImpl::ConstHalfSegIterator nextobjGsegIterator = ++(*objGsegIterator);
+        return (HalfSeg2D) (*nextobjGsegIterator);
+    }
+
+    inline AttrHalfSeg2D nextFASeg() {
+        Region2DImpl::ConstAttributedHalfSegmentIterator nextobjFregionIterator = ++(*objFregionIterator);
+        return (AttrHalfSeg2D) (*nextobjFregionIterator);
+    }
+
+    inline AttrHalfSeg2D nextGASeg() {
+        Region2DImpl::ConstAttributedHalfSegmentIterator nextobjGregionIterator = ++(*objGregionIterator);
+        return (AttrHalfSeg2D) (*nextobjGregionIterator);
+    }
+
+    Poi2D *minPoi2DF = nullptr, *minPoi2DG = nullptr;
+    HalfSeg2D *minHalfSeg2DF = nullptr, *minHalfSeg2DG = nullptr;
+    AttrHalfSeg2D *minAttrHalfSeg2DF = nullptr, *minAttrHalfSeg2DG = nullptr;
 
 };
 

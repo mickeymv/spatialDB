@@ -196,9 +196,14 @@ private:
      */
     bool isRelation(Seg2D &, Seg2D &);
 
-    void updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject &sweepLineStatusObject);
 
-    void updateSegmentClassWhileRemovingSegment(PlaneSweepLineStatusObject &sweepLineStatusObject);
+    /*
+     * The function below is used to update the segment class
+     * for each segment when it's added to the sweepLine.
+     * It's called only in the region cases where overlap numbers
+     * are needed to process other operations.
+     */
+    void updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject &sweepLineStatusObject);
 };
 
 

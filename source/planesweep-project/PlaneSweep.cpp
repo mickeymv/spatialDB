@@ -367,12 +367,13 @@ ParallelObjectTraversal::status PlaneSweep::getStatus() {
  * of current segment's predecessor or successor if required based
  * on the various cases which could occur.
  */
-
-void PlaneSweep::updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject &sweepLineStatusObject) {
-    /*
+/*
      * We assume that the segment is already added to the sweepLineStatus.
      * (In the addLeft function)
      */
+
+void PlaneSweep::updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject &sweepLineStatusObject) {
+
     /*
      * Only add segments from sweepLineStatus which have the segmentClass
      * as (1/2), (2/1), (0/2), (2/0).
@@ -465,20 +466,11 @@ void PlaneSweep::updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject
 
     AVLnode<PlaneSweepLineStatusObject> *currentNode = sweepLineStatus->FindKey(sweepLineStatusObject);
 
-    bool isPredecessorSameObjectAsCurrent;
-    bool isSuccessorSameObjectAsCurrent;
-    if (predecessorNode) {
-        SegmentClass predecessorSegmentClass = predecessorNode->key.getSegmentClass();
-    }
-    if (successorNode) {
-        SegmentClass successorSegmentClass = successorNode->key.getSegmentClass();
-    }
     bool iaPred, iaSucc, iaCurr = sweepLineStatusObject.getInsideAbove();
 
     if (predecessorNode != NULL) {
         iaPred = predecessorNode->key.getInsideAbove();
         if (currentNode->key.getObject() == predecessorNode->key.getObject()) {
-            isPredecessorSameObjectAsCurrent = true;
             if (iaPred == true && iaCurr == false) {
                 // dummy val 0 for uol
                 int lorCurr = predecessorNode->key.getSegmentClass().getUpperOrLeft();
@@ -502,7 +494,6 @@ void PlaneSweep::updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject
              * IV) pred's upper is 0 and ia is 1.
              */
         } else {
-            isPredecessorSameObjectAsCurrent = false;
             if (iaPred == true && iaCurr == false) { //c1
                 int lorCurr = predecessorNode->key.getSegmentClass().getUpperOrLeft();
                 if (lorCurr == 2) {
@@ -549,7 +540,6 @@ void PlaneSweep::updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject
     if (successorNode != NULL) {
         iaSucc = successorNode->key.getInsideAbove();
         if (currentNode->key.getObject() == successorNode->key.getObject()) {
-            isSuccessorSameObjectAsCurrent = true;
             if (iaSucc == true && iaCurr == false) {
                 //dummy val 0 for lor
                 int uolCurr = successorNode->key.getSegmentClass().getLowerOrRight();
@@ -566,7 +556,6 @@ void PlaneSweep::updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject
                 }
             }
         } else {
-            isSuccessorSameObjectAsCurrent = false;
             if (iaSucc == false && iaCurr == false) { //case d1 ??
                 //dummy val 2 for lor
                 int uolCurr = successorNode->key.getSegmentClass().getLowerOrRight();
@@ -613,10 +602,13 @@ void PlaneSweep::updateSegmentClassWhileAddingSegment(PlaneSweepLineStatusObject
     }
 }
 
-
 void PlaneSweep::addLeft(PlaneSweepLineStatusObject &planeSweepLineStatusObject) {
     sweepLineStatus->insert(planeSweepLineStatusObject);
 
+    /*
+    * We need to (re)calculate overlap numbers for the segments
+    * in the sweepLine in the region case.
+    */
     if (objF.isRegion2D() && objG.isRegion2D()) {
         /*
          * Add the updateSegmentClass code here.
@@ -647,19 +639,10 @@ void PlaneSweep::delRight(PlaneSweepLineStatusObject &planeSweepLineStatusObject
     Seg2D pred = getPredecessor(planeSweepLineStatusObject).getSegment2D();
     Seg2D succ = getSuccessor(planeSweepLineStatusObject).getSegment2D();
 
-    Seg2D seg2D = planeSweepLineStatusObject.getSegment2D();
-    sweepLineStatus->deleteKey(seg2D);
+    sweepLineStatus->deleteKey(planeSweepLineStatusObject);
     if (((objF.isLine2D() && objG.isLine2D()) || (objF.isLine2D() && objG.isRegion2D()) ||
          (objF.isRegion2D() && objG.isRegion2D())) && isRelation(pred, succ)) {
         splitLines(pred, succ);
-    }
-    if (objF.isRegion2D() && objG.isRegion2D()) {
-        /*
-     * Add the updateSegmentClass code here.
-     * it should update the segmentClass for the deleted segment's
-     *  predecessor and successor.
-     */
-        //updateSegmentClassWhileRemovingSegment(planeSweepLineStatusObject);
     }
 }
 
@@ -2414,5 +2397,5 @@ PlaneSweepLineStatusObject PlaneSweep::getSuccessor(PlaneSweepLineStatusObject &
 }
 
 void PlaneSweep::newSweep() {
-    sweepLineStatus = new AVLTree<PlaneSweepLineStatusObject>();//Not sure if it is passed like this
+    sweepLineStatus = new AVLTree<PlaneSweepLineStatusObject>();
 }
