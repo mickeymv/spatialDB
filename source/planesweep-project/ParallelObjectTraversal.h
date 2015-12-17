@@ -160,11 +160,13 @@ private:
 
     inline Poi2D nextFPoi() {
         Point2D::ConstPoiIterator nextobjFpoiIterator = ++(*objFpoiIterator);
+        --(*objFpoiIterator);
         return (Poi2D) (*nextobjFpoiIterator);
     }
 
     inline Poi2D nextGPoi() {
         Point2D::ConstPoiIterator nextobjGpoiIterator = ++(*objGpoiIterator);
+        --(*objGpoiIterator);
         return (Poi2D) (*nextobjGpoiIterator);
     }
 
@@ -173,6 +175,7 @@ private:
             return (HalfSeg2D) *((Line2DImpl *) objF)->hTail();
         }
         Line2DImpl::ConstHalfSegIterator nextobjFsegIterator = ++(*objFsegIterator);
+        --(*objFsegIterator);
         return (HalfSeg2D) (*nextobjFsegIterator);
     }
 
@@ -180,6 +183,7 @@ private:
         if (*objGsegIterator == ((Line2DImpl *) objG)->hTail()) {
             return (HalfSeg2D) *((Line2DImpl *) objG)->hTail();
         }
+        --(*objGsegIterator);
         Line2DImpl::ConstHalfSegIterator nextobjGsegIterator = ++(*objGsegIterator);
         return (HalfSeg2D) (*nextobjGsegIterator);
     }
@@ -189,6 +193,7 @@ private:
             return (AttrHalfSeg2D) *((Region2DImpl *) objF)->ctail();
         }
         Region2DImpl::ConstAttributedHalfSegmentIterator nextobjFregionIterator = ++(*objFregionIterator);
+        --(*objFregionIterator);
         return (AttrHalfSeg2D) (*nextobjFregionIterator);
     }
 
@@ -196,6 +201,7 @@ private:
         if (*objGregionIterator == ((Region2DImpl *) objG)->ctail()) {
             return (AttrHalfSeg2D) *((Region2DImpl *) objG)->ctail();
         }
+        --(*objGregionIterator);
         Region2DImpl::ConstAttributedHalfSegmentIterator nextobjGregionIterator = ++(*objGregionIterator);
         return (AttrHalfSeg2D) (*nextobjGregionIterator);
     }
