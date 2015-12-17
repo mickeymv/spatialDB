@@ -16,6 +16,7 @@
 ******************************************************************************/
 #include "Line2DLine2D.h"
 
+
 Line2DLine2D::Line2DLine2D(const Line2D &F, const Line2D &G) {
 
     // set obj1 and obj2
@@ -53,9 +54,8 @@ void Line2DLine2D::exploreTopoPred() {
     Poi2D last_bound_in_g;
     Poi2D last_bound_in_f;
 
-    int i=1;
 
-    while (i<200 && (S.getStatus() != ParallelObjectTraversal::end_of_both) &&
+    while ((S.getStatus() != ParallelObjectTraversal::end_of_both) &&
            (!(vF[seg_shared] && vF[interior_poi_shared] && vF[seg_unshared] && vF[bound_on_interior] &&
               vF[bound_shared] && vF[bound_disjoint] && vG[bound_disjoint_g] && vG[bound_on_interior_g] &&
               vG[seg_unshared_g]))) {
@@ -208,14 +208,19 @@ void Line2DLine2D::exploreTopoPred() {
         }
         S.selectNext();
 
-        //test
-        i++;
-
-        cout << "i= " << i << endl;
-
-        if (i>190) cout << "i= " << i << endl;
 
     }
+
+
+//    cout << "vF[seg_shared] = " << vF[seg_shared] << endl;
+//    cout << "vF[interior_poi_shared] = " << vF[interior_poi_shared] << endl;
+//    cout << "vF[seg_unshared] = " << vF[seg_unshared] << endl;
+//    cout << "vF[bound_on_interior] = " << vF[bound_on_interior] << endl;
+//    cout << "vF[bound_shared] = " << vF[bound_shared] << endl;
+//    cout << "vF[bound_disjoint] = " << vF[bound_disjoint] << endl;
+//    cout << "vG[bound_disjoint_g] = " << vG[bound_disjoint_g] << endl;
+//    cout << "vG[bound_on_interior_g] = " << vG[bound_on_interior_g] << endl;
+//    cout << "vG[seg_unshared_g] = " << vG[seg_unshared_g] << endl;
 
 
     return;
@@ -224,100 +229,54 @@ void Line2DLine2D::exploreTopoPred() {
 
 void Line2DLine2D::evaluateTopoPred() {
 
+//    vF[bound_on_interior] = 0;
+//    vG[seg_unshared_g] = 0;
+//    vF[bound_shared] = 1;
 
-    int IMC[3][3];
+
+    // Dtj. Dec 16.
+    // matrix index 2,2 always true
+    bool IMC[] = {0,0,0,0,0,0,0,0,1};
+
+    if (vF[seg_shared] || vF[interior_poi_shared])
+        IMC[0]= 1; // (100000000)
+
+    if (vG[bound_on_interior_g])
+        IMC[1] = 1; // (010000000)
+
+    if (vF[seg_unshared])
+        IMC[2] = 1; // (001000000)
+
+    if (vF[bound_on_interior])
+        IMC[3] = 1; // (000100000)
+
+    if (vF[bound_shared])
+        IMC[4] = 1; // (000010000)
+
+    if (vF[bound_disjoint])
+        IMC[5] = 1; // (000001000)
+
+    if (vG[seg_unshared_g])
+        IMC[6] = 1; // (000000100)
+
+    if (vG[bound_disjoint_g])
+        IMC[7] = 1; // (000000010)
 
 
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            IMC[i][j] = 0;
+    // compare/match the right one
+    // size of matrix = 82
+    int found = 0;
+    for (int i = 0; i < 82 && !isPredSet; i++) {
+        found = 0;
+        for (int k = 0; k < 9; k++) {
+            if (IMC[k] == (matrix[i].at(k) == '1' ? 1 : 0)) {
+                found++;
+            }
         }
-    }
-    //populating 9IM
-    if (vF[seg_shared] && vF[interior_poi_shared]) {
-        IMC[0][0] = 1;
-    }
-    if (vG[bound_on_interior_g]) {
-        IMC[0][1] = 1;
-    }
-    if (vF[seg_unshared]) {
-        IMC[0][2] = 1;
-    }
-    if (vF[bound_on_interior]) {
-        IMC[1][0] = 1;
-    }
-    if (vF[bound_shared]) {
-        IMC[1][1] = 1;
-    }
-    if (vF[bound_disjoint]) {
-        IMC[1][2] = 1;
-    }
-    if (vG[seg_unshared_g]) {
-        IMC[2][0] = 1;
-    }
-    if (vG[bound_disjoint_g]) {
-        IMC[2][1] = 1;
-    }
 
-    IMC[2][2] = 1;
-
-    //Evaluation phase
-
-    //Disjoint
-    if ((!IMC[0][0]) && (!IMC[0][1]) && (!IMC[1][0]) && (!IMC[1][1])) {
-        topPredNumberLine2DLine2D = TopPredNumberLine2DLine2D::ll_disjoint_m4;
-        isPredSet = true;
-    }
-
-    //Touches/meet
-    if (!(IMC[0][0])) {
-        if (IMC[0][1] || IMC[1][0] || IMC[1][1]) {
-            topPredNumberLine2DLine2D = TopPredNumberLine2DLine2D::ll_meet_m25;
+        if (found == 9) {
             isPredSet = true;
-        }
-    }
-    //equals
-    if (IMC[0][0]) {
-        if ((!IMC[2][0]) && (!IMC[2][1]) && (!IMC[0][2]) && (!IMC[1][2])) {
-            topPredNumberLine2DLine2D = TopPredNumberLine2DLine2D::ll_meet_m25;
-            isPredSet = true;
-        }
-    }
-    //inside
-    if (IMC[0][0]) {
-        if ((!(IMC[0][2])) && (!(IMC[1][2]))) {
-            topPredNumberLine2DLine2D = TopPredNumberLine2DLine2D::ll_inside_m39;
-            isPredSet = true;
-        }
-    }
-    //coveredBy
-    if ((!(IMC[0][2])) && (!(IMC[1][2]))) {
-
-
-        if ((IMC[0][0]) || (IMC[0][1]) || (IMC[1][0]) || (IMC[1][1])) {
-            topPredNumberLine2DLine2D = TopPredNumberLine2DLine2D::ll_coveredby_m37;
-            isPredSet = true;
-        }
-    }
-    //contains
-    if (IMC[0][0]) {
-        if ((!(IMC[2][0])) && (!(IMC[2][1]))) {
-            topPredNumberLine2DLine2D = TopPredNumberLine2DLine2D::ll_contains_m43;
-            isPredSet = true;
-        }
-    }
-
-    //overlaps
-    if ((IMC[0][0]) && (IMC[0][2]) && (IMC[2][0])) {
-        topPredNumberLine2DLine2D = TopPredNumberLine2DLine2D::ll_overlap_m44;
-        isPredSet = true;
-    }
-
-    //covers
-    if ((!(IMC[2][0])) && (!(IMC[2][1]))) {
-        if ((IMC[0][0]) || (IMC[0][1]) || (IMC[1][0]) || (IMC[1][1])) {
-            topPredNumberLine2DLine2D = TopPredNumberLine2DLine2D::ll_covers_m72;
-            isPredSet = true;
+            topPredNumberLine2DLine2D = (TopPredNumberLine2DLine2D) i;
         }
     }
 
@@ -510,5 +469,3 @@ bool Line2DLine2D::equal() {
     }
     return false;
 }
-
-
