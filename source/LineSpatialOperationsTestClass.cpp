@@ -128,9 +128,9 @@
 ////    cout<<"lineDifference34 number of segments is " <<lineDifference34.getNumberOfSegments()<<endl;
 ////    cout<<endl;
 //
-//    //---------------------------------------
-//    //Case 1.I.z): Line Operations Case where both the line objects are not null with no common segments.
-//
+////    //---------------------------------------
+////    //Case 1.I.z): Line Operations Case where both the line objects are not null with no common segments.
+////
 ////    Line2D line5("(((0,0),(1,1)),((1,1),(2,2)),((2,2),(3,3)))"), line6("(((0,1),(1,2)),((1,2),(2,3)),((2,3),(3,4)),((3,4),(4,5)))"), lineIntersection56, lineUnion56, lineDifference56;
 ////    cout<<"---------------------------------------" << endl;
 ////    cout<<"Line Operations Case both the line objects are not null with no common segments" << endl;
@@ -151,36 +151,23 @@
 ////    cout<<"line6 number of segments is " << line6.getNumberOfSegments()<<endl;
 ////    cout<<endl;
 ////
-////    lineIntersection56 = spatialIntersection(line5, line6);
 ////
-////    cout<<"lineIntersection56 info is: " << lineIntersection56;
-////    if(lineIntersection56.isEmptyLine2D())
-////        cout<<"empty lineIntersection56 structure"<<endl;
-////    else
-////        cout<<"nonempty lineIntersection56 structure"<<endl;
-////    cout<<"lineIntersection56 number of segments is " <<lineIntersection56.getNumberOfSegments()<<endl;
+////    cout<<"lineIntersection56 info is: " << endl;
+////    spatialIntersection(line5, line6);
 ////    cout<<endl;
 ////
-////    lineUnion56 = spatialUnion(line5, line6);
-////    cout<<"lineUnion56 info is: " << lineUnion56;
-////    if(lineUnion56.isEmptyLine2D())
-////        cout<<"empty lineUnion56 structure"<<endl;
-////    else
-////        cout<<"nonempty lineUnion56 structure"<<endl;
-////    cout<<"lineUnion56 number of segments is " << lineUnion56.getNumberOfSegments()<<endl;
+////    cout<<"lineUnion56 info is: "<<endl;
+////    spatialUnion(line5, line6);
 ////    cout<<endl;
 ////
-////    lineDifference56 = spatialDifference(line5,line6);
-////    cout<<"lineDifference56 info is: " << lineDifference56;
-////    if(lineDifference56.isEmptyLine2D())
-////        cout<<"empty lineDifference56 structure"<<endl;
-////    else
-////        cout<<"nonempty lineDifference56 structure"<<endl;
-////    cout<<"lineDifference56 number of segments is " <<lineDifference56.getNumberOfSegments()<<endl;
+////    cout<<"lineDifference56 info is: "<<endl;
+////    spatialDifference(line5,line6);
 ////    cout<<endl;
-//    //---------------------------------------
-//    //Case 1.II): Line Operations Case where both the line objects are not null with some common segments
 //
+//
+////    //---------------------------------------
+////    //Case 1.II): Line Operations Case where both the line objects are not null with some common segments
+////
 ////    Line2D line7("(((0,0),(1,1)),((1,1),(2,2)),((2,2),(3,3)))"), line8("(((0,0),(1,1)),((1,1),(2,3)),((2,3),(3,3)),((3,3),(4,4)))"), lineIntersection78, lineUnion78, lineDifference78;
 ////    cout<<"---------------------------------------" << endl;
 ////    cout<<"Line Operations Case both the line objects are not null with some common segments" << endl;
@@ -201,36 +188,21 @@
 ////    cout<<"line8 number of segments is " << line8.getNumberOfSegments()<<endl;
 ////    cout<<endl;
 ////
-////    lineIntersection78 = spatialIntersection(line7, line8);
-////    cout<<"lineIntersection78 info is: " << lineIntersection78;
-////    if(lineIntersection78.isEmptyLine2D())
-////        cout<<"empty lineIntersection78 structure"<<endl;
-////    else
-////        cout<<"nonempty lineIntersection78 structure"<<endl;
-////    cout<<"lineIntersection78 number of segments is " <<lineIntersection78.getNumberOfSegments()<<endl;
+////    cout<<"lineIntersection78 info is: " << endl;
+////    spatialIntersection(line7, line8);
 ////    cout<<endl;
 ////
-////    lineUnion78 = spatialUnion(line7, line8);
-////    cout<<"lineUnion78 info is: " << lineUnion78;
-////    if(lineUnion78.isEmptyLine2D())
-////        cout<<"empty lineUnion78 structure"<<endl;
-////    else
-////        cout<<"nonempty lineUnion78 structure"<<endl;
-////    cout<<"lineUnion78 number of segments is " << lineUnion78.getNumberOfSegments()<<endl;
+////    cout<<"lineUnion78 info is: " << endl;
+////    spatialUnion(line7, line8);
 ////    cout<<endl;
 ////
-////    lineDifference78 = spatialDifference(line7,line8);
-////    cout<<"lineDifference78 info is: " << lineDifference78;
-////    if(lineDifference78.isEmptyLine2D())
-////        cout<<"empty lineDifference78 structure"<<endl;
-////    else
-////        cout<<"nonempty lineDifference78 structure"<<endl;
-////    cout<<"lineDifference78 number of segments is " <<lineDifference78.getNumberOfSegments()<<endl;
+////    cout<<"lineDifference78 info is: " << endl;
+////    spatialDifference(line7,line8);
 ////    cout<<endl;
-//
-//    //---------------------------------------
-//    //Case 1.III): Line Operations Case where both the line objects are not null with all segments common
-//
+////
+////    //---------------------------------------
+////    //Case 1.III): Line Operations Case where both the line objects are not null with all segments common
+////
 ////    Line2D line9("(((0,0),(1,1)),((1,1),(2,3)),((2,3),(3,3)),((3,3),(4,4)))"), line10("(((0,0),(1,1)),((1,1),(2,3)),((2,3),(3,3)),((3,3),(4,4)))"), lineIntersection910, lineUnion910, lineDifference910;
 ////    cout<<"---------------------------------------" << endl;
 ////    cout<<"Line Operations Case both the line objects are not null with some common segments" << endl;
@@ -251,31 +223,16 @@
 ////    cout<<"line10 number of segments is " << line10.getNumberOfSegments()<<endl;
 ////    cout<<endl;
 ////
-////    lineIntersection910 = spatialIntersection(line9, line10);
-////    cout<<"lineIntersection910 info is: " << lineIntersection910;
-////    if(lineIntersection910.isEmptyLine2D())
-////        cout<<"empty lineIntersection910 structure"<<endl;
-////    else
-////        cout<<"nonempty lineIntersection910 structure"<<endl;
-////    cout<<"lineIntersection910 number of segments is " <<lineIntersection910.getNumberOfSegments()<<endl;
+////    cout<<"lineIntersection910 info is: " << endl;
+////    spatialIntersection(line9, line10);
 ////    cout<<endl;
 ////
-////    lineUnion910 = spatialUnion(line9, line10);
-////    cout<<"lineUnion910 info is: " << lineUnion910;
-////    if(lineUnion910.isEmptyLine2D())
-////        cout<<"empty lineUnion910 structure"<<endl;
-////    else
-////        cout<<"nonempty lineUnion910 structure"<<endl;
-////    cout<<"lineUnion910 number of segments is " << lineUnion910.getNumberOfSegments()<<endl;
+////    cout<<"lineUnion910 info is: " << endl;
+////    spatialUnion(line9, line10);
 ////    cout<<endl;
 ////
-////    lineDifference910 = spatialDifference(line9,line10);
-////    cout<<"lineDifference910 info is: " << lineDifference910;
-////    if(lineDifference910.isEmptyLine2D())
-////        cout<<"empty lineDifference910 structure"<<endl;
-////    else
-////        cout<<"nonempty lineDifference910 structure"<<endl;
-////    cout<<"lineDifference910 number of segments is " <<lineDifference910.getNumberOfSegments()<<endl;
+////    cout<<"lineDifference910 info is: " << endl;
+////    spatialDifference(line9,line10);
 ////    cout<<endl;
 //
 //}

@@ -142,9 +142,19 @@ Point2D spatialDifference(const Point2D &pointLhs, const Point2D &pointRhs) {
 
 void updateSweepLineForLine(PlaneSweep &planeSweep);
 
+void printLineDetails(Line2D line) {
+    cout << "The Line object is: " << line;
+    if (line.isEmptyLine2D())
+        cout << "Line structure is empty!" << endl;
+    else
+        cout << "Line structure is non-empty!" << endl;
+    cout << "Line's number of segments is " << line.getNumberOfSegments() << endl;
+}
+
 Line2D spatialIntersection(const Line2D &lineLhs, const Line2D &lineRhs) {
     Line2D emptyLineObject;
     if (lineLhs.isEmptyLine2D() || lineRhs.isEmptyLine2D()) {
+        printLineDetails(emptyLineObject);
         return emptyLineObject;
     }
 
@@ -168,11 +178,15 @@ Line2D spatialIntersection(const Line2D &lineLhs, const Line2D &lineRhs) {
             HalfSeg2D firstHalfSeg2D = planeSweep.getHalfSegEvent(ParallelObjectTraversal::first);
             HalfSeg2D secondHalfSeg2D = planeSweep.getHalfSegEvent(ParallelObjectTraversal::second);
             if (firstHalfSeg2D.isLeft == secondHalfSeg2D.isLeft) {
-                /*Only if the left and right end points of the segments
+                /*  Only if the left and right end points of the segments
                  * match should it be added to the intersection.
                 */
                 Seg2D seg2D = firstHalfSeg2D.seg;
-                intersectionLinesVector.push_back(seg2D);
+                if (find(intersectionLinesVector.begin(), intersectionLinesVector.end(), seg2D) ==
+                    intersectionLinesVector.end()) {
+                    //If the segment is not already in the intersection, add it.
+                    intersectionLinesVector.push_back(seg2D);
+                }
                 //The argument could be ParallelObjectTraversal::second as well since they're the same.
                 previousObjectHistory = ParallelObjectTraversal::both;
 
@@ -193,16 +207,20 @@ Line2D spatialIntersection(const Line2D &lineLhs, const Line2D &lineRhs) {
     }
 
     Line2D intersectionLineObject(intersectionLinesVector);
+    printLineDetails(intersectionLineObject);
     return intersectionLineObject;
 }
 
 Line2D spatialUnion(const Line2D &lineLhs, const Line2D &lineRhs) {
     Line2D emptyLineObject;
     if (lineLhs.isEmptyLine2D() && lineRhs.isEmptyLine2D()) {
+        printLineDetails(emptyLineObject);
         return emptyLineObject;
     } else if (lineLhs.isEmptyLine2D()) {
+        printLineDetails(lineRhs);
         return lineRhs;
     } else if (lineRhs.isEmptyLine2D()) {
+        printLineDetails(lineLhs);
         return lineLhs;
     }
 
@@ -220,21 +238,28 @@ Line2D spatialUnion(const Line2D &lineLhs, const Line2D &lineRhs) {
         HalfSeg2D halfSeg2D = planeSweep.getHalfSegEvent(objectValue);
         if (halfSeg2D.isLeft == false) {
             Seg2D seg2D = halfSeg2D.seg;
-            unionLinesVector.push_back(seg2D);
+            if (find(unionLinesVector.begin(), unionLinesVector.end(), seg2D) ==
+                    unionLinesVector.end()) {
+                //If the segment is not already in the union, add it.
+                unionLinesVector.push_back(seg2D);
+            }
         }
 
         planeSweep.selectNext();
     }
 
     Line2D unionLineObject(unionLinesVector);
+    printLineDetails(unionLineObject);
     return unionLineObject;
 }
 
 Line2D spatialDifference(const Line2D &lineLhs, const Line2D &lineRhs) {
     Line2D emptyLineObject;
     if (lineLhs.isEmptyLine2D()) {
+        printLineDetails(emptyLineObject);
         return emptyLineObject;
     } else if (lineRhs.isEmptyLine2D()) {
+        printLineDetails(lineLhs);
         return lineLhs;
     }
 
@@ -260,12 +285,16 @@ Line2D spatialDifference(const Line2D &lineLhs, const Line2D &lineRhs) {
                 ) {
             HalfSeg2D halfSeg2D = planeSweep.getHalfSegEvent(ParallelObjectTraversal::first);
             Seg2D seg2D = halfSeg2D.seg;
-            differenceLinesVector.push_back(seg2D);
+            if (find(differenceLinesVector.begin(), differenceLinesVector.end(), seg2D) ==
+                    differenceLinesVector.end()) {
+                //If the segment is not already in the union, add it.
+                differenceLinesVector.push_back(seg2D);
+            }
 //The argument could be ParallelObjectTraversal::second as well since they're the same.
         } else if (planeSweep.getObject() == ParallelObjectTraversal::first ||
                    planeSweep.getObject() == ParallelObjectTraversal::both) {
 //update previous event's object with this event
-            previousObjectHistory = ParallelObjectTraversal::first;
+            previousObjectHistory = planeSweep.getObject();
 
         } else if (planeSweep.getObject() != ParallelObjectTraversal::second ||
                    planeSweep.getObject() != ParallelObjectTraversal::none) {
@@ -275,8 +304,8 @@ Line2D spatialDifference(const Line2D &lineLhs, const Line2D &lineRhs) {
     }
 
     Line2D differenceLineObject(differenceLinesVector);
-    return
-            differenceLineObject;
+    printLineDetails(differenceLineObject);
+    return differenceLineObject;
 }
 
 
