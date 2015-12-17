@@ -17,6 +17,7 @@
 #include "TopologicalRelationships.h"
 #include "Point2DPoint2D.h"
 #include "Point2DLine2D.h"
+#include "Line2DLine2D.h"
 #include "Point2DRegion2D.h"
 #include "Region2DRegion2D.h"
 
@@ -69,6 +70,7 @@ TopPredNumberPoint2DLine2D getTopologicalRelationship(const Point2D &lhs, const 
 
 }
 
+
 bool isTopologicalRelationship(const Point2D &lhs, const Line2D &rhs, TopPredNumberPoint2DLine2D predicate) {
 
     //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
@@ -81,6 +83,19 @@ bool isTopologicalRelationship(const Point2D &lhs, const Line2D &rhs, TopPredNum
 
 }
 
+/* Topological Relationship between a line2D object and a line2D object */
+TopPredNumberLine2DLine2D getTopologicalRelationship(const Line2D &lhs, const Line2D &rhs) {
+
+    //Define predicate as an integer/matrix number
+    TopPredNumberLine2DLine2D predicate;
+    Line2DLine2D *ll = new Line2DLine2D(lhs, rhs);
+    predicate = ll->getTopologicalRelationship();
+    delete ll;
+
+    return predicate;
+
+}
+
 /* Topological Relationship between a point2D object and a region2D object */
 
 //TopPredNumberPoint2DRegion2D getTopologicalRelationship(const Point2D &lhs, const Region2D &rhs) {
@@ -89,7 +104,7 @@ bool isTopologicalRelationship(const Point2D &lhs, const Line2D &rhs, TopPredNum
 //    TopPredNumberPoint2DRegion2D predicate;
 //    //Define predicate as an integer/matrix number
 //
-//    Point2DRegion2D *pr = new Point2DRegion2D(lhs, rhs);
+//    Point2DRegion2D *pr = new pr(lhs, rhs);
 //    predicate = pr->getTopologicalRelationship();
 //    delete pr;
 //    return predicate;
@@ -105,7 +120,7 @@ bool isTopologicalRelationship(const Point2D &lhs, const Line2D &rhs, TopPredNum
 //    bool isPredicate = false;
 //
 //    //Define predicate as an integer/matrix number
-//    Point2DRegion2D *pr = new Point2DRegion2D(lhs, rhs);
+//    Point2DRegion2D *pr = new pr(lhs, rhs);
 //    isPredicate = pr->isTopologicalRelationship(predicate);
 //    delete pr;
 //
@@ -113,21 +128,7 @@ bool isTopologicalRelationship(const Point2D &lhs, const Line2D &rhs, TopPredNum
 //
 //}
 //
-///* Topological Relationship between a line2D object and a line2D object */
-//
-//TopPredNumberLine2DLine2D getTopologicalRelationship(const Line2D &lhs, const Line2D &rhs) {
-//
-//    //Define predicate as an integer/matrix number
-//    TopPredNumberLine2DLine2D predicate;
-//    //Define predicate as an integer/matrix number
-//
-//    Line2DLine2D *ll = new Line2DLine2D(lhs, rhs);
-//    predicate = ll->getTopologicalRelationship();
-//    delete ll;
-//    return predicate;
-//
-//
-//}
+
 //
 //bool isTopologicalRelationship(const Line2D &lhs, const Line2D &rhs, TopPredNumberLine2DLine2D predicate) {
 //
@@ -135,7 +136,7 @@ bool isTopologicalRelationship(const Point2D &lhs, const Line2D &rhs, TopPredNum
 //    bool isPredicate = false;
 //
 //    //Define predicate as an integer/matrix number
-//    Line2DLine2D *ll = new Line2DLine2D(lhs, rhs);
+//    Line2DLine2D *ll = new ll(lhs, rhs);
 //    isPredicate = ll->isTopologicalRelationship(predicate);
 //    delete ll;
 //
