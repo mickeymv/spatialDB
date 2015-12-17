@@ -27,7 +27,7 @@ using namespace std;
 
 void printPoint2DPoint2DPredicate(TopPredNumberPoint2DPoint2D tpred);
 void printPoint2DLine2DPredicate(TopPredNumberPoint2DLine2D tpred);
-
+void printLine2DLine2DPredicate(TopPredNumberLine2DLine2D tpred);
 void printRegion2DRegion2DPredicate(TopPredNumberRegion2DRegion2D tpred);
 
 
@@ -477,55 +477,62 @@ int main() {
 }
 
 
-void printPoint2DPoint2DPredicate(TopPredNumberPoint2DPoint2D tpred) {
-
-    switch(tpred) {
-        case TopPredNumberPoint2DPoint2D::pp_disjoint_m1 : cout << "pp_disjoint_m1 <===";
-            break;
-        case TopPredNumberPoint2DPoint2D::pp_equal_m2 : cout << "pp_equal_m2 <===";
-            break;
-        case TopPredNumberPoint2DPoint2D::pp_inside_m3 : cout << "pp_inside_m3 <===";
-            break;
-        case TopPredNumberPoint2DPoint2D::pp_contains_m4 : cout << "pp_contains_m4 <===";
-            break;
-        case TopPredNumberPoint2DPoint2D::pp_overlap_m5 : cout << "pp_overlap_m5 <===";
-            break;
-    }
+string topPredNumberPoint2DPoint2D[5] =
+{
+    "pp_disjoint_m1", "pp_equal_m2", "pp_inside_m3", "pp_contains_m4", "pp_overlap_m5"
 };
 
-void printPoint2DLine2DPredicate(TopPredNumberPoint2DLine2D tpred) {
 
-    switch(tpred) {
-        case TopPredNumberPoint2DLine2D::pl_disjoint_m1 : cout << "pl_disjoint_m1 <===";
-            break;
-        case TopPredNumberPoint2DLine2D ::pl_disjoint_m2: cout << "pl_disjoint__m2 <===";
-            break;
-        case TopPredNumberPoint2DLine2D::pl_meet_m3 : cout << "pl_meet_m3 <===";
-            break;
-        case TopPredNumberPoint2DLine2D::pl_meet_m4 : cout<<"pl_meet_m4 <===";
-            break;
-        case TopPredNumberPoint2DLine2D::pl_meet_m5 : cout << "pl_meet_m5 <===";
-            break;
-        case TopPredNumberPoint2DLine2D ::pl_meet_m6 : cout << "pl_meet_m6 <===";
-            break;
-        case TopPredNumberPoint2DLine2D::pl_inside_m7 : cout << "pl_inside_m7 <===";
-            break;
-        case TopPredNumberPoint2DLine2D::pl_inside_m8 : cout<<"pl_inside_m8 <===";
-            break;
-        case TopPredNumberPoint2DLine2D::pl_overlap_m9 : cout<<"pl_overlap_m9 <===";
-            break;
-        case TopPredNumberPoint2DLine2D::pl_overlap_m10 : cout<<"pl_overlap_m10 <===";
-            break;
-        case TopPredNumberPoint2DLine2D::pl_inside_m11 : cout<<"pl_inside_m11 <===";
-            break;
-        case TopPredNumberPoint2DLine2D::pl_inside_m12 : cout<<"pl_inside_m12 <===";
-            break;
-        case TopPredNumberPoint2DLine2D::pl_overlap_m13 : cout<<"pl_overlap_m13 <===";
-            break;
-        case TopPredNumberPoint2DLine2D::pl_overlap_m14 : cout<<"pl_overlap_m14 <===";
-            break;
-    }
+string topPredNumberPoint2DLine2D[14] =
+{
+        "pl_disjoint_m1", "pl_disjoint_m2", "pl_meet_m3", "pl_meet_m4", "pl_meet_m5",
+        "pl_meet_m6", "pl_inside_m7", "pl_inside_m8", "pl_overlap_m9", "pl_overlap_m10",
+        "pl_inside_m11", "pl_inside_m12", "pl_overlap_m13", "pl_overlap_m14"
 };
+
+
+string topPredLine2DLine2D[82] =
+{
+        "ll_disjoint_m1", "ll_disjoint_m2", "ll_disjoint_m3", "ll_disjoint_m4",
+        "ll_meet_m5", "ll_meet_m6", "ll_meet_m7", "ll_meet_m8", "ll_meet_m9",
+        "ll_meet_m10", "ll_meet_m11", "ll_meet_m12", "ll_meet_m13", "ll_meet_m14",
+        "ll_meet_m15", "ll_meet_m16", "ll_meet_m17", "ll_meet_m18", "ll_meet_m19",
+        "ll_meet_m20", "ll_meet_m21", "ll_meet_m22", "ll_meet_m23", "ll_meet_m24",
+        "ll_meet_m25", "ll_meet_m26", "ll_meet_m27", "ll_meet_m28", "ll_meet_m29",
+        "ll_meet_m30","ll_meet_m31", "ll_meet_m32", "ll_equal_m33", "ll_inside_m34",
+        "ll_inside_m35", "ll_equal_m36","ll_coveredby_m37", "ll_coveredby_m38",
+        "ll_inside_m39", "ll_inside_m40", "ll_coveredby_m41", "ll_coveredby_m42",
+        "ll_contains_m43", "ll_overlap_m44", "ll_overlap_m45", "ll_contains_m46",
+        "ll_overlap_m47", "ll_overlap_m48", "ll_covers_m49", "ll_overlap_m50",
+        "ll_overlap_m51", "ll_covers_m52", "ll_overlap_m53", "ll_overlap_m54",
+        "ll_overlap_m55", "ll_overlap_m56", "ll_overlap_m57", "ll_overlap_m58",
+        "ll_overlap_m59", "ll_overlap_m60", "ll_overlap_m61", "ll_overlap_m62",
+        "ll_contains_m63", "ll_overlap_m64", "ll_overlap_m65", "ll_contains_m66",
+        "ll_overlap_m67", "ll_overlap_m68", "ll_covers_m69", "ll_overlap_m70",
+        "ll_overlap_m71", "ll_covers_m72", "ll_overlap_m73", "ll_overlap_m74",
+        "ll_overlap_m75", "ll_overlap_m76", "ll_overlap_m77", "ll_overlap_m78",
+        "ll_overlap_m79", "ll_overlap_m80", "ll_overlap_m81", "ll_overlap_m82"
+
+};
+
+inline void printPoint2DPoint2DPredicate(TopPredNumberPoint2DPoint2D tpred) {
+
+    cout << topPredNumberPoint2DPoint2D[(unsigned int) tpred] << " <===";
+};
+
+
+inline void printPoint2DLine2DPredicate(TopPredNumberPoint2DLine2D tpred) {
+
+    cout << topPredNumberPoint2DLine2D[(unsigned int) tpred] << " <===";
+};
+
+
+inline void printLine2DLine2DPredicate(TopPredNumberLine2DLine2D tpred) {
+
+    cout << topPredLine2DLine2D[(unsigned int) tpred] << " <===";
+
+};
+
 
 void printRegion2DRegion2DPredicate(TopPredNumberRegion2DRegion2D tpred) {
     switch (tpred) {
