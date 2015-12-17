@@ -169,21 +169,33 @@ private:
     }
 
     inline HalfSeg2D nextFSeg() {
+        if (*objFsegIterator == ((Line2DImpl *) objF)->hTail()) {
+            return (HalfSeg2D) *((Line2DImpl *) objF)->hTail();
+        }
         Line2DImpl::ConstHalfSegIterator nextobjFsegIterator = ++(*objFsegIterator);
         return (HalfSeg2D) (*nextobjFsegIterator);
     }
 
     inline HalfSeg2D nextGSeg() {
+        if (*objGsegIterator == ((Line2DImpl *) objG)->hTail()) {
+            return (HalfSeg2D) *((Line2DImpl *) objG)->hTail();
+        }
         Line2DImpl::ConstHalfSegIterator nextobjGsegIterator = ++(*objGsegIterator);
         return (HalfSeg2D) (*nextobjGsegIterator);
     }
 
     inline AttrHalfSeg2D nextFASeg() {
+        if (*objFregionIterator == ((Region2DImpl *) objF)->ctail()) {
+            return (AttrHalfSeg2D) *((Region2DImpl *) objF)->ctail();
+        }
         Region2DImpl::ConstAttributedHalfSegmentIterator nextobjFregionIterator = ++(*objFregionIterator);
         return (AttrHalfSeg2D) (*nextobjFregionIterator);
     }
 
     inline AttrHalfSeg2D nextGASeg() {
+        if (*objGregionIterator == ((Region2DImpl *) objG)->ctail()) {
+            return (AttrHalfSeg2D) *((Region2DImpl *) objG)->ctail();
+        }
         Region2DImpl::ConstAttributedHalfSegmentIterator nextobjGregionIterator = ++(*objGregionIterator);
         return (AttrHalfSeg2D) (*nextobjGregionIterator);
     }

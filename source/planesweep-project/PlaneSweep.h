@@ -149,9 +149,6 @@ private:
     MinHeap<AttrHalfSeg2D> dynamicEPSObjF;
     MinHeap<AttrHalfSeg2D> dynamicEPSObjG;
 
-    Object2D objF, objG;
-
-
     /*
      *  This function would be called from within the selectNext() function.
      *  What this would do is find if the next least poi2D for the 
