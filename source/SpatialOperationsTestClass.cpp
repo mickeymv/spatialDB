@@ -18,7 +18,10 @@ int main()
 
   Point2D point1, point2, pointIntersection12, pointUnion12, pointDifference12;
   cout<<"---------------------------------------" << endl;
-  cout<<"Point Operations Case where the two point objects (1&2) are null." << endl;
+    cout << "\n\n------------------ POINT-POINT  SPATIAL OPERATIONS Testing starts here ----------------------\n" <<endl;
+    cout<<"---------------------------------------" << endl;
+
+    cout<<"Point Operations Case where the two point objects (1&2) are null." << endl;
 
   cout<<"point1 info is: " << point1;
   if(point1.isEmptyPoint2D())
@@ -281,7 +284,7 @@ int main()
   cout<<"---------------------------------------" << endl;
 
 
-    cout << "\n\n------------------LINE  SPATIAL OPERATIONS Testing starts here ----------------------\n" <<endl;
+    cout << "\n\n------------------ LINE-LINE  SPATIAL OPERATIONS Testing starts here ----------------------\n" <<endl;
 
 
     /* 1. a) Computation of spatial operations between two spatial Lines.
@@ -480,7 +483,7 @@ cout<<endl;
 //---------------------------------------
     cout<<"---------------------------------------" << endl;
 
-    cout << "\n\n------------------Region  SPATIAL OPERATIONS Testing starts here ----------------------\n" <<endl;
+    cout << "\n\n------------------ REGION-REGION  SPATIAL OPERATIONS Testing starts here ----------------------\n" <<endl;
 
     Region2D regionNull1, regionNull2, regionA("(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))");
     /*
