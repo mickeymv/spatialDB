@@ -23,7 +23,7 @@ Point2DLine2D::Point2DLine2D(const Point2D &F, const Line2D &G) {
     objG=G;
 
     // initialize vF and vG with false
-    for (int i = 0; i<vF_size; i++) {
+    for (int i = 0; i < vF_size; i++) {
         vF[i] = false;
     }
 
@@ -34,7 +34,8 @@ Point2DLine2D::Point2DLine2D(const Point2D &F, const Line2D &G) {
 
 };
 
-Point2DLine2D::~Point2DLine2D() { };
+Point2DLine2D::~Point2DLine2D() {
+};
 
 
 bool *Point2DLine2D::getVF() {
@@ -46,7 +47,6 @@ bool *Point2DLine2D::getVG() {
 }
 
 void Point2DLine2D::exploreTopoPred() {
-
     PlaneSweep S(objF,objG);
     S.newSweep();
     Poi2D last_dp;

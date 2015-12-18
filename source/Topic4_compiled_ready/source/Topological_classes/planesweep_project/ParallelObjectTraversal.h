@@ -84,7 +84,6 @@ public:
     bool isInObjF(Seg2D&);
     bool isInObjG(Seg2D&);
 
-
     // Getter methods for objF, objG, object, status
     object getObject();
     status getStatus();
@@ -147,6 +146,7 @@ private:
     Line2DImpl::ConstHalfSegIterator * objFsegIterator = nullptr, * objGsegIterator = nullptr;
     Region2DImpl::ConstAttributedHalfSegmentIterator * objFregionIterator = nullptr, * objGregionIterator = nullptr;
 
+    //The following commented out functions were Group 3's functions which can be used alternatively
 //    inline Poi2D nextFPoi()
 //    {
 //        if(*objFpoiIterator==((Point2D*) objF)->ctail())
@@ -212,9 +212,6 @@ private:
     Poi2D *minPoi2DF = nullptr,*minPoi2DG = nullptr;
     HalfSeg2D *minHalfSeg2DF = nullptr, *minHalfSeg2DG= nullptr;
     AttrHalfSeg2D *minAttrHalfSeg2DF= nullptr, *minAttrHalfSeg2DG= nullptr;
-    // TODO
-    // define the rest of the inlined currentFXXX and currentGxxx below
-    ///
 
 };
 

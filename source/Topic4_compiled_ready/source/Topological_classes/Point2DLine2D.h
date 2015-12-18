@@ -21,12 +21,9 @@
 #include "planesweep_project/Topic2/Implementation/Point2D.h"
 #include "planesweep_project/Topic2/Implementation/Line2D.h"
 #include "planesweep_project/PlaneSweep.h"
-
 #include "TopPredNumberEnums.h"
 
-
-class Point2DLine2D{
-
+class Point2DLine2D {
 public:
     Point2DLine2D(const Point2D &F, const Line2D &G);
     ~Point2DLine2D();
@@ -43,29 +40,7 @@ public:
     bool coveredBy();
     bool inside();
 
-
-
 private:
-
-    // Dtj comment:
-    // this enum class needs to be deleted, for now I am commenting these out. 
-    // To replace this, I have included "TopPredNumberEnums.h" 
-    //
-    // // predicates enum
-    // enum class TopPredNumberPoint2DLine2D
-    // {
-    //     pl_disjoint_m1, pl_disjoint_m2, pl_meet_m3, pl_meet_m4, pl_meet_m5,
-    //     pl_meet_m6, pl_inside_m7, pl_inside_m8, pl_overlap_m9, pl_overlap_m10,
-    //     pl_inside_m11, pl_inside_m12, pl_overlap_m13, pl_overlap_m14
-    // };
-
-//    typedef enum {
-//        poi_disjoint,poi_on_interior,poi_on_bound
-//    }vFPoint2DLine2DPredicates;
-//
-//    typedef enum {
-//        bound_poi_disjoint
-//    }vGPoint2DLine2DPredicates;
 
     enum vF_Predicates
     {
@@ -93,13 +68,11 @@ private:
     // get vector array vG
     bool *getVG();
 
-
     //Exploration function
     void exploreTopoPred();
 
     //Evaluation function
     void evaluateTopoPred();
-
 
 };
 

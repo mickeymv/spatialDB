@@ -23,7 +23,7 @@ Line2DRegion2D::Line2DRegion2D(const Line2D &F, const Region2D &G) {
     objG = G;
 
     // initialize vF and vG with false
-    for (int i = 0; i<vF_size; i++) {
+    for (int i = 0; i < vF_size; i++) {
         vF[i] = false;
     }
 
@@ -34,7 +34,8 @@ Line2DRegion2D::Line2DRegion2D(const Line2D &F, const Region2D &G) {
 
 };
 
-Line2DRegion2D::~Line2DRegion2D() { };
+Line2DRegion2D::~Line2DRegion2D() {
+};
 
 
 bool *Line2DRegion2D::getVF() {
@@ -54,7 +55,6 @@ void Line2DRegion2D::exploreTopoPred() {
           &&(!(vF[seg_inside]&&vF[seg_shared]&&vF[seg_outside]&&vF[poi_shared]&&vF[bound_inside]&&vF[bound_shared]&&vG[bound_disjoint]&&vG[seg_unshared]))) {
         ParallelObjectTraversal::object object_value = S.getObject();
         if (object_value == ParallelObjectTraversal::first) {
-            //Poi2D p = S.getPoiEvent(ParallelObjectTraversal::first); // 하프세그먼트 옴
             HalfSeg2D h = S.getHalfSegEvent(ParallelObjectTraversal::first);
             Poi2D dp;
             if (h.isLeft) {
@@ -170,52 +170,51 @@ void Line2DRegion2D::exploreTopoPred() {
         }
         S.selectNext();
     }
-    if(S.getStatus() == ParallelObjectTraversal::end_of_first) {
+    if (S.getStatus() == ParallelObjectTraversal::end_of_first) {
         vG[seg_unshared] = true;
     }
-
     return; // return true if no error, else false
 }
 
 void Line2DRegion2D::evaluateTopoPred() {
     int IMC[3][3];
 
-    for(int i=0; i<3; i++) {
+    for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             IMC[i][j] = 0;
         }
     }
 
-    if(vF[seg_inside]) {
+    if (vF[seg_inside]) {
         IMC[0][0] = 1;
     }
-    if(vF[seg_shared] || vF[poi_shared]) {
+    if (vF[seg_shared] || vF[poi_shared]) {
         IMC[0][1] = 1;
     }
-    if(vF[seg_outside]) {
+    if (vF[seg_outside]) {
         IMC[0][2] = 1;
     }
-    if(vF[bound_inside]) {
+    if (vF[bound_inside]) {
         IMC[1][0] = 1;
     }
-    if(vF[bound_shared]) {
+    if (vF[bound_shared]) {
         IMC[1][1] = 1;
     }
-    if(vF[bound_disjoint]) {
+    if (vF[bound_disjoint]) {
         IMC[1][2] = 1;
     }
     IMC[2][1] = 1;
-    if(vG[seg_unshared]) {
+    if (vG[seg_unshared]) {
         IMC[2][1] = 1;
     }
     IMC[2][2] = 1;
 
 
-    if(IMC[1][0]) {
-        if(IMC[0][1]) {
-            if(IMC[0][2]) {
-                if(IMC[1][1]) {
-                    if(IMC[0][2]) {
+    if (IMC[1][0]) {
+        if (IMC[0][1]) {
+            if (IMC[0][2]) {
+                if (IMC[1][1]) {
+                    if (IMC[0][2]) {
                         // 43
                         topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_overlap_m43;
                         isPredSet=true;
@@ -227,8 +226,8 @@ void Line2DRegion2D::evaluateTopoPred() {
                     }
                 }
                 else {
-                    if(IMC[0][2]) {
-                        if(IMC[2][1]) {
+                    if (IMC[0][2]) {
+                        if (IMC[2][1]) {
                             // 41
                             topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_overlap_m41;
                             isPredSet=true;
@@ -240,7 +239,7 @@ void Line2DRegion2D::evaluateTopoPred() {
                         }
                     }
                     else {
-                        if(IMC[2][1]) {
+                        if (IMC[2][1]) {
                             // 39
                             topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_overlap_m39;
                             isPredSet=true;
@@ -254,13 +253,13 @@ void Line2DRegion2D::evaluateTopoPred() {
                 }
             }
             else {
-                if(IMC[1][1]) {
+                if (IMC[1][1]) {
                     // 31
                     topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_coveredby_m31;
                     isPredSet=true;
                 }
                 else {
-                    if(IMC[2][1]) {
+                    if (IMC[2][1]) {
                         // 30
                         topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_inside_m30;
                         isPredSet=true;
@@ -274,9 +273,9 @@ void Line2DRegion2D::evaluateTopoPred() {
             }
         }
         else {
-            if(IMC[0][2]) {
-                if(IMC[1][1]) {
-                    if(IMC[0][2]) {
+            if (IMC[0][2]) {
+                if (IMC[1][1]) {
+                    if (IMC[0][2]) {
                         // 25
                         topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_overlap_m25;
                         isPredSet=true;
@@ -288,7 +287,7 @@ void Line2DRegion2D::evaluateTopoPred() {
                     }
                 }
                 else {
-                    if(IMC[0][2]) {
+                    if (IMC[0][2]) {
                         // 23
                         topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_overlap_m23;
                         isPredSet=true;
@@ -301,7 +300,7 @@ void Line2DRegion2D::evaluateTopoPred() {
                 }
             }
             else {
-                if(IMC[1][1]) {
+                if (IMC[1][1]) {
                     // 17
                     topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_coveredby_m17;
                     isPredSet=true;
@@ -315,11 +314,11 @@ void Line2DRegion2D::evaluateTopoPred() {
         }
     }
     else {
-        if(IMC[0][0]) {
-            if(IMC[0][1]) {
-                if(IMC[0][2]) {
-                    if(IMC[1][1]) {
-                        if(IMC[0][2]) {
+        if (IMC[0][0]) {
+            if (IMC[0][1]) {
+                if (IMC[0][2]) {
+                    if (IMC[1][1]) {
+                        if (IMC[0][2]) {
                             // 37
                             topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_overlap_m37;
                             isPredSet=true;
@@ -331,8 +330,8 @@ void Line2DRegion2D::evaluateTopoPred() {
                         }
                     }
                     else {
-                        if(IMC[0][2]) {
-                            if(IMC[2][1]) {
+                        if (IMC[0][2]) {
+                            if (IMC[2][1]) {
                                 // 35
                                 topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_overlap_m35;
                                 isPredSet=true;
@@ -344,7 +343,7 @@ void Line2DRegion2D::evaluateTopoPred() {
                             }
                         }
                         else {
-                            if(IMC[2][1]) {
+                            if (IMC[2][1]) {
                                 // 33
                                 topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_overlap_m33;
                                 isPredSet=true;
@@ -358,13 +357,13 @@ void Line2DRegion2D::evaluateTopoPred() {
                     }
                 }
                 else {
-                    if(IMC[1][1]) {
+                    if (IMC[1][1]) {
                         // 28
                         topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_coveredby_m28;
                         isPredSet=true;
                     }
                     else {
-                        if(IMC[2][1]) {
+                        if (IMC[2][1]) {
                             // 27
                             topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_inside_m27;
                             isPredSet=true;
@@ -378,9 +377,9 @@ void Line2DRegion2D::evaluateTopoPred() {
                 }
             }
             else {
-                if(IMC[0][2]) {
-                    if(IMC[1][1]) {
-                        if(IMC[0][2]) {
+                if (IMC[0][2]) {
+                    if (IMC[1][1]) {
+                        if (IMC[0][2]) {
                             // 21
                             topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_overlap_m21;
                             isPredSet=true;
@@ -392,7 +391,7 @@ void Line2DRegion2D::evaluateTopoPred() {
                         }
                     }
                     else {
-                        if(IMC[0][2]) {
+                        if (IMC[0][2]) {
                             // 19
                             topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_overlap_m19;
                             isPredSet=true;
@@ -405,7 +404,7 @@ void Line2DRegion2D::evaluateTopoPred() {
                     }
                 }
                 else {
-                    if(IMC[1][1]) {
+                    if (IMC[1][1]) {
                         // 15
                         topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_coveredby_m15;
                         isPredSet=true;
@@ -420,10 +419,10 @@ void Line2DRegion2D::evaluateTopoPred() {
             }
         }
         else {
-            if(IMC[1][1]) {
-                if(IMC[0][1]) {
-                    if(IMC[0][2]) {
-                        if(IMC[0][2]) {
+            if (IMC[1][1]) {
+                if (IMC[0][1]) {
+                    if (IMC[0][2]) {
+                        if (IMC[0][2]) {
                             // 13
                             topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_meet_m13;
                             isPredSet=true;
@@ -441,7 +440,7 @@ void Line2DRegion2D::evaluateTopoPred() {
                     }
                 }
                 else {
-                    if(IMC[0][2]) {
+                    if (IMC[0][2]) {
                         // 4
                         topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_meet_m4;
                         isPredSet=true;
@@ -454,9 +453,9 @@ void Line2DRegion2D::evaluateTopoPred() {
                 }
             }
             else {
-                if(IMC[0][2]) {
-                    if(IMC[0][1]) {
-                        if(IMC[2][1]) {
+                if (IMC[0][2]) {
+                    if (IMC[0][1]) {
+                        if (IMC[2][1]) {
                             // 11
                             topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_meet_m11;
                             isPredSet=true;
@@ -474,9 +473,9 @@ void Line2DRegion2D::evaluateTopoPred() {
                     }
                 }
                 else {
-                    if(IMC[0][2]) {
-                        if(IMC[0][1]) {
-                            if(IMC[2][1]) {
+                    if (IMC[0][2]) {
+                        if (IMC[0][1]) {
+                            if (IMC[2][1]) {
                                 // 9
                                 topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_meet_m9;
                                 isPredSet=true;
@@ -494,7 +493,7 @@ void Line2DRegion2D::evaluateTopoPred() {
                         }
                     }
                     else {
-                        if(IMC[2][1]) {
+                        if (IMC[2][1]) {
                             // 6
                             topPredNumberLine2DRegion2D = TopPredNumberLine2DRegion2D::lr_meet_m6;
                             isPredSet=true;
@@ -578,18 +577,14 @@ bool Line2DRegion2D::meet() {
 }
 
 bool Line2DRegion2D::equal() {
-
     return false;
 }
 
 bool Line2DRegion2D::contains() {
-
-
     return false;
 }
 
 bool Line2DRegion2D::covers() {
-
     return false;
 }
 

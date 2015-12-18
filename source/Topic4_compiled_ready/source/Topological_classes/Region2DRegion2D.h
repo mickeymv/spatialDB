@@ -24,7 +24,7 @@
 #include "planesweep_project/Topic2/Implementation/Region2D.h"
 
 
-class Region2DRegion2D{
+class Region2DRegion2D {
 
 public:
     Region2DRegion2D(const Region2D &F, const Region2D &G);
@@ -32,7 +32,6 @@ public:
 
     bool isTopologicalRelationship(TopPredNumberRegion2DRegion2D predicate);
     TopPredNumberRegion2DRegion2D getTopologicalRelationship();
-
 
     bool overlap();
     bool disjoint();

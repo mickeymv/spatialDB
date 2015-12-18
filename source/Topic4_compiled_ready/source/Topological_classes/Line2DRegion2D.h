@@ -20,14 +20,11 @@
 
 #include "planesweep_project/Topic2/Implementation/Region2D.h"
 #include "planesweep_project/Object2D.h"
-#include "planesweep_project/Topic2/Implementation/Point2D.h"
 #include "planesweep_project/Topic2/Implementation/Line2D.h"
 #include "planesweep_project/PlaneSweep.h"
-#include "TopologicalRelationships.h"
 #include "TopPredNumberEnums.h"
 
-
-class Line2DRegion2D{
+class Line2DRegion2D {
 
 public:
     Line2DRegion2D(const Line2D &F, const Region2D &G);
@@ -45,26 +42,7 @@ public:
     bool coveredBy();
     bool inside();
 
-
 private:
-
-//    typedef enum {
-//        seg_inside,seg_shared,seg_outside,poi_shared,bound_inside,bound_shared,bound_disjoint,bound_outside
-//    }vFLine2DRegion2DPredicates;
-//
-//    typedef enum {
-//        seg_unshared
-//    }vGLine2DRegion2DPredicates;
-
-
-    // predicates enum
-//    enum class vF_Line2DRegion2D_Predicates{
-//        seg_inside,seg_shared,seg_outside,poi_shared,bound_inside,bound_shared,bound_disjoint
-//    };
-//
-//    enum class vG_Line2DRegion2D_Predicates{
-//        seg_unshared
-//    };
 
     enum vF_Predicates
     {

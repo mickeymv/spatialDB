@@ -18,7 +18,6 @@
 #include "Region2DRegion2D.h"
 
 
-
 Region2DRegion2D::Region2DRegion2D(const Region2D &F, const Region2D &G) {
     // set obj1 and obj2
     objF = F;
@@ -36,7 +35,8 @@ Region2DRegion2D::Region2DRegion2D(const Region2D &F, const Region2D &G) {
 
 };
 
-Region2DRegion2D::~Region2DRegion2D() { };
+Region2DRegion2D::~Region2DRegion2D() {
+};
 
 
 bool *Region2DRegion2D::getVF() {
@@ -253,7 +253,6 @@ void Region2DRegion2D::exploreTopoPred()
             }
             S.setSegClass(h.hseg.seg,lowerS,upperS);
         }
-
         S.selectNext();
     }
 
@@ -280,33 +279,6 @@ void Region2DRegion2D::evaluateTopoPred()
         }
     }
 
-//    if(vF[zero_one]||vF[one_zero])
-//    {
-//        IMC[1][2]=1;
-//    }
-//    if(vG[zero_one_g]||vG[one_zero_g])
-//    {
-//        IMC[2][1]=1;
-//    }
-//    if(vF[one_two]||vF[two_one])
-//    {
-//        IMC[1][0]=1;
-//    }
-//    if(vG[one_two_g]||vG[two_one_g])
-//    {
-//        IMC[0][1]=1;
-//    }
-//    if(vF[zero_two]||vF[two_zero])
-//    {
-//        IMC[1][1]=1;
-//        IMC[0][0]=1;
-//    }
-//    if(vF[one_one])
-//    {
-//        IMC[1][1]=1;
-//        IMC[0][2]=1;
-//        IMC[2][0]=1;
-//    }
     if (vF[zero_one] || vF[two_zero] || vF[one_two] || vF[two_one] || vG[one_two_g] || vG[two_one_g])
     {
         IMC[0][0] = 1;
