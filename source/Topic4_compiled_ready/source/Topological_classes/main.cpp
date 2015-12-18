@@ -1,20 +1,28 @@
+/******************************************************************************
+* File: main.cpp
+*******************************************************************************
+* Purpose:  main.cpp tests all the test cases for the avilable six topological predicate combinations.
+*
+*
+* Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
+*
+* Authors :Group 4 [Michael Kemerer,Tjindra Djundi,Natasha Mandal,Aswini Ramesh,Kyuseo Park]
+*
+* Date: Fall Semester 2015
+******************************************************************************/
+
+
 #include <iostream>
 
 using namespace std;
 
-#include "TopologicalRelationships.h"
-#include "Point2DPoint2D.h"
-//#include "planesweep project/Topic2/Implementation/Point2D.h"
-
-
-//    Use this as template... to create your own Test Cases cpp file:
-//    1. Copy the content and use it as template, put it as your main.cpp.
-//    2. In your main.cpp, commented out the portion of test codes which do not belong to you (so you won't get errors).
-//    3. Adjust the code accordingly to test your own spatial object combination you are working on.
-//    4. Run your own test in your own main.cpp.
-//    5. If successful, you can copy the test cases of your codes back to this CPP file --> look for the correct position in the main ().
-//    6. Later when we finished all our codes, we will compile all the codes together, including this TestCasesTopoPredicates.cpp
-//    7. If later this TestCasesTopoPredicates.cpp turns out to be too long, we can still decide to break it down to small test files.
+//#include "TopologicalRelationships.h"
+#include "TestPoint2DPoint2D.h"
+#include "TestPoint2DLine2D.h"
+#include "TestPoint2DRegion2D.h"
+#include "TestRegion2DRegion2D.h"
+#include "TestLine2DLine2D.h"
+#include "TestLine2DRegion2D.h"
 
 
 // Group 4: Topological Predicates test cases
@@ -23,283 +31,40 @@ using namespace std;
 //            Line2DLine2D, Line2DRegion2D, Region2DRegion2D
 //
 
-//void printPoint2DPoint2DPredicate(TopPredNumberPoint2DPoint2D tpred);
-
-
-
-
-inline void printPoint2DPoint2DPredicate(TopPredNumberPoint2DPoint2D tpred) {
-
-    switch(tpred) {
-        case TopPredNumberPoint2DPoint2D::pp_disjoint_m1 : cout << "pp_disjoint_m1 <===";
-            break;
-        case TopPredNumberPoint2DPoint2D::pp_equal_m2 : cout << "pp_equal_m2 <===";
-            break;
-        case TopPredNumberPoint2DPoint2D::pp_inside_m3 : cout << "pp_inside_m3 <===";
-            break;
-        case TopPredNumberPoint2DPoint2D::pp_contains_m4 : cout << "pp_contains_m4 <===";
-            break;
-        case TopPredNumberPoint2DPoint2D::pp_overlap_m5 : cout << "pp_overlap_m5 <===";
-            break;
-    }
-};
-
-
 int main() {
 
-    Point2D * a, * b;
-    TopPredNumberPoint2DPoint2D tpred;
-    bool result = false;
+    // 1. Point2DPoint2D test cases
+    TestPoint2DPoint2D testPoint2DPoint2D;
+    testPoint2DPoint2D.start();
 
-    cout << "Test begins..." << endl << endl;
+    // 2. Point2DLine2D test cases
+    TestPoint2DLine2D testPoint2DLine2D;
+    testPoint2DLine2D.start();
 
-    // *****************************
-    // Case 1: Point2DPoint2D
-    // *****************************
+    // 3. Line2DLine2D test cases
+    TestLine2DLine2D testLine2DLine2D;
+    testLine2DLine2D.start();
 
-    // 1. Test pp_disjoint_m1, F and G same number of elements
-    a = new Point2D("((0,0),(3,3),(6,6))");
-    b = new Point2D("((1,1),(2,2),(4,3))");
+    // 4. Point2DRegion2D test cases
+    TestPoint2DRegion2D testPoint2DRegion2D;
+    testPoint2DRegion2D.start();
 
-    tpred = getTopologicalRelationship(*a, *b);
-    result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_equal_m2);
+    // 5. Region2DRegion2D test cases
+    TestRegion2DRegion2D testRegion2DRegion2D;
+    testRegion2DRegion2D.start();
 
-    cout << "*****************************" << endl;
-    cout << "Case 1: Point2DPoint2D" << endl;
-    cout << "*****************************" << endl;
-    cout << endl;
-    cout << "1. Test pp_disjoint_m1, F and G same number of elements." << endl;
-    cout << "Point2D a(\"((0,0),(3,3),(6,6))\");" << endl;
-    cout << "Point2D b(\"((1,1),(2,2),(4,3))\");" << endl;
+    // 6. Region2DRegion2D test cases
+    TestLine2DRegion2D testLine2DRegion2D;
+    testLine2DRegion2D.start();
 
-    cout << "   getTopologicalRelationship(a, b) :" << endl;
-    cout << "   returns ==> ";
-
-    printPoint2DPoint2DPredicate(tpred);
-    cout << endl;
-
-    cout << "   isTopologicalRelationship(a, b, pp_equal_m2) :" << endl;
-    cout << "   returns ==> " << result << endl;
-    cout << "   disjoint() ==> " <<  disjoint(*a, *b) << endl;
-    cout << "   overlap() ==> " <<  overlap(*a, *b) << endl;
-    cout << endl;
-
-    // don't forget to cleanup
-    delete a;
-    delete b;
-
-
-    // 2. Test pp_overlap_m5, F and G same number of elements
-    a = new Point2D("((0,0),(1,1),(6,6))");
-    b = new Point2D("((1,1),(2,2),(4,3))");
-
-    tpred = getTopologicalRelationship(*a, *b);
-    result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_disjoint_m1);
-
-    cout << "2. Test pp_overlap_m5" << endl;
-    cout << "Point2D a(\"((0,0),(1,1),(6,6))\");" << endl;
-    cout << "Point2D b(\"((1,1),(2,2),(4,3))\");" << endl;
-
-    cout << "   getTopologicalRelationship(a, b) :" << endl;
-    cout << "   returns ==> ";
-
-    printPoint2DPoint2DPredicate(tpred);
-    cout << endl;
-    cout << "   disjoint() ==> " <<  disjoint(*a, *b) << endl;
-    cout << "   overlap() ==> " <<  overlap(*a, *b) << endl;
-    cout << endl;
-    cout << "   isTopologicalRelationship(a, b, pp_disjoint_m1) :" << endl;
-    cout << "   returns ==> " << result << endl << endl;
-
-    // don't forget to cleanup
-    delete a;
-    delete b;
-
-
-    // 3. Test pp_inside_m3, F and G uneven number of elements
-    a = new Point2D("((2,2))");
-    b = new Point2D("((1,1),(2,2),(4,3))");
-
-    tpred = getTopologicalRelationship(*a, *b);
-    result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_equal_m2);
-
-    cout << "3. Test pp_inside_m3" << endl;
-    cout << "Point2D a(\"((2,2))\");" << endl;
-    cout << "Point2D b(\"((1,1),(2,2),(4,3))\");" << endl;
-
-    cout << "   getTopologicalRelationship(a, b) :" << endl;
-    cout << "   returns ==> ";
-
-    printPoint2DPoint2DPredicate(tpred);
-    cout << endl;
-    cout << "   isTopologicalRelationship(a, b, pp_equal_m2) :" << endl;
-    cout << "   returns ==> " << result << endl;
-    cout << "   inside() ==> " <<  inside(*a, *b) << endl << endl;
-
-
-    // don't forget to cleanup
-    delete a;
-    delete b;
-
-    // 4. Test pp_equal_m2
-    a = new Point2D("((1,1),(2,2))");
-    b = new Point2D("((1,1),(2,2))");
-
-    tpred = getTopologicalRelationship(*a, *b);
-    result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_equal_m2);
-
-    cout << "4. Test pp_equal_m2" << endl;
-    cout << "Point2D a(\"((1,1),(2,2))\");" << endl;
-    cout << "Point2D b(\"((1,1),(2,2))\");" << endl;
-
-    cout << "   getTopologicalRelationship(a, b) :" << endl;
-    cout << "   returns ==> ";
-
-    printPoint2DPoint2DPredicate(tpred);
-    cout << endl;
-    cout << "   disjoint() ==> " <<  disjoint(*a, *b) << endl;
-    cout << "   equal() ==> " <<  equal(*a, *b) << endl;
-    cout << endl;
-
-    cout << "   isTopologicalRelationship(a, b, pp_equal_m2) :" << endl;
-    cout << "   returns ==> " << result << endl << endl;
-
-    // don't forget to cleanup
-    delete a;
-    delete b;
-
-    // 5. Test pp_inside_m3
-    a = new Point2D("((1,1))");
-    b = new Point2D("((1,1),(2,2))");
-
-    tpred = getTopologicalRelationship(*a, *b);
-
-    cout << "5. Test pp_inside_m3" << endl;
-    cout << "Point2D a(\"((1,1))\");" << endl;
-    cout << "Point2D b(\"((1,1),(2,2))\");" << endl;
-
-    cout << "   getTopologicalRelationship(a, b) :" << endl;
-    cout << "   returns ==> ";
-
-    printPoint2DPoint2DPredicate(tpred);
-    cout << endl;
-
-    result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_equal_m2);
-    cout << "   isTopologicalRelationship(a, b, pp_equal_m2) :" << endl;
-    cout << "   returns ==> " << result << endl << endl;
-
-    result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_disjoint_m1);
-    cout << "   isTopologicalRelationship(a, b, pp_disjoint_m1) :" << endl;
-    cout << "   returns ==> " << result << endl << endl;
-
-    result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_contains_m4);
-    cout << "   isTopologicalRelationship(a, b, pp_contains_m4) :" << endl;
-    cout << "   returns ==> " << result << endl;
-    cout << "   contains() ==> " <<  contains(*a, *b) << endl;
-    cout << "   overlap() ==> " <<  overlap(*a, *b) << endl;
-    cout << endl;
-
-    // don't forget to cleanup
-    delete a;
-    delete b;
-
-
-    // 6. Test pp_disjoint_m1, F and G uneven number of elements
-    a = new Point2D("((0,0),(3,3),(6,6))");
-    b = new Point2D("((1,1))");
-    tpred = getTopologicalRelationship(*a, *b);
-
-
-//    for ( Point2D::ConstPoiIterator it = c->cbegin(); it < c->ctail(); it++ )
-//        cout << " output a:  " << it << endl;
-//    for ( Point2D::ConstPoiIterator it = d->cbegin(); it < d->ctail(); it++ )
-//        cout << " output b:  " << it << endl;
-
-
-
-
-    cout << "6. Test pp_disjoint_m1, F and G uneven number of elements." << endl;
-    cout << "Point2D a(\"((0,0),(3,3),(6,6))\");" << endl;
-    cout << "Point2D b(\"((1,1))\");" << endl;
-
-    cout << "   getTopologicalRelationship(a, b) :" << endl;
-//    cout << "   returns ==> " << (int) tpred << endl;
-    cout << "   returns ==> " ;
-
-
-    printPoint2DPoint2DPredicate(tpred);
-    cout << endl << endl;
-
-
-//    // don't forget to cleanup
-    delete a;
-    delete b;
-
-    // 7. Test pp_contains_m4
-    a = new Point2D("((2,2),(3,3))");
-    b = new Point2D("((2,2))");
-
-    tpred = getTopologicalRelationship(*a, *b);
-
-    cout << "7. Test pp_contains_m4" << endl;
-    cout << "Point2D a(\"((2,2),(3,3))\");" << endl;
-    cout << "Point2D b(\"((2,2))\");" << endl;
-
-    cout << "   getTopologicalRelationship(a, b) :" << endl;
-    cout << "   returns ==> ";
-
-    printPoint2DPoint2DPredicate(tpred);
-    cout << endl;
-    cout << "   contains() ==> " <<  contains(*a, *b) << endl;
-    cout << "   inside() ==> " <<  inside(*a, *b) << endl;
-    cout << endl;
-
-    // don't forget to cleanup
-    delete a;
-    delete b;
-
-    cout << "----" << endl;
-
-
-
-
-    // ... still many test cases to write here
-    // I haven't finished yet with my own test cases...
-
-
-    // *****************************
-    // Case 2: Point2DLine2D
-    // *****************************
-
-
-
-    // *****************************
-    // Case 3: Point2DRegion2D
-    // *****************************
-
-
-
-    // *****************************
-    // Case 4: Line2DLine2D
-    // *****************************
-
-
-
-
-    // *****************************
-    // Case 5: Line2DRegion2D
-    // *****************************
-
-
-
-
-    // *****************************
-    // Case 6: Region2DRegion2D
-    // *****************************
-
-
-
-
-    cout << "Test succesfully ended." << endl;
     return 0;
 }
+
+
+
+
+
+
+
+
+
