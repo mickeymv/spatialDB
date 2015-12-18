@@ -36,6 +36,7 @@ using namespace std;
   struct Region2D::Region2DImplementation
   {
       std::vector<AttrHalfSeg2D> segments;         //ordered set of all attributed half segments regarding the full Region2D structure   
+      std::vector<AttrHalfSeg2D> halfSegs;
       std::map<int, std::vector<AttrHalfSeg2D *> > cycles;
       std::map<int, std::map<int, std::vector<AttrHalfSeg2D *> > > faces;
   };
@@ -187,12 +188,14 @@ using namespace std;
   // points to a AttributedHalfSegment. The dereferenced value cannot be changed.
   const AttrHalfSeg2D& Region2DImpl::ConstAttributedHalfSegmentIterator::operator *() const
   {
-   return(this->handlei->current->segments.at(this->handlei->iteratorIndex)); 
+   //return(this->handlei->current->segments.at(this->handlei->iteratorIndex)); 
+    return(this->handlei->current->halfSegs.at(this->handlei->iteratorIndex));   //fix
   }
 
   const AttrHalfSeg2D* Region2DImpl::ConstAttributedHalfSegmentIterator::operator ->() const
   {
-   return(&this->handlei->current->segments.at(this->handlei->iteratorIndex));
+   //return(&this->handlei->current->segments.at(this->handlei->iteratorIndex));
+     return(&this->handlei->current->halfSegs.at(this->handlei->iteratorIndex));   //fix
   }
 
   // Comparison operators that compare a constant AttributedHalfSegment iterator position
@@ -231,7 +234,7 @@ using namespace std;
   std::ostream&operator<<(std::ostream& os, const Region2DImpl::ConstAttributedHalfSegmentIterator& output)
   {
       os << "index Value:" << output.handlei->iteratorIndex<<" ";
-      os << "segments " << output.handlei->current->segments.at(output.handlei->iteratorIndex)<<" "<<endl;
+      os << "segments " << output.handlei->current->halfSegs.at(output.handlei->iteratorIndex)<<" "<<endl;  //fix 
 	
       return os;
   }
@@ -251,7 +254,8 @@ using namespace std;
   Region2DImpl::ConstAttributedHalfSegmentIterator Region2DImpl::cend() const
   {
    ConstAttributedHalfSegmentIterator last;
-   last.handlei->iteratorIndex = handle->segments.size()-2;
+   //last.handlei->iteratorIndex = handle->segments.size()-2;
+   last.handlei->iteratorIndex = handle->halfSegs.size()-2;         //fix
    last.handlei->current = handle;
    return last;
   }
@@ -273,7 +277,8 @@ using namespace std;
   Region2DImpl::ConstAttributedHalfSegmentIterator Region2DImpl::ctail() const
   {
      ConstAttributedHalfSegmentIterator t;
-     t.handlei->iteratorIndex = handle->segments.size()-1;
+     //t.handlei->iteratorIndex = handle->segments.size()-1;
+     t.handlei->iteratorIndex = handle->halfSegs.size()-1;       //fix
      t.handlei->current = handle;
      return t;
   }

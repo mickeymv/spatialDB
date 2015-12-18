@@ -32,6 +32,7 @@ using namespace std;
   struct Region2D::Region2DImplementation
   {
       std::vector<AttrHalfSeg2D> segments;         //ordered set of all attributed half segments regarding the full Region2D structure   
+      std::vector<AttrHalfSeg2D> halfSegs;
       std::map<int, std::vector<AttrHalfSeg2D *> > cycles;
       std::map<int, std::map<int, std::vector<AttrHalfSeg2D *> > > faces;
   };
@@ -308,7 +309,6 @@ using namespace std;
 	}
     
    handle->faces[faceCount++] = fe;
-   delete[] mbrCoordinates;
     
 	
     //To set AttrHalfSeg flags.
@@ -485,6 +485,23 @@ using namespace std;
       }
     }
     }
+
+    //Fix 
+    int s = handle->segments.size()-1;
+    handle->halfSegs.push_back(handle->segments[0]);
+    for(int k = 1; k < handle->segments.size()-1 ; k++)
+        { 
+          cout << "Inside constructing ...." << endl;
+          handle->halfSegs.push_back(handle->segments[k]);
+          cout << "pushed left half segment..." << handle->segments[k] << endl;
+          AttrHalfSeg2D temp = handle->segments[k];
+          temp.hseg.isLeft = false;
+          handle->halfSegs.push_back(temp);
+          cout << "pushed right half segment..." << temp << endl; 
+          
+        }
+    handle->halfSegs.push_back(handle->segments[s]);
+
   }
   
 
@@ -796,7 +813,6 @@ using namespace std;
 	}
     
    handle->faces[faceCount++] = fe;
-   delete[] mbrCoordinates;
     
 	
     //To set AttrHalfSeg flags.
