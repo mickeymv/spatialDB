@@ -207,7 +207,7 @@ using namespace std;
 
   bool Region2DImpl::ConstAttributedHalfSegmentIterator::operator != (const ConstAttributedHalfSegmentIterator& rhs) const
   {
-   return ((this->handlei->current != rhs.handlei->current)&&(this->handlei->iteratorIndex != rhs.handlei->iteratorIndex));
+   return ((this->handlei->current != rhs.handlei->current)||(this->handlei->iteratorIndex != rhs.handlei->iteratorIndex));
   }
 
   bool Region2DImpl::ConstAttributedHalfSegmentIterator::operator <(const ConstAttributedHalfSegmentIterator& rhs) const
@@ -254,10 +254,14 @@ using namespace std;
   Region2DImpl::ConstAttributedHalfSegmentIterator Region2DImpl::cend() const
   {
    ConstAttributedHalfSegmentIterator last;
-   //last.handlei->iteratorIndex = handle->segments.size()-2;
-   last.handlei->iteratorIndex = handle->halfSegs.size()-2;         //fix
-   last.handlei->current = handle;
-   return last;
+
+//Mickey's fix
+      if(handle->halfSegs.size() >= 2)
+          last.handlei->iteratorIndex = handle->halfSegs.size()-2;
+      else
+          last.handlei->iteratorIndex = 0;
+      last.handlei->current = handle;
+      return last;
   }
 
   // Method that returns a constant AttributedHalfSegment iterator to the position before the
@@ -277,9 +281,12 @@ using namespace std;
   Region2DImpl::ConstAttributedHalfSegmentIterator Region2DImpl::ctail() const
   {
      ConstAttributedHalfSegmentIterator t;
-     //t.handlei->iteratorIndex = handle->segments.size()-1;
-     t.handlei->iteratorIndex = handle->halfSegs.size()-1;       //fix
-     t.handlei->current = handle;
-     return t;
+      //Mickey's fix
+      if(handle->halfSegs.size() >= 1)
+          t.handlei->iteratorIndex = handle->halfSegs.size()-1;
+      else
+          t.handlei->iteratorIndex = 0;
+      t.handlei->current = handle;
+      return t;
   }
 

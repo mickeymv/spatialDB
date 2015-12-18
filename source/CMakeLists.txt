@@ -38,10 +38,9 @@ set(SOURCE_FILES
     planesweep-project/PlaneSweepLineStatusObject.h
     planesweep-project/SegmentClass.cpp
     planesweep-project/SegmentClass.h
-    LineSpatialOperationsTestClass.cpp
-        SpatialOperationsTestClass.cpp
     RegionSpatialOperationsTestClass.cpp
     SpatialOperations.cpp
-    SpatialOperations.h)
+    SpatialOperations.h
+    SpatialOperationsTestClass.cpp)
 
 add_executable(source ${SOURCE_FILES})

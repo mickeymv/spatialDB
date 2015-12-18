@@ -154,7 +154,7 @@ private:
 
     const Object2D *objF, *objG;
 
-    Point2D::ConstPoiIterator *objFpoiIterator = nullptr, *objGpoiIterator = nullptr; // DTj Dec 5, 2015
+    Point2D::ConstPoiIterator *objFpoiIterator = nullptr, *objGpoiIterator = nullptr;
     Line2DImpl::ConstHalfSegIterator *objFsegIterator = nullptr, *objGsegIterator = nullptr;
     Region2DImpl::ConstAttributedHalfSegmentIterator *objFregionIterator = nullptr, *objGregionIterator = nullptr;
 

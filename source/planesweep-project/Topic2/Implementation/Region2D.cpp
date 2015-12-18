@@ -491,13 +491,13 @@ using namespace std;
     handle->halfSegs.push_back(handle->segments[0]);
     for(int k = 1; k < handle->segments.size()-1 ; k++)
         { 
-          cout << "Inside constructing ...." << endl;
+          //cout << "Inside constructing ...." << endl;
           handle->halfSegs.push_back(handle->segments[k]);
-          cout << "pushed left half segment..." << handle->segments[k] << endl;
+          //cout << "pushed left half segment..." << handle->segments[k] << endl;
           AttrHalfSeg2D temp = handle->segments[k];
           temp.hseg.isLeft = false;
           handle->halfSegs.push_back(temp);
-          cout << "pushed right half segment..." << temp << endl; 
+          //cout << "pushed right half segment..." << temp << endl;
           
         }
     handle->halfSegs.push_back(handle->segments[s]);

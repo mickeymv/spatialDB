@@ -239,7 +239,7 @@ Line2D spatialUnion(const Line2D &lineLhs, const Line2D &lineRhs) {
         if (halfSeg2D.isLeft == false) {
             Seg2D seg2D = halfSeg2D.seg;
             if (find(unionLinesVector.begin(), unionLinesVector.end(), seg2D) ==
-                    unionLinesVector.end()) {
+                unionLinesVector.end()) {
                 //If the segment is not already in the union, add it.
                 unionLinesVector.push_back(seg2D);
             }
@@ -286,7 +286,7 @@ Line2D spatialDifference(const Line2D &lineLhs, const Line2D &lineRhs) {
             HalfSeg2D halfSeg2D = planeSweep.getHalfSegEvent(ParallelObjectTraversal::first);
             Seg2D seg2D = halfSeg2D.seg;
             if (find(differenceLinesVector.begin(), differenceLinesVector.end(), seg2D) ==
-                    differenceLinesVector.end()) {
+                differenceLinesVector.end()) {
                 //If the segment is not already in the union, add it.
                 differenceLinesVector.push_back(seg2D);
             }
@@ -392,28 +392,39 @@ Region2D spatialIntersection(const Region2D &regionLhs,
         AttrHalfSeg2D attHsegCurr;
         int lorCurr = 0, uolCurr = 0;
 
-        if (planeSweep.getObject() == ParallelObjectTraversal::first) {
+        if (planeSweep.getObject() == ParallelObjectTraversal::first ||
+            planeSweep.getObject() == ParallelObjectTraversal::both) {
             attHsegCurr = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::first);
         } else if (planeSweep.getObject() == ParallelObjectTraversal::second) {
             attHsegCurr = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::second);
         }
 
-        lorCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getLowerOrRight();
-        uolCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getUpperOrLeft();
-        /*
-         * the intersection region object adds the segments with segClass values
-         * not having 2 in either lor or uol
-         */
-
-        if (lorCurr == 2 || uolCurr == 2) {
-            intersectionRegionVector.push_back(attHsegCurr.hseg.seg);
+        if (attHsegCurr.hseg.isLeft == true) {
+            //Overlap numbers are only calculated when a segment is added to the sweepLine,
+            // i.e., when we encounter the left-halfSegments.
+            lorCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getLowerOrRight();
+            uolCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getUpperOrLeft();
+            /*
+                * the intersection region object adds the segments with segClass values
+                * having 2 in either lor or uol
+            */
+            if (lorCurr == 2 || uolCurr == 2) {
+                if (find(intersectionRegionVector.begin(), intersectionRegionVector.end(), attHsegCurr.hseg.seg) ==
+                    intersectionRegionVector.end()) {
+                    intersectionRegionVector.push_back(attHsegCurr.hseg.seg);
+                    cout << "\nThe attrHS added to intersection is:\n " << attHsegCurr << endl;
+                }
+            }
         }
-
         planeSweep.selectNext();
     }
 
-    Region2D intersectionRegionObject(intersectionRegionVector);
-    return intersectionRegionObject;
+    if (!intersectionRegionVector.empty()) {
+        Region2D intersectionRegionObject(intersectionRegionVector);
+        return intersectionRegionObject;
+    } else {
+        return emptyRegionObject;
+    }
 }
 
 Region2D spatialUnion(const Region2D &regionLhs, const Region2D &regionRhs) {
@@ -457,8 +468,12 @@ Region2D spatialUnion(const Region2D &regionLhs, const Region2D &regionRhs) {
         planeSweep.selectNext();
     }
 
-    Region2D unionRegionObject(unionRegionVector);
-    return unionRegionObject;
+    if (!unionRegionVector.empty()) {
+        Region2D intersectionRegionObject(unionRegionVector);
+        return intersectionRegionObject;
+    } else {
+        return emptyRegionObject;
+    }
 }
 
 Region2D spatialDifference(const Region2D &regionLhs,
@@ -502,8 +517,12 @@ Region2D spatialDifference(const Region2D &regionLhs,
         planeSweep.selectNext();
     }
 
-    Region2D diffRegionObject(diffRegionVector);
-    return diffRegionObject;
+    if (!diffRegionVector.empty()) {
+        Region2D intersectionRegionObject(diffRegionVector);
+        return intersectionRegionObject;
+    } else {
+        return emptyRegionObject;
+    }
 }
 
 /*
