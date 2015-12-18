@@ -48,7 +48,8 @@ void TestPoint2DRegion2D::start() {
     cout << endl;
 
     // don't forget to cleanup
-    delete p1, r1;
+    delete p1;
+    delete r1;
 
 
     // 2. Test pr_overlap_m7
@@ -73,7 +74,9 @@ void TestPoint2DRegion2D::start() {
     cout << "   returns ==> " << result << endl << endl;
 
     // don't forget to cleanup
-    delete p1, r1;
+    delete p1;
+    delete r1;
+
 
 
     // 3. pr_meet_m2
@@ -98,7 +101,9 @@ void TestPoint2DRegion2D::start() {
 
 
     // don't forget to cleanup
-    delete p1, r1;
+    delete p1;
+    delete r1;
+
 
     // 4. Test pr_inside_m4
     p1 = new Point2D("((2,5))");
@@ -123,7 +128,9 @@ void TestPoint2DRegion2D::start() {
     cout << "   returns ==> " << result << endl << endl;
 
     // don't forget to cleanup
-    delete p1, r1;
+    delete p1;
+    delete r1;
+
 
     cout << "Test succesfully ended." << endl;
 
