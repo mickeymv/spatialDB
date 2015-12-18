@@ -451,20 +451,25 @@ Region2D spatialUnion(const Region2D &regionLhs, const Region2D &regionRhs) {
         } else if (planeSweep.getObject() == ParallelObjectTraversal::second) {
             attHsegCurr = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::second);
         }
+        if (attHsegCurr.hseg.isLeft == true) {
+            //Overlap numbers are only calculated when a segment is added to the sweepLine,
+            // i.e., when we encounter the left-halfSegments.
+            lorCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getLowerOrRight();
+            uolCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getUpperOrLeft();
+            /*
+             * the union region object should contain the segments with segClass values 1/0, 0/1,
+             * 2/0 and 0/2.
+             * Not 2/1 or 1/2.
+             */
 
-        lorCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getLowerOrRight();
-        uolCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getUpperOrLeft();
-        /*
-         * the union region object adds the segments with segClass values 1/0, 0/1,
-         * 2/0 and 0/2
-         * Not 2/1 or 1/2
-         */
-
-        if (lorCurr == 2 || uolCurr == 2) {
-            planeSweep.selectNext();
-            continue;
+            if ((lorCurr == 1 && uolCurr == 0) || (lorCurr == 0 && uolCurr == 1) || (lorCurr == 2 && uolCurr == 0)
+                || (lorCurr == 0 && uolCurr == 2)) {
+                if (find(unionRegionVector.begin(), unionRegionVector.end(), attHsegCurr.hseg.seg) ==
+                    unionRegionVector.end()) {
+                    unionRegionVector.push_back(attHsegCurr.hseg.seg);
+                }
+            }
         }
-        unionRegionVector.push_back(attHsegCurr.hseg.seg);
         planeSweep.selectNext();
     }
 
@@ -500,19 +505,38 @@ Region2D spatialDifference(const Region2D &regionLhs,
          * 2/1, 1/2 : if it belongs to the second region object
          */
 
-        if (planeSweep.getObject() == ParallelObjectTraversal::first) {
+        if (planeSweep.getObject() == ParallelObjectTraversal::first ||
+            planeSweep.getObject() == ParallelObjectTraversal::both) {
             attHsegCurr = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::first);
-            lorCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getLowerOrRight();
-            uolCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getUpperOrLeft();
-            if ((lorCurr == 0 && uolCurr == 1) || (lorCurr == 1 && uolCurr == 0))
-                diffRegionVector.push_back(attHsegCurr.hseg.seg);
+            if (attHsegCurr.hseg.isLeft == true) {
+                //Overlap numbers are only calculated when a segment is added to the sweepLine,
+                // i.e., when we encounter the left-halfSegments.
+                lorCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getLowerOrRight();
+                uolCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getUpperOrLeft();
+                if ((lorCurr == 0 && uolCurr == 1) || (lorCurr == 1 && uolCurr == 0)) {
+                    if (
+                            find(diffRegionVector.begin(), diffRegionVector.end(), attHsegCurr.hseg.seg) ==
+                            diffRegionVector.end()) {
+                        diffRegionVector.push_back(attHsegCurr.hseg.seg);
+                    }
+                }
+            }
 
         } else if (planeSweep.getObject() == ParallelObjectTraversal::second) {
             attHsegCurr = planeSweep.getAttrHalfSegEvent(ParallelObjectTraversal::second);
-            lorCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getLowerOrRight();
-            uolCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getUpperOrLeft();
-            if ((lorCurr == 2 && uolCurr == 1) || (lorCurr == 1 && uolCurr == 2))
-                diffRegionVector.push_back(attHsegCurr.hseg.seg);
+            if (attHsegCurr.hseg.isLeft == true) {
+                //Overlap numbers are only calculated when a segment is added to the sweepLine,
+                // i.e., when we encounter the left-halfSegments.
+                lorCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getLowerOrRight();
+                uolCurr = planeSweep.getSegClass(attHsegCurr.hseg.seg).getUpperOrLeft();
+                if ((lorCurr == 2 && uolCurr == 1) || (lorCurr == 1 && uolCurr == 2)) {
+                    if (
+                            find(diffRegionVector.begin(), diffRegionVector.end(), attHsegCurr.hseg.seg) ==
+                            diffRegionVector.end()) {
+                        diffRegionVector.push_back(attHsegCurr.hseg.seg);
+                    }
+                }
+            }
         }
         planeSweep.selectNext();
     }

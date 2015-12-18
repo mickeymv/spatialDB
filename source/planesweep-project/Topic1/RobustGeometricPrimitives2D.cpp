@@ -261,7 +261,7 @@ bool Seg2D::operator >(const Seg2D& operand)
 //Overloading the == operator for segments.
 bool Seg2D::operator == (const Seg2D& operand)
 {
-	if ((this->p2 == operand.p2) && (this->p2 == operand.p2))
+	if ((this->p1 == operand.p1) && (this->p2 == operand.p2))
 		return true;
 	else
 		return false;
