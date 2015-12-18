@@ -3,20 +3,17 @@
 *******************************************************************************
 * Purpose: Interface to exploration functions and evaluation functions for
 *   the topological relationships between two Point2D objects.This also contains
- *  clustered predicate verification functions
- *
+*  clustered predicate verification functions
+*
 * Description: Interface for Exploration and Evaluation algorithms and functions
- * for Topological Predicate Verification and Determination
- *
+* for Topological Predicate Verification and Determination
+*
 * Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
 *
-* Authors:Group 4. Dtj.
+* Authors:Group 4 [Michael Kemerer,Tjindra Djundi,Natasha Mandal,Aswini Ramesh,Kyuseo Park]
 *
 * Date: Fall Semester 2015
 ******************************************************************************/
-
-using namespace std;
-
 
 #include "Point2DPoint2D.h"
 
@@ -105,68 +102,59 @@ void Point2DPoint2D::exploreTopoPred() {
 
     // missing in the paper:
     if (pot->getObject() == ParallelObjectTraversal::both) vF[vF_Predicates::poi_shared] = true;
-    if (!vF[poi_shared] && vF[poi_disjoint] && !vG[poi_disjoint_g])  vG[vG_Predicates::poi_disjoint_g] = true;
+    if (!vF[poi_shared] && vF[poi_disjoint] && !vG[poi_disjoint_g]) vG[vG_Predicates::poi_disjoint_g] = true;
 
 }
 
 // evaluate topological predicate method
 void Point2DPoint2D::evaluateTopoPred() {
 
-    // IMC 3x3 matrix array
-    int IMC[3][3];
-//    topPredNumberPoint2DPoint2D = TopPredNumberPoint2DPoint2D::pp_disjoint_m1;
+    // Dtj. Dec 16.
+    // matrix index 2,2 always true
+    // Since the second row of the IMC 3x3 matrix is never evaluated,
+    // here we only use six array member to represent the first row and third row of the 3x3 Matrix.
+    bool IMC[] = {0, 0, 0, 0, 0, 1};
+    // in case of using bitset, we declare :
+    // imctype IMC = (000001);
 
-    // set all values to 0
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            IMC[i][j] = 0;
+
+    if (vF[poi_shared])
+        IMC[0] = 1; // (100000)
+    // in case of using bitset, we could set the bit this way:
+    // IMC.set(5); or IMC |= (100000);
+
+    if (vF[poi_disjoint])
+        IMC[2] = 1; // (001000)
+    // IMC.set(4);
+
+    if (vG[poi_disjoint_g])
+        IMC[3] = 1; // (000100)
+    // IMC.set(2);
+
+
+
+    // compare/match the right one
+    // size of matrix = 5
+    int found = 0;
+    for (int i = 0; i < 5 && !isPredSet; i++) {
+        found = 0;
+
+        // DTj: in case of using bitset technique, we do not need this k loop, but instead,
+        // we do bitwise comparison for faster execution:
+        // if (IMC == matrix[i]) {isPredSet = true; topPredNumberPoint2DPoint2D = (TopPredNumberPoint2DPoint2D) i;}
+        for (int k = 0; k < 6; k++) {
+            if (IMC[k] == (matrix[i].at(k) == '1' ? 1 : 0)) {
+                found++;
+            }
+        }
+
+        if (found == 6) {
+            isPredSet = true;
+            topPredNumberPoint2DPoint2D = (TopPredNumberPoint2DPoint2D) i;
         }
     }
 
 
-    //set the respective element with the vF and vG results from exploreTopoPred()
-    if (vF[poi_shared]) IMC[0][0] = 1;
-    if (vF[poi_disjoint]) IMC[0][2] = 1;
-    if (vG[poi_disjoint_g]) IMC[2][0] = 1;
-
-    IMC[2][2] = 1; // always true
-
-
-    // test for pp_disjoint_m1
-    if (!IMC[0][0] && !IMC[0][1] && IMC[0][2]
-        //        && !IMC[1][0] && !IMC[1][1] && !IMC[1][2]  // this row not needed, because it is always 0, 0, 0
-        && IMC[2][0] && !IMC[2][1] && IMC[2][2]) {
-        topPredNumberPoint2DPoint2D = TopPredNumberPoint2DPoint2D::pp_disjoint_m1;
-        isPredSet = true;
-    } else
-        // test for pp_equal_m2
-    if (IMC[0][0] && !IMC[0][1] && !IMC[0][2]
-        //        && !IMC[1][0] && !IMC[1][1] && !IMC[1][2]  // this row not needed, because it is always 0, 0, 0
-        && !IMC[2][0] && !IMC[2][1] && IMC[2][2]) {
-        topPredNumberPoint2DPoint2D = TopPredNumberPoint2DPoint2D::pp_equal_m2;
-        isPredSet = true;
-    } else
-        // test for pp_inside_m3
-    if (IMC[0][0] && !IMC[0][1] && !IMC[0][2]
-        //        && !IMC[1][0] && !IMC[1][1] && !IMC[1][2]  // this row not needed, because it is always 0, 0, 0
-        && IMC[2][0] && !IMC[2][1] && IMC[2][2]) {
-        topPredNumberPoint2DPoint2D = TopPredNumberPoint2DPoint2D::pp_inside_m3;
-        isPredSet = true;
-    } else
-        // test for pp_contains_m4
-    if (IMC[0][0] && !IMC[0][1] && IMC[0][2]
-        //        && !IMC[1][0] && !IMC[1][1] && !IMC[1][2]  // this row not needed, because it is always 0, 0, 0
-        && !IMC[2][0] && !IMC[2][1] && IMC[2][2]) {
-        topPredNumberPoint2DPoint2D = TopPredNumberPoint2DPoint2D::pp_contains_m4;
-        isPredSet = true;
-    } else
-        // test for pp_overlap_m5
-    if (IMC[0][0] && !IMC[0][1] && IMC[0][2]
-        //        && !IMC[1][0] && !IMC[1][1] && !IMC[1][2]  // this row not needed, because it is always 0, 0, 0
-        && IMC[2][0] && !IMC[2][1] && IMC[2][2]) {
-        topPredNumberPoint2DPoint2D = TopPredNumberPoint2DPoint2D::pp_overlap_m5;
-        isPredSet = true;
-    }
 }
 
 bool Point2DPoint2D::overlap() {
