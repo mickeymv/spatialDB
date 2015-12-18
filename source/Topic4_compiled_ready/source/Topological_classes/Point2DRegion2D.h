@@ -24,14 +24,14 @@
 #include "TopologicalRelationships.h"
 
 
-
-class Point2DRegion2D{
+class Point2DRegion2D {
 
 public:
     Point2DRegion2D(const Point2D &F, const Region2D &G);
+
     ~Point2DRegion2D();
 
-  //Function to check whether the given spatial predicate holds true
+    //Function to check whether the given spatial predicate holds true
     bool isTopologicalRelationship(TopPredNumberPoint2DRegion2D predicate);
 
     //Function to check return  spatial predicate
@@ -40,42 +40,37 @@ public:
 
     //8 basic spatial predicates based on 9IM
     bool overlap();
+
     bool disjoint();
+
     bool meet();
+
     bool equal();
+
     bool contains();
+
     bool covers();
+
     bool coveredBy();
+
     bool inside();
-
-
-
-
-
 
 
 private:
 
-    TopPredNumberPoint2DRegion2D  topPredNumberPoint2DRegion2D;
-
-// predicates enum
-//    typedef enum {
-//        poi_inside, poi_outside, poi_on_bound
-//    }vFPoint2DRegion2DPredicates;
-
-    enum vF_Predicates
-    {
+    TopPredNumberPoint2DRegion2D topPredNumberPoint2DRegion2D;
+    
+    enum vF_Predicates {
         poi_inside, poi_outside, poi_on_bound
     };
 
     Point2D objF;
     Region2D objG;
 
-    static const int vF_size=3;
+    static const int vF_size = 3;
 
 
-
-    bool isPredSet=false;
+    bool isPredSet = false;
 
     bool vF[vF_size];
 
@@ -92,8 +87,6 @@ private:
 
     //Evaluation function
     void evaluateTopoPred();
-
-
 
 
 };
