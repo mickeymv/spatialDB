@@ -16,7 +16,6 @@
 
 using namespace std;
 
-//#include "TopologicalRelationships.h"
 #include "TestPoint2DPoint2D.h"
 #include "TestPoint2DLine2D.h"
 #include "TestPoint2DRegion2D.h"
