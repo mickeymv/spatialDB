@@ -76,9 +76,7 @@ bool PlaneSweep::getInsideAbove(Seg2D seg) {
 //TODO try to store halfsegments in Minheap
 int PlaneSweep::findLeast() {
     //AttrHalfSeg2D objS, objD1, objD2, objD;
-    //cout<<"Inside findLeast"<<endl;
     getPot()->setNextMin();
-    //cout<<"After setNextMin"<<endl;
     Poi2D *objSP = nullptr;
     objSP = getPot()->getNextPoi2DMin();
 
@@ -216,7 +214,6 @@ int PlaneSweep::findLeast() {
         }
     }
     else if (objAHS != nullptr) {
-        //cout<<"Inside objAHS"<<endl;
         AttrHalfSeg2D checkah = *objAHS;
         if (getPot()->isFRegion()) {
             AttrHalfSeg2D checkahF = *(getPot()->getMinAttrHalfSeg2DF());
@@ -340,9 +337,7 @@ bool PlaneSweep::isGRegion()
 }
 
 void PlaneSweep::selectNext() {
-    //cout<<"Inside selectNext"<<endl;
     if (findLeast() == 1) {
-        //cout<<"FindLeast = 1"<<endl;
         getPot()->selectNext();
     }
     else {
@@ -2174,7 +2169,7 @@ bool PlaneSweep::lookAhead(HalfSeg2D &halfseg2D, ParallelObjectTraversal::object
         }
 
         if ((halfsegStaticSucc != nullptr && halfsegDynSucc == nullptr) || (*halfsegStaticSucc <= (*halfsegDynSucc))) {
-            //cout<<"In good loop"<<endl;
+
             bool isDirGiven = halfseg2D.isLeft;
             bool isDirSucc = (*halfsegStaticSucc).isLeft;
             Poi2D dpGiven, dpSucc;
@@ -2363,7 +2358,7 @@ Poi2D *PlaneSweep::lookAheadPoi(HalfSeg2D &halfseg2D, ParallelObjectTraversal::o
         }
 
         if ((halfsegStaticSucc != nullptr && halfsegDynSucc == nullptr) || (*halfsegStaticSucc <= (*halfsegDynSucc))) {
-            //cout<<"In good loop"<<endl;
+
             bool isDirGiven = halfseg2D.isLeft;
             bool isDirSucc = (*halfsegStaticSucc).isLeft;
             Poi2D dpGiven, dpSucc;
@@ -2599,7 +2594,7 @@ bool PlaneSweep::lookAhead(AttrHalfSeg2D &attrhalfseg2D,ParallelObjectTraversal:
 }
 
 Poi2D *PlaneSweep::lookAheadPoi(AttrHalfSeg2D &attrhalfseg2D, ParallelObjectTraversal::object objectValue) {
-    cout << "Inside lookAheadPoi" << endl;
+
     Seg2D &seg2D = attrhalfseg2D.hseg.seg;
     Poi2D *p = new Poi2D(Number("0"), Number("0"));
     if ((getPot()->isFRegion()) && (objectValue == ParallelObjectTraversal::first)) {
@@ -2795,11 +2790,9 @@ void PlaneSweep::updateSweepLineStatus(Seg2D &segmentToBeReplaced, Seg2D &segmen
 }
 
 bool PlaneSweep::poiOnSeg(Poi2D &poi2D) {
-    //cout<<"Inseide poiOnSeg"<<endl;
+
     int itr = 0;
     int treeSize = sweepLineStatus->sizeOfAVL();
-    //cout<<treeSize<<" treeSize"<<endl;
-    //AVLnode<PlaneSweepLineStatusObject> *segArray[treeSize] = {};
     PlaneSweepLineStatusObject **segArray;
     segArray = new PlaneSweepLineStatusObject*[treeSize];
     for(itr = 0; itr < treeSize; itr++)
@@ -2807,11 +2800,9 @@ bool PlaneSweep::poiOnSeg(Poi2D &poi2D) {
         segArray[itr]= new PlaneSweepLineStatusObject();
     }
     sweepLineStatus->getElements(segArray);
-    //cout<<"After getElements"<<endl;
     for (itr = 0; itr < treeSize; itr++) {
 
         Seg2D seg2D = segArray[itr]->getSegment2D();
-        //cout<<seg2D<<endl;
         if (PointLiesOnSegment(poi2D, seg2D)) {
             return true;
         }
@@ -2820,11 +2811,8 @@ bool PlaneSweep::poiOnSeg(Poi2D &poi2D) {
 }
 
 bool PlaneSweep::poiInSeg(Poi2D &poi2D) {
-    //cout<<"Inseide poiInSeg"<<endl;
     int itr = 0;
     int treeSize = sweepLineStatus->sizeOfAVL();
-    //cout<<treeSize<<" treeSize"<<endl;
-    //AVLnode<PlaneSweepLineStatusObject> *segArray[treeSize] = {};
     PlaneSweepLineStatusObject **segArray;
     segArray = new PlaneSweepLineStatusObject*[treeSize];
     for(itr = 0; itr < treeSize; itr++)
@@ -2832,11 +2820,9 @@ bool PlaneSweep::poiInSeg(Poi2D &poi2D) {
         segArray[itr]= new PlaneSweepLineStatusObject();
     }
     sweepLineStatus->getElements(segArray);
-    //cout<<"After getElements"<<endl;
     for (itr = 0; itr < treeSize; itr++) {
 
         Seg2D seg2D = segArray[itr]->getSegment2D();
-        //cout<<seg2D<<endl;
         if (PointLiesOnSegmentAndNotEndpoints(poi2D,seg2D)) {
             return true;
         }

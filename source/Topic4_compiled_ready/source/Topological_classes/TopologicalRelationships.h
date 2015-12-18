@@ -23,7 +23,12 @@
 //#include "planesweep_project/PlaneSweep.h"
 //#include "Point2DLine2D.h"
 #include "planesweep_project/Topic2/Implementation/Region2D.h"
-
+#include "Point2DPoint2D.h"
+#include "Point2DLine2D.h"
+#include "Line2DLine2D.h"
+#include "Point2DRegion2D.h"
+#include "Region2DRegion2D.h"
+#include "Line2DRegion2D.h"
 #include "TopPredNumberEnums.h"
 
 // Exploration function and validation predicate for the topological

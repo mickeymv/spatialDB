@@ -15,11 +15,7 @@
 ******************************************************************************/
 
 #include "TopologicalRelationships.h"
-#include "Point2DPoint2D.h"
-#include "Point2DLine2D.h"
-#include "Line2DLine2D.h"
-#include "Point2DRegion2D.h"
-#include "Region2DRegion2D.h"
+
 
 
 //Topological Relationship between a point2D object and a point2D object
@@ -96,6 +92,20 @@ TopPredNumberLine2DLine2D getTopologicalRelationship(const Line2D &lhs, const Li
 
 }
 
+bool isTopologicalRelationship(const Line2D &lhs, const Line2D &rhs, TopPredNumberLine2DLine2D predicate) {
+
+    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
+    bool isPredicate = false;
+
+    //Define predicate as an integer/matrix number
+    Line2DLine2D *ll = new Line2DLine2D(lhs, rhs);
+    isPredicate = ll->isTopologicalRelationship(predicate);
+    delete ll;
+
+    return isPredicate;
+
+}
+
 /* Topological Relationship between a point2D object and a region2D object */
 
 TopPredNumberPoint2DRegion2D getTopologicalRelationship(const Point2D &lhs, const Region2D &rhs) {
@@ -130,33 +140,33 @@ bool isTopologicalRelationship(const Point2D &lhs, const Region2D &rhs, TopPredN
 
 //
 ///* Topological Relationship between a line2D object and a region2D object */
-//
-//TopPredNumberLine2DRegion2D getTopologicalRelationship(const Line2D &lhs, const Region2D &rhs) {
-//
-//    //Define predicate as an integer/matrix number
-//    TopPredNumberLine2DRegion2D predicate;
-//
-//    Line2DRegion2D *lr = new Line2DRegion2D(lhs, rhs);
-//    predicate = lr->getTopologicalRelationship();
-//    delete lr;
-//
-//    return predicate;
-//
-//}
-//
-//bool isTopologicalRelationship(const Line2D &lhs, const Region2D &rhs, TopPredNumberLine2DRegion2D predicate) {
-//
-//    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
-//    bool isPredicate;
-//
-//    Line2DRegion2D *lr = new Line2DRegion2D(lhs, rhs);
-//    isPredicate = lr->isTopologicalRelationship(predicate);
-//    delete lr;
-//
-//    return isPredicate;
-//
-//}
-//
+
+TopPredNumberLine2DRegion2D getTopologicalRelationship(const Line2D &lhs, const Region2D &rhs) {
+
+    //Define predicate as an integer/matrix number
+    TopPredNumberLine2DRegion2D predicate;
+
+    Line2DRegion2D *lr = new Line2DRegion2D(lhs, rhs);
+    predicate = lr->getTopologicalRelationship();
+    delete lr;
+
+    return predicate;
+
+}
+
+bool isTopologicalRelationship(const Line2D &lhs, const Region2D &rhs, TopPredNumberLine2DRegion2D predicate) {
+
+    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
+    bool isPredicate;
+
+    Line2DRegion2D *lr = new Line2DRegion2D(lhs, rhs);
+    isPredicate = lr->isTopologicalRelationship(predicate);
+    delete lr;
+
+    return isPredicate;
+
+}
+
 ///* Topological Relationship between a region2D object and a region2D object */
 
 TopPredNumberRegion2DRegion2D getTopologicalRelationship(const Region2D &lhs, const Region2D &rhs) {
@@ -504,86 +514,86 @@ bool inside(const Line2D &lhs, const Line2D &rhs) {
 }
 
 ////Cluster predicates for a Line2D object and a Region2D object
-//bool overlap(const Line2D &lhs, const Region2D &rhs) {
-//    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
-//    bool isPredicate = false;
-//    Line2DRegion2D *lr = new Line2DRegion2Dlhs, rhs);
-//    isPredicate = lr->overlap();
-//    delete lr;
-//    return isPredicate;
-//
-//}
-//
-//bool disjoint(const Line2D &lhs, const Region2D &rhs) {
-//    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
-//    bool isPredicate = false;
-//    Line2DRegion2D *lr = new Line2DRegion2D(lhs, rhs);
-//    isPredicate = lr->disjoint();
-//    delete lr;
-//    return isPredicate;
-//
-//}
-//
-//bool touch(const Line2D &lhs, const Region2D &rhs) {
-//    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
-//    bool isPredicate = false;
-//    Line2DRegion2D *lr = new Line2DRegion2Dlhs, rhs);
-//    isPredicate = lr->meet();
-//    delete lr;
-//    return isPredicate;
-//
-//}
-//
-//bool equal(const Line2D &lhs, const Region2D &rhs) {
-//    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
-//    bool isPredicate = false;
-//    Line2DRegion2D *lr = new Line2DRegion2D(lhs, rhs);
-//    isPredicate = lr->equal();
-//    delete lr;
-//    return isPredicate;
-//
-//}
-//
-//bool contains(const Line2D &lhs, const Region2D &rhs) {
-//    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
-//    bool isPredicate = false;
-//    Line2DRegion2D *lr = new Line2DRegion2Dlhs, rhs);
-//    isPredicate = lr->contains();
-//    delete lr;
-//    return isPredicate;
-//
-//}
-//
-//bool covers(const Line2D &lhs, const Region2D &rhs) {
-//    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
-//    bool isPredicate = false;
-//    Line2DRegion2D *lr = new Line2DRegion2D(lhs, rhs);
-//    isPredicate = lr->covers();
-//    delete lr;
-//    return isPredicate;
-//
-//}
-//
-//bool coveredBy(const Line2D &lhs, const Region2D &rhs) {
-//    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
-//    bool isPredicate = false;
-//    Line2DRegion2D *lr = new Line2DRegion2D(lhs, rhs);
-//    isPredicate = lr->coveredBy();
-//    delete lr;
-//    return isPredicate;
-//
-//}
-//
-//bool inside(const Line2D &lhs, const Region2D &rhs) {
-//    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
-//    bool isPredicate = false;
-//    Line2DRegion2D *lr = new Line2DRegion2D(lhs, rhs);
-//    isPredicate = lr->inside();
-//    delete lr;
-//    return isPredicate;
-//
-//}
-//
+bool overlap(const Line2D &lhs, const Region2D &rhs) {
+    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
+    bool isPredicate = false;
+    Line2DRegion2D *lr = new Line2DRegion2D(lhs, rhs);
+    isPredicate = lr->overlap();
+    delete lr;
+    return isPredicate;
+
+}
+
+bool disjoint(const Line2D &lhs, const Region2D &rhs) {
+    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
+    bool isPredicate = false;
+    Line2DRegion2D *lr = new Line2DRegion2D(lhs, rhs);
+    isPredicate = lr->disjoint();
+    delete lr;
+    return isPredicate;
+
+}
+
+bool touch(const Line2D &lhs, const Region2D &rhs) {
+    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
+    bool isPredicate = false;
+    Line2DRegion2D *lr = new Line2DRegion2D(lhs, rhs);
+    isPredicate = lr->meet();
+    delete lr;
+    return isPredicate;
+
+}
+
+bool equal(const Line2D &lhs, const Region2D &rhs) {
+    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
+    bool isPredicate = false;
+    Line2DRegion2D *lr = new Line2DRegion2D(lhs, rhs);
+    isPredicate = lr->equal();
+    delete lr;
+    return isPredicate;
+
+}
+
+bool contains(const Line2D &lhs, const Region2D &rhs) {
+    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
+    bool isPredicate = false;
+    Line2DRegion2D *lr = new Line2DRegion2D(lhs, rhs);
+    isPredicate = lr->contains();
+    delete lr;
+    return isPredicate;
+
+}
+
+bool covers(const Line2D &lhs, const Region2D &rhs) {
+    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
+    bool isPredicate = false;
+    Line2DRegion2D *lr = new Line2DRegion2D(lhs, rhs);
+    isPredicate = lr->covers();
+    delete lr;
+    return isPredicate;
+
+}
+
+bool coveredBy(const Line2D &lhs, const Region2D &rhs) {
+    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
+    bool isPredicate = false;
+    Line2DRegion2D *lr = new Line2DRegion2D(lhs, rhs);
+    isPredicate = lr->coveredBy();
+    delete lr;
+    return isPredicate;
+
+}
+
+bool inside(const Line2D &lhs, const Region2D &rhs) {
+    //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects
+    bool isPredicate = false;
+    Line2DRegion2D *lr = new Line2DRegion2D(lhs, rhs);
+    isPredicate = lr->inside();
+    delete lr;
+    return isPredicate;
+
+}
+
 ////Cluster predicates for a Region2D object and a Region2D object
 bool overlap(const Region2D &lhs, const Region2D &rhs) {
     //Define a boolean variable which defines whether the given predicate is a topological relationship between the two spatial objects

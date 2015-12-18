@@ -50,21 +50,16 @@ bool *Region2DRegion2D::getVG()
 
 void Region2DRegion2D::exploreTopoPred()
 {
-    cout << "Inside exploreTopoPred" << endl;
     PlaneSweep S(objF,objG);
     S.newSweep();
-    cout << "after newSweep" << endl;
     Poi2D last_dp_in_F, last_dp_in_G;
 
     while((S.getStatus()==ParallelObjectTraversal::end_of_none)&&(!(vF[zero_one]&&vF[one_zero]&&vF[one_two]&&vF[two_one]&&vF[zero_two]&&vF[two_zero]&&vF[one_one]&&vF[bound_poi_shared]&&vG[zero_one_g]&&vG[one_zero_g]&&vG[one_two_g]&&vG[two_one_g])))
     {
-        cout << "Inside while loop" << endl;
         AttrHalfSeg2D h;
         if(S.getObject()==ParallelObjectTraversal::first)
         {
-            cout << "Inside first" << endl;
             h = S.getAttrHalfSegEvent(ParallelObjectTraversal::first);
-            cout << "After getAttrHalfSegEvent" << endl;
             if(h.hseg.isLeft)
             {
                 last_dp_in_F = h.hseg.seg.p1;
@@ -76,9 +71,7 @@ void Region2DRegion2D::exploreTopoPred()
         }
         else if(S.getObject()==ParallelObjectTraversal::second)
         {
-            cout << "Inside second" << endl;
             h = S.getAttrHalfSegEvent(ParallelObjectTraversal::second);
-            cout << "After getAttrHalfSegEvent" << endl;
             if(h.hseg.isLeft)
             {
                 last_dp_in_G = h.hseg.seg.p1;
@@ -90,9 +83,7 @@ void Region2DRegion2D::exploreTopoPred()
         }
         else // object = both
         {
-            cout << "Inside both" << endl;
             h = S.getAttrHalfSegEvent(ParallelObjectTraversal::first);
-            cout << "After getAttrHalfSegEvent" << endl;
             if(h.hseg.isLeft)
             {
                 last_dp_in_F = h.hseg.seg.p1;
@@ -106,13 +97,6 @@ void Region2DRegion2D::exploreTopoPred()
 
         }
 
-        cout << "Before lookAheadPoi" << endl;
-
-        cout << (S.lookAheadPoi(h, ParallelObjectTraversal::second)) <<
-        "S.lookAheadPoi(h, ParallelObjectTraversal::second) != nullptr" << endl;
-        cout << (S.lookAheadPoi(h, ParallelObjectTraversal::first)) <<
-        "(S.lookAheadPoi(h, ParallelObjectTraversal::first) != nullptr)" << endl;
-
         // Doesn't handle the case when the Poi2D(0,0) is used
         if ((last_dp_in_F == last_dp_in_G) || ((S.lookAheadPoi(h, ParallelObjectTraversal::second) != nullptr) &&
                 (last_dp_in_F == *(S.lookAheadPoi(h, ParallelObjectTraversal::second))) &&
@@ -121,19 +105,14 @@ void Region2DRegion2D::exploreTopoPred()
                                                (last_dp_in_G == *(S.lookAheadPoi(h, ParallelObjectTraversal::first))) &&
                                                (last_dp_in_G != Poi2D(Number("0"), Number("0")))))
         {
-            cout << "Could perform lookAheadpoi" << endl;
             vF[bound_poi_shared]=true;
         }
-        else {
-            cout << "Could not perform lookAheadpoi" << endl;
-        }
+
 
         if(!h.hseg.isLeft) // h is a right half segment
         {
             SegmentClass overlapNumber = S.getSegClass(h.hseg.seg);
-            cout << "After getSegClass" << endl;
-            cout << overlapNumber.getUpperOrLeft() << "UpperOrLeft" << endl;
-            cout << overlapNumber.getLowerOrRight() << "LowerOrRight" << endl;
+
             if(S.getObject()==ParallelObjectTraversal::first)
             {
                 if((overlapNumber.getUpperOrLeft()==0)&&(overlapNumber.getLowerOrRight()==1))
@@ -221,21 +200,14 @@ void Region2DRegion2D::exploreTopoPred()
             }
             PlaneSweepLineStatusObject psso(h.hseg.seg);
             S.delRight(psso);
-            cout << "After delRight" << endl;
         }
         else // h is a left segment
         {
             PlaneSweepLineStatusObject psso(h.hseg.seg);
             S.addLeft(psso);
-            cout << "After addLeft" << endl;
             if(S.coincident(h.hseg.seg))
             {
-                cout << "After coincident" << endl;
                 S.setObject(ParallelObjectTraversal::both);
-                cout << "After setObject" << endl;
-            }
-            else {
-                cout << "Not coincident" << endl;
             }
             int upperP;
             int lowerP;
@@ -243,15 +215,12 @@ void Region2DRegion2D::exploreTopoPred()
             int lowerS;
             if(!S.predExists(h.hseg.seg))
             {
-                cout << "Pred does not exist" << endl;
                 upperP = -1; // undefined and doesn't matter
                 lowerP = 0;
             }
             else // Predecessor exists
             {
-                cout << "Pred exists" << endl;
              SegmentClass pred = S.getPredSegmentClass(h.hseg.seg);
-                cout << "After getPredSegmentClass" << endl;
                 upperP = pred.getUpperOrLeft();
                 lowerP = pred.getLowerOrRight();
             }
@@ -283,11 +252,9 @@ void Region2DRegion2D::exploreTopoPred()
                 }
             }
             S.setSegClass(h.hseg.seg,lowerS,upperS);
-            cout << "After setSegClass" << endl;
         }
 
         S.selectNext();
-        cout << "After select next" << endl;
     }
 
     if(S.getStatus()==ParallelObjectTraversal::end_of_first)

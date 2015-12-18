@@ -7,7 +7,7 @@
 *   nested iterator class that enable access to internal components (that is,
 *   Half-Segments) of Line2DImpl objects. The class Line2DImpl contains
 *   specifications of several constructors, a destructor, and several
-*   type-specific unary methods of this spatial data type.  
+*   type-specific unary methods of this spatial data type.
 *
 * Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
 *
@@ -20,9 +20,9 @@
 #define Line2DImpl_H
 #include "Line2D.h"
 
-class Line2DImpl : public Line2D 
+class Line2DImpl : public Line2D
 {
-  public:
+public:
     //++++++++++++++++++++++++++++
     // Constructors and destructor
     //++++++++++++++++++++++++++++
@@ -48,7 +48,7 @@ class Line2DImpl : public Line2D
     // DigitWithoutZero := '1' | '2' |'3' | '4' | '5' | '6' | '7' | '8' | '9'
     // Digit            := '0' | DigitWithoutZero
     //
-    // example for segment list of seg1 and seg2 here is: (((1,2),(3,4)),((5,6),(7,8)))  
+    // example for segment list of seg1 and seg2 here is: (((1,2),(3,4)),((5,6),(7,8)))
     Line2DImpl(std::string textRepresentation);
 
     // Copy constructor that constructs a Line2DImpl object from a given Line2DImpl
@@ -60,7 +60,7 @@ class Line2DImpl : public Line2D
     // object as its value.
     Line2DImpl(Line2DImpl&& source);
 
-    
+
     //+++++++++++++++++
     // Iterator classes
     //+++++++++++++++++
@@ -70,9 +70,9 @@ class Line2DImpl : public Line2D
     // halfsegments is not possible.
     class ConstHalfSegIterator
     {
-      friend class Line2DImpl;
+        friend class Line2DImpl;
 
-      public:
+    public:
         // Default constructor that creates an empty constant halfsegment iterator.
         ConstHalfSegIterator();
 
@@ -116,11 +116,11 @@ class Line2DImpl : public Line2D
         bool operator <= (const ConstHalfSegIterator& rhs) const;
         bool operator >  (const ConstHalfSegIterator& rhs) const;
         bool operator >= (const ConstHalfSegIterator& rhs) const;
-        
+
         //friend member that display the internal members information of halfsegment
         friend std::ostream&operator<<(std::ostream&, const ConstHalfSegIterator&);
 
-      protected:
+    protected:
         // Forward struct declaration for the hidden implementation of a
         // constant halfsegment iterator that holds the different variables of the iterator
         struct ConstHalfSegIteratorImplementation;
@@ -146,7 +146,7 @@ class Line2DImpl : public Line2D
     // last halfsegment of a Line2DImpl object. Note that dereferencing this iterator
     // yields the empty constant halfsegment iterator.
     ConstHalfSegIterator hTail() const;
-	
+
 
 }; // class Line2DImpl
 

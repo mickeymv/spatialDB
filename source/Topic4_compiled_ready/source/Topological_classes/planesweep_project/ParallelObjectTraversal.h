@@ -1,3 +1,4 @@
+
 /******************************************************************************
 * File: ParallelObjectTraversal.h
 *******************************************************************************
@@ -140,11 +141,64 @@ private:
     status status_value = end_of_both;
 
     const Object2D *objF, *objG;
-     bool isFP, isGP, isFL, isGL, isFR, isGR;
+    bool isFP, isGP, isFL, isGL, isFR, isGR;
 
     Point2D::ConstPoiIterator * objFpoiIterator = nullptr, * objGpoiIterator = nullptr; // DTj Dec 5, 2015
     Line2DImpl::ConstHalfSegIterator * objFsegIterator = nullptr, * objGsegIterator = nullptr;
     Region2DImpl::ConstAttributedHalfSegmentIterator * objFregionIterator = nullptr, * objGregionIterator = nullptr;
+
+//    inline Poi2D nextFPoi()
+//    {
+//        if(*objFpoiIterator==((Point2D*) objF)->ctail())
+//        {
+//            return (Poi2D) *((Point2D*)objF)->ctail();
+//        }
+//        Point2D::ConstPoiIterator nextobjFpoiIterator = ++(*objFpoiIterator);
+//        return (Poi2D)(*nextobjFpoiIterator);
+//    }
+//
+//    inline Poi2D nextGPoi()
+//    {
+//        if(*objGpoiIterator==((Point2D*) objG)->ctail())
+//        {
+//            return (Poi2D) *((Point2D*)objG)->ctail();
+//        }
+//        Point2D::ConstPoiIterator nextobjGpoiIterator = ++(*objGpoiIterator);
+//        return (Poi2D)(*nextobjGpoiIterator);
+//    }
+//
+//    inline HalfSeg2D nextFSeg() {
+//        if (*objFsegIterator == ((Line2DImpl *) objF)->hTail()) {
+//                     return (HalfSeg2D) *((Line2DImpl *) objF)->hTail();
+//                   }
+//        Line2DImpl::ConstHalfSegIterator nextobjFsegIterator = ++(*objFsegIterator);
+//        return (HalfSeg2D) (*nextobjFsegIterator);
+//    }
+//
+//    inline HalfSeg2D nextGSeg() {
+//            if (*objGsegIterator == ((Line2DImpl *) objG)->hTail()) {
+//                      return (HalfSeg2D) *((Line2DImpl *) objG)->hTail();
+//                  }
+//        Line2DImpl::ConstHalfSegIterator nextobjGsegIterator = ++(*objGsegIterator);
+//        return (HalfSeg2D) (*nextobjGsegIterator);
+//    }
+//
+//    inline AttrHalfSeg2D nextFASeg() {
+//            if (*objFregionIterator == ((Region2DImpl *) objF)->ctail()) {
+//                      return (AttrHalfSeg2D) *((Region2DImpl *) objF)->ctail();
+//        }
+//        Region2DImpl::ConstAttributedHalfSegmentIterator nextobjFregionIterator = ++(*objFregionIterator);
+//        return (AttrHalfSeg2D) (*nextobjFregionIterator);
+//    }
+//
+//    inline AttrHalfSeg2D nextGASeg() {
+//             if (*objGregionIterator == ((Region2DImpl *) objG)->ctail()) {
+//                      return (AttrHalfSeg2D) *((Region2DImpl *) objG)->ctail();
+//                  }
+//        Region2DImpl::ConstAttributedHalfSegmentIterator nextobjGregionIterator = ++(*objGregionIterator);
+//        return (AttrHalfSeg2D) (*nextobjGregionIterator);
+//    }
+
 
     inline Poi2D nextFPoi() { Point2D::ConstPoiIterator nextobjFpoiIterator = (*objFpoiIterator)++;(*objFpoiIterator)--;return (Poi2D)(*nextobjFpoiIterator); }
     inline Poi2D nextGPoi() {Point2D::ConstPoiIterator nextobjGpoiIterator = (*objGpoiIterator)++;(*objGpoiIterator)--;return (Poi2D)(*nextobjGpoiIterator); }

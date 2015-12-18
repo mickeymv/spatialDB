@@ -5,6 +5,8 @@
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/Line2DLine2D.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/Line2DLine2D.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/Line2DRegion2D.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/Line2DRegion2D.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/Point2DLine2D.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/Point2DLine2D.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/Topic4_compiled_ready/source/Topological_classes/Point2DPoint2D.cpp" isTestSource="false" />

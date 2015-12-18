@@ -18,7 +18,7 @@
 #ifndef PLANESWEEP_PROJECT_LINE2DREGION2D_H
 #define PLANESWEEP_PROJECT_LINE2DREGION2D_H
 
-#include "Region2D.h"
+#include "planesweep_project/Topic2/Implementation/Region2D.h"
 #include "planesweep_project/Object2D.h"
 #include "planesweep_project/Topic2/Implementation/Point2D.h"
 #include "planesweep_project/Topic2/Implementation/Line2D.h"

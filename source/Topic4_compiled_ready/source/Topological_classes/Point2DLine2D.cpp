@@ -47,58 +47,40 @@ bool *Point2DLine2D::getVG() {
 
 void Point2DLine2D::exploreTopoPred() {
 
-    //TODO Object should be derived by each of the types
-
-    //cout<<"Inside explore\n";
     PlaneSweep S(objF,objG);
-    //cout<<"After object creation\n";
     S.newSweep();
-    //cout<<"After new Sweep\n";
     Poi2D last_dp;
 
     //int count=0;
     while((S.getStatus()!=ParallelObjectTraversal::end_of_second)&&(S.getStatus()==ParallelObjectTraversal::end_of_none)&&(!(vF[poi_disjoint]&&vF[poi_on_interior]&&vF[poi_on_bound]&&vG[bound_poi_disjoint])))
     {
-        //cout<<endl;
-        //cout<<"In while loop"<<count++<<endl;
         ParallelObjectTraversal::object object_value = S.getObject();
         if(object_value==ParallelObjectTraversal::first)
         {
-            cout<<"In object_value in first\n";
             Poi2D p = S.getPoiEvent(ParallelObjectTraversal::first);
-            cout<<p<<endl;
-            //cout<<"After getPoiEvent\n";
             if(S.poiInSeg(p))//poi_inSeg
             {
                 vF[poi_on_interior]= true;
-               // cout<<"vF[poi_on_interior] set in poiInSeg\n";
             }
             else
             {
                 vF[poi_disjoint]=true;
-                //cout<<"After poiOnSeg\n";
-                //cout<<"vF[poi_disjoint] set in poiInSeg\n";
             }
         }
         else if(object_value==ParallelObjectTraversal::second)
         {
-            cout<<"In object_value in second\n";
             HalfSeg2D h = S.getHalfSegEvent(ParallelObjectTraversal::second);
-            cout<<h<<endl;
-            //cout<<"After getHalfSegEvent\n";
             Poi2D dp;
             if(h.isLeft)
             {
                 PlaneSweepLineStatusObject * psso = new PlaneSweepLineStatusObject(h.seg);
                 S.addLeft(*psso);
-                //cout<<"After addLeft\n";
                 dp=h.seg.p1;
             }
             else
             {
                 PlaneSweepLineStatusObject * psso = new PlaneSweepLineStatusObject(h.seg);
                 S.delRight(*psso);
-                //cout<<"After delRight\n";
                 dp=h.seg.p2;
             }
             if(dp!=last_dp)
@@ -112,48 +94,37 @@ void Point2DLine2D::exploreTopoPred() {
         }
         else if(object_value==ParallelObjectTraversal::both)
         {
-            cout<<"In object_value in both\n";
             HalfSeg2D h = S.getHalfSegEvent(ParallelObjectTraversal::second);
-            cout<<h<<endl;
-            //cout<<"After getHalfSegEvent\n";
             Poi2D dp;
             if(h.isLeft)
             {
                 PlaneSweepLineStatusObject * psso = new PlaneSweepLineStatusObject(h.seg);
                 S.addLeft(*psso);
-                //cout<<"After addLeft\n";
                 dp=h.seg.p1;
             }
             else
             {
                 PlaneSweepLineStatusObject * psso = new PlaneSweepLineStatusObject(h.seg);
                 S.delRight(*psso);
-                //cout<<"After delRight\n";
                 dp=h.seg.p2;
             }
             last_dp=dp;
             if(S.lookAhead(h,ParallelObjectTraversal::second))
             {
                 vF[poi_on_interior]=true;
-                //cout<<"After lookAhead\n";
-                //cout<<"vF[poi_on_interior] set in lookAhead\n";
             }
             else
             {
                 vF[poi_on_bound]=true;
-                //cout<<"After lookAhead\n";
             }
         }
         S.selectNext();
-        //cout<<endl;
-        //cout<<"After selectNext\n";
     }
     if(S.getStatus()==ParallelObjectTraversal::end_of_second)
     {
         vF[poi_disjoint]=true;
-        cout<<"poi_disjoint set in End of second\n";
     }
-    return; // return true if no error, else false
+    return;
 }
 
 void Point2DLine2D::evaluateTopoPred()
