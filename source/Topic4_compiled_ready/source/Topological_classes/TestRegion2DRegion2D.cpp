@@ -2,44 +2,284 @@
 // Created by Djundi on 12/18/15.
 //
 
-#ifndef TOPOLOGICAL_CLASSES_TESTREGION2DREGION2D_H
-#define TOPOLOGICAL_CLASSES_TESTREGION2DREGION2D_H
+#include "TestRegion2DRegion2D.h"
+
+void TestRegion2DRegion2D::start() {
 
 
-#include "TopologicalRelationships.h"
-#include "vector"
+    // *****************************
+    // Case 6: Region2DRegion2D
+    // *****************************
+
+    Region2D *arr, *brr;
+    TopPredNumberRegion2DRegion2D trrred;
+    bool    result = false;
+
+    cout << "Test begins..." << endl << endl;
+
+    arr = new Region2D("(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))");
+    brr = new Region2D("(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))");
+
+    cout << "*****************************" << endl;
+    cout << "Case 1: Region2DRegion2D" << endl;
+    cout << "*****************************" << endl;
+    cout << endl;
+    cout << "1. Test rr_equal, F and G same number of elements." << endl;
+    cout << "Region2D a(\"(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))\");" << endl;
+    cout << "Region2D b(\"(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))\");" << endl;
+
+    trrred = getTopologicalRelationship(*arr, *brr);
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    printRegion2DRegion2DPredicate(trrred);
+    cout << endl;
+
+    result = isTopologicalRelationship(*arr, *brr, TopPredNumberRegion2DRegion2D::rr_equal_m5);
+
+    cout << "   isTopologicalRelationship(a, b, rr_equal_m5) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   equal() ==> " << equal(*arr, *brr) << endl;
+    cout << "   overlap() ==> " << overlap(*arr, *brr) << endl;
+    cout << endl;
+
+    // don't forget to cleanup
+    delete arr;
+    delete brr;
+    result = false;
+
+    cout << "Test begins..." << endl << endl;
+
+    arr = new Region2D("(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))");
+    brr = new Region2D("(((10,8),(11,10)),((10,8),(11,7)),((11,7),(11,10)))");
+
+    cout << "*****************************" << endl;
+    cout << "Case 2: Region2DRegion2D" << endl;
+    cout << "*****************************" << endl;
+    cout << endl;
+    cout << "1. Test rr_disjoint, F and G same number of elements." << endl;
+    cout << "Region2D a(\"(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))\");" << endl;
+    cout << "Region2D b(\"(((10,8),(11,10)),((10,8),(11,7)),((11,7),(11,10)))\");" << endl;
+
+    trrred = getTopologicalRelationship(*arr, *brr);
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    printRegion2DRegion2DPredicate(trrred);
+    cout << endl;
+
+    result = isTopologicalRelationship(*arr, *brr, TopPredNumberRegion2DRegion2D::rr_disjoint_m1);
+
+    cout << "   isTopologicalRelationship(a, b, rr_disjoint_m1) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   disjoint() ==> " << disjoint(*arr, *brr) << endl;
+    cout << "   overlap() ==> " << overlap(*arr, *brr) << endl;
+    cout << endl;
+
+    delete arr;
+    delete brr;
+    result = false;
+
+    cout << "Test begins..." << endl << endl;
+
+    arr = new Region2D("(((3,1),(4,3)),((3,1),(4,0)),((4,0),(4,3)))");
+    brr = new Region2D("(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))");
+
+    cout << "*****************************" << endl;
+    cout << "Case 3: Region2DRegion2D" << endl;
+    cout << "*****************************" << endl;
+    cout << endl;
+    cout << "1. Test rr_meet, F and G same number of elements." << endl;
+    cout << "Region2D a(\"(((3,1),(4,3)),((3,1),(4,0)),((4,0),(4,3)))\");" << endl;
+    cout << "Region2D b(\"(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))\");" << endl;
+
+    trrred = getTopologicalRelationship(*arr, *brr);
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    printRegion2DRegion2DPredicate(trrred);
+    cout << endl;
+
+    result = isTopologicalRelationship(*arr, *brr, TopPredNumberRegion2DRegion2D::rr_meet_m4);
+
+    cout << "   isTopologicalRelationship(a, b, rr_meet_m4) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   meet() ==> " << touch(*arr, *brr) << endl;
+    cout << "   overlap() ==> " << overlap(*arr, *brr) << endl;
+    cout << endl;
+
+    delete arr;
+    delete brr;
+    result = false;
+
+    cout << "Test begins..." << endl << endl;
+
+    arr = new Region2D("(((5,3),(6,4)),((5,3),(6,2)),((6,2),(6,4)))");
+    brr = new Region2D("(((4,3),(7,5)),((4,3),(7,1)),((7,1),(7,5)))");
+
+    cout << "*****************************" << endl;
+    cout << "Case 4: Region2DRegion2D" << endl;
+    cout << "*****************************" << endl;
+    cout << endl;
+    cout << "1. Test rr_inside, F and G same number of elements." << endl;
+    cout << "Region2D a(\"(((5,3),(6,4)),((5,3),(6,2)),((6,2),(6,4)))\");" << endl;
+    cout << "Region2D b(\"(((4,3),(7,5)),((4,3),(7,1)),((7,1),(7,5)))\");" << endl;
+
+    trrred = getTopologicalRelationship(*arr, *brr);
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    printRegion2DRegion2DPredicate(trrred);
+    cout << endl;
+
+    result = isTopologicalRelationship(*arr, *brr, TopPredNumberRegion2DRegion2D::rr_inside_m7);
+
+    cout << "   isTopologicalRelationship(a, b, rr_inside_m7) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   inside() ==> " << inside(*arr, *brr) << endl;
+    cout << "   overlap() ==> " << overlap(*arr, *brr) << endl;
+    cout << endl;
+
+    delete arr;
+    delete brr;
+    result = false;
+
+    cout << "Test begins..." << endl << endl;
+
+    arr = new Region2D("(((4,3),(7,5)),((4,3),(7,1)),((7,1),(7,5)))");
+    brr = new Region2D("(((5,3),(6,4)),((5,3),(6,2)),((6,2),(6,4)))");
+
+    cout << "*****************************" << endl;
+    cout << "Case 5: Region2DRegion2D" << endl;
+    cout << "*****************************" << endl;
+    cout << endl;
+    cout << "1. Test rr_contains, F and G same number of elements." << endl;
+    cout << "Region2D a(\"(((4,3),(7,5)),((4,3),(7,1)),((7,1),(7,5)))\");" << endl;
+    cout << "Region2D b(\"(((5,3),(6,4)),((5,3),(6,2)),((6,2),(6,4)))\");" << endl;
+
+    trrred = getTopologicalRelationship(*arr, *brr);
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    printRegion2DRegion2DPredicate(trrred);
+    cout << endl;
+
+    result = isTopologicalRelationship(*arr, *brr, TopPredNumberRegion2DRegion2D::rr_contains_m19);
+
+    cout << "   isTopologicalRelationship(a, b, rr_contains_m19) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   contains() ==> " << contains(*arr, *brr) << endl;
+    cout << "   overlap() ==> " << overlap(*arr, *brr) << endl;
+    cout << endl;
+
+    delete arr;
+    delete brr;
+    result = false;
 
 
-class TestRegion2DRegion2D {
+    cout << "Test begins..." << endl << endl;
 
-public:
-    TestRegion2DRegion2D(){};
+    arr = new Region2D("(((2,2),(5,5)),((2,2),(5,0)),((5,0),(5,5)))");
+    brr = new Region2D("(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))");
 
-    virtual ~TestRegion2DRegion2D(){};
+    cout << "*****************************" << endl;
+    cout << "Case 6: Region2DRegion2D" << endl;
+    cout << "*****************************" << endl;
+    cout << endl;
+    cout << "1. Test rr_overlap, F and G same number of elements." << endl;
+    cout << "Region2D a(\"(((2,2),(5,5)),((2,2),(5,0)),((5,0),(5,5)))\");" << endl;
+    cout << "Region2D b(\"(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))\");" << endl;
 
-    void start();
+    trrred = getTopologicalRelationship(*arr, *brr);
 
-private:
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
 
-    string topPredNumberRegion2DRegion2D[33] =
-            {
-                    "rr_disjoint_m1", "rr_meet_m2", "rr_meet_m3", "rr_meet_m4", "rr_equal_m5",
-                    "rr_coveredby_m6", "rr_inside_m7", "rr_coveredby_m8", "rr_coveredby_m9",
-                    "rr_overlap_m10", "rr_covers_m11", "rr_overlap_m12", "rr_overlap_m13",
-                    "rr_overlap_m14", "rr_overlap_m15", "rr_overlap_m16", "rr_overlap_m17",
-                    "rr_overlap_m18", "rr_contains_m19", "rr_overlap_m20", "rr_covers_m21",
-                    "rr_overlap_m22", "rr_overlap_m23", "rr_covers_m24", "rr_overlap_m25",
-                    "rr_overlap_m26", "rr_overlap_m27", "rr_overlap_m28", "rr_overlap_m29",
-                    "rr_overlap_m30", "rr_overlap_m31", "rr_overlap_m32", "rr_overlap_m33"
-            };
+    printRegion2DRegion2DPredicate(trrred);
+    cout << endl;
 
+    result = isTopologicalRelationship(*arr, *brr, TopPredNumberRegion2DRegion2D::rr_overlap_m14);
 
+    cout << "   isTopologicalRelationship(a, b, rr_overlap_m14) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   overlap() ==> " << overlap(*arr, *brr) << endl;
+    cout << "   contains() ==> " << contains(*arr, *brr) << endl;
+    cout << endl;
 
-    inline void printRegion2DRegion2DPredicate(TopPredNumberRegion2DRegion2D tpred) {
-        cout << topPredNumberRegion2DRegion2D[(unsigned int) tpred] << " <===";
-    };
-};
+    delete arr;
+    delete brr;
+    result = false;
 
+    cout << "Test begins..." << endl << endl;
 
-#endif //TOPOLOGICAL_CLASSES_TESTREGION2DREGION2D_H
+    arr = new Region2D("(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))");
+    brr = new Region2D("(((4,3),(7,5)),((4,3),(7,1)),((7,1),(7,5)))");
 
+    cout << "*****************************" << endl;
+    cout << "Case 8: Region2DRegion2D" << endl;
+    cout << "*****************************" << endl;
+    cout << endl;
+    cout << "1. Test rr_coveredby, F and G same number of elements." << endl;
+    cout << "Region2D a(\"(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))\");" << endl;
+    cout << "Region2D b(\"(((4,3),(7,5)),((4,3),(7,1)),((7,1),(7,5)))\");" << endl;
+
+    trrred = getTopologicalRelationship(*arr, *brr);
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    printRegion2DRegion2DPredicate(trrred);
+    cout << endl;
+
+    result = isTopologicalRelationship(*arr, *brr, TopPredNumberRegion2DRegion2D::rr_coveredby_m6);
+
+    cout << "   isTopologicalRelationship(a, b, rr_coveredby_m6) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   covers() ==> " << coveredBy(*arr, *brr) << endl;
+    cout << "   contains() ==> " << contains(*arr, *brr) << endl;
+    cout << endl;
+
+    delete arr;
+    delete brr;
+    result = false;
+
+    cout << "Test begins..." << endl << endl;
+
+    arr = new Region2D("(((4,3),(7,5)),((4,3),(7,1)),((7,1),(7,5)))");
+    brr = new Region2D("(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))");
+
+    cout << "*****************************" << endl;
+    cout << "Case 7: Region2DRegion2D" << endl;
+    cout << "*****************************" << endl;
+    cout << endl;
+    cout << "1. Test rr_covers, F and G same number of elements." << endl;
+    cout << "Region2D a(\"(((4,3),(7,5)),((4,3),(7,1)),((7,1),(7,5)))\");" << endl;
+    cout << "Region2D b(\"(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))\");" << endl;
+
+    trrred = getTopologicalRelationship(*arr, *brr);
+
+    cout << "   getTopologicalRelationship(a, b) :" << endl;
+    cout << "   returns ==> ";
+
+    printRegion2DRegion2DPredicate(trrred);
+    cout << endl;
+
+    result = isTopologicalRelationship(*arr, *brr, TopPredNumberRegion2DRegion2D::rr_covers_m11);
+
+    cout << "   isTopologicalRelationship(a, b, rr_covers_m11) :" << endl;
+    cout << "   returns ==> " << result << endl;
+    cout << "   covers() ==> " << covers(*arr, *brr) << endl;
+    cout << "   contains() ==> " << contains(*arr, *brr) << endl;
+    cout << endl;
+
+    delete arr;
+    delete brr;
+
+    cout << "Test succesfully ended." << endl;
+
+}
