@@ -485,7 +485,29 @@ cout<<endl;
 
     cout << "\n\n------------------ REGION-REGION  SPATIAL OPERATIONS Testing starts here ----------------------\n" <<endl;
 
-    Region2D regionNull1, regionNull2, regionA("(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))");
+    Region2D regionNull1, regionNull2;
+
+    Seg2D s1(Poi2D(Number(std::to_string(4)),Number(std::to_string(3))),Poi2D(Number(std::to_string(6)),Number(std::to_string(4))));
+    Seg2D s2(Poi2D(Number(std::to_string(4)),Number(std::to_string(3))),Poi2D(Number(std::to_string(6)),Number(std::to_string(2))));
+    Seg2D s3(Poi2D(Number(std::to_string(6)),Number(std::to_string(2))),Poi2D(Number(std::to_string(6)),Number(std::to_string(4))));
+
+    Seg2D s4(Poi2D(Number(std::to_string(0)),Number(std::to_string(0))),Poi2D(Number(std::to_string(1)),Number(std::to_string(1))));
+    Seg2D s5(Poi2D(Number(std::to_string(0)),Number(std::to_string(0))),Poi2D(Number(std::to_string(0)),Number(std::to_string(2))));
+    Seg2D s6(Poi2D(Number(std::to_string(0)),Number(std::to_string(2))),Poi2D(Number(std::to_string(1)),Number(std::to_string(1))));
+
+    vector<Seg2D> segmentsVector1, segmentsVector2;
+
+
+    segmentsVector1.push_back(s1);
+    segmentsVector1.push_back(s2);
+    segmentsVector1.push_back(s3);
+
+    segmentsVector2.push_back(s4);
+    segmentsVector2.push_back(s5);
+    segmentsVector2.push_back(s6);
+
+    Region2D regionA(segmentsVector1), regionB(segmentsVector2);
+
     /*
      * 1. Computation of spatial operations between two spatial Regions.
      *       I) No common Interiors.
@@ -597,7 +619,41 @@ cout<<endl;
 
     cout<<"---------------------------------------" << endl;
 
-  printf("\nSuccessfully ran Group 3's Spatial Operations Test Program!\n\n");
+    //    //Case 1.Iz
+    cout<<"---------------------------------------" << endl;
+    cout<<"Region Operations Case where common region between two non empty Region objects is null." << endl;
+
+    cout<<"Region1 info is: " << regionA;
+    if(regionA.isEmptyRegion2D())
+        cout<<"empty Region1 structure"<<endl;
+    else
+        cout<<"nonempty Region1 structure"<<endl;
+    cout<<"Region1 number of segments is " << regionA.getNumberOfSegments()<<endl;
+    cout<<endl;
+
+    cout<<"Region2 info is: " << regionB;
+    if(regionB.isEmptyRegion2D())
+        cout<<"empty Region2 structure"<<endl;
+    else
+        cout<<"nonempty Region2 structure"<<endl;
+    cout<<"Region2 number of segments is " << regionB.getNumberOfSegments()<<endl;
+    cout<<endl;
+
+    // Intersection
+    Region2D regIntersection3 = spatialIntersection(regionA, regionB);
+    cout<<endl<<"regionIntersection12 info is: " << regIntersection3;
+
+    if(regIntersection3.isEmptyRegion2D())
+        cout<<"empty regionIntersection12 structure"<<endl;
+    else
+        cout<<"nonempty regionIntersection12 structure"<<endl;
+    cout<<"regionIntersection12 number of segments is " <<regIntersection3.getNumberOfSegments()<<endl;
+    cout<<endl;
+
+    cout<<"---------------------------------------" << endl;
+
+
+    printf("\nSuccessfully ran Group 3's Spatial Operations Test Program!\n\n");
   cout<<"---------------------------------------" << endl;
   return 0;
 }
