@@ -14,7 +14,7 @@
 *******************************************************************************/
 
 
-#include <c++/array>
+#include <array>
 #include "Region2DImpl.h"
 using namespace std;
 
