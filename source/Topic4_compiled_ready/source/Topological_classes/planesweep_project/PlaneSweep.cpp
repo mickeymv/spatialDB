@@ -304,6 +304,7 @@ int PlaneSweep::findLeast() {
             }
         }
     }
+    return 0;
 }
 
 bool PlaneSweep::isFPoint()

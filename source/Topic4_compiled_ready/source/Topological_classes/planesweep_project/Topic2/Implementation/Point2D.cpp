@@ -21,26 +21,26 @@
 #include <regex>
 #include <string>
 #include <iterator>
-  
+
   // Forward struct declaration for the hidden implementation of a
   // constant point iterator that holds the different variables of the iterator
-  struct Point2D::ConstPoiIterator::ConstPoiIteratorImplementation 
+  struct Point2D::ConstPoiIterator::ConstPoiIteratorImplementation
   {
     int iteratorIndex = 0;
     Point2D::point2DImplementation* current;
   };
-  
+
   //Structure that holds all required information for building the Point2D structure
-  struct Point2D::point2DImplementation 
+  struct Point2D::point2DImplementation
   {
     std::vector<Poi2D> vecPoints;
     Point2D::ConstPoiIterator::ConstPoiIteratorImplementation first;
     Point2D::ConstPoiIterator::ConstPoiIteratorImplementation last;
     Point2D::ConstPoiIterator::ConstPoiIteratorImplementation head;
     Point2D::ConstPoiIterator::ConstPoiIteratorImplementation tail;
-    
+
   };
-  
+
   //function used for sorting points
   bool lessFunction (Poi2D a, Poi2D b)
   {
@@ -74,9 +74,9 @@
 	  points->vecPoints.push_back(Poi2D(Number( ),Number( )));
       points->first.iteratorIndex = 1;
 	  points->last.iteratorIndex = points->vecPoints.size();
-      points->tail.iteratorIndex = points->vecPoints.size()+1; 
+      points->tail.iteratorIndex = points->vecPoints.size()+1;
 	  points->first.current = points;
-	  points->last.current = points;  
+	  points->last.current = points;
   }
 
   // Constructor for complex point structure. It takes as input a string name that represents the
@@ -86,17 +86,17 @@
       points = new point2DImplementation;
 
       if (std::regex_match( textualPointList, std::regex( "\\(\\(.*\\)\\)" ) ))  // means the string is point representation
-      { 
+      {
 	      points->vecPoints.clear();
           points->vecPoints.push_back(Poi2D(Number( ),Number( )));
 	      textualPointList.erase(std::remove(textualPointList.begin(), textualPointList.end(), ')'), textualPointList.end());
 	      textualPointList.erase(std::remove(textualPointList.begin(), textualPointList.end(), '('), textualPointList.end());
 	      std::istringstream ss(textualPointList);
-	      
+
 	      std::string token;
 	      Number N1;
 	      int count=0;
-	      
+
 	      while(std::getline(ss, token, ','))
 		  {
 	          if(count==0)
@@ -113,15 +113,15 @@
           points->vecPoints.push_back(Poi2D(Number( ),Number( )));
 	      if(count==1)
 		  {
-                points->vecPoints.clear(); 
+                points->vecPoints.clear();
                 return;
-	      }   // not complete set of points  
+	      }   // not complete set of points
       }
       else
-	  { 
-        // throw error for invalid input 
+	  {
+        // throw error for invalid input
         cout << "Invalid input for point object";
-      }  
+      }
   }
 
   // Copy constructor that constructs a new Point2D object with the same
@@ -164,15 +164,15 @@
   {
     delete points;
   }
-  
-  
+
+
   //+++++++++++++++++++++
   // Assignment operators
   //+++++++++++++++++++++
 
-  
+
   //copy assignment operator that copies the inputted object
-  //to the Point2D object  
+  //to the Point2D object
   Point2D& Point2D::operator = (const Point2D& orginalPoint)
   {
 	points = new point2DImplementation;
@@ -193,7 +193,7 @@
   // Point2D object. The inputted object gets the empty Point2D
   // object as its value.
   Point2D& Point2D::operator = (Point2D&& orginalPoint)
-  {  
+  {
 	points = new point2DImplementation;
     points->vecPoints.clear();
 	std::move(orginalPoint.points->vecPoints.begin(), orginalPoint.points->vecPoints.end(),std::back_inserter(points->vecPoints));
@@ -204,33 +204,33 @@
     points->first.current = orginalPoint.points->first.current;
 	points->last.current = orginalPoint.points->last.current;
     points->head.current = orginalPoint.points->head.current;
-    points->tail.current = orginalPoint.points->tail.current; 
+    points->tail.current = orginalPoint.points->tail.current;
     return(*this);
   }
-  
+
   // +++++++++++++++++++++
   // operators and Comparison operators
   // +++++++++++++++++++++
-  
+
   // Equal operator that checks if the Point2D object and the operand Point2D are the same spatial point.
   bool Point2D::operator == (Point2D& operand)
   {
-		if(points->vecPoints.size() != operand.points->vecPoints.size())  
+		if(points->vecPoints.size() != operand.points->vecPoints.size())
 		  return false;
 		for (unsigned i=1; i < points->vecPoints.size()-2; i++)
 		{
-		  if(points->vecPoints.at(i) != operand.points->vecPoints.at(i))		
+		  if(points->vecPoints.at(i) != operand.points->vecPoints.at(i))
 			return false;
 		}
 		return true;
   }
-  
+
   // unequal operator that checks if the Point2D object and the operand
   // Point2D are different spatial structures. It is the logical opposite
   // of the == operator.
   bool Point2D::operator != (Point2D& operand)
   {
-		if(points->vecPoints.size() != operand.points->vecPoints.size())  
+		if(points->vecPoints.size() != operand.points->vecPoints.size())
 		  return true;
 		for (unsigned i=0; i < points->vecPoints.size(); i++)
 		{
@@ -243,10 +243,10 @@
   // less than comparision of lexicographic order of points
   bool Point2D::operator < (Point2D& operand)
   {
-	  if(isEmptyPoint2D() || operand.isEmptyPoint2D()) 
+	  if(isEmptyPoint2D() || operand.isEmptyPoint2D())
 		return false;
 	  int x = (points->vecPoints.size() < operand.points->vecPoints.size()) ? points->vecPoints.size() : operand.points->vecPoints.size();
-      for (unsigned i=1; i < x; i++) 
+      for (unsigned i=1; i < x; i++)
 	  {
 	    Poi2D poi1=points->vecPoints.at(i);
 	    Poi2D poi2=operand.points->vecPoints.at(i);
@@ -255,61 +255,61 @@
 	    else
 	      continue;
 	  }
-	  if (operand.points->vecPoints.size() > points->vecPoints.size())   
+	  if (operand.points->vecPoints.size() > points->vecPoints.size())
 	    return true;
 
 	  return false;
   }
 
-  
+
   // less than or equal comparision of lexicographic order of points
   bool Point2D::operator <= (Point2D& operand)
   {
-	  if(isEmptyPoint2D() || operand.isEmptyPoint2D()) 
+	  if(isEmptyPoint2D() || operand.isEmptyPoint2D())
 		return false;
 	  int x = (points->vecPoints.size() < operand.points->vecPoints.size()) ? points->vecPoints.size() : operand.points->vecPoints.size();
       for (unsigned i=1; i < x-1; i++)
 	  {
 	    if (points->vecPoints.at(i) > operand.points->vecPoints.at(i))
 	      return false;
-	  } 
-	  
-	  if ((operand.points->vecPoints.size() == points->vecPoints.size())||(operand.points->vecPoints.size() > points->vecPoints.size()))   
+	  }
+
+	  if ((operand.points->vecPoints.size() == points->vecPoints.size())||(operand.points->vecPoints.size() > points->vecPoints.size()))
 	    return true;
 
 	  return false;
   }
-  
+
   // greater than comparision of lexicographic order of points
   bool Point2D::operator > (Point2D& operand)
   {
-	  if(isEmptyPoint2D() || operand.isEmptyPoint2D()) 
+	  if(isEmptyPoint2D() || operand.isEmptyPoint2D())
 		return false;
 	  int x = (points->vecPoints.size() < operand.points->vecPoints.size()) ? points->vecPoints.size() : operand.points->vecPoints.size();
       for (unsigned i=1; i < x-1; i++)
 	  {
 	    if (points->vecPoints.at(i) > operand.points->vecPoints.at(i))
 	      return true;
-	  } 
-	  if (operand.points->vecPoints.size() < points->vecPoints.size())   
+	  }
+	  if (operand.points->vecPoints.size() < points->vecPoints.size())
 	    return true;
 
 	  return false;
   }
-  
+
   // greater or equal comparision of lexicographic order of points
   bool Point2D::operator >= (Point2D& operand)
   {
-	  if(isEmptyPoint2D() || operand.isEmptyPoint2D()) 
+	  if(isEmptyPoint2D() || operand.isEmptyPoint2D())
 		return false;
 	  int x = (points->vecPoints.size() < operand.points->vecPoints.size()) ? points->vecPoints.size() : operand.points->vecPoints.size();
       for (unsigned i=1; i < x-1; i++)
 	  {
 	    if (points->vecPoints.at(i) < operand.points->vecPoints.at(i))
 	      return false;
-	  } 
-	  
-	  if ((operand.points->vecPoints.size() == points->vecPoints.size())||(operand.points->vecPoints.size() < points->vecPoints.size()))   
+	  }
+
+	  if ((operand.points->vecPoints.size() == points->vecPoints.size())||(operand.points->vecPoints.size() < points->vecPoints.size()))
 	    return true;
 
 	  return false;
@@ -326,25 +326,25 @@
 	}else
 	{
 	  os << "number of points: " << output.points->vecPoints.size()-2<<" "<<endl;
-      for (unsigned i=1; i<output.points->vecPoints.size()-1; i++) 
+      for (unsigned i=1; i<output.points->vecPoints.size()-1; i++)
 	    os << "point " << i <<":"<< output.points->vecPoints[i]<<" "<<endl;
 	}
     return os;
-	
+
   }
-  
+
   //++++++++++++++++++++++++++++++++
   // Unary predicates and operations
   //++++++++++++++++++++++++++++++++
-  
+
   // get number of single points of the structure.
   Number Point2D::numPoints()
   {
 		if((points->vecPoints.size() == 0)||(points->vecPoints.size() == 2))
 	        return Number(std::to_string(0));
-		return Number(std::to_string(points->vecPoints.size()-2));  
+		return Number(std::to_string(points->vecPoints.size()-2));
   }
-  
+
   // Predicate that checks whether the inputted Point2D object is an
   // empty Point2D object.
   bool Point2D::isEmptyPoint2D() const
@@ -364,7 +364,7 @@
   Point2D::ConstPoiIterator::ConstPoiIterator()
   {
 	handle = new ConstPoiIteratorImplementation;
-	handle->iteratorIndex = 0; 	  
+	handle->iteratorIndex = 0;
   }
 
   // Copy constructor that constructs a constant poi iterator from a
@@ -396,7 +396,7 @@
   // "rhs" to the constant poi iterator.
   Point2D::ConstPoiIterator& Point2D::ConstPoiIterator::operator = (const ConstPoiIterator& rhs)
   {
-	handle->iteratorIndex = rhs.handle->iteratorIndex; 
+	handle->iteratorIndex = rhs.handle->iteratorIndex;
 	handle->current = rhs.handle->current;
     return(*this);
   }
@@ -417,7 +417,7 @@
 
   // postfix
   Point2D::ConstPoiIterator Point2D::ConstPoiIterator::operator ++ (int postfix)
-  {   
+  {
     ConstPoiIterator tmp(*this);//*tmp= new ConstPoiIterator(*this);
     handle->iteratorIndex++;
     return(tmp);
@@ -425,7 +425,7 @@
 
   // prefix
   Point2D::ConstPoiIterator& Point2D::ConstPoiIterator::operator -- ()
-  { 
+  {
     handle->iteratorIndex--;
     return(*this);
   }
@@ -443,11 +443,11 @@
   // points to a point. The dereferenced value cannot be changed.
   const Poi2D& Point2D::ConstPoiIterator::operator *() const
   {
-    return(this->handle->current->vecPoints.at(this->handle->iteratorIndex));     
+    return(this->handle->current->vecPoints.at(this->handle->iteratorIndex));
   }
   const Poi2D* Point2D::ConstPoiIterator::operator ->() const
   {
-    return(&this->handle->current->vecPoints.at(this->handle->iteratorIndex));   
+    return(&this->handle->current->vecPoints.at(this->handle->iteratorIndex));
   }
 
   // Comparison operators that compares a constant poi iterator position
@@ -470,17 +470,17 @@
   }
   bool Point2D::ConstPoiIterator::operator >  (const ConstPoiIterator& rhs) const
   {
-    return ((this->handle->current == rhs.handle->current)&&(this->handle->iteratorIndex > rhs.handle->iteratorIndex));    
+    return ((this->handle->current == rhs.handle->current)&&(this->handle->iteratorIndex > rhs.handle->iteratorIndex));
   }
   bool Point2D::ConstPoiIterator::operator >= (const ConstPoiIterator& rhs) const
   {
     return ((this->handle->current == rhs.handle->current)&&(this->handle->iteratorIndex >= rhs.handle->iteratorIndex));
   }
-  
+
   // Method that returns a constant poi iterator to the first point of a
   // Point2D object.
   Point2D::ConstPoiIterator Point2D::cbegin() const
-  {		  
+  {
 	ConstPoiIterator begin;
 	begin.handle->iteratorIndex = 1;
 	begin.handle->current = points;
@@ -490,16 +490,16 @@
   // Method that returns a constant poi iterator to the last point of a
   // Point2D object.
   Point2D::ConstPoiIterator Point2D::cend() const
-  {		  
+  {
 	ConstPoiIterator last;
     if(points->vecPoints.size() >= 2)
         last.handle->iteratorIndex = points->vecPoints.size()-2;
-    else 
+    else
         last.handle->iteratorIndex = 0;
 	last.handle->current = points;
   	return last;
   }
-  
+
   std::ostream&operator<<(std::ostream& os, const Point2D::ConstPoiIterator& output)
   {
 	os << "index Value:" << output.handle->iteratorIndex<<" ";
@@ -528,7 +528,7 @@
     ConstPoiIterator t;
     if(points->vecPoints.size() >= 1)
       t.handle->iteratorIndex = points->vecPoints.size()-1;
-    else 
+    else
       t.handle->iteratorIndex = 0;
     t.handle->current = points;
     return t;

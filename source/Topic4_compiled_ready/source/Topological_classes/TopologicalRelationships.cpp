@@ -675,5 +675,3 @@ bool inside(const Region2D &lhs, const Region2D &rhs) {
 
 }
 
-
-

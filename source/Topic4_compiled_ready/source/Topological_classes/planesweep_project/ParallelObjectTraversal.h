@@ -123,10 +123,10 @@ public:
     inline Poi2D currentGPoi() {return (Poi2D)(**objGpoiIterator); }
 
     inline HalfSeg2D currentFSeg() {return (HalfSeg2D)(**objFsegIterator); }
-    inline HalfSeg2D currentGSeg() {return (HalfSeg2D)(**objGsegIterator); }
+    inline HalfSeg2D currentGSeg() {cout<<"currentG"<<endl;return (HalfSeg2D)(**objGsegIterator); }
 
-    inline AttrHalfSeg2D currentFASeg() {return (AttrHalfSeg2D)(**objFregionIterator); }
-    inline AttrHalfSeg2D currentGASeg() {return (AttrHalfSeg2D)(**objGregionIterator); }
+    inline AttrHalfSeg2D currentFASeg() {cout<<"currentFASeg"<<endl; cout<<**objFregionIterator; return (AttrHalfSeg2D)(**objFregionIterator); }
+    inline AttrHalfSeg2D currentGASeg() {cout<<"currentGASeg"<<endl; cout<<**objGregionIterator; return (AttrHalfSeg2D)(**objGregionIterator); }
 
 private:
     // Method that selects first point or halfsegment of each of the operand objects
@@ -144,7 +144,61 @@ private:
 
     Point2D::ConstPoiIterator * objFpoiIterator = nullptr, * objGpoiIterator = nullptr; // DTj Dec 5, 2015
     Line2DImpl::ConstHalfSegIterator * objFsegIterator = nullptr, * objGsegIterator = nullptr;
-    Region2DImpl::ConstAttributedHalfSegmentIterator * objFregionIterator = nullptr, * objGregionIterator = nullptr;
+    Region2DImpl::ConstAttributedHalfSegmentIterator * objFregionIterator, * objGregionIterator;
+
+    //The following commented out functions were Group 3's functions which can be used alternatively
+//    inline Poi2D nextFPoi()
+//    {
+//        if(*objFpoiIterator==((Point2D*) objF)->ctail())
+//        {
+//            return (Poi2D) *((Point2D*)objF)->ctail();
+//        }
+//        Point2D::ConstPoiIterator nextobjFpoiIterator = ++(*objFpoiIterator);
+//        return (Poi2D)(*nextobjFpoiIterator);
+//    }
+//
+//    inline Poi2D nextGPoi()
+//    {
+//        if(*objGpoiIterator==((Point2D*) objG)->ctail())
+//        {
+//            return (Poi2D) *((Point2D*)objG)->ctail();
+//        }
+//        Point2D::ConstPoiIterator nextobjGpoiIterator = ++(*objGpoiIterator);
+//        return (Poi2D)(*nextobjGpoiIterator);
+//    }
+//
+//    inline HalfSeg2D nextFSeg() {
+//        if (*objFsegIterator == ((Line2DImpl *) objF)->hTail()) {
+//                     return (HalfSeg2D) *((Line2DImpl *) objF)->hTail();
+//                   }
+//        Line2DImpl::ConstHalfSegIterator nextobjFsegIterator = ++(*objFsegIterator);
+//        return (HalfSeg2D) (*nextobjFsegIterator);
+//    }
+//
+//    inline HalfSeg2D nextGSeg() {
+//            if (*objGsegIterator == ((Line2DImpl *) objG)->hTail()) {
+//                      return (HalfSeg2D) *((Line2DImpl *) objG)->hTail();
+//                  }
+//        Line2DImpl::ConstHalfSegIterator nextobjGsegIterator = ++(*objGsegIterator);
+//        return (HalfSeg2D) (*nextobjGsegIterator);
+//    }
+//
+//    inline AttrHalfSeg2D nextFASeg() {
+//            if (*objFregionIterator == ((Region2DImpl *) objF)->ctail()) {
+//                      return (AttrHalfSeg2D) *((Region2DImpl *) objF)->ctail();
+//        }
+//        Region2DImpl::ConstAttributedHalfSegmentIterator nextobjFregionIterator = ++(*objFregionIterator);
+//        return (AttrHalfSeg2D) (*nextobjFregionIterator);
+//    }
+//
+//    inline AttrHalfSeg2D nextGASeg() {
+//             if (*objGregionIterator == ((Region2DImpl *) objG)->ctail()) {
+//                      return (AttrHalfSeg2D) *((Region2DImpl *) objG)->ctail();
+//                  }
+//        Region2DImpl::ConstAttributedHalfSegmentIterator nextobjGregionIterator = ++(*objGregionIterator);
+//        return (AttrHalfSeg2D) (*nextobjGregionIterator);
+//    }
+
 
     //The following commented out functions were Group 3's functions which can be used alternatively
 //    inline Poi2D nextFPoi()

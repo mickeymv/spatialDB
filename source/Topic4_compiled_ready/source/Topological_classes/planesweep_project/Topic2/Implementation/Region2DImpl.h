@@ -1,6 +1,6 @@
 /******************************************************************************
  *  File: Region2DImpl.h
- /******************************************************************************
+ ******************************************************************************
  *  Purpose:  This file specifies interfaces to the class Region2DImpl and to
 *   several nested iterator classes that enable access to components (that is,
 *   faces, cycles, segments) of Region2DImpl objects.

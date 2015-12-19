@@ -3,14 +3,14 @@
 *******************************************************************************
 * Purpose: Interface to exploration functions and evaluation functions for
 *   the topological relationships between two Point2D objects.This also contains
- *  clustered predicate verification functions
- *
+*  clustered predicate verification functions
+*
 * Description: Interface for Exploration and Evaluation algorithms and functions
- * for Topological Predicate Verification and Determination
- *
+* for Topological Predicate Verification and Determination
+*
 * Class: Spatial and Moving Objects Databases (CIS 4930/CIS 6930)
 *
-* Authors:Group 4. DTj.
+* Authors:Group 4 [Michael Kemerer,Tjindra Djundi,Natasha Mandal,Aswini Ramesh,Kyuseo Park]
 *
 * Date: Fall Semester 2015
 ******************************************************************************/
@@ -19,11 +19,12 @@
 #ifndef POINT2DPONT2D_POINT2DPOINT2D_H
 #define POINT2DPONT2D_POINT2DPOINT2D_H
 
-//#include "Object2D.h"
 #include "planesweep_project/ParallelObjectTraversal.h"
-//#include "TopologicalRelationships.h"
 #include "TopPredNumberEnums.h"
 #include "planesweep_project/Topic2/Implementation/Point2D.h"
+
+
+#include <bitset>
 
 
 class Point2DPoint2D {
@@ -37,23 +38,31 @@ public:
     TopPredNumberPoint2DPoint2D getTopologicalRelationship();
 
     bool overlap();
+
     bool disjoint();
+
     bool meet();
+
     bool equal();
+
     bool contains();
+
     bool covers();
+
     bool coveredBy();
+
     bool inside();
+
     bool touch();
 
 private:
 
     // predicates enum
-    enum  vF_Predicates  {
+    enum vF_Predicates {
         poi_shared, poi_disjoint
     };
 
-    enum  vG_Predicates {
+    enum vG_Predicates {
         // the same as 'poi_disjoint", but we named it differently so it has no conflict with the same enum in vF_Predicates
                 poi_disjoint_g
     };
@@ -74,9 +83,6 @@ private:
     bool *getVG();
 
 
-//    void setObjF(const Point2D objF);
-//    void setObjG(const Point2D objG);
-
     // Exploration function
     void exploreTopoPred();
 
@@ -84,17 +90,26 @@ private:
     void evaluateTopoPred();
 
     // properties
-    ParallelObjectTraversal * pot;
-    
-    
-    // DTj: Refer to paper Topological Relationships Between
+    ParallelObjectTraversal *pot;
+
+    // DTj: Defining the IMC matrix
+    // Refer to paper Topological Relationships Between
     // Complex Spatial Objects p. 57
-    string matrix[5] = {
+    //
+    static const int matrixSize = 5;
+
+    typedef std::bitset<6> imctype;
+
+    const string matrixStr[matrixSize] = {
             // "001000101", "100000001", "100000101", "101000001", "101000101",  //  Since the entire row 2 of the 3x3 matrix is not used, we simplify it as below
-            //  Since the entire row 2 of the 3x3 matrix above is not used, we simplify it as below,
+            //
+            //  DTj: Since the entire row 2 of the 3x3 matrix above is not used, we simplify it as below,
             // so instead of the first row and the last row are used for comparison
+            //
             "001101", "100001", "100101", "101001", "101101",  //  1-5
     };
+
+    imctype matrix[matrixSize];
 
 };
 

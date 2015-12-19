@@ -27,6 +27,9 @@
 #include "TopPredNumberEnums.h"
 
 
+
+
+
 class Line2DLine2D {
 
 public:
@@ -59,13 +62,6 @@ public:
 
 private:
 
-//    typedef enum {
-//        seg_shared,interior_poi_shared,seg_unshared,bound_on_interior,bound_shared,bound_disjoint
-//    }vFLine2DLine2DPredicates;
-//
-//    typedef enum {
-//        seg_unshared_g,bound_on_interior_g,bound_disjoint_g
-//    }vGLine2DLine2DPredicates;
 
     enum vF_Predicates {
         seg_shared, interior_poi_shared, seg_unshared, bound_on_interior, bound_shared, bound_disjoint
@@ -86,10 +82,9 @@ private:
     bool vF[vF_size];
     bool vG[vG_size];
 
-    // get vector array vF
+    // getter methods
     bool *getVF();
 
-    // get vector array vG
     bool *getVG();
 
 
@@ -100,9 +95,15 @@ private:
     void evaluateTopoPred();
 
 
-    // DTj: Refer to paper Topological Relationships Between
+    // DTj: Defining the IMC matrix
+    // Refer to paper Topological Relationships Between
     // Complex Spatial Objects p. 60
-    string matrix[82] = {
+    //
+    typedef std::bitset<9> imctype;
+
+    static const int matrixSize = 82;
+
+    const string matrixStr[matrixSize] = {
             "001000101", "001000111", "001001101", "001001111", "001010101",  //  1-5
             "001010111", "001011101", "001011111", "001100101", "001100111", //  6-10
             "001101101", "001101111", "001110101", "001110111", "001111101", // 11-15
@@ -123,6 +124,8 @@ private:
             "111100111", "111101101", "111101111", "111110101", "111110111", // 76-80
             "111111101", "111111111"   // 81-82
     };
+
+    imctype matrix[matrixSize];
 
 };
 

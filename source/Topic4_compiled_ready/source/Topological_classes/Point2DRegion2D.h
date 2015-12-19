@@ -31,7 +31,7 @@ public:
     Point2DRegion2D(const Point2D &F, const Region2D &G);
     ~Point2DRegion2D();
 
-  //Function to check whether the given spatial predicate holds true
+    //Function to check whether the given spatial predicate holds true
     bool isTopologicalRelationship(TopPredNumberPoint2DRegion2D predicate);
 
     //Function to check return  spatial predicate
@@ -94,6 +94,23 @@ private:
     void evaluateTopoPred();
 
 
+    // DTj: Defining the IMC matrix
+    // Refer to paper Topological Relationships Between
+    // Complex Spatial Objects p. 70
+    //
+    typedef std::bitset<6> imctype;
+
+    static const int matrixSize = 7;
+
+    const string matrixStr[matrixSize] = {
+            //  DTj: Since the entire row 2 of the 3x3 matrix above is not used, we simplify it as below,
+            // so instead of the first row and the last row are used for comparison
+            //
+            "001111", "010111", "011111", "100111", "101111",  //  1-5
+            "110111", "111111"  //  6-7
+    };
+
+    imctype matrix[matrixSize];
 
 
 };
