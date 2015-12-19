@@ -19,7 +19,7 @@
 #define PLANESWEEP_PROJECT_LINE2DLINE2D_H
 
 
-//#include <bitset>
+#include <bitset>
 #include "planesweep_project/Object2D.h"
 #include "planesweep_project/Topic2/Implementation/Line2D.h"
 #include "planesweep_project/PlaneSweep.h"

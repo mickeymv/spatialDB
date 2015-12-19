@@ -17,6 +17,8 @@
 #ifndef PLANESWEEP_PROJECT_POINT2DLINE2D_H
 #define PLANESWEEP_PROJECT_POINT2DLINE2D_H
 
+#include <bitset>
+
 #include "planesweep_project/Object2D.h"
 #include "planesweep_project/Topic2/Implementation/Point2D.h"
 #include "planesweep_project/Topic2/Implementation/Line2D.h"

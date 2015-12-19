@@ -18,6 +18,8 @@
 #ifndef PLANESWEEP_PROJECT_REGION2DREGION2D_H
 #define PLANESWEEP_PROJECT_REGION2DREGION2D_H
 
+#include <bitset>
+
 #include "planesweep_project/Object2D.h"
 #include "TopPredNumberEnums.h"
 #include "planesweep_project/PlaneSweep.h"
