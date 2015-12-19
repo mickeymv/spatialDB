@@ -1,7 +1,7 @@
 
 /*=============================================================================
 *  WARNING: This a customized version of RobustGeometricPrimitives2D.h
-*           and it is not the same like that the original files implemented in Topic1
+*           and it is not the same like that the original file implemented in Topic1
 *=============================================================================
 */
 

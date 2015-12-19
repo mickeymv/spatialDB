@@ -36,6 +36,10 @@ Point2DPoint2D::Point2DPoint2D(const Point2D &F, const Point2D &G) {
 
     pot = new ParallelObjectTraversal(objF, objG);
 
+    // assigning the the matrix value
+    for (int i=0; i< matrixSize; i++)
+        matrix[i] = imctype (std::string(matrixStr[i]));
+
 };
 
 Point2DPoint2D::~Point2DPoint2D() {
@@ -103,6 +107,12 @@ void Point2DPoint2D::exploreTopoPred() {
     // missing in the paper:
     if (pot->getObject() == ParallelObjectTraversal::both) vF[vF_Predicates::poi_shared] = true;
     if (!vF[poi_shared] && vF[poi_disjoint] && !vG[poi_disjoint_g]) vG[vG_Predicates::poi_disjoint_g] = true;
+    if (!vF[poi_shared] && !vF[poi_disjoint] && vG[poi_disjoint_g]) vF[vF_Predicates::poi_shared] = true;
+
+    // test
+//    cout << "vF[poi_shared] = " << vF[poi_shared]  << endl;
+//    cout << "vF[poi_disjoint] = " << vF[poi_disjoint]   << endl;
+//    cout << "vG[poi_disjoint_g] = " << vG[poi_disjoint_g]  << endl<< endl;
 
 }
 
@@ -113,47 +123,32 @@ void Point2DPoint2D::evaluateTopoPred() {
     // matrix index 2,2 always true
     // Since the second row of the IMC 3x3 matrix is never evaluated,
     // here we only use six array member to represent the first row and third row of the 3x3 Matrix.
-    bool IMC[] = {0, 0, 0, 0, 0, 1};
-    // in case of using bitset, we declare :
-    // imctype IMC = (000001);
-
+    imctype IMC = imctype (std::string("000001"));
 
     if (vF[poi_shared])
-        IMC[0] = 1; // (100000)
-    // in case of using bitset, we could set the bit this way:
-    // IMC.set(5); or IMC |= (100000);
+     IMC.set(5); // setting only one bit of a time: (100000);
 
     if (vF[poi_disjoint])
-        IMC[2] = 1; // (001000)
-    // IMC.set(4);
+     IMC.set(3);  // (001000);
 
     if (vG[poi_disjoint_g])
-        IMC[3] = 1; // (000100)
-    // IMC.set(2);
+     IMC.set(2);  // (000100);
 
 
 
     // compare/match the right one
-    // size of matrix = 5
-    int found = 0;
-    for (int i = 0; i < 5 && !isPredSet; i++) {
-        found = 0;
+    // loop exit if the top Pred number found
+    for (int i = 0; i < matrixSize && !isPredSet; i++) {
 
-        // DTj: in case of using bitset technique, we do not need this k loop, but instead,
-        // we do bitwise comparison for faster execution:
-        // if (IMC == matrix[i]) {isPredSet = true; topPredNumberPoint2DPoint2D = (TopPredNumberPoint2DPoint2D) i;}
-        for (int k = 0; k < 6; k++) {
-            if (IMC[k] == (matrix[i].at(k) == '1' ? 1 : 0)) {
-                found++;
-            }
-        }
+        //test
+//        cout << "matrix[" << i << "] = " << matrix[i] << endl;
 
-        if (found == 6) {
-            isPredSet = true;
-            topPredNumberPoint2DPoint2D = (TopPredNumberPoint2DPoint2D) i;
-        }
+        // Dtj. we do bitwise comparison for faster execution:
+         if (IMC == matrix[i]) {isPredSet = true; topPredNumberPoint2DPoint2D = (TopPredNumberPoint2DPoint2D) i;}
     }
 
+    if (!isPredSet)
+    cout << "WARNING: isPredSet = " << isPredSet << endl;
 
 }
 

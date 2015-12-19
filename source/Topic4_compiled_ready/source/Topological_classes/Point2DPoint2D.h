@@ -24,6 +24,11 @@
 #include "planesweep_project/Topic2/Implementation/Point2D.h"
 
 
+#include <bitset>
+
+static const int matrixSize = 5;
+
+
 class Point2DPoint2D {
 public:
     Point2DPoint2D(const Point2D &F, const Point2D &G);
@@ -77,7 +82,6 @@ private:
 
     // getter functions
     bool *getVF();
-
     bool *getVG();
 
 
@@ -90,21 +94,10 @@ private:
     // properties
     ParallelObjectTraversal *pot;
 
+    typedef std::bitset<6> imctype;
 
-    // DTj: Refer to paper Topological Relationships Between
-    // Complex Spatial Objects p. 57
-    //
-    // Actualy this should be implemented using std::bitset template array, and not using string array.
-    // The concept is that this topological defined matrix for the respective spatial object combinations
-    // can be compared bit wise using bit wise OR with the results from the exploration phase.
-    // Unfortunately bitset implementation seems to have bugs working with arrays. In anyway, current implementation
-    // can be reverted to bitset in the future, if proven that using its method ".set()" to set any bit at any location
-    // and also the | operation are consistent and bug free.
-    //
-    // typedef std::bitset<9> imctype;
-    // imctype matrix[5] = { (001101), (100001), (100101), ...}
-    //
-    string matrix[5] = {
+
+    const string matrixStr[matrixSize] = {
             // "001000101", "100000001", "100000101", "101000001", "101000101",  //  Since the entire row 2 of the 3x3 matrix is not used, we simplify it as below
             //
             //  DTj: Since the entire row 2 of the 3x3 matrix above is not used, we simplify it as below,
@@ -112,6 +105,8 @@ private:
             //
             "001101", "100001", "100101", "101001", "101101",  //  1-5
     };
+
+    imctype matrix[matrixSize];
 
 };
 

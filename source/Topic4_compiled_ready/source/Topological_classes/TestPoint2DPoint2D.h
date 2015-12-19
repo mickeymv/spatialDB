@@ -28,8 +28,13 @@ private:
 
     void printPoint2DPoint2DPredicate(TopPredNumberPoint2DPoint2D tpred) {
 
-        cout << topPredNumberPoint2DPoint2D[(unsigned int) tpred] << " <===";
+        cout << "   getTopologicalRelationship(a, b) ==> " ;
+        cout << topPredNumberPoint2DPoint2D[(unsigned int) tpred] << endl << endl;
     };
+
+    string printResult(bool result) {
+        return result ? "true": "false";
+    }
 
 
 };

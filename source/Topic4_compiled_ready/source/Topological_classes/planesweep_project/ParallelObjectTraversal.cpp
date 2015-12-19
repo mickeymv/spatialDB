@@ -521,9 +521,8 @@ void ParallelObjectTraversal::selectNext() {
     // If before this operation object was equal to both, select_next moves forward the logical pointers of both sequences;
     // otherwise, if object was equal to first (second), it only moves forward the logical pointer of the first (second) sequence.
     if (objF->isPoint2D()) {
-        //cout<<"objF->isPoint2D"<<endl;
         // check whether the position of the iterator has not yet reached AFTER the end ( implies cend )
-        if (*objFpoiIterator != ((Point2D *) objF)->cend()) {
+        if (*objFpoiIterator < ((Point2D *) objF)->cend()) {
             // if object is equal to first or both, increment the F iterator
             if ((object_value == first) || (object_value == both))
                 (*objFpoiIterator)++;
@@ -536,7 +535,7 @@ void ParallelObjectTraversal::selectNext() {
 
     if (objG->isPoint2D()) {
         // check whether the position of the iterator has not yet reached AFTER the end ( implies cend )
-        if (*objGpoiIterator != ((Point2D *) objG)->cend()) {
+        if (*objGpoiIterator < ((Point2D *) objG)->cend()) {
             // if object is equal to second or both, increment the G iterator
 
             if ((object_value == second) || (object_value == both))

@@ -1,7 +1,7 @@
 
 /*=============================================================================
 *  WARNING: This a customized version of Region2DImpl.h
-*           and it is not the same like that the original files implemented in
+*           and it is not the same like that the original file implemented in
 *           Topic2
 *=============================================================================
 */
