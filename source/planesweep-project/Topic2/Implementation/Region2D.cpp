@@ -992,7 +992,7 @@ using namespace std;
    }
 
   //copy constructor that constructs a new Region2D object with the same 
-  //properties as the inputted Region2D object.
+  //properties as the inputted const Region2D object.
   Region2D::Region2D(const Region2D& source)
    { 
      
@@ -1045,10 +1045,10 @@ using namespace std;
   }
 
   // Move assignment operator that moves the inputted Region2D object to the
-  // Region2D object. The inputted object gets the empty Region2D
-  // object as its value.
-  Region2D& Region2D::operator = (Region2D&& source)
-  {
+// Region2D object. The inputted object gets the empty Region2D
+// object as its value.
+Region2D& Region2D::operator = (Region2D&& source)
+{
     handle = new Region2DImplementation;
     handle->segments.clear();
     handle->faces.clear();
@@ -1056,7 +1056,7 @@ using namespace std;
     std::move(source.handle->cycles.begin(), source.handle->cycles.end(), std::inserter(handle->cycles,handle->cycles.end()) );
     std::move(source.handle->faces.begin(), source.handle->faces.end(), std::inserter(handle->faces,handle->faces.end()) );
 
-  }
+}
 
   //+++++++++++++++++++++
   // Comparison operators

@@ -56,7 +56,7 @@ class Region2D : public Object2D
     Region2D(std::string textualRegionList);
 
     //copy constructor that constructs a new Region2D object with the same 
-    //properties as the inputted Region2D object.
+    //properties as the inputted const Region2D object.
     Region2D(const Region2D& source);
 
     // Move constructor that moves the inputted Region2D object to a
