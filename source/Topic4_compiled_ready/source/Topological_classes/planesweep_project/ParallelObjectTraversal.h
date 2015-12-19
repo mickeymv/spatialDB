@@ -123,10 +123,10 @@ public:
     inline Poi2D currentGPoi() {return (Poi2D)(**objGpoiIterator); }
 
     inline HalfSeg2D currentFSeg() {return (HalfSeg2D)(**objFsegIterator); }
-    inline HalfSeg2D currentGSeg() {cout<<"currentG"<<endl;return (HalfSeg2D)(**objGsegIterator); }
+    inline HalfSeg2D currentGSeg() {return (HalfSeg2D)(**objGsegIterator); }
 
-    inline AttrHalfSeg2D currentFASeg() {cout<<"currentFASeg"<<endl; cout<<**objFregionIterator; return (AttrHalfSeg2D)(**objFregionIterator); }
-    inline AttrHalfSeg2D currentGASeg() {cout<<"currentGASeg"<<endl; cout<<**objGregionIterator; return (AttrHalfSeg2D)(**objGregionIterator); }
+    inline AttrHalfSeg2D currentFASeg() {return (AttrHalfSeg2D)(**objFregionIterator); }
+    inline AttrHalfSeg2D currentGASeg() {return (AttrHalfSeg2D)(**objGregionIterator); }
 
 private:
     // Method that selects first point or halfsegment of each of the operand objects
