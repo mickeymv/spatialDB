@@ -26,8 +26,6 @@
 
 #include <bitset>
 
-static const int matrixSize = 5;
-
 
 class Point2DPoint2D {
 public:
@@ -94,8 +92,13 @@ private:
     // properties
     ParallelObjectTraversal *pot;
 
-    typedef std::bitset<6> imctype;
+    // DTj: Defining the IMC matrix
+    // Refer to paper Topological Relationships Between
+    // Complex Spatial Objects p. 57
+    //
+    static const int matrixSize = 5;
 
+    typedef std::bitset<6> imctype;
 
     const string matrixStr[matrixSize] = {
             // "001000101", "100000001", "100000101", "101000001", "101000101",  //  Since the entire row 2 of the 3x3 matrix is not used, we simplify it as below

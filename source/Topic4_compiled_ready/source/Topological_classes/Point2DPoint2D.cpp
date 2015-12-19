@@ -147,8 +147,9 @@ void Point2DPoint2D::evaluateTopoPred() {
          if (IMC == matrix[i]) {isPredSet = true; topPredNumberPoint2DPoint2D = (TopPredNumberPoint2DPoint2D) i;}
     }
 
-    if (!isPredSet)
-    cout << "WARNING: isPredSet = " << isPredSet << endl;
+    // test
+//    if (!isPredSet)
+//    cout << "WARNING: isPredSet = " << isPredSet << endl;
 
 }
 

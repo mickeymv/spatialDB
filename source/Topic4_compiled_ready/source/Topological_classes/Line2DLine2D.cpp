@@ -32,6 +32,10 @@ Line2DLine2D::Line2DLine2D(const Line2D &F, const Line2D &G) {
         vG[i] = false;
     }
 
+    // assigning the the matrix value to bitset
+    for (int i = 0; i < matrixSize; i++)
+        matrix[i] = imctype(std::string(matrixStr[i]));
+
 }
 
 Line2DLine2D::~Line2DLine2D() { };
@@ -211,62 +215,62 @@ void Line2DLine2D::exploreTopoPred() {
 
     }
 
-    
 
     return;
 }
 
 
 void Line2DLine2D::evaluateTopoPred() {
-    
+
 
     // Dtj. Dec 16.
     // for more explanation in the case of using bitset technique,
     // pls refer to the evaluateTopoPred() implementation part of Point2DPoint2D
     //
-    bool IMC[] = {0, 0, 0, 0, 0, 0, 0, 0, 1}; // matrix 2:2 always true
+    imctype IMC = imctype(std::string("000000001"));  // matrix 2:2 always true
+
 
     if (vF[seg_shared] || vF[interior_poi_shared])
-        IMC[0] = 1; // (100000000)
+        IMC.set(7) = 1; // (100000000)
 
     if (vG[bound_on_interior_g])
-        IMC[1] = 1; // (010000000)
+        IMC.set(6) = 1; // (010000000)
 
     if (vF[seg_unshared])
-        IMC[2] = 1; // (001000000)
+        IMC.set(5) = 1; // (001000000)
 
     if (vF[bound_on_interior])
-        IMC[3] = 1; // (000100000)
+        IMC.set(4) = 1; // (000100000)
 
     if (vF[bound_shared])
-        IMC[4] = 1; // (000010000)
+        IMC.set(3) = 1; // (000010000)
 
     if (vF[bound_disjoint])
-        IMC[5] = 1; // (000001000)
+        IMC.set(2) = 1; // (000001000)
 
     if (vG[seg_unshared_g])
-        IMC[6] = 1; // (000000100)
+        IMC.set(1) = 1; // (000000100)
 
     if (vG[bound_disjoint_g])
-        IMC[7] = 1; // (000000010)
-
+        IMC.set(0) = 1; // (000000010)
 
     // compare/match the right one
-    // size of matrix = 82
-    int found = 0;
-    for (int i = 0; i < 82 && !isPredSet; i++) {
-        found = 0;
-        for (int k = 0; k < 9; k++) {
-            if (IMC[k] == (matrix[i].at(k) == '1' ? 1 : 0)) {
-                found++;
-            }
-        }
+    // loop exit if the top Pred number found
+    for (int i = 0; i < matrixSize && !isPredSet; i++) {
 
-        if (found == 9) {
+        //test
+        // cout << "matrix[" << i << "] = " << matrix[i] << endl;
+
+        // Dtj. we do bitwise comparison for faster execution:
+        if (IMC == matrix[i]) {
             isPredSet = true;
             topPredNumberLine2DLine2D = (TopPredNumberLine2DLine2D) i;
         }
     }
+
+    // test
+//    if (!isPredSet)
+//    cout << "WARNING: isPredSet = " << isPredSet << endl;
 
 }
 

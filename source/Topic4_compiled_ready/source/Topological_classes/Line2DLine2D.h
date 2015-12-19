@@ -27,6 +27,9 @@
 #include "TopPredNumberEnums.h"
 
 
+
+
+
 class Line2DLine2D {
 
 public:
@@ -92,20 +95,15 @@ private:
     void evaluateTopoPred();
 
 
-    // DTj: Refer to paper Topological Relationships Between
+    // DTj: Defining the IMC matrix
+    // Refer to paper Topological Relationships Between
     // Complex Spatial Objects p. 60
     //
-    // Actualy this should be implemented using std::bitset template array, and not using string array.
-    // The concept is that this topological defined matrix for the respective spatial object combinations
-    // can be compared bit wise using bit wise OR with the results from the exploration phase.
-    // Unfortunately bitset implementation seems to have bugs working with arrays. In anyway, current implementation
-    // can be reverted to bitset in the future, if proven that using its method ".set()" to set any bit at any location
-    // and also the | operation are consistent and bug free.
-    //
-    // typedef std::bitset<9> imctype;
-    // imctype matrix[82] = { (001000101), (001000111), ...}
-    //
-    string matrix[82] = {
+    typedef std::bitset<9> imctype;
+
+    static const int matrixSize = 82;
+
+    const string matrixStr[matrixSize] = {
             "001000101", "001000111", "001001101", "001001111", "001010101",  //  1-5
             "001010111", "001011101", "001011111", "001100101", "001100111", //  6-10
             "001101101", "001101111", "001110101", "001110111", "001111101", // 11-15
@@ -126,6 +124,8 @@ private:
             "111100111", "111101101", "111101111", "111110101", "111110111", // 76-80
             "111111101", "111111111"   // 81-82
     };
+
+    imctype matrix[matrixSize];
 
 };
 
