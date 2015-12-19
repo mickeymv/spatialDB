@@ -1,6 +1,14 @@
 
+/*=============================================================================
+*  WARNING: This a customized version of RobustGeometricPrimitives2D.h
+*           and it is not the same like that the original files implemented in Topic1
+*=============================================================================
+*/
+
+
+
 /*---------------------------------------------------------------------------------
-* File: RobustGeometricPrimitives2D.h
+ File: RobustGeometricPrimitives2D.h
 -----------------------------------------------------------------------------------
 - Description:
 -

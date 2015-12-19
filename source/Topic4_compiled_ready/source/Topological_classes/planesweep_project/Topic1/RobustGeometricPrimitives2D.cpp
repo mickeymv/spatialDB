@@ -1,4 +1,10 @@
 
+/*=============================================================================
+*  WARNING: This a customized version of RobustGeometricPrimitives2D.cpp
+*           and it is not the same like that the original files implemented in Topic1
+*=============================================================================
+*/
+
 #include "RobustGeometricPrimitives2D.h"
 #include <string>
 #include <vector>
