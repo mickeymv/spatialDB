@@ -125,6 +125,7 @@ void Point2DPoint2D::evaluateTopoPred() {
     // here we only use six array member to represent the first row and third row of the 3x3 Matrix.
     imctype IMC = imctype (std::string("000001"));
 
+    // populating the ICM with the value of vF and vG
     if (vF[poi_shared])
      IMC.set(5); // setting only one bit of a time: (100000);
 

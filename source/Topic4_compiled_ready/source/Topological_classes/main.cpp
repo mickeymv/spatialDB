@@ -52,7 +52,7 @@ int main() {
     TestRegion2DRegion2D testRegion2DRegion2D;
     testRegion2DRegion2D.start();
 
-    // 6. Region2DRegion2D test cases
+    // 6. Line2DRegion2D test cases
     TestLine2DRegion2D testLine2DRegion2D;
     testLine2DRegion2D.start();
 

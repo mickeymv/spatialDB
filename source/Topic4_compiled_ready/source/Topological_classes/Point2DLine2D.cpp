@@ -32,6 +32,10 @@ Point2DLine2D::Point2DLine2D(const Point2D &F, const Line2D &G) {
         vG[i] = false;
     }
 
+    // assigning the the matrix value
+    for (int i=0; i< matrixSize; i++)
+        matrix[i] = imctype (std::string(matrixStr[i]));
+
 };
 
 Point2DLine2D::~Point2DLine2D() {
@@ -129,155 +133,43 @@ void Point2DLine2D::exploreTopoPred() {
 
 void Point2DLine2D::evaluateTopoPred()
 {
-    int IMC[3][3];
+    // Dtj. Dec 16.
+    // matrix index 2,0 and 2,2 always true
+    // Since the second row of the IMC 3x3 matrix is never evaluated,
+    // here we only use six array member to represent the first row and third row of the 3x3 Matrix.
+    imctype IMC = imctype (std::string("000101"));
 
-    for(int i=0; i<3; i++)
-    {
-        for(int j=0; j<3; j++)
-        {
-            IMC[i][j]=0;
-        }
-    }
-
+    // populating the ICM with the value of vF and vG
     if(vF[poi_on_interior])
-    {
-        IMC[0][0]=1;
-    }
+        IMC.set(5); // setting only one bit of a time: (100000);
+
     if(vF[poi_on_bound])
-    {
-        IMC[0][1]=1;
-    }
+        IMC.set(4);  // (001000);
+
     if(vF[poi_disjoint])
-    {
-        IMC[0][2]=1;
-    }
-    IMC[2][0]=1;
+        IMC.set(3);  // (000100);
+
+    // IMC.set(2) : has been set in initialization
+
     if(vG[bound_poi_disjoint])
-    {
-        IMC[2][1]=1;
+        IMC.set(1); // (000010);
+
+
+    // compare/match the right one
+    // loop exit if the top Pred number found
+    for (int i = 0; i < matrixSize && !isPredSet; i++) {
+
+        //test
+        // cout << "matrix[" << i << "] = " << matrix[i] << endl;
+
+        // Dtj. we do bitwise comparison for faster execution:
+        if (IMC == matrix[i]) {isPredSet = true; topPredNumberPoint2DLine2D = (TopPredNumberPoint2DLine2D) i;}
     }
-    IMC[2][2]=1;
 
-    if(IMC[0][0])
-    {
-        if(IMC[0][1])
-        {
-            if(IMC[0][2])
-            {
-                if(IMC[2][1])
-                {
-                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D:: pl_overlap_m14;
-                    isPredSet=true;
+    // test
+    // if (!isPredSet)
+    // cout << "WARNING: isPredSet = " << isPredSet << endl;
 
-                }
-                else
-                {
-                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D:: pl_overlap_m13;
-                    isPredSet=true;
-                }
-            }
-            else
-            {
-                if(IMC[2][1])
-                {
-                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D:: pl_inside_m12;
-                    isPredSet=true;
-
-                }
-                else
-                {
-                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_inside_m11;
-                    isPredSet=true;
-                }
-
-            }
-
-        }
-        else
-        {
-            if(IMC[0][2])
-            {
-                if(IMC[2][1])
-                {
-                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_overlap_m10;
-                    isPredSet=true;
-                }
-                else
-                {
-                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_overlap_m9;
-                    isPredSet=true;
-                }
-            }
-            else
-            {
-                if(IMC[2][1])
-                {
-                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_inside_m8;
-                    isPredSet=true;
-
-                }
-                else
-                {
-                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_inside_m7;
-                    isPredSet=true;
-                }
-
-            }
-
-        }
-
-    }
-    else
-    {
-        if(IMC[0][1])
-        {
-            if(IMC[0][2])
-            {
-                if(IMC[2][1])
-                {
-                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_meet_m6;
-                    isPredSet=true;
-
-                }
-                else
-                {
-                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_meet_m5;
-                    isPredSet=true;
-                }
-
-            }
-            else
-            {
-                if(IMC[2][1])
-                {
-                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_meet_m4;
-                    isPredSet=true;
-
-                }
-                else
-                {
-                    topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_meet_m3;
-                    isPredSet=true;
-                }
-
-            }
-        }
-        else
-        {
-            if(IMC[2][1])
-            {
-                topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_disjoint_m2;
-                isPredSet=true;
-
-            }
-            else
-            {
-                topPredNumberPoint2DLine2D = TopPredNumberPoint2DLine2D::pl_disjoint_m1;
-                isPredSet=true;
-            }
-        }
-    }
-    return;
 }
 
 TopPredNumberPoint2DLine2D Point2DLine2D::getTopologicalRelationship()

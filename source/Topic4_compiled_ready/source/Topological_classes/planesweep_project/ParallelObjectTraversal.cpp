@@ -585,7 +585,7 @@ void ParallelObjectTraversal::selectNext() {
     if (objF->isRegion2D()) {
 
         // check whether the position of the iterator has not yet reached the end
-        if (*objFregionIterator != ((Region2DImpl *) objF)->cend()) {
+        if (*objFregionIterator < ((Region2DImpl *) objF)->cend()) {
             // if object is equal to first or both, increment the F iterator
             if ((object_value == first) || (object_value == both))
                 (*objFregionIterator)++;
@@ -597,7 +597,7 @@ void ParallelObjectTraversal::selectNext() {
 
     if (objG->isRegion2D()) {
         // check whether the position of the iterator has not yet reached the end
-        if (*objGregionIterator != ((Region2DImpl *) objG)->cend()) {
+        if (*objGregionIterator < ((Region2DImpl *) objG)->cend()) {
             // if object is equal to second or both, increment the G iterator
             if ((object_value == second) || (object_value == both))
                 (*objGregionIterator)++;

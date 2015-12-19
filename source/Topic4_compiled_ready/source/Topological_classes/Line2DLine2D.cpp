@@ -222,7 +222,6 @@ void Line2DLine2D::exploreTopoPred() {
 
 void Line2DLine2D::evaluateTopoPred() {
 
-
     // Dtj. Dec 16.
     // for more explanation in the case of using bitset technique,
     // pls refer to the evaluateTopoPred() implementation part of Point2DPoint2D
@@ -230,6 +229,7 @@ void Line2DLine2D::evaluateTopoPred() {
     imctype IMC = imctype(std::string("000000001"));  // matrix 2:2 always true
 
 
+    // populating the ICM with the value of vF and vG
     if (vF[seg_shared] || vF[interior_poi_shared])
         IMC.set(7) = 1; // (100000000)
 

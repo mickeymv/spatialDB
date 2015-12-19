@@ -32,6 +32,9 @@ Region2DRegion2D::Region2DRegion2D(const Region2D &F, const Region2D &G) {
         vG[i] = false;
     }
 
+    // assigning the the matrix value to bitset
+    for (int i = 0; i < matrixSize; i++)
+        matrix[i] = imctype(std::string(matrixStr[i]));
 };
 
 Region2DRegion2D::~Region2DRegion2D() { };
@@ -235,56 +238,49 @@ void Region2DRegion2D::exploreTopoPred() {
 void Region2DRegion2D::evaluateTopoPred() {
 
 
-
     // Dtj. Dec 16.
-    // for more explanation in the case of using bitset technique,
-    // pls refer to the evaluateTopoPred() implementation part of Point2DPoint2D
-    //
-    bool IMC[] = {0, 0, 0, 0, 0, 0, 0, 0, 1}; // matrix 2:2 always true
+    // IMC matrix comparison
+    imctype IMC = imctype(std::string("000000001"));  // matrix 2:2 always true
 
 
+    // populating the ICM with the value of vF and vG
     if (vF[zero_one] || vF[two_zero] || vF[one_two] || vF[two_one] || vG[one_two_g] || vG[two_one_g])
-        IMC[0] = 1; // (100000000)
+        IMC.set(7) = 1; // (100000000)
 
     if (vG[one_two_g] || vG[two_one_g])
-        IMC[1] = 1; // (010000000)
+        IMC.set(6) = 1; // (010000000)
 
     if (vF[zero_one] || vF[one_zero] || vF[one_one] || vG[one_two_g] || vG[two_one_g])
-        IMC[2] = 1; // (001000000)
+        IMC.set(5) = 1; // (001000000)
 
     if (vF[one_two] || vF[two_one])
-        IMC[3] = 1; // (000100000)
+        IMC.set(4) = 1; // (000100000)
 
     if (vF[zero_two] || vF[two_zero] || vF[one_one] || vF[bound_poi_shared])
-        IMC[4] = 1; // (000010000)
+        IMC.set(3) = 1; // (000010000)
 
     if (vF[zero_one] || vF[one_zero])
-        IMC[5] = 1; // (000001000)
+        IMC.set(2) = 1; // (000001000)
 
     if (vF[one_two] || vF[two_one] || vF[one_one] || vG[zero_one_g] || vG[one_zero_g])
-        IMC[6] = 1; // (000000100)
+        IMC.set(1) = 1; // (000000100)
 
     if (vG[zero_one_g] || vG[one_zero_g])
-        IMC[7] = 1; // (000000010)
+        IMC.set(0) = 1; // (000000010)
 
+    // compare/match the right one
+    // loop exit if the top Pred number found
+    for (int i = 0; i < matrixSize && !isPredSet; i++) {
 
+        //test
+        // cout << "matrix[" << i << "] = " << matrix[i] << endl;
 
-    // compare/match the right predicate
-    // size of matrix = 33
-    int found = 0;
-    for (int i = 0; i < 33 && !isPredSet; i++) {
-        found = 0;
-        for (int k = 0; k < 9; k++) {
-            if (IMC[k] == (matrix[i].at(k) == '1' ? 1 : 0)) {
-                found++;
-            }
-        }
-        if (found == 9) {
+        // Dtj. we do bitwise comparison for faster execution:
+        if (IMC == matrix[i]) {
             isPredSet = true;
             topPredNumberRegion2DRegion2D = (TopPredNumberRegion2DRegion2D) i;
         }
     }
-
 
 }
 

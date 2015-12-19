@@ -74,6 +74,26 @@ private:
     //Evaluation function
     void evaluateTopoPred();
 
+    // DTj: Defining the IMC matrix
+    // Refer to paper Topological Relationships Between
+    // Complex Spatial Objects p. 69
+    //
+    typedef std::bitset<6> imctype;
+
+    static const int matrixSize = 14;
+
+    const string matrixStr[matrixSize] = {
+            //  DTj: Since the entire row 2 of the 3x3 matrix above is not used, we simplify it as below,
+            // so instead of the first row and the last row are used for comparison
+            //
+            "001101", "001111", "010101", "010111", "011101",  //  1-5
+            "011111", "100101", "100111", "101101", "101111",  //  5-10
+            "110101", "110111", "111101", "111111"  //  11-14
+
+    };
+
+    imctype matrix[matrixSize];
+
 };
 
 #endif //PLANESWEEP_PROJECT_POINT2DLINE2D_H

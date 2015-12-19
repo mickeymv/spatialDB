@@ -77,20 +77,15 @@ private:
 
 
 
-    // DTj: Refer to paper Topological Relationships Between
+    // DTj: Defining the IMC matrix
+    // Refer to paper Topological Relationships Between
     // Complex Spatial Objects p. 66
     //
-    // Actualy this should be implemented using std::bitset template array, and not using string array.
-    // The concept is that this topological defined matrix for the respective spatial object combinations
-    // can be compared bit wise using bit wise OR with the results from the exploration phase.
-    // Unfortunately bitset implementation seems to have bugs working with arrays. In anyway, current implementation
-    // can be reverted to bitset in the future, if proven that using its method ".set()" to set any bit at any location
-    // and also the | operation are consistent and bug free.
-    //
-    // typedef std::bitset<9> imctype;
-    // imctype matrix[33] = { (001101), (100001), (100101), ...}
-    //
-    string matrix[33] = {
+    typedef std::bitset<9> imctype;
+
+    static const int matrixSize = 33;
+
+    const string matrixStr[matrixSize] = {
             "001001111", "001010111", "001011101", "001011111", "100010001",  //  1-5
             "100010111", "100100111", "100110101", "100110111", "101010111",  //  5-10
             "101011001", "101011101", "101011111", "101101111", "101110101",  //  11-15
@@ -100,6 +95,7 @@ private:
             "111110111", "111111101", "111111111"  //  31-33
     };
 
+    imctype matrix[matrixSize];
 };
 
 

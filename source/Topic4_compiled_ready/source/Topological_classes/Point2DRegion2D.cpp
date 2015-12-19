@@ -26,6 +26,10 @@ Point2DRegion2D::Point2DRegion2D(const Point2D &F, const Region2D &G) {
         vF[i] = false;
     }
 
+    // assigning the the matrix value
+    for (int i=0; i< matrixSize; i++)
+        matrix[i] = imctype (std::string(matrixStr[i]));
+
 };
 
 Point2DRegion2D::~Point2DRegion2D() { };
@@ -115,102 +119,39 @@ void Point2DRegion2D::exploreTopoPred() {
 
 }
 void Point2DRegion2D::evaluateTopoPred() {
-    int IMC[3][3];
+    // Dtj. Dec 16.
+    // matrix index 2,0 2,1 and 2,2 always true
+    // Since the second row of the IMC 3x3 matrix is never evaluated,
+    // here we only use six array member to represent the first row and third row of the 3x3 Matrix.
+    imctype IMC = imctype (std::string("000111"));
 
 
-    //populating 9IM
-    for(int i=0; i<3; i++)
-    {
-        for(int j=0; j<3; j++)
-        {
-            IMC[i][j]=0;
-        }
-    }
     if(vF[poi_inside])
-    {
-        IMC[0][0]=1;
-    }
+        IMC.set(5); // setting only one bit of a time: (100000);
+
     if(vF[poi_on_bound])
-    {
-        IMC[0][1]=1;
-    }
+        IMC.set(4);  // (001000);
+
     if(vF[poi_outside])
-    {
-        IMC[0][2]=1;
+        IMC.set(3);  // (000100);
+
+    // IMC.set(0), IMC.set(1), IMC.set(2)  : always true and have been set in initialization
+
+    // compare/match the right one
+    // loop exit if the top Pred number found
+    for (int i = 0; i < matrixSize && !isPredSet; i++) {
+
+        //test
+        // cout << "matrix[" << i << "] = " << matrix[i] << endl;
+
+        // Dtj. we do bitwise comparison for faster execution:
+        if (IMC == matrix[i]) {isPredSet = true; topPredNumberPoint2DRegion2D = (TopPredNumberPoint2DRegion2D) i;}
     }
-    IMC[2][0]=1;
 
-    IMC[2][1]=1;
+    // test
+    // if (!isPredSet)
+    // cout << "WARNING: isPredSet = " << isPredSet << endl;
 
-    IMC[2][2]=1;
-
-
-//Evaluation phase
-    if (IMC[0][0])
-    {
-
-        if (IMC[0][1])
-        {
-
-            if (IMC[0][2]) {
-                //overlap
-                topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_overlap_m5;
-                isPredSet = true;
-            }
-            else {
-                //inside
-                topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_inside_m6;
-                isPredSet = true;
-
-            }
-
-
-        }
-        else
-        {
-            if (IMC[0][2]) {
-                //overlap
-                topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_overlap_m7;
-                isPredSet = true;
-            }
-            else {
-                //inside
-                topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_inside_m4;
-                isPredSet = true;
-
-            }
-        }
-    }
-    else
-    {
-        if (IMC[0][1])
-        {
-            if (IMC[0][2]) {
-                topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_meet_m2;
-                isPredSet = true;
-            }
-            else {
-                topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_meet_m3;
-                isPredSet = true;
-            }
-        }
-        else
-        {
-            if (IMC[0][2]) {
-                //disjoint
-                topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_disjoint_m1;
-                // cout<< "disjount here";
-                isPredSet = true;
-            }
-            else {
-                //disjoint
-                topPredNumberPoint2DRegion2D = TopPredNumberPoint2DRegion2D::pr_disjoint_m1;
-                isPredSet = true;
-            }
-        }
-
-
-    }
 
 
 
