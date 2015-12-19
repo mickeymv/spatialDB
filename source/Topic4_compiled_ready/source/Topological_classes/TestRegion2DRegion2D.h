@@ -33,13 +33,16 @@ private:
                     "rr_overlap_m30", "rr_overlap_m31", "rr_overlap_m32", "rr_overlap_m33"
             };
 
+    void printPredicate(TopPredNumberRegion2DRegion2D tpred) {
 
-
-    inline void printRegion2DRegion2DPredicate(TopPredNumberRegion2DRegion2D tpred) {
-        cout << topPredNumberRegion2DRegion2D[(unsigned int) tpred] << " <===";
+        cout << "   getTopologicalRelationship(a, b) ==> " ;
+        cout << topPredNumberRegion2DRegion2D[(unsigned int) tpred] << endl << endl;
     };
-};
 
+    string printBool(bool result) {
+        return result ? "true": "false";
+    }
+};
 
 #endif //TOPOLOGICAL_CLASSES_TESTREGION2DREGION2D_H
 

@@ -556,11 +556,11 @@ bool HalfSeg2D ::operator >(AttrHalfSeg2D& operand)
     else
         return false;
 }
-std::ostream&operator << (std::ostream& os, const HalfSeg2D& output)
-{
-    os << "\nSegment:" << output.seg << " ,Is Left: " << output.isLeft;
-    return os;
-}
+//std::ostream&operator << (std::ostream& os, const HalfSeg2D& output)
+//{
+//    os << "\nSegment:" << output.seg << " ,Is Left: " << output.isLeft;
+//    return os;
+//}
 
 
 /*Atrributed Half Segment*/
@@ -710,11 +710,12 @@ bool AttrHalfSeg2D::operator >(HalfSeg2D& operand)
     else
         return false;
 }
-std::ostream&operator << (std::ostream& os, const AttrHalfSeg2D& output)
-{
-    os << "\nSegment:" << output.hseg.seg << " ,Is Left: " << output.hseg.isLeft << " ,Inside above:" << output.insideAbove;
-    return os;
-}
+//std::ostream&operator << (std::ostream& os, const AttrHalfSeg2D& output)
+//{
+//    os << "\nSegment:" << output.hseg.seg << " ,Is Left: " << output.hseg.isLeft << " ,Inside above:" << output.insideAbove;
+//    return os;
+//}
+
 /*Minimum Bounding Rectangle*/
 Rect2D::Rect2D()
 {

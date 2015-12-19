@@ -29,26 +29,18 @@ void TestLine2DRegion2D::start() {
     cout << "Region2D b(\"(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))\");" << endl;
 
     trlred = getTopologicalRelationship(*alr, *blr);
-
-    cout << "   getTopologicalRelationship(a, b) :" << endl;
-    cout << "   returns ==> ";
-
-    printLine2DRegion2DPredicate(trlred);
-    cout << endl;
+    printPredicate(trlred);
 
     result = isTopologicalRelationship(*alr, *blr, TopPredNumberLine2DRegion2D::lr_disjoint_m1);
+    cout << "   isTopologicalRelationship(a, b, lr_disjoint_m1) ==> " << printBool(result) << endl;
 
-    cout << "   isTopologicalRelationship(a, b, lr_disjoint_m1) :" << endl;
-    cout << "   returns ==> " << result << endl;
-    cout << "   disjoint() ==> " << disjoint(*alr, *blr) << endl;
-    cout << "   overlap() ==> " << overlap(*alr, *blr) << endl;
+    cout << "   disjoint() ==> " << printBool(disjoint(*alr, *blr)) << endl;
+    cout << "   overlap() ==> " << printBool(overlap(*alr, *blr)) << endl;
     cout << endl;
 
     delete alr;
     delete blr;
-    result = false;
-//
-    cout << "Test begins..." << endl << endl;
+
 
     alr = new Line2D("(((1,2),(4,3)),((1,1),(2,2)))");
     blr = new Region2D("(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))");
@@ -62,26 +54,19 @@ void TestLine2DRegion2D::start() {
     cout << "Region2D b(\"(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))\");" << endl;
 
     trlred = getTopologicalRelationship(*alr, *blr);
-
-    cout << "   getTopologicalRelationship(a, b) :" << endl;
-    cout << "   returns ==> ";
-
-    printLine2DRegion2DPredicate(trlred);
-    cout << endl;
+    printPredicate(trlred);
 
     result = isTopologicalRelationship(*alr, *blr, TopPredNumberLine2DRegion2D::lr_meet_m3);
+    cout << "   isTopologicalRelationship(a, b, lr_meet_m3) ==> " << printBool(result) << endl;
 
-    cout << "   isTopologicalRelationship(a, b, lr_meet_m3) :" << endl;
-    cout << "   returns ==> " << result << endl;
-    cout << "   touch() ==> " << touch(*alr, *blr) << endl;
-    cout << "   overlap() ==> " << overlap(*alr, *blr) << endl;
+    cout << "   touch() ==> " << printBool(touch(*alr, *blr)) << endl;
+    cout << "   overlap() ==> " << printBool(overlap(*alr, *blr)) << endl;
     cout << endl;
 
     delete alr;
     delete blr;
     result = false;
-//
-    cout << "Test begins..." << endl << endl;
+
 
     alr = new Line2D("(((1,2),(5,3)),((1,1),(2,2)))");
     blr = new Region2D("(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))");
@@ -95,27 +80,18 @@ void TestLine2DRegion2D::start() {
     cout << "Region2D b(\"(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))\");" << endl;
 
     trlred = getTopologicalRelationship(*alr, *blr);
-
-    cout << "   getTopologicalRelationship(a, b) :" << endl;
-    cout << "   returns ==> ";
-
-    printLine2DRegion2DPredicate(trlred);
-    cout << endl;
+    printPredicate(trlred);
 
     result = isTopologicalRelationship(*alr, *blr, TopPredNumberLine2DRegion2D::lr_overlap_m20);
+    cout << "   isTopologicalRelationship(a, b, lr_overlap_m20) ==> " << printBool(result) << endl;
 
-    cout << "   isTopologicalRelationship(a, b, lr_overlap_m20) :" << endl;
-    cout << "   returns ==> " << result << endl;
-    cout << "   overlap() ==> " << overlap(*alr, *blr) << endl;
-    cout << "   touch() ==> " << touch(*alr, *blr) << endl;
+    cout << "   overlap() ==> " << printBool(overlap(*alr, *blr)) << endl;
+    cout << "   touch() ==> " << printBool(touch(*alr, *blr)) << endl;
     cout << endl;
 
-    // don't forget to cleanup
     delete alr;
     delete blr;
-    result = false;
-//
-    cout << "Test begins..." << endl << endl;
+
 
     alr = new Line2D("(((4,3),(4,4)),((4,4),(5,4)))");
     blr = new Region2D("(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))");
@@ -129,27 +105,18 @@ void TestLine2DRegion2D::start() {
     cout << "Region2D b(\"(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))\");" << endl;
 
     trlred = getTopologicalRelationship(*alr, *blr);
-
-    cout << "   getTopologicalRelationship(a, b) :" << endl;
-    cout << "   returns ==> ";
-
-    printLine2DRegion2DPredicate(trlred);
-    cout << endl;
+    printPredicate(trlred);
 
     result = isTopologicalRelationship(*alr, *blr, TopPredNumberLine2DRegion2D::lr_coveredby_m17);
+    cout << "   isTopologicalRelationship(a, b, lr_coveredby_m17) ==> " << printBool(result) << endl;
 
-    cout << "   isTopologicalRelationship(a, b, lr_coveredby_m17) :" << endl;
-    cout << "   returns ==> " << result << endl;
-    cout << "   coveredby() ==> " << coveredBy(*alr, *blr) << endl;
-    cout << "   touch() ==> " << touch(*alr, *blr) << endl;
+    cout << "   coveredby() ==> " << printBool(coveredBy(*alr, *blr)) << endl;
+    cout << "   touch() ==> " << printBool(touch(*alr, *blr)) << endl;
     cout << endl;
 
-    // don't forget to cleanup
     delete alr;
     delete blr;
-    result = false;
 
-    cout << "Test begins..." << endl << endl;
 
     alr = new Line2D("(((1,2),(5,3)),((1,1),(2,2)))");
     blr = new Region2D("(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))");
@@ -163,27 +130,19 @@ void TestLine2DRegion2D::start() {
     cout << "Region2D b(\"(((4,3),(6,4)),((4,3),(6,2)),((6,2),(6,4)))\");" << endl;
 
     trlred = getTopologicalRelationship(*alr, *blr);
-
-    cout << "   getTopologicalRelationship(a, b) :" << endl;
-    cout << "   returns ==> ";
-
-    printLine2DRegion2DPredicate(trlred);
-    cout << endl;
+    printPredicate(trlred);
 
     result = isTopologicalRelationship(*alr, *blr, TopPredNumberLine2DRegion2D::lr_overlap_m20);
+    cout << "   isTopologicalRelationship(a, b, lr_overlap_m20) ==> " << printBool(result) << endl;
 
-    cout << "   isTopologicalRelationship(a, b, lr_overlap_m20) :" << endl;
-    cout << "   returns ==> " << result << endl;
-    cout << "   overlap() ==> " << overlap(*alr, *blr) << endl;
-    cout << "   touch() ==> " << touch(*alr, *blr) << endl;
+    cout << "   overlap() ==> " << printBool(overlap(*alr, *blr)) << endl;
+    cout << "   touch() ==> " << printBool(touch(*alr, *blr)) << endl;
     cout << endl;
 
     // don't forget to cleanup
     delete alr;
     delete blr;
-    result = false;
 
-    cout << "Test begins..." << endl << endl;
 
     alr = new Line2D("(((5,3),(6,3)),((6,3),(6,4)))");
     blr = new Region2D("(((4,3),(7,5)),((4,3),(7,1)),((7,5),(7,1)))");
@@ -197,22 +156,14 @@ void TestLine2DRegion2D::start() {
     cout << "Region2D b(\"(((4,3),(7,5)),((4,3),(7,1)),((7,5),(7,1)))\");" << endl;
 
     trlred = getTopologicalRelationship(*alr, *blr);
-
-    cout << "   getTopologicalRelationship(a, b) :" << endl;
-    cout << "   returns ==> ";
-
-    printLine2DRegion2DPredicate(trlred);
-    cout << endl;
+    printPredicate(trlred);
 
     result = isTopologicalRelationship(*alr, *blr, TopPredNumberLine2DRegion2D::lr_inside_m14);
+    cout << "   isTopologicalRelationship(a, b, lr_inside_m14) ==> " << printBool(result) << endl;
 
-    cout << "   isTopologicalRelationship(a, b, lr_inside_m14) :" << endl;
-    cout << "   returns ==> " << result << endl;
-    cout << "   coveredby() ==> " << inside(*alr, *blr) << endl;
-    cout << "   touch() ==> " << touch(*alr, *blr) << endl;
-    cout << endl;
+    cout << "   coveredby() ==> " << printBool(inside(*alr, *blr)) << endl;
+    cout << "   touch() ==> " << printBool(touch(*alr, *blr)) << endl;
 
-    // don't forget to cleanup
     delete alr;
     delete blr;
     result = false;

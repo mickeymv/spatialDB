@@ -235,11 +235,11 @@ bool Line2DImpl::ConstHalfSegIterator::operator>=(const ConstHalfSegIterator &rh
             (this->handlei->iteratorIndex > rhs.handlei->iteratorIndex));
 }
 
-std::ostream &operator<<(std::ostream &os, const Line2DImpl::ConstHalfSegIterator &output) {
-    os << "index Value:" << output.handlei->iteratorIndex << " ";
-    os << "point Value:" << output.handlei->current->segments.at(output.handlei->iteratorIndex) << " ";
-    return os;
-}
+//std::ostream &operator<<(std::ostream &os, const Line2DImpl::ConstHalfSegIterator &output) {
+//    os << "index Value:" << output.handlei->iteratorIndex << " ";
+//    os << "point Value:" << output.handlei->current->segments.at(output.handlei->iteratorIndex) << " ";
+//    return os;
+//}
 
 
 // Method that returns a constant halfsegment iterator to the first halfsegment of a

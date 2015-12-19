@@ -28,10 +28,18 @@ private:
                     "pl_inside_m11", "pl_inside_m12", "pl_overlap_m13", "pl_overlap_m14"
             };
 
-    void printPoint2DLine2DPredicate(TopPredNumberPoint2DLine2D tpred) {
 
-        cout << topPredNumberPoint2DLine2D[(unsigned int) tpred] << " <===";
+    void printPredicate(TopPredNumberPoint2DLine2D tpred) {
+
+        cout << "   getTopologicalRelationship(a, b) ==> " ;
+        cout << topPredNumberPoint2DLine2D[(unsigned int) tpred] << endl << endl;
     };
+
+    string printBool(bool result) {
+        return result ? "true": "false";
+    }
+
+
 };
 
 

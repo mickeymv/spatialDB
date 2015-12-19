@@ -136,22 +136,13 @@ void Point2DPoint2D::evaluateTopoPred() {
      IMC.set(2);  // (000100);
 
 
-
     // compare/match the right one
     // loop exit if the top Pred number found
     for (int i = 0; i < TopPredNumberPoint2DPoint2DEnumSize && !isPredSet; i++) {
 
-        //test
-//        cout << "matrix[" << i << "] = " << matrix[i] << endl;
-
         // Dtj. we do bitwise comparison for faster execution:
          if (IMC == matrix[i]) {isPredSet = true; topPredNumberPoint2DPoint2D = (TopPredNumberPoint2DPoint2D) i;}
     }
-
-    // test
-//    if (!isPredSet)
-//    cout << "WARNING: isPredSet = " << isPredSet << endl;
-
 }
 
 bool Point2DPoint2D::overlap() {

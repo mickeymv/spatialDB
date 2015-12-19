@@ -30,14 +30,13 @@ void TestPoint2DPoint2D::start() {
     cout << "Point2D b(\"((1,1),(2,2),(4,3))\");" << endl;
 
     tpred = getTopologicalRelationship(*a, *b);
-
-      printPoint2DPoint2DPredicate(tpred);
+    printPredicate(tpred);
 
     result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_equal_m2);
-    cout << "   isTopologicalRelationship(a, b, pp_equal_m2) ==> " << printResult(result) << endl;
+    cout << "   isTopologicalRelationship(a, b, pp_equal_m2) ==> " << printBool(result) << endl;
 
-    cout << "   disjoint() ==> " << printResult(disjoint(*a, *b)) << endl;
-    cout << "   overlap() ==> " << printResult(overlap(*a, *b)) << endl;
+    cout << "   disjoint() ==> " << printBool(disjoint(*a, *b)) << endl;
+    cout << "   overlap() ==> " << printBool(overlap(*a, *b)) << endl;
     cout << endl;
 
     // don't forget to cleanup
@@ -54,14 +53,14 @@ void TestPoint2DPoint2D::start() {
     cout << "Point2D b(\"((1,1),(2,2),(4,3))\");" << endl;
 
     tpred = getTopologicalRelationship(*a, *b);
-    printPoint2DPoint2DPredicate(tpred);
+    printPredicate(tpred);
 
     result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_disjoint_m1);
 
-    cout << "   isTopologicalRelationship(a, b, pp_disjoint_m1) ==> " << printResult(result) << endl;
+    cout << "   isTopologicalRelationship(a, b, pp_disjoint_m1) ==> " << printBool(result) << endl;
 
-    cout << "   disjoint() ==> " << printResult(disjoint(*a, *b)) << endl;
-    cout << "   overlap() ==> " << printResult(overlap(*a, *b)) << endl;
+    cout << "   disjoint() ==> " << printBool(disjoint(*a, *b)) << endl;
+    cout << "   overlap() ==> " << printBool(overlap(*a, *b)) << endl;
     cout << endl;
 
     delete a;
@@ -77,12 +76,12 @@ void TestPoint2DPoint2D::start() {
     cout << "Point2D b(\"((1,1),(2,2),(4,3))\");" << endl;
 
     tpred = getTopologicalRelationship(*a, *b);
-    printPoint2DPoint2DPredicate(tpred);
+    printPredicate(tpred);
 
     result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_equal_m2);
-    cout << "   isTopologicalRelationship(a, b, pp_equal_m2) ==> " << printResult(result) << endl;
+    cout << "   isTopologicalRelationship(a, b, pp_equal_m2) ==> " << printBool(result) << endl;
 
-    cout << "   inside() ==> " << printResult(inside(*a, *b)) << endl << endl;
+    cout << "   inside() ==> " << printBool(inside(*a, *b)) << endl << endl;
 
     delete a;
     delete b;
@@ -96,13 +95,13 @@ void TestPoint2DPoint2D::start() {
     cout << "Point2D b(\"((1,1),(2,2))\");" << endl;
 
     tpred = getTopologicalRelationship(*a, *b);
-    printPoint2DPoint2DPredicate(tpred);
+    printPredicate(tpred);
 
     result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_equal_m2);
-    cout << "   isTopologicalRelationship(a, b, pp_equal_m2) ==> " << printResult(result) << endl;
+    cout << "   isTopologicalRelationship(a, b, pp_equal_m2) ==> " << printBool(result) << endl;
 
-    cout << "   disjoint() ==> " << printResult(disjoint(*a, *b)) << endl;
-    cout << "   equal() ==> " << printResult(equal(*a, *b)) << endl;
+    cout << "   disjoint() ==> " << printBool(disjoint(*a, *b)) << endl;
+    cout << "   equal() ==> " << printBool(equal(*a, *b)) << endl;
     cout << endl;
 
 
@@ -118,19 +117,19 @@ void TestPoint2DPoint2D::start() {
     cout << "Point2D b(\"((1,1),(2,2))\");" << endl;
 
     tpred = getTopologicalRelationship(*a, *b);
-    printPoint2DPoint2DPredicate(tpred);
+    printPredicate(tpred);
 
     result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_equal_m2);
-    cout << "   isTopologicalRelationship(a, b, pp_equal_m2) ==> " << printResult(result) << endl;
+    cout << "   isTopologicalRelationship(a, b, pp_equal_m2) ==> " << printBool(result) << endl;
 
     result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_disjoint_m1);
-    cout << "   isTopologicalRelationship(a, b, pp_disjoint_m1) ==> " << printResult(result) << endl;
+    cout << "   isTopologicalRelationship(a, b, pp_disjoint_m1) ==> " << printBool(result) << endl;
 
     result = isTopologicalRelationship(*a, *b, TopPredNumberPoint2DPoint2D::pp_contains_m4);
-    cout << "   isTopologicalRelationship(a, b, pp_contains_m4) ==> " << printResult(result) << endl;
+    cout << "   isTopologicalRelationship(a, b, pp_contains_m4) ==> " << printBool(result) << endl;
 
-    cout << "   contains() ==> " << printResult(contains(*a, *b)) << endl;
-    cout << "   overlap() ==> " << printResult(overlap(*a, *b)) << endl;
+    cout << "   contains() ==> " << printBool(contains(*a, *b)) << endl;
+    cout << "   overlap() ==> " << printBool(overlap(*a, *b)) << endl;
     cout << endl;
 
     delete a;
@@ -146,7 +145,7 @@ void TestPoint2DPoint2D::start() {
     cout << "Point2D b(\"((1,1))\");" << endl;
 
     tpred = getTopologicalRelationship(*a, *b);
-    printPoint2DPoint2DPredicate(tpred);
+    printPredicate(tpred);
 
 
     delete a;
@@ -161,10 +160,10 @@ void TestPoint2DPoint2D::start() {
     cout << "Point2D b(\"((2,2))\");" << endl;
 
     tpred = getTopologicalRelationship(*a, *b);
-    printPoint2DPoint2DPredicate(tpred);
+    printPredicate(tpred);
 
-    cout << "   contains() ==> " << printResult(contains(*a, *b)) << endl;
-    cout << "   inside() ==> " << printResult(inside(*a, *b)) << endl;
+    cout << "   contains() ==> " << printBool(contains(*a, *b)) << endl;
+    cout << "   inside() ==> " << printBool(inside(*a, *b)) << endl;
     cout << endl;
 
 

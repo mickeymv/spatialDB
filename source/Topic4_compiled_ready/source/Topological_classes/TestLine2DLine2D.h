@@ -43,11 +43,17 @@ private:
 
             };
 
-    void printLine2DLine2DPredicate(TopPredNumberLine2DLine2D tpred) {
 
-        cout << topPredNumberLine2DLine2D[(unsigned int) tpred] << " <===";
+    void printPredicate(TopPredNumberLine2DLine2D tpred) {
 
+        cout << "   getTopologicalRelationship(a, b) ==> " ;
+        cout << topPredNumberLine2DLine2D[(unsigned int) tpred] << endl << endl;
     };
+
+    string printBool(bool result) {
+        return result ? "true": "false";
+    }
+
 };
 
 

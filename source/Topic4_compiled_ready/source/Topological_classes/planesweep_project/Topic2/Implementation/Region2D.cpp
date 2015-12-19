@@ -190,7 +190,7 @@ Region2D::Region2D(std::vector<Seg2D> segmentList)
             {
                 handle->cycles.clear();
                 handle->faces.clear();
-                std::cout<<"REGION NOT VALID!!!!!\n";
+//                std::cout<<"REGION NOT VALID!!!!!\n";
                 break;
             }
         }
@@ -681,7 +681,7 @@ Region2D::Region2D(std::string textualRegionList)
             {
                 handle->cycles.clear();
                 handle->faces.clear();
-                std::cout<<"REGION NOT VALID!!!!!\n";
+//                std::cout<<"REGION NOT VALID!!!!!\n";
                 break;
             }
         }
@@ -1279,31 +1279,31 @@ Region2D Region2D::getOuterCycle()
 //++++++++++++++++
 
 // Textual output of segments of a Region2D object
-std::ostream& operator << (std::ostream& os, const Region2D& output)
-{
-    int numberOfFaces = output.handle->faces.size();
-
-    if (numberOfFaces == 0 )
-    {
-        cout << " Region is Empty! \n " ;
-        return os;
-    }
-    std::cout<<"numberOfFaces is: "<<numberOfFaces-2<<std::endl;
-
-    for(int i = 1; i < numberOfFaces-1; i++)
-    {
-        std::cout<<"Printing number of cycles in face "<<i<<":";
-        std::cout<<output.handle->faces[i].size()<<std::endl;
-        for (int j = 0; j<output.handle->faces[i].size(); j++)
-        {
-            for (int k = 0; k<output.handle->faces[i][j].size(); k++)
-            {
-                std::cout<<*output.handle->faces[i][j][k]<<std::endl;
-            }
-        }
-    }
-    return os;
-}
+//std::ostream& operator << (std::ostream& os, const Region2D& output)
+//{
+//    int numberOfFaces = output.handle->faces.size();
+//
+//    if (numberOfFaces == 0 )
+//    {
+//        cout << " Region is Empty! \n " ;
+//        return os;
+//    }
+//    std::cout<<"numberOfFaces is: "<<numberOfFaces-2<<std::endl;
+//
+//    for(int i = 1; i < numberOfFaces-1; i++)
+//    {
+//        std::cout<<"Printing number of cycles in face "<<i<<":";
+//        std::cout<<output.handle->faces[i].size()<<std::endl;
+//        for (int j = 0; j<output.handle->faces[i].size(); j++)
+//        {
+//            for (int k = 0; k<output.handle->faces[i][j].size(); k++)
+//            {
+//                std::cout<<*output.handle->faces[i][j][k]<<std::endl;
+//            }
+//        }
+//    }
+//    return os;
+//}
 
 //++++++++++++++++++++
 // Iterator functions
@@ -1449,17 +1449,17 @@ bool Region2D::ConstFaceIterator::operator >= (const ConstFaceIterator& rhs) con
 }
 
 
-std::ostream&operator<<(std::ostream& os, const Region2D::ConstFaceIterator& output)
-{
-    os << "index Value:" << output.handlei->iteratorIndex<<" ";
-    os << "number of cycles in face:" << output.handlei->current->faces.at(output.handlei->iteratorIndex).size()<<" "<<endl;
-    for(int x=0;x<output.handlei->current->faces.at(output.handlei->iteratorIndex).size();x++)
-    {
-        for(int y=0;y<output.handlei->current->faces[output.handlei->iteratorIndex][x].size();y++)
-            os << "segments" << *output.handlei->current->faces[output.handlei->iteratorIndex][x][y]<<" "<<endl;
-    }
-    return os;
-}
+//std::ostream&operator<<(std::ostream& os, const Region2D::ConstFaceIterator& output)
+//{
+//    os << "index Value:" << output.handlei->iteratorIndex<<" ";
+//    os << "number of cycles in face:" << output.handlei->current->faces.at(output.handlei->iteratorIndex).size()<<" "<<endl;
+//    for(int x=0;x<output.handlei->current->faces.at(output.handlei->iteratorIndex).size();x++)
+//    {
+//        for(int y=0;y<output.handlei->current->faces[output.handlei->iteratorIndex][x].size();y++)
+//            os << "segments" << *output.handlei->current->faces[output.handlei->iteratorIndex][x][y]<<" "<<endl;
+//    }
+//    return os;
+//}
 // Method that returns a constant face iterator to the first face of a
 // Region2D object.
 Region2D::ConstFaceIterator Region2D::cFbegin() const
@@ -1639,16 +1639,16 @@ bool Region2D::ConstCycleIterator::operator >= (const ConstCycleIterator& rhs) c
     return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex >= rhs.handlei->iteratorIndex));
 }
 
-std::ostream&operator<<(std::ostream& os, const Region2D::ConstCycleIterator& output)
-{
-    os << "index Value:" << output.handlei->iteratorIndex<<" ";
-    os << "number of segments in cycle:" << output.handlei->current->cycles.at(output.handlei->iteratorIndex).size()<<" "<<endl;
-    for(int x=0;x<output.handlei->current->cycles.at(output.handlei->iteratorIndex).size();x++)
-    {
-        os << "segments" << *output.handlei->current->cycles[output.handlei->iteratorIndex][x]<<" "<<endl;
-    }
-    return os;
-}
+//std::ostream&operator<<(std::ostream& os, const Region2D::ConstCycleIterator& output)
+//{
+//    os << "index Value:" << output.handlei->iteratorIndex<<" ";
+//    os << "number of segments in cycle:" << output.handlei->current->cycles.at(output.handlei->iteratorIndex).size()<<" "<<endl;
+//    for(int x=0;x<output.handlei->current->cycles.at(output.handlei->iteratorIndex).size();x++)
+//    {
+//        os << "segments" << *output.handlei->current->cycles[output.handlei->iteratorIndex][x]<<" "<<endl;
+//    }
+//    return os;
+//}
 
 // Method that returns a constant Cycle iterator to the first Cycle of a
 // Region2D object.

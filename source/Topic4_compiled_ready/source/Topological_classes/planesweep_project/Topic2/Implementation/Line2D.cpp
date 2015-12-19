@@ -128,7 +128,7 @@ Line2D::Line2D(std::vector<Seg2D> segs)
 		{
 			if(IntersectsAndNotCollinearAndNotEndpoints(halfsegments.at(d+1).seg, halfsegments.at(d).seg))
 			{
-				cout<<"incorrect segments provided"<<endl;
+//				cout<<"incorrect segments provided"<<endl;
 				handle->segments.clear();
 				handle->mapHseg.clear();
 				handle->firstBlock.current = handle;
@@ -326,7 +326,7 @@ Line2D::Line2D(std::string textualLineList)
 		{
 			if(IntersectsAndNotCollinearAndNotEndpoints(halfsegments.at(d+1).seg, halfsegments.at(d).seg))
 			{
-				cout<<"incorrect segments provided"<<endl;
+//				cout<<"incorrect segments provided"<<endl;
 				handle->segments.clear();
 				handle->mapHseg.clear();
 				handle->firstBlock.current = handle;
@@ -660,19 +660,19 @@ Number Line2D::getNumberOfSegments()
 //++++++++++++++++
 
 // Textual output of segments of a Line2D object
-std::ostream& operator << (ostream& os, const Line2D& output)
-{
-	if(output.handle->mapHseg.size() == 0 )
-		os<<"Empty Line"<<endl;
-	for (int v=0; v<output.handle->mapHseg.size(); v++)
-	{
-		for(int w = 0; w<output.handle->mapHseg[v].size(); w++)
-		{
-			os <<"mb["<<v<<"]["<<w<<"]: "<<*output.handle->mapHseg[v][w]<<endl;
-		}
-	}
-	return os;
-}
+//std::ostream& operator << (ostream& os, const Line2D& output)
+//{
+//	if(output.handle->mapHseg.size() == 0 )
+//		os<<"Empty Line"<<endl;
+//	for (int v=0; v<output.handle->mapHseg.size(); v++)
+//	{
+//		for(int w = 0; w<output.handle->mapHseg[v].size(); w++)
+//		{
+//			os <<"mb["<<v<<"]["<<w<<"]: "<<*output.handle->mapHseg[v][w]<<endl;
+//		}
+//	}
+//	return os;
+//}
 
 
 //++++++++++++++++++++++
@@ -811,16 +811,16 @@ bool Line2D::ConstBlockIterator::operator >= (const ConstBlockIterator& rhs) con
 	return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex >= rhs.handlei->iteratorIndex));
 }
 
-std::ostream&operator<<(std::ostream& os, const Line2D::ConstBlockIterator& output)
-{
-	os << "index Value:" << output.handlei->iteratorIndex<<" ";
-	os << "size of vector:" << output.handlei->current->mapHseg.find(output.handlei->iteratorIndex)->second.size()<<" "<<endl;
-	for(int x=0;x<output.handlei->current->mapHseg.find(output.handlei->iteratorIndex)->second.size();x++)
-	{
-		os << "segments" << *output.handlei->current->mapHseg.find(output.handlei->iteratorIndex)->second.at(x)<<" "<<endl;
-	}
-	return os;
-}
+//std::ostream&operator<<(std::ostream& os, const Line2D::ConstBlockIterator& output)
+//{
+//	os << "index Value:" << output.handlei->iteratorIndex<<" ";
+//	os << "size of vector:" << output.handlei->current->mapHseg.find(output.handlei->iteratorIndex)->second.size()<<" "<<endl;
+//	for(int x=0;x<output.handlei->current->mapHseg.find(output.handlei->iteratorIndex)->second.size();x++)
+//	{
+//		os << "segments" << *output.handlei->current->mapHseg.find(output.handlei->iteratorIndex)->second.at(x)<<" "<<endl;
+//	}
+//	return os;
+//}
 
 // Method that returns a constant block iterator to the first block of a
 // Line2D object.
@@ -986,12 +986,12 @@ bool Line2D::ConstSegIterator::operator >= (const ConstSegIterator& rhs) const
 	return ((this->handlei->current == rhs.handlei->current)&&(this->handlei->iteratorIndex >= rhs.handlei->iteratorIndex));
 }
 
-std::ostream&operator<<(std::ostream& os, const Line2D::ConstSegIterator& output)
-{
-	os << "index Value:" << output.handlei->iteratorIndex<<" ";
-	os << "Segment Value:" << output.handlei->current->segments.at(output.handlei->iteratorIndex).seg<<" ";
-	return os;
-}
+//std::ostream&operator<<(std::ostream& os, const Line2D::ConstSegIterator& output)
+//{
+//	os << "index Value:" << output.handlei->iteratorIndex<<" ";
+//	os << "Segment Value:" << output.handlei->current->segments.at(output.handlei->iteratorIndex).seg<<" ";
+//	return os;
+//}
 
 
 // Method that returns a constant segment iterator to the first segment of a

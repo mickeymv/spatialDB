@@ -29,10 +29,15 @@ private:
                     "pr_inside_m6", "pr_overlap_m7"
             };
 
+    void printPredicate(TopPredNumberPoint2DRegion2D tpred) {
 
-    void printPoint2DRegion2DPredicate(TopPredNumberPoint2DRegion2D tpred) {
-        cout << topPredNumberPoint2DRegion2D[(unsigned int) tpred] << " <===";
+        cout << "   getTopologicalRelationship(a, b) ==> " ;
+        cout << topPredNumberPoint2DRegion2D[(unsigned int) tpred] << endl << endl;
     };
+
+    string printBool(bool result) {
+        return result ? "true": "false";
+    }
 
 };
 

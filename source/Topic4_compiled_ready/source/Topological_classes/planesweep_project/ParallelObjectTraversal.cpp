@@ -68,9 +68,9 @@ ParallelObjectTraversal::ParallelObjectTraversal(const Object2D &F, const Object
         } else if (G.isLine2D()) {
             objG = static_cast<const Line2D *>(&G);
             isGL = true;
-            cout<<"In the correct place"<<endl;
+//            cout<<"In the correct place"<<endl;
             objGsegIterator = new Line2DImpl::ConstHalfSegIterator(((Line2DImpl *) objG)->hBegin());
-            cout<<*(*objGsegIterator);
+//            cout<<*(*objGsegIterator);
         } else if (G.isRegion2D()) {
             objG = static_cast<const Region2D *>(&G);
             isGR = true;

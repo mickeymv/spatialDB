@@ -229,13 +229,13 @@ using namespace std;
   }
   
 
-  std::ostream&operator<<(std::ostream& os, const Region2DImpl::ConstAttributedHalfSegmentIterator& output)
-  {
-      os << "index Value:" << output.handlei->iteratorIndex<<" ";
-      os << "segments " << output.handlei->current->segments.at(output.handlei->iteratorIndex)<<" "<<endl;
-	
-      return os;
-  }
+//  std::ostream&operator<<(std::ostream& os, const Region2DImpl::ConstAttributedHalfSegmentIterator& output)
+//  {
+//      os << "index Value:" << output.handlei->iteratorIndex<<" ";
+//      os << "segments " << output.handlei->current->segments.at(output.handlei->iteratorIndex)<<" "<<endl;
+//
+//      return os;
+//  }
 
   // Method that returns a constant AttributedHalfSegment iterator to the first AttributedHalfSegment of a
   // Region2D object.

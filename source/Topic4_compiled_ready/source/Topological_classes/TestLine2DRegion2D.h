@@ -36,10 +36,15 @@ private:
             };
 
 
-    void printLine2DRegion2DPredicate(TopPredNumberLine2DRegion2D tpred) {
-        cout << topPredNumberLine2DRegion2D[(unsigned int) tpred] << " <===";
+    void printPredicate(TopPredNumberLine2DRegion2D tpred) {
+
+        cout << "   getTopologicalRelationship(a, b) ==> " ;
+        cout << topPredNumberLine2DRegion2D[(unsigned int) tpred] << endl << endl;
     };
 
+    string printBool(bool result) {
+        return result ? "true": "false";
+    }
 };
 
 

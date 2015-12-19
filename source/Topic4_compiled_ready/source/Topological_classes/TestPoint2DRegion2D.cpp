@@ -24,9 +24,6 @@ void TestPoint2DRegion2D::start() {
     p1 = new Point2D("((0,0),(3,3),(2,2))");
     r1 = new Region2D("(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))");
 
-    tpredpr = getTopologicalRelationship(*p1, *r1);
-    result = isTopologicalRelationship(*p1, *r1, TopPredNumberPoint2DRegion2D::pr_disjoint_m1);
-
     cout << "*****************************" << endl;
     cout << "Point2DRegion2D" << endl;
     cout << "*****************************" << endl;
@@ -35,16 +32,14 @@ void TestPoint2DRegion2D::start() {
     cout << "Point2D(\"((0,0),(3,3),(2,2))\")" << endl;
     cout << "Region2D(\"(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))\")" << endl;
 
-    cout << "   getTopologicalRelationship(p1, r1) :" << endl;
-    cout << "   returns ==> ";
+    tpredpr = getTopologicalRelationship(*p1, *r1);
 
-    printPoint2DRegion2DPredicate(tpredpr);
-    cout << endl;
+    printPredicate(tpredpr);
+    result = isTopologicalRelationship(*p1, *r1, TopPredNumberPoint2DRegion2D::pr_disjoint_m1);
 
-    cout << "   isTopologicalRelationship(a, b, pr_disjoint_m1) :" << endl;
-    cout << "   returns ==> " << result << endl;
-    cout << "   disjoint() ==> " << disjoint(*p1, *r1) << endl;
+    cout << "   isTopologicalRelationship(a, b, pr_disjoint_m1) ==> " << printBool(result) << endl;
 
+    cout << "   disjoint() ==> " << printBool(disjoint(*p1, *r1)) << endl;
     cout << endl;
 
     // don't forget to cleanup
@@ -56,51 +51,40 @@ void TestPoint2DRegion2D::start() {
     p1 = new Point2D("((0,0),(1,1),(2,5))");
     r1 = new Region2D("(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))");
 
-    tpredpr = getTopologicalRelationship(*p1, *r1);
-//    result = isTopologicalRelationship(*p1, *r1, TopPredNumberPoint2DRegion2D::pr_overlap_m7);
-
     cout << "2. pr_overlap_m7" << endl;
     cout << "Point2D(\"((0,0),(3,3),(2,5))\")" << endl;
     cout << "Region2D(\"(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))\")" << endl;
     cout << "   getTopologicalRelationship(p1, r1) :" << endl;
-    cout << "   returns ==> ";
 
-    printPoint2DRegion2DPredicate(tpredpr);
+    tpredpr = getTopologicalRelationship(*p1, *r1);
+    printPredicate(tpredpr);
+
+    result = isTopologicalRelationship(*p1, *r1, TopPredNumberPoint2DRegion2D::pr_overlap_m7);
+    cout << "   isTopologicalRelationship(p1, r1, pr_overlap_m7) ==> " << printBool(result) << endl;
+
+    cout << "   overlap() ==> " << printBool(overlap(*p1, *r1)) << endl;
     cout << endl;
 
-    cout << "   overlap() ==> " << overlap(*p1, *r1) << endl;
-    cout << endl;
-    cout << "   isTopologicalRelationship(p1, r1, pr_overlap_m7) :" << endl;
-    cout << "   returns ==> " << result << endl << endl;
-
-    // don't forget to cleanup
     delete p1;
     delete r1;
-
 
 
     // 3. pr_meet_m2
     p1 = new Point2D("((4,3))");
     r1 = new Region2D("(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))");
 
-    tpredpr = getTopologicalRelationship(*p1, *r1);
-//    resultpr = isTopologicalRelationship(*p1, *r1, TopPredNumberPoint2DRegion2D::pr_meet_m2);
-
     cout << "3. Test pr_meet_m2" << endl;
     cout << "Point2D(\"((4,3))\")" << endl;
     cout << "Region2D(\"(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))\")" << endl;
 
-    cout << "   getTopologicalRelationship(a, b) :" << endl;
-    cout << "   returns ==> ";
+    tpredpr = getTopologicalRelationship(*p1, *r1);
+    printPredicate(tpredpr);
 
-    printPoint2DRegion2DPredicate(tpredpr);
-    cout << endl;
-    cout << "   isTopologicalRelationship(a, b, pr_meet_m2) :" << endl;
-    cout << "   returns ==> " << result << endl;
-    cout << "   meet() ==> " << touch(*p1, *r1) << endl << endl;
+    result = isTopologicalRelationship(*p1, *r1, TopPredNumberPoint2DRegion2D::pr_meet_m2);
+    cout << "   isTopologicalRelationship(a, b, pr_meet_m2) ==> " << printBool(result) << endl;
 
+    cout << "   meet() ==> " << printBool(touch(*p1, *r1)) << endl << endl;
 
-    // don't forget to cleanup
     delete p1;
     delete r1;
 
@@ -109,23 +93,18 @@ void TestPoint2DRegion2D::start() {
     p1 = new Point2D("((2,5))");
     r1 = new Region2D("(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))");
 
-    tpredpr = getTopologicalRelationship(*p1, *r1);
-    result = isTopologicalRelationship(*p1, *r1, TopPredNumberPoint2DRegion2D::pr_inside_m4);
-
     cout << "4. Test pr_inside_m4" << endl;
     cout << "Point2D(\"((0,0),(3,3),(6,6))\")" << endl;
     cout << "Region2D(\"(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))\")" << endl;
 
-    cout << "   getTopologicalRelationship(p1, r1) :" << endl;
-    cout << "   returns ==> ";
+    tpredpr = getTopologicalRelationship(*p1, *r1);
+    printPredicate(tpredpr);
 
-    printPoint2DRegion2DPredicate(tpredpr);
-    cout << endl;
-    cout << "   inside() ==> " << inside(*p1, *r1) << endl;
-    cout << endl;
+    result = isTopologicalRelationship(*p1, *r1, TopPredNumberPoint2DRegion2D::pr_inside_m4);
+    cout << "   isTopologicalRelationship(p1, r1,pr_inside_m4) ==> " << printBool(result) << endl;
 
-    cout << "   isTopologicalRelationship(p1, r1,pr_inside_m4) :" << endl;
-    cout << "   returns ==> " << result << endl << endl;
+    cout << "   inside() ==> " << printBool(inside(*p1, *r1)) << endl;
+    cout << endl;
 
     // don't forget to cleanup
     delete p1;
