@@ -58,7 +58,8 @@ void Line2DRegion2D::exploreTopoPred() {
             HalfSeg2D h = S.getHalfSegEvent(ParallelObjectTraversal::first);
             Poi2D dp;
             if (h.isLeft) {
-                S.addLeft(h.seg);
+                PlaneSweepLineStatusObject psso(h.seg);
+                S.addLeft(psso);
                 dp = h.seg.p1;
             }
             else {
@@ -78,13 +79,14 @@ void Line2DRegion2D::exploreTopoPred() {
                 else {
                     vF[seg_outside] = true;
                 }
-                S.delRight(h.seg);
+                PlaneSweepLineStatusObject psso(h.seg);
+                S.delRight(psso);
             }
             if (dp != last_dp_in_F) {
                 last_dp_in_F = dp;
-                if (!S.lookAhead(h, objF)) {
+                if (!S.lookAhead(h, ParallelObjectTraversal::first)) {
                     last_bound_in_F = dp;
-                    if (last_bound_in_F == last_dp_in_G || S.lookAhead(h, objG)) {
+                    if (last_bound_in_F == last_dp_in_G || S.lookAhead(h, ParallelObjectTraversal::second)) {
                         vF[bound_shared] = true;
                     }
                     else {
@@ -99,18 +101,19 @@ void Line2DRegion2D::exploreTopoPred() {
                             }
                             else
                             {
-                             vF[bound_outside]=true;
+                                //TODO - find out about bound_outside
+                                //vF[bound_outside]=true;
                             }
                         }
                         else {
-                            vF[bound_outside] = true;
+                            //vF[bound_outside] = true;
                         }
 
                     }
 
                 }
             } // line 39
-            if (dp != last_bound_in_F && dp == last_dp_in_G || S.lookAhead(h.seg, objG)) {
+            if ((dp != last_bound_in_F && dp == last_dp_in_G) || S.lookAhead(h, ParallelObjectTraversal::second)) {
                 vF[poi_shared] = true;
             }
         }
@@ -121,12 +124,14 @@ void Line2DRegion2D::exploreTopoPred() {
 
             Poi2D dp;
             if (h.hseg.isLeft) {
-                S.addLeft(h.hseg.seg);
+                PlaneSweepLineStatusObject psso(h.hseg.seg);
+                S.addLeft(psso);
                 S.setInsideAbove(h.hseg.seg,ia);
                 dp = h.hseg.seg.p1;
             }
             else {
-                S.delRight(h.hseg.seg);
+                PlaneSweepLineStatusObject psso(h.hseg.seg);
+                S.delRight(psso);
                 vG[seg_unshared] = true;
             }
             if (dp != last_dp_in_G) {
@@ -138,15 +143,17 @@ void Line2DRegion2D::exploreTopoPred() {
             AttrHalfSeg2D h = S.getAttrHalfSegEvent(ParallelObjectTraversal::second);
             Poi2D dp;
             if (h.hseg.isLeft) {
-                S.addLeft(h.hseg.seg);
+                PlaneSweepLineStatusObject psso(h.hseg.seg);
+                S.addLeft(psso);
                 dp = h.hseg.seg.p1;
             }
             else {
-                S.delRight(h.hseg.seg);
+                PlaneSweepLineStatusObject psso(h.hseg.seg);
+                S.delRight(psso);
             } // line 53
             if (dp != last_dp_in_F) {
                 last_dp_in_F = dp;
-                if (S.lookAhead(h.hseg, objF))  // line 55
+                if (S.lookAhead(h.hseg, ParallelObjectTraversal::first))  // line 55
                 {
                     vF[bound_shared] = true;
                 }
@@ -510,7 +517,7 @@ bool Line2DRegion2D::isTopologicalRelationship(TopPredNumberLine2DRegion2D predi
     if(!isPredSet)
     {
         exploreTopoPred();
-        evaluateTopoPred();
+//        evaluateTopoPred();
     }
     if(topPredNumberLine2DRegion2D==predicate)
     {

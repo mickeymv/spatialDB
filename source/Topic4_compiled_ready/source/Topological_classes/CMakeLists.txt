@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.3)
 project(Topological_classes)
 
 
-#include_directories (. planesweep_project planesweep_project/Topic1 planesweep_project/Topic2/Implementation)
+#include_directories (. planesweep_project planesweep_project/Topic1 planesweep_project/Topic2/Implementation )
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
@@ -24,6 +24,10 @@ set(SOURCE_FILES main.cpp
 
         planesweep_project/Topic1/RobustGeometricPrimitives2D.cpp
         planesweep_project/Topic1/RobustGeometricPrimitives2D.h
+
+        planesweep_project/Topic1/RobustGeometricPrimitives2D.cpp
+        planesweep_project/Topic1/RobustGeometricPrimitives2D.h
+
 
         planesweep_project/Object2D.cpp
         planesweep_project/Object2D.h
@@ -58,6 +62,7 @@ set(SOURCE_FILES main.cpp
         planesweep_project/PlaneSweepLineStatusObject.h
 
 
+
         Point2DPoint2D.cpp
         Point2DPoint2D.h
 
@@ -89,5 +94,6 @@ set(SOURCE_FILES main.cpp
         TestLine2DLine2D.cpp
         TestLine2DLine2D.h
         TestLine2DRegion2D.cpp
-        TestLine2DRegion2D.h)
+        TestLine2DRegion2D.h
+        )
 add_executable(Topological_classes ${SOURCE_FILES})

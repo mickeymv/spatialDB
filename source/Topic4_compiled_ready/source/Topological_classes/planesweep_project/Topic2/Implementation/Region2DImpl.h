@@ -17,7 +17,7 @@
 
 #include "Region2D.h"
 
-class Region2DImpl: public Region2D        //inherits Region2D  
+class Region2DImpl: public Region2D        //inherits Region2D
 {
   public:
 	//++++++++++++++++++++++++++++
@@ -48,7 +48,7 @@ class Region2DImpl: public Region2D        //inherits Region2D
     // example input: "(((4,3),(6,4)),((4,3),(5,2)),((5,2),(6,4)))"
 	Region2DImpl(std::string textualRegionList);
 
-    //copy constructor that constructs a new Region2D object with the same 
+    //copy constructor that constructs a new Region2D object with the same
     //properties as the inputted Region2D object.
 	Region2DImpl(Region2DImpl& source);
 
@@ -66,14 +66,14 @@ class Region2DImpl: public Region2D        //inherits Region2D
 	//All functions will be inherited from Region2D.cpp when called
         //Additional functions in the extended file start here
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	
+
     //+++++++++++++++++
     // Iterator classes
     //+++++++++++++++++
 
     // Constant attributed half segment iterator type that allows to navigate through the attributed half segments of
     // a Region2D object in forward and reverse direction. A change of the
-    // attributed half segment is not possible. 
+    // attributed half segment is not possible.
     class ConstAttributedHalfSegmentIterator
     {
       friend class Region2DImpl;
@@ -122,7 +122,7 @@ class Region2DImpl: public Region2D        //inherits Region2D
         bool operator <= (const ConstAttributedHalfSegmentIterator& rhs) const;
         bool operator >  (const ConstAttributedHalfSegmentIterator& rhs) const;
         bool operator >= (const ConstAttributedHalfSegmentIterator& rhs) const;
-     
+
         friend std::ostream&operator<<(std::ostream& os, const ConstAttributedHalfSegmentIterator& output);
 
       protected:

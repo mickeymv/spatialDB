@@ -1,14 +1,14 @@
 /******************************************************************************
- *  File: Point2D.h	
+ *  File: Point2D.h
  ******************************************************************************
  *  Purpose:  This file specifies the interface to the class Point2D and to
  *  the nested iterator class that enables access to the simple points of the
  *  Point2D objects.
- 
+
  *  Created on: Oct 8, 2015
- 
+
  *  Authors: Ahmed Khaled, Revathi Kadari, Deepa Narain, Namrata Choudhury
- 
+
  *  Date: Fall Semester 2015
  *******************************************************************************/
 
@@ -18,6 +18,7 @@
 #include <vector>
 
 #include "../../Topic1/RobustGeometricPrimitives2D.h"
+
 #include "../../Object2D.h"
 
 using namespace std;
@@ -31,7 +32,7 @@ class Point2D : public Object2D
       // +++++++++++++++++++++
       // Constructors
       // +++++++++++++++++++++
-      
+
       // Empty constructor. Represents the empty point object.
       Point2D();
 
@@ -41,7 +42,7 @@ class Point2D : public Object2D
       // object can be created from the input.
       Point2D(std::vector<Poi2D> pointList);
 
-      // Constructor for complex point structure. It takes as input a string that represents the  
+      // Constructor for complex point structure. It takes as input a string that represents the
       // string that textually represents the input vector of points.
       // The grammar for representing a point vector in both cases 1 and 2 are structured as follows:
       // Expression       := '(' Point (',' [WhiteSpace] Point)* ')'
@@ -55,7 +56,7 @@ class Point2D : public Object2D
       Point2D(std::string textualPointList);
 
       // Copy constructor that constructs a new Point2D object with the same
-      // properties as the inputted Point2D object. 
+      // properties as the inputted Point2D object.
       Point2D(const Point2D& originalPoint);
 
       // Move constructor that moves the inputed Point2D object to a
@@ -65,11 +66,11 @@ class Point2D : public Object2D
 
       // Destructor, that clears the internal objects of the Point2D structure.
       virtual ~Point2D();
-      
+
       //+++++++++++++++++++++
       // Assignment operators
       //+++++++++++++++++++++
-      
+
       //copy assignment operator that copies the inputted object
       //to the Point2D object
       Point2D& operator = (const Point2D& originalPoint);
@@ -82,10 +83,10 @@ class Point2D : public Object2D
       // ++++++++++++++++++++++++++++++++++
       // Operators and Comparison operators
       // ++++++++++++++++++++++++++++++++++
-      
+
       // Equal operator that checks if the Point2D object and the operand Point2D are the same spatial point.
       bool operator == (Point2D& operand);
-      
+
       // unequal operator that checks if the Point2D object and the operand
       // Point2D are different spatial structures. It is the logical opposite
       // of the == operator.
@@ -93,27 +94,27 @@ class Point2D : public Object2D
 
       // less than comparision of lexicographic order of points
       bool operator < (Point2D& operand);
-      
+
       // less than or equal comparision of lexicographic order of points
       bool operator <= (Point2D& operand);
-        
+
       // greater than comparision of lexicographic order of points
       bool operator > (Point2D& operand);
-      
+
       // greater than or equal comparision of lexicographic order of points
       bool operator >= (Point2D& operand);
 
       // Display function, that displayes the information of Point2D structure as follows:
       // the number of points contained in the structure, then information of each point in the point-vector structure.
       friend std::ostream&operator<<(std::ostream&, const Point2D&);
-      
+
       //++++++++++++++++++++++++++++++++
       // Unary predicates and operations
       //++++++++++++++++++++++++++++++++
-      
+
       // get number of single points of the structure.
       Number numPoints();
-      
+
       // Predicate that checks whether the inputted Point2D object is an
       //empty Point2D object.
       bool isEmptyPoint2D() const;
@@ -153,10 +154,10 @@ class Point2D : public Object2D
 
             // Predicate that tests whether a constant poi iterator is empty.
             bool isEmpty() const;
-            
+
             // Friend member function used to print out the interator information
             friend std::ostream&operator<<(std::ostream&, const ConstPoiIterator&);
-            
+
             // Increment/decrement operators '++', '--'
             ConstPoiIterator& operator ++ ();   // prefix
             ConstPoiIterator operator ++ (int postfix); // postfix
@@ -181,7 +182,7 @@ class Point2D : public Object2D
             private:
               // Forward struct declaration for the hidden implementation of a
               // constant point iterator that holds the different variables of the iterator
-              struct ConstPoiIteratorImplementation;  
+              struct ConstPoiIteratorImplementation;
               ConstPoiIteratorImplementation* handle;  // Declaration of an opaque pointer
         }; // class ConstPoiIterator
 
@@ -202,7 +203,7 @@ class Point2D : public Object2D
         // last face of a Point2D object. Note that dereferencing this iterator
         // yields the empty constant poi iterator.
         ConstPoiIterator ctail() const;
-    
+
   private:
     struct point2DImplementation;    //Structure that holds all required information for building the Point2D structure
     point2DImplementation* points;   //pointer for the internal structure

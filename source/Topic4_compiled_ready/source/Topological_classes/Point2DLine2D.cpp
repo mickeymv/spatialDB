@@ -23,7 +23,7 @@ Point2DLine2D::Point2DLine2D(const Point2D &F, const Line2D &G) {
     objG=G;
 
     // initialize vF and vG with false
-    for (int i = 0; i<vF_size; i++) {
+    for (int i = 0; i < vF_size; i++) {
         vF[i] = false;
     }
 
@@ -34,7 +34,8 @@ Point2DLine2D::Point2DLine2D(const Point2D &F, const Line2D &G) {
 
 };
 
-Point2DLine2D::~Point2DLine2D() { };
+Point2DLine2D::~Point2DLine2D() {
+};
 
 
 bool *Point2DLine2D::getVF() {
@@ -46,19 +47,18 @@ bool *Point2DLine2D::getVG() {
 }
 
 void Point2DLine2D::exploreTopoPred() {
-
-    //TODO Object should be derived by each of the types
     PlaneSweep S(objF,objG);
     S.newSweep();
     Poi2D last_dp;
 
+    //int count=0;
     while((S.getStatus()!=ParallelObjectTraversal::end_of_second)&&(S.getStatus()==ParallelObjectTraversal::end_of_none)&&(!(vF[poi_disjoint]&&vF[poi_on_interior]&&vF[poi_on_bound]&&vG[bound_poi_disjoint])))
     {
         ParallelObjectTraversal::object object_value = S.getObject();
         if(object_value==ParallelObjectTraversal::first)
         {
             Poi2D p = S.getPoiEvent(ParallelObjectTraversal::first);
-            if(S.poiInSeg(p))
+            if(S.poiInSeg(p))//poi_inSeg
             {
                 vF[poi_on_interior]= true;
             }
@@ -73,21 +73,21 @@ void Point2DLine2D::exploreTopoPred() {
             Poi2D dp;
             if(h.isLeft)
             {
-                PlaneSweepLineStatusObject psso(h.seg);
-                S.addLeft(psso);
+                PlaneSweepLineStatusObject * psso = new PlaneSweepLineStatusObject(h.seg);
+                S.addLeft(*psso);
                 dp=h.seg.p1;
             }
             else
             {
-                PlaneSweepLineStatusObject psso(h.seg);
-                S.delRight(psso);
+                PlaneSweepLineStatusObject * psso = new PlaneSweepLineStatusObject(h.seg);
+                S.delRight(*psso);
                 dp=h.seg.p2;
             }
             if(dp!=last_dp)
             {
                 last_dp=dp;
             }
-            if(!S.lookAhead(h,objG))
+            if(!S.lookAhead(h,ParallelObjectTraversal::second))
             {
                 vG[bound_poi_disjoint]= true;
             }
@@ -98,18 +98,18 @@ void Point2DLine2D::exploreTopoPred() {
             Poi2D dp;
             if(h.isLeft)
             {
-                PlaneSweepLineStatusObject psso(h.seg);
-                S.addLeft(psso);
+                PlaneSweepLineStatusObject * psso = new PlaneSweepLineStatusObject(h.seg);
+                S.addLeft(*psso);
                 dp=h.seg.p1;
             }
             else
             {
-                PlaneSweepLineStatusObject psso(h.seg);
-                S.delRight(psso);
+                PlaneSweepLineStatusObject * psso = new PlaneSweepLineStatusObject(h.seg);
+                S.delRight(*psso);
                 dp=h.seg.p2;
             }
             last_dp=dp;
-            if(S.lookAhead(h,objG))
+            if(S.lookAhead(h,ParallelObjectTraversal::second))
             {
                 vF[poi_on_interior]=true;
             }
@@ -124,7 +124,7 @@ void Point2DLine2D::exploreTopoPred() {
     {
         vF[poi_disjoint]=true;
     }
-    return; // return true if no error, else false
+    return;
 }
 
 void Point2DLine2D::evaluateTopoPred()

@@ -18,7 +18,7 @@
 #ifndef PLANESWEEP_PROJECT_LINE2DREGION2D_H
 #define PLANESWEEP_PROJECT_LINE2DREGION2D_H
 
-#include "Region2D.h"
+#include "planesweep_project/Topic2/Implementation/Region2D.h"
 #include "planesweep_project/Object2D.h"
 #include "planesweep_project/Topic2/Implementation/Point2D.h"
 #include "planesweep_project/Topic2/Implementation/Line2D.h"
@@ -48,13 +48,13 @@ public:
 
 private:
 
-//    typedef enum {
-//        seg_inside,seg_shared,seg_outside,poi_shared,bound_inside,bound_shared,bound_disjoint,bound_outside
-//    }vFLine2DRegion2DPredicates;
-//
-//    typedef enum {
-//        seg_unshared
-//    }vGLine2DRegion2DPredicates;
+    typedef enum {
+        seg_inside,seg_shared,seg_outside,poi_shared,bound_inside,bound_shared,bound_disjoint,bound_outside
+    }vFLine2DRegion2DPredicates;
+
+    typedef enum {
+        seg_unshared
+    }vGLine2DRegion2DPredicates;
 
 
     // predicates enum
@@ -66,19 +66,19 @@ private:
 //        seg_unshared
 //    };
 
-    enum vF_Predicates
-    {
-        seg_inside,seg_shared,seg_outside,poi_shared,bound_inside,bound_shared,bound_disjoint
-    };
+//    enum vF_Predicates
+//    {
+//        seg_inside,seg_shared,seg_outside,poi_shared, bound_inside,bound_shared,bound_disjoint
+//    };
 
-    enum vG_Predicates
-    {
-        seg_unshared
-    };
+//    enum vG_Predicates
+//    {
+//        seg_unshared
+//    };
 
     Line2D objF;
     Region2D objG;
-    static const int vF_size=7;
+    static const int vF_size=8;
     static const int vG_size=1;
 
     TopPredNumberLine2DRegion2D topPredNumberLine2DRegion2D;

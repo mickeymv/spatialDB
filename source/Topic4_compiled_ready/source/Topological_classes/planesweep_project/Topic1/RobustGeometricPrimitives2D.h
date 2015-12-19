@@ -13,7 +13,7 @@
 ------------------------------------------------------------------------------------*/
 
 
-#ifndef ROBUSTGEOMETRICPRIMITIVES2D_H_ 
+#ifndef ROBUSTGEOMETRICPRIMITIVES2D_H_
 #define ROBUSTGEOMETRICPRIMITIVES2D_H_
 
 #include <iostream>
@@ -264,11 +264,11 @@ bool BasicPointInBoundingBox(Poi2D& poi, SimplePolygon2D& polygon);
 
 //Determines whether a point is located on theboundary of a simple polygon.
 bool simplePointInsideSimplePolygon(Poi2D& poi, SimplePolygon2D& simplepolygon);
-//Determines whether the point is located in the interior or on the boundary of the simple polygon 
+//Determines whether the point is located in the interior or on the boundary of the simple polygon
 bool simplePointOnBoundaryOfSimplePoly(Poi2D& poi, SimplePolygon2D& simplepolygon);
-//Determines whether the segment is located in the interior of the simple polygon 
+//Determines whether the segment is located in the interior of the simple polygon
 bool segInsideSimplePolygon(Seg2D& seg, SimplePolygon2D& simplepolygon);
-//Determines whether the segment is located on the boundary of the simple polygon 
+//Determines whether the segment is located on the boundary of the simple polygon
 bool segOnBoundaryOfSimplePolygon(Seg2D& seg, SimplePolygon2D& simplepolygon);
 
 //Returns a minimum bounding rectangle for a segment

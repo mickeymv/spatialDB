@@ -1,6 +1,6 @@
 /******************************************************************************
  *  File: Region2D.h
- /******************************************************************************
+ ******************************************************************************
  *  Purpose:  This file specifies interfaces to the class Region2D and to
  *  all the nested iterator classes that enable access to components (that is,
  *  faces and cycles) of Region2D objects.
@@ -17,10 +17,8 @@
 #include <vector>
 #include <algorithm>
 #include <map>
-
 #include "../../Topic1/RobustGeometricPrimitives2D.h"
 #include "../../Object2D.h"
-
 
 class Region2D : public Object2D
 {
@@ -74,7 +72,7 @@ public:
 
     //copy assignment operator that copies the inputted object
     //to the Region2D object
-    Region2D& operator = (Region2D& source);
+    Region2D &operator=(const Region2D &source);
 
     // Move assignment operator that moves the inputted Region2D object to the
     // Region2D object. The inputted object gets the empty Region2D

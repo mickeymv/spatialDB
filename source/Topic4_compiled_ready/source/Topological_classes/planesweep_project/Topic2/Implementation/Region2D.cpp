@@ -1,6 +1,6 @@
 /******************************************************************************
  *  File: Region2D.cpp
- /******************************************************************************
+ ******************************************************************************
  *  Purpose:  This file implements interfaces to the class Region2D defined
  *  in the Region2D.h file and all the nested iterator classes that enable
  *  access to components (that is, faces and cycles) of Region2D objects.
@@ -29,8 +29,8 @@ struct Region2D::ConstCycleIterator::ConstCycleIteratorImplementation{
 struct Region2D::Region2DImplementation
 {
     std::vector<AttrHalfSeg2D> segments;         //ordered set of all attributed half segments regarding the full Region2D structure
-    std::map<int, std::vector<AttrHalfSeg2D *>> cycles;
-    std::map<int, std::map<int, std::vector<AttrHalfSeg2D *>>> faces;
+    std::map<int, std::vector<AttrHalfSeg2D *> > cycles;
+    std::map<int, std::map<int, std::vector<AttrHalfSeg2D *> > > faces;
 };
 
 //++++++++++++++++++++++++++++
@@ -241,11 +241,12 @@ Region2D::Region2D(std::vector<Seg2D> segmentList)
         mbrCoordinates[i][1] = miny;
         mbrCoordinates[i][2] = maxx;
         mbrCoordinates[i][3] = maxy;
+
     }
 
 
     // Grouping all cycles into faces
-    std::map<int, std::vector<AttrHalfSeg2D *>> fe;
+    std::map<int, std::vector<AttrHalfSeg2D *> > fe;
 
     size = handle->cycles.size();
     int checked[size];
@@ -733,7 +734,7 @@ Region2D::Region2D(std::string textualRegionList)
 
 
     // Grouping all cycles into faces
-    std::map<int, std::vector<AttrHalfSeg2D *>> fe;
+    std::map<int, std::vector<AttrHalfSeg2D *> > fe;
 
     size = handle->cycles.size();
     int checked[size];
@@ -1013,7 +1014,7 @@ Region2D::~Region2D()
 
 //copy assignment operator that copies the inputted object
 //to the Region2D object
-Region2D& Region2D::operator = (Region2D& source)
+Region2D &Region2D::operator=(const Region2D &source)
 {
     handle = new Region2DImplementation;
     handle->segments.clear();
