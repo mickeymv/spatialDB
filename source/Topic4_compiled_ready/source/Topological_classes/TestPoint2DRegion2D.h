@@ -23,7 +23,7 @@ public:
 
 private:
 
-    string topPredNumberPoint2DRegion2D[7] =
+    string topPredNumberPoint2DRegion2D[TopPredNumberPoint2DRegion2DEnumSize] =
             {
                     "pr_disjoint_m1", "pr_meet_m2", "pr_meet_m3", "pr_inside_m4", "pr_overlap_m5",
                     "pr_inside_m6", "pr_overlap_m7"

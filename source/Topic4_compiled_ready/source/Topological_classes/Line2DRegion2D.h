@@ -107,9 +107,7 @@ private:
     //
     typedef std::bitset<9> imctype;
 
-    static const int matrixSize = 43;
-
-    const string matrixStr[matrixSize] = {
+    const string matrixStr[TopPredNumberLine2DRegion2DEnumSize] = {
             "001000111", "001001111", "001010111", "001011111", "010000101",  //  1-5
             "010000111", "010010111", "011000101", "011000111", "011001101", //  6-10
             "011001111", "011010111", "011011111", "100000111", "100010111", // 11-15
@@ -122,7 +120,7 @@ private:
             "111101111", "111110111", "111111111" // 41-43
     };
 
-    imctype matrix[matrixSize];
+    imctype matrix[TopPredNumberLine2DRegion2DEnumSize];
 };
 
 #endif //PLANESWEEP_PROJECT_LINE2DREGION2D_H

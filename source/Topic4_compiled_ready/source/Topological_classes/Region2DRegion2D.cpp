@@ -33,7 +33,7 @@ Region2DRegion2D::Region2DRegion2D(const Region2D &F, const Region2D &G) {
     }
 
     // assigning the the matrix value to bitset
-    for (int i = 0; i < matrixSize; i++)
+    for (int i = 0; i < TopPredNumberRegion2DRegion2DEnumSize; i++)
         matrix[i] = imctype(std::string(matrixStr[i]));
 };
 
@@ -270,7 +270,7 @@ void Region2DRegion2D::evaluateTopoPred() {
 
     // compare/match the right one
     // loop exit if the top Pred number found
-    for (int i = 0; i < matrixSize && !isPredSet; i++) {
+    for (int i = 0; i < TopPredNumberRegion2DRegion2DEnumSize && !isPredSet; i++) {
 
         //test
         // cout << "matrix[" << i << "] = " << matrix[i] << endl;

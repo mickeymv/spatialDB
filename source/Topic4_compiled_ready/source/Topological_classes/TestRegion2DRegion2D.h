@@ -21,7 +21,7 @@ public:
 
 private:
 
-    string topPredNumberRegion2DRegion2D[33] =
+    string topPredNumberRegion2DRegion2D[TopPredNumberRegion2DRegion2DEnumSize] =
             {
                     "rr_disjoint_m1", "rr_meet_m2", "rr_meet_m3", "rr_meet_m4", "rr_equal_m5",
                     "rr_coveredby_m6", "rr_inside_m7", "rr_coveredby_m8", "rr_coveredby_m9",

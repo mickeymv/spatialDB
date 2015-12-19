@@ -21,7 +21,7 @@ public:
 
 private:
 
-    string topPredNumberPoint2DLine2D[14] =
+    string topPredNumberPoint2DLine2D[TopPredNumberPoint2DLine2DEnumSize] =
             {
                     "pl_disjoint_m1", "pl_disjoint_m2", "pl_meet_m3", "pl_meet_m4", "pl_meet_m5",
                     "pl_meet_m6", "pl_inside_m7", "pl_inside_m8", "pl_overlap_m9", "pl_overlap_m10",

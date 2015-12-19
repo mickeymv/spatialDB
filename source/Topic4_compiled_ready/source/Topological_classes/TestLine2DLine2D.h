@@ -19,7 +19,7 @@ public:
 
 private:
 
-    string topPredNumberLine2DLine2D[82] =
+    string topPredNumberLine2DLine2D[TopPredNumberLine2DLine2DEnumSize] =
             {
                     "ll_disjoint_m1", "ll_disjoint_m2", "ll_disjoint_m3", "ll_disjoint_m4",
                     "ll_meet_m5", "ll_meet_m6", "ll_meet_m7", "ll_meet_m8", "ll_meet_m9",

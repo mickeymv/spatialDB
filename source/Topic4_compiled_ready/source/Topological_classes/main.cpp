@@ -32,29 +32,29 @@ using namespace std;
 
 int main() {
 
-    // 1. Point2DPoint2D test cases
-    TestPoint2DPoint2D testPoint2DPoint2D;
-    testPoint2DPoint2D.start();
-
+//    // 1. Point2DPoint2D test cases
+//    TestPoint2DPoint2D testPoint2DPoint2D;
+//    testPoint2DPoint2D.start();
+//
     // 2. Point2DLine2D test cases
     TestPoint2DLine2D testPoint2DLine2D;
     testPoint2DLine2D.start();
 
-    // 3. Line2DLine2D test cases
-    TestLine2DLine2D testLine2DLine2D;
-    testLine2DLine2D.start();
+//    // 3. Line2DLine2D test cases
+//    TestLine2DLine2D testLine2DLine2D;
+//    testLine2DLine2D.start();
+//
+//    // 4. Point2DRegion2D test cases
+//    TestPoint2DRegion2D testPoint2DRegion2D;
+//    testPoint2DRegion2D.start();
 
-    // 4. Point2DRegion2D test cases
-    TestPoint2DRegion2D testPoint2DRegion2D;
-    testPoint2DRegion2D.start();
-
-    // 5. Region2DRegion2D test cases
-    TestRegion2DRegion2D testRegion2DRegion2D;
-    testRegion2DRegion2D.start();
-
-    // 6. Line2DRegion2D test cases
-    TestLine2DRegion2D testLine2DRegion2D;
-    testLine2DRegion2D.start();
+//    // 5. Region2DRegion2D test cases
+//    TestRegion2DRegion2D testRegion2DRegion2D;
+//    testRegion2DRegion2D.start();
+//
+//    // 6. Line2DRegion2D test cases
+//    TestLine2DRegion2D testLine2DRegion2D;
+//    testLine2DRegion2D.start();
 
     return 0;
 }

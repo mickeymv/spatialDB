@@ -21,7 +21,7 @@ public:
 
 private:
 
-    string topPredNumberPoint2DPoint2D[5] =
+    string topPredNumberPoint2DPoint2D[TopPredNumberPoint2DPoint2DEnumSize] =
     {
             "pp_disjoint_m1", "pp_equal_m2", "pp_inside_m3", "pp_contains_m4", "pp_overlap_m5"
     };

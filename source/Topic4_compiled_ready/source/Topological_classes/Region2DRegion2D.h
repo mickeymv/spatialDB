@@ -82,9 +82,7 @@ private:
     //
     typedef std::bitset<9> imctype;
 
-    static const int matrixSize = 33;
-
-    const string matrixStr[matrixSize] = {
+    const string matrixStr[TopPredNumberRegion2DRegion2DEnumSize] = {
             "001001111", "001010111", "001011101", "001011111", "100010001",  //  1-5
             "100010111", "100100111", "100110101", "100110111", "101010111",  //  5-10
             "101011001", "101011101", "101011111", "101101111", "101110101",  //  11-15
@@ -94,7 +92,7 @@ private:
             "111110111", "111111101", "111111111"  //  31-33
     };
 
-    imctype matrix[matrixSize];
+    imctype matrix[TopPredNumberRegion2DRegion2DEnumSize];
 };
 
 

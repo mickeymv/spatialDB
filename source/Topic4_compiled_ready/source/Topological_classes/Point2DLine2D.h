@@ -80,9 +80,7 @@ private:
     //
     typedef std::bitset<6> imctype;
 
-    static const int matrixSize = 14;
-
-    const string matrixStr[matrixSize] = {
+    const string matrixStr[TopPredNumberPoint2DLine2DEnumSize] = {
             //  DTj: Since the entire row 2 of the 3x3 matrix above is not used, we simplify it as below,
             // so instead of the first row and the last row are used for comparison
             //
@@ -92,7 +90,7 @@ private:
 
     };
 
-    imctype matrix[matrixSize];
+    imctype matrix[TopPredNumberPoint2DLine2DEnumSize];
 
 };
 

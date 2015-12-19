@@ -17,6 +17,8 @@
 
 // Enum class defining names for the numbers of topological predicates
 // between two Point2D objects
+static const unsigned int TopPredNumberPoint2DPoint2DEnumSize = 5;
+
 enum class TopPredNumberPoint2DPoint2D {
     pp_disjoint_m1, pp_equal_m2, pp_inside_m3, pp_contains_m4, pp_overlap_m5
 };
@@ -24,6 +26,7 @@ enum class TopPredNumberPoint2DPoint2D {
 
 // Enum class defining names for the numbers of topological predicates
 // between a Point2D object and a Line2D object
+static const unsigned int TopPredNumberPoint2DLine2DEnumSize = 14;
 
 enum class TopPredNumberPoint2DLine2D {
     pl_disjoint_m1, pl_disjoint_m2, pl_meet_m3, pl_meet_m4, pl_meet_m5,
@@ -33,6 +36,8 @@ enum class TopPredNumberPoint2DLine2D {
 
 // Enum class defining names for the numbers of topological predicates
 // between a Point2D object and a Region2D object
+static const unsigned int TopPredNumberPoint2DRegion2DEnumSize = 7;
+
 enum class TopPredNumberPoint2DRegion2D {
     pr_disjoint_m1, pr_meet_m2, pr_meet_m3, pr_inside_m4, pr_overlap_m5,
     pr_inside_m6, pr_overlap_m7
@@ -40,6 +45,8 @@ enum class TopPredNumberPoint2DRegion2D {
 
 // Enum class defining names for the numbers of topological predicates
 // between two Line2D objects
+static const unsigned int TopPredNumberLine2DLine2DEnumSize = 82;
+
 enum class TopPredNumberLine2DLine2D {
     ll_disjoint_m1, ll_disjoint_m2, ll_disjoint_m3, ll_disjoint_m4, ll_meet_m5,
     ll_meet_m6, ll_meet_m7, ll_meet_m8, ll_meet_m9, ll_meet_m10, ll_meet_m11,
@@ -63,6 +70,8 @@ enum class TopPredNumberLine2DLine2D {
 
 // Enum class defining names for the numbers of topological predicates
 // between a Line2D object and a Region2D object
+static const unsigned int TopPredNumberLine2DRegion2DEnumSize = 43;
+
 enum class TopPredNumberLine2DRegion2D {
     lr_disjoint_m1, lr_disjoint_m2, lr_meet_m3, lr_meet_m4, lr_meet_m5,
     lr_meet_m6, lr_meet_m7, lr_meet_m8, lr_meet_m9, lr_meet_m10, lr_meet_m11,
@@ -78,6 +87,8 @@ enum class TopPredNumberLine2DRegion2D {
 
 // Enum class defining names for the numbers of topological predicates
 // between two Region2D objects
+static const unsigned int TopPredNumberRegion2DRegion2DEnumSize = 33;
+
 enum class TopPredNumberRegion2DRegion2D {
     rr_disjoint_m1, rr_meet_m2, rr_meet_m3, rr_meet_m4, rr_equal_m5,
     rr_coveredby_m6, rr_inside_m7, rr_coveredby_m8, rr_coveredby_m9,

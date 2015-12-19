@@ -21,7 +21,7 @@ public:
 private:
 
 
-    string topPredNumberLine2DRegion2D[43] =
+    string topPredNumberLine2DRegion2D[TopPredNumberLine2DRegion2DEnumSize] =
             {
                     "lr_disjoint_m1", "lr_disjoint_m2", "lr_meet_m3", "lr_meet_m4", "lr_meet_m5",
                     "lr_meet_m6", "lr_meet_m7", "lr_meet_m8", "lr_meet_m9", "lr_meet_m10", "lr_meet_m11",

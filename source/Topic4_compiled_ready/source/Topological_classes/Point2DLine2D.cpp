@@ -33,7 +33,7 @@ Point2DLine2D::Point2DLine2D(const Point2D &F, const Line2D &G) {
     }
 
     // assigning the the matrix value
-    for (int i=0; i< matrixSize; i++)
+    for (int i=0; i< TopPredNumberPoint2DLine2DEnumSize; i++)
         matrix[i] = imctype (std::string(matrixStr[i]));
 
 };
@@ -157,7 +157,7 @@ void Point2DLine2D::evaluateTopoPred()
 
     // compare/match the right one
     // loop exit if the top Pred number found
-    for (int i = 0; i < matrixSize && !isPredSet; i++) {
+    for (int i = 0; i < TopPredNumberPoint2DLine2DEnumSize && !isPredSet; i++) {
 
         //test
         // cout << "matrix[" << i << "] = " << matrix[i] << endl;
